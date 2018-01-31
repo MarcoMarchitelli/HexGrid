@@ -15,7 +15,7 @@ public class HexGridCreator : MonoBehaviour {
 
     float hexWidth = 1.723f, hexHeight = 2.000f;
 
-    public List<Vector3> Waypoints = new List<Vector3>();
+    public List<Point> WaypointGrid = new List<Point>();
 
     private void Awake()
     {
@@ -43,56 +43,83 @@ public class HexGridCreator : MonoBehaviour {
         //adding ways
         AddWays();
 
-        for (int y = 0; y < gridSize.y; y++)
+        for (int y = 0; y < (int)gridSize.y; y++)
         {
             float offset = 0;
+            int xOffset = 0;
+
             if (y % 2 != 0)
-                offset = hexWidth / 2;
-            for (int x = 0; x < gridSize.x; x++)
             {
+                offset = hexWidth / 2;
+                xOffset = 1;
+            } 
+
+            for (int x = 0; x < (int)gridSize.x; x++)
+            {
+
                 Vector3 hexPosition = new Vector3(-gridSize.x + x * hexWidth + offset, 0, -gridSize.y + y * hexHeight * .75f);
-                Transform instantiatedHex = Instantiate(hexagonPrefab, hexPosition, Quaternion.Euler(Vector3.up * 90));
+                Transform instantiatedHex = Instantiate(hexagonPrefab, hexPosition, Quaternion.identity);
                 instantiatedHex.parent = mapContainer;
 
-                Vector3 waypointPosition3 = hexPosition + Vector3.forward * (hexHeight/2);
-                Vector3 waypointPosition4 = hexPosition + Vector3.forward * (hexHeight * .25f) + Vector3.right * (hexWidth/2);
-                Vector3 waypointPosition5 = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (hexWidth / 2);
-                Vector3 waypointPosition6 = hexPosition + Vector3.forward * (-hexHeight / 2);
-                Vector3 waypointPosition2 = hexPosition + Vector3.forward * (hexHeight * .25f) + Vector3.right * (-hexWidth / 2);
-                Vector3 waypointPosition = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (-hexWidth / 2);
+                Vector3 lowVertexPosition = hexPosition + Vector3.forward * (-hexHeight / 2);
+                Vector3 lowLeftVertexPosition = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (-hexWidth / 2);
+                Vector3 lowRightVertexPosition = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (hexWidth / 2);
+                Vector3 highRightVertexPosition = hexPosition + Vector3.forward * (hexHeight * .25f) + Vector3.right * (hexWidth / 2);
+                Vector3 highLeftVertexPosition = hexPosition + Vector3.forward * (hexHeight * .25f) + Vector3.right * (-hexWidth / 2);
+                Vector3 highVertexPosition = hexPosition + Vector3.forward * (hexHeight/2);
+                
+                int myX = x * 2;
+                int myY = y * 2;
 
-                if (!DoesPointAlredyExist(waypointPosition))
-                    Waypoints.Add(waypointPosition);
-                if (!DoesPointAlredyExist(waypointPosition2))
-                    Waypoints.Add(waypointPosition2);
-                if (!DoesPointAlredyExist(waypointPosition3))
-                    Waypoints.Add(waypointPosition3);
-                if (!DoesPointAlredyExist(waypointPosition4))
-                    Waypoints.Add(waypointPosition4);
-                if (!DoesPointAlredyExist(waypointPosition5))
-                    Waypoints.Add(waypointPosition5);
-                if (!DoesPointAlredyExist(waypointPosition6))
-                    Waypoints.Add(waypointPosition6);
+                Point lowVertex = new Point(myX + xOffset, myY, lowVertexPosition, Point.Movement.inverted);
+                Point lowLeftVertex = new Point(myX - 1 + xOffset, myY + 1, lowLeftVertexPosition, Point.Movement.straight);
+                Point lowRightVertex = new Point(myX + 1 + xOffset, myY + 1, lowRightVertexPosition, Point.Movement.straight);
+                Point highRightVertex = new Point(myX + 1 + xOffset, myY + 2, highRightVertexPosition, Point.Movement.inverted);
+                Point highLeftVertex = new Point(myX - 1 + xOffset, myY + 2, highLeftVertexPosition, Point.Movement.inverted);
+                Point highVertex = new Point(myX + xOffset, myY + 3, highVertexPosition, Point.Movement.straight);
+
+                if (!DoesPointAlredyExist(lowVertex))
+                    WaypointGrid.Add(lowVertex);
+
+                if (!DoesPointAlredyExist(lowLeftVertex))
+                    WaypointGrid.Add(lowLeftVertex);
+
+                if (!DoesPointAlredyExist(lowRightVertex))
+                    WaypointGrid.Add(lowRightVertex);
+
+                if (!DoesPointAlredyExist(highRightVertex))
+                    WaypointGrid.Add(highRightVertex);
+
+                if (!DoesPointAlredyExist(highLeftVertex))
+                    WaypointGrid.Add(highLeftVertex);
+
+                if (!DoesPointAlredyExist(highVertex))
+                    WaypointGrid.Add(highVertex);
+
             }
         }
 
-        foreach(Vector3 wayPoint in Waypoints)
+        foreach (Point point in WaypointGrid)
         {
-            Transform instantiatedWaypoint = Instantiate(waypointPrefab, wayPoint, Quaternion.identity);
+            Transform instantiatedWaypoint = Instantiate(waypointPrefab, point.worldPosition, Quaternion.identity);
+            instantiatedWaypoint.GetComponent<Point>().x = point.x;
+            instantiatedWaypoint.GetComponent<Point>().y = point.y;
+            instantiatedWaypoint.GetComponent<Point>().worldPosition = point.worldPosition;
+            instantiatedWaypoint.GetComponent<Point>().type = point.type;
             instantiatedWaypoint.parent = mapContainer;
         }
     }
 
     void InstantiatePlayer()
     {
-        GameObject instantiatedPlayer = Instantiate(playerReference, Waypoints[0], Quaternion.identity);
+        GameObject instantiatedPlayer = Instantiate(playerReference, WaypointGrid[0].worldPosition, Quaternion.identity);
     }
 
-    bool DoesPointAlredyExist(Vector3 point)
+    bool DoesPointAlredyExist(Point point)
     {
-        for (int i = 0; i < Waypoints.Count; i++)
+        for (int i = 0; i < WaypointGrid.Count; i++)
         {
-            if (Mathf.Approximately(point.x, Waypoints[i].x) && Mathf.Approximately(point.z, Waypoints[i].z))
+            if (point.x == WaypointGrid[i].x && point.y == WaypointGrid[i].y)
                 return true;
         }
         return false;

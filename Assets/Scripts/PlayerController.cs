@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
 
     void Move()
     {
-        transform.position = hexGrid.Waypoints[testIndex];
+        transform.position = hexGrid.WaypointGrid[testIndex].worldPosition;
         testIndex++;
     }
 }
