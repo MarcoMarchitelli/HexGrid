@@ -20,7 +20,6 @@ public class HexGridCreator : MonoBehaviour {
     private void Awake()
     {
         CreateGrid();
-        InstantiatePlayer();
     }
 
     void AddWays()
@@ -106,14 +105,12 @@ public class HexGridCreator : MonoBehaviour {
             instantiatedWaypoint.GetComponent<Point>().y = point.y;
             instantiatedWaypoint.GetComponent<Point>().worldPosition = point.worldPosition;
             instantiatedWaypoint.GetComponent<Point>().type = point.type;
+            instantiatedWaypoint.gameObject.AddComponent<Point>();
             instantiatedWaypoint.parent = mapContainer;
         }
     }
 
-    void InstantiatePlayer()
-    {
-        GameObject instantiatedPlayer = Instantiate(playerReference, WaypointGrid[0].worldPosition, Quaternion.identity);
-    }
+    
 
     bool DoesPointAlredyExist(Point point)
     {
@@ -124,4 +121,35 @@ public class HexGridCreator : MonoBehaviour {
         }
         return false;
     }
+
+    public List<Point> GetPossibleDestinationsFromPoint(Point point)
+    {
+        List<Point> destinations = new List<Point>();
+
+        for(int i = 0; i < WaypointGrid.Count; i++)
+        {
+            if(point.type == Point.Movement.straight)
+            {
+                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 1)
+                    destinations.Add(WaypointGrid[i]);
+                if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y - 1)
+                    destinations.Add(WaypointGrid[i]);
+                if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y - 1)
+                    destinations.Add(WaypointGrid[i]);
+            }
+
+            if (point.type == Point.Movement.inverted)
+            {
+                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 1)
+                    destinations.Add(WaypointGrid[i]);
+                if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y + 1)
+                    destinations.Add(WaypointGrid[i]);
+                if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y + 1)
+                    destinations.Add(WaypointGrid[i]);
+            }
+        }
+
+        return destinations;
+    }
+
 }

@@ -4,7 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-	void Start () {
+    public PlayerController playerReference;
+    public HexGridCreator gridReference;
 
+	void Awake () {
+        playerReference = FindObjectOfType<PlayerController>();
+        gridReference = FindObjectOfType<HexGridCreator>();
 	}
+
+    private void Start()
+    {
+        InstantiatePlayer();
+    }
+
+    void InstantiatePlayer()
+    {
+        GameObject instantiatedPlayer = Instantiate(playerReference.gameObject, gridReference.WaypointGrid[0].worldPosition, Quaternion.identity);
+    }
 }

@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[System.Serializable]
 public class Point : MonoBehaviour{
 
     public int x, y;
     public Vector3 worldPosition;
     public Movement type;
+
     public enum Movement
     {
         straight, inverted
@@ -19,12 +22,4 @@ public class Point : MonoBehaviour{
         type = _type;
         worldPosition = _worldPosition;
     }
-
-    //public Vector3[] getPossibleDestinations()
-    //{
-    //    if (this.type == Movement.straight)
-    //    {
-
-    //    }
-    //}
 }

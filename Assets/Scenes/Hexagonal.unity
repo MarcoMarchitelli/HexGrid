@@ -163,6 +163,11 @@ Prefab:
       propertyPath: hexGrid
       value: 
       objectReference: {fileID: 307819611}
+    - target: {fileID: 114141098667847442, guid: 1ff8bd5d9f47c0a42826418fb96b02b0,
+        type: 2}
+      propertyPath: targetLayer.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ff8bd5d9f47c0a42826418fb96b02b0, type: 2}
   m_IsPrefabParent: 0
@@ -211,6 +216,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ec64a87b61f444d8869a34fc321aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerReference: {fileID: 0}
+  gridReference: {fileID: 0}
 --- !u!1 &1416746554
 GameObject:
   m_ObjectHideFlags: 0

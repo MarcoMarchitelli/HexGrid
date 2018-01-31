@@ -5,9 +5,12 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     GameManager gameManager;
-    Vector3 currentWayPoint;
+    Point currentWayPoint;
 
     public HexGridCreator hexGrid;
+    public LayerMask targetLayer;
+
+    public List<Point> test = new List<Point>();
 
     int testIndex = 1;
 
@@ -17,16 +20,33 @@ public class PlayerController : MonoBehaviour {
 
     private void Start()
     {
-        currentWayPoint = transform.position;
+        currentWayPoint = gameManager.gridReference.WaypointGrid[0];
     }
 
     void Update () {
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, targetLayer))
         {
-            Move();
+            hitInfo.collider.gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Point pointHit = hitInfo.collider.gameObject.GetComponent<Point>();
+                test = gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint);
+
+                if (pointHit != null)
+                {
+                    if (test.Contains(pointHit))
+                    {
+                        transform.position = pointHit.worldPosition;
+                        currentWayPoint = pointHit;
+                    }
+                }
+            }
         }
-	}
+    }
 
     void Move()
     {
