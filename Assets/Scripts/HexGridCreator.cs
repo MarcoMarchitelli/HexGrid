@@ -57,7 +57,7 @@ public class HexGridCreator : MonoBehaviour {
             {
 
                 Vector3 hexPosition = new Vector3(-gridSize.x + x * hexWidth + offset, 0, -gridSize.y + y * hexHeight * .75f);
-                Transform instantiatedHex = Instantiate(hexagonPrefab, hexPosition, Quaternion.identity);
+                Transform instantiatedHex = Instantiate(hexagonPrefab, hexPosition, Quaternion.Euler(Vector3.up * 90));
                 instantiatedHex.parent = mapContainer;
 
                 Vector3 lowVertexPosition = hexPosition + Vector3.forward * (-hexHeight / 2);
@@ -101,11 +101,11 @@ public class HexGridCreator : MonoBehaviour {
         foreach (Point point in WaypointGrid)
         {
             Transform instantiatedWaypoint = Instantiate(waypointPrefab, point.worldPosition, Quaternion.identity);
-            instantiatedWaypoint.GetComponent<Point>().x = point.x;
-            instantiatedWaypoint.GetComponent<Point>().y = point.y;
-            instantiatedWaypoint.GetComponent<Point>().worldPosition = point.worldPosition;
-            instantiatedWaypoint.GetComponent<Point>().type = point.type;
-            instantiatedWaypoint.gameObject.AddComponent<Point>();
+            //instantiatedWaypoint.GetComponent<Point>().x = point.x;
+            //instantiatedWaypoint.GetComponent<Point>().y = point.y;
+            //instantiatedWaypoint.GetComponent<Point>().worldPosition = point.worldPosition;
+            //instantiatedWaypoint.GetComponent<Point>().type = point.type;
+            //instantiatedWaypoint.gameObject.AddComponent<Point>();
             instantiatedWaypoint.parent = mapContainer;
         }
     }

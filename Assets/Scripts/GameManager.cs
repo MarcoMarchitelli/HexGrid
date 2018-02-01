@@ -19,6 +19,6 @@ public class GameManager : MonoBehaviour {
 
     void InstantiatePlayer()
     {
-        GameObject instantiatedPlayer = Instantiate(playerReference.gameObject, gridReference.WaypointGrid[0].worldPosition, Quaternion.identity);
+        GameObject instantiatedPlayer = Instantiate(playerReference.gameObject, gridReference.WaypointGrid[0].worldPosition + Vector3.up * .5f, Quaternion.identity);
     }
 }

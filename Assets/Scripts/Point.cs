@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [System.Serializable]
-public class Point : MonoBehaviour{
+public class Point{
 
     public int x, y;
     public Vector3 worldPosition;
