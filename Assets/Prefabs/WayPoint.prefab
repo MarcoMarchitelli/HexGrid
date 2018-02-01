@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 33459177202540442}
   - component: {fileID: 23442024642888004}
   - component: {fileID: 135435534742913806}
-  - component: {fileID: 114172533822929828}
+  - component: {fileID: 114429270781600194}
   m_Layer: 8
   m_Name: WayPoint
   m_TagString: Waypoint
@@ -84,7 +84,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1110570929552424}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &114172533822929828
+--- !u!114 &114429270781600194
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -92,13 +92,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1110570929552424}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d2fb465c7a1f4440b960c8be577c341, type: 3}
+  m_Script: {fileID: 11500000, guid: ac0a9044cdc59c04c812ff9607eb9b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 0
-  y: 0
-  worldPosition: {x: 0, y: 0, z: 0}
-  type: 0
+  newMaterial: {fileID: 2100000, guid: 1ed2f8196f0feb4428d96c74e161965e, type: 2}
 --- !u!135 &135435534742913806
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -168,6 +168,11 @@ Prefab:
       propertyPath: targetLayer.m_Bits
       value: 256
       objectReference: {fileID: 0}
+    - target: {fileID: 114141098667847442, guid: 1ff8bd5d9f47c0a42826418fb96b02b0,
+        type: 2}
+      propertyPath: newMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 1ed2f8196f0feb4428d96c74e161965e, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ff8bd5d9f47c0a42826418fb96b02b0, type: 2}
   m_IsPrefabParent: 0
@@ -411,7 +416,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1974543871}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 35, z: 0}
+  m_LocalPosition: {x: 0, y: 20, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
