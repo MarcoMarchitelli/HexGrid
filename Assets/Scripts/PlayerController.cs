@@ -10,8 +10,6 @@ public class PlayerController : MonoBehaviour {
     //public HexGridCreator hexGrid;
     public LayerMask targetLayer;
 
-    public List<Point> test = new List<Point>();
-
 	void Awake () {
         gameManager = FindObjectOfType<GameManager>();
 	}
@@ -30,11 +28,10 @@ public class PlayerController : MonoBehaviour {
             if (Input.GetMouseButtonDown(0))
             {
                 Point pointHit = GetPointFromWorldPosition(hitInfo.collider.transform.position);
-                test = gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint);
 
                 if (pointHit != null)
                 {
-                    if (test.Contains(pointHit))
+                    if (gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit))
                     {
                         transform.position = pointHit.worldPosition + Vector3.up * .5f;
                         currentWayPoint = pointHit;

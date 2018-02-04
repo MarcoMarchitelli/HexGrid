@@ -6,7 +6,7 @@ public class HexGridCreator : MonoBehaviour {
 
     public Transform hexagonPrefab;
     public Transform waypointPrefab;
-    public Vector2 gridSize;
+    Vector2 gridSize = new Vector2(7f, 7f);
 
     public GameObject playerReference;
 
@@ -15,6 +15,7 @@ public class HexGridCreator : MonoBehaviour {
 
     float hexWidth = 1.723f, hexHeight = 2.000f;
 
+    public List<Hexagon> HexGrid = new List<Hexagon>();
     public List<Point> WaypointGrid = new List<Point>();
 
     private void Awake()
@@ -57,8 +58,19 @@ public class HexGridCreator : MonoBehaviour {
             {
 
                 Vector3 hexPosition = new Vector3(-gridSize.x + x * hexWidth + offset, 0, -gridSize.y + y * hexHeight * .75f);
-                Transform instantiatedHex = Instantiate(hexagonPrefab, hexPosition, Quaternion.Euler(Vector3.up * 90));
+                Hexagon hex = new Hexagon(x, y, hexPosition, Hexagon.Type.empty);
+
+                if(y == 0 && x <= 1 || y==0 && x == (int)gridSize.x -1 || y == 1 && x == 0 || y==1 && x == (int)gridSize.x - 1 || y == 2 && x == 0 ||
+                    y == (int)gridSize.y - 1 && x <= 1 || y == (int)gridSize.y - 1 && x == (int)gridSize.x - 1 || y == (int)gridSize.y - 2 && x == 0 || 
+                    y == (int)gridSize.y - 2 && x == (int)gridSize.x - 1 || y == (int)gridSize.y - 3 && x == 0)
+                {
+                    continue;
+                }
+
+                Transform instantiatedHex = Instantiate(hexagonPrefab, hexPosition,/* Quaternion.Euler(Vector3.up * 90)*/ Quaternion.identity);
                 instantiatedHex.parent = mapContainer;
+
+                HexGrid.Add(hex);
 
                 Vector3 lowVertexPosition = hexPosition + Vector3.forward * (-hexHeight / 2);
                 Vector3 lowLeftVertexPosition = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (-hexWidth / 2);

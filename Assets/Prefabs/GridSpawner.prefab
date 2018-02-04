@@ -51,9 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61cf01d0388f2d64795b4511b658975c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hexagonPrefab: {fileID: 4409735644488100, guid: c10b295be472b3c4d8e24f1dc302b2b0,
+  hexagonPrefab: {fileID: 4252391888528906, guid: c10b295be472b3c4d8e24f1dc302b2b0,
     type: 2}
   waypointPrefab: {fileID: 4808231869849446, guid: 5cb63d6592f275941a9abc4c2e3c7747,
     type: 2}
-  gridSize: {x: 9, y: 9}
+  gridSize: {x: 7, y: 7}
+  playerReference: {fileID: 0}
   waysWitdth: 0.5
+  WaypointGrid: []
