@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour {
 
-    public Transform hexagonPrefab;
+    public Transform emptyHexagonPrefab;
+    public Transform energyHexagonPrefab;
+    public Transform abilityHexagonPrefab;
+    public Transform winHexagonPrefab;
+
     public Transform waypointPrefab;
     Vector2 gridSize = new Vector2(7f, 7f);
 
@@ -18,9 +22,13 @@ public class HexGridCreator : MonoBehaviour {
     public List<Hexagon> HexGrid = new List<Hexagon>();
     public List<Point> WaypointGrid = new List<Point>();
 
+    Transform mapContainer;
+
     private void Awake()
     {
         CreateGrid();
+        InstantiateWaypoints();
+        InstantiateHexagons();
     }
 
     void AddWays()
@@ -37,7 +45,7 @@ public class HexGridCreator : MonoBehaviour {
         if (transform.Find("Map"))
             DestroyImmediate(transform.Find("Map").gameObject);
 
-        Transform mapContainer = new GameObject("Map").transform;
+        mapContainer = new GameObject("Map").transform;
         mapContainer.parent = transform;
 
         //adding ways
@@ -60,15 +68,13 @@ public class HexGridCreator : MonoBehaviour {
                 Vector3 hexPosition = new Vector3(-gridSize.x + x * hexWidth + offset, 0, -gridSize.y + y * hexHeight * .75f);
                 Hexagon hex = new Hexagon(x, y, hexPosition, Hexagon.Type.empty);
 
+                //da cambiare
                 if(y == 0 && x <= 1 || y==0 && x == (int)gridSize.x -1 || y == 1 && x == 0 || y==1 && x == (int)gridSize.x - 1 || y == 2 && x == 0 ||
                     y == (int)gridSize.y - 1 && x <= 1 || y == (int)gridSize.y - 1 && x == (int)gridSize.x - 1 || y == (int)gridSize.y - 2 && x == 0 || 
                     y == (int)gridSize.y - 2 && x == (int)gridSize.x - 1 || y == (int)gridSize.y - 3 && x == 0)
                 {
                     continue;
                 }
-
-                Transform instantiatedHex = Instantiate(hexagonPrefab, hexPosition,/* Quaternion.Euler(Vector3.up * 90)*/ Quaternion.identity);
-                instantiatedHex.parent = mapContainer;
 
                 HexGrid.Add(hex);
 
@@ -91,38 +97,59 @@ public class HexGridCreator : MonoBehaviour {
 
                 if (!DoesPointAlredyExist(lowVertex))
                     WaypointGrid.Add(lowVertex);
-
                 if (!DoesPointAlredyExist(lowLeftVertex))
                     WaypointGrid.Add(lowLeftVertex);
-
                 if (!DoesPointAlredyExist(lowRightVertex))
                     WaypointGrid.Add(lowRightVertex);
-
                 if (!DoesPointAlredyExist(highRightVertex))
                     WaypointGrid.Add(highRightVertex);
-
                 if (!DoesPointAlredyExist(highLeftVertex))
                     WaypointGrid.Add(highLeftVertex);
-
                 if (!DoesPointAlredyExist(highVertex))
                     WaypointGrid.Add(highVertex);
-
             }
-        }
-
-        foreach (Point point in WaypointGrid)
-        {
-            Transform instantiatedWaypoint = Instantiate(waypointPrefab, point.worldPosition, Quaternion.identity);
-            //instantiatedWaypoint.GetComponent<Point>().x = point.x;
-            //instantiatedWaypoint.GetComponent<Point>().y = point.y;
-            //instantiatedWaypoint.GetComponent<Point>().worldPosition = point.worldPosition;
-            //instantiatedWaypoint.GetComponent<Point>().type = point.type;
-            //instantiatedWaypoint.gameObject.AddComponent<Point>();
-            instantiatedWaypoint.parent = mapContainer;
         }
     }
 
-    
+    void InstantiateHexagons()
+    {
+        foreach (Hexagon hex in HexGrid)
+        {
+            hex.SetTypeFromCoords(gridSize);
+        }
+
+        foreach (Hexagon hex in HexGrid)
+        {
+            switch (hex.type)
+            {
+                case Hexagon.Type.empty:
+                    Transform instantiatedEmptyHex = Instantiate(emptyHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    instantiatedEmptyHex.parent = mapContainer;
+                    break;
+                case Hexagon.Type.energy:
+                    Transform instantiatedEnergyHex = Instantiate(energyHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    instantiatedEnergyHex.parent = mapContainer;
+                    break;
+                case Hexagon.Type.ability:
+                    Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    instantiatedAbilityHex.parent = mapContainer;
+                    break;
+                case Hexagon.Type.win:
+                    Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    instantiatedWinHex.parent = mapContainer;
+                    break;
+            }
+        }
+    }
+
+    void InstantiateWaypoints()
+    {
+        foreach (Point point in WaypointGrid)
+        {
+            Transform instantiatedWaypoint = Instantiate(waypointPrefab, point.worldPosition, Quaternion.identity);
+            instantiatedWaypoint.parent = mapContainer;
+        }
+    }
 
     bool DoesPointAlredyExist(Point point)
     {

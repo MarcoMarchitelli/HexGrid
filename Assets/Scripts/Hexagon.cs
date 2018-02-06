@@ -22,4 +22,48 @@ public class Hexagon {
         type = _type;
     }
 
+    public void setType(Type _type)
+    {
+        type = _type;
+    }
+
+    public void SetTypeFromCoords(Vector2 _gridSize)
+    {
+        if (this.y == 0 || this.y == (int)_gridSize.y -1)
+        {
+            if (this.x == 3 || this.x == 4 )
+            {
+                this.type = Type.energy;
+            }
+        }
+        if (this.y == 1 || this.y == (int)_gridSize.y - 2)
+        {
+            if (this.x == 1 || this.x == 2 || this.x == 4 || this.x == 5)
+            {
+                this.type = Type.energy;
+            }
+        }
+        if (this.y == 2 || this.y == (int)_gridSize.y - 3)
+        {
+            if (this.x == 1 || this.x == 3 || this.x == 4 || this.x == 6)
+            {
+                this.type = Type.energy;
+            }
+        }
+        if (this.y == ((int)_gridSize.y - 1) / 2)
+        {
+            if (this.x == 1 || this.x == 5)
+            {
+                this.type = Type.energy;
+            }
+            if (this.x == 2 || this.x == 4)
+            {
+                this.type = Type.ability;
+            }
+            if (this.x == ((int)_gridSize.x - 1) / 2)
+            {
+                this.type = Type.win;
+            }
+        }
+    }
 }
