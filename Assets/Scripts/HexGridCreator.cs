@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour {
 
+    //Hexagon prefabs
     public Transform emptyHexagonPrefab;
     public Transform energyHexagonPrefab;
     public Transform abilityHexagonPrefab;
     public Transform winHexagonPrefab;
 
-    public Transform waypointPrefab;
+    //Waypoint prefabs
+    public Transform blueWaypointPrefab;
+    public Transform yellowWaypointPrefab;
+    public Transform redWaypointPrefab;
+    public Transform greenWaypointPrefab;
+    public Transform greyWaypointPrefab;
+    public Transform purpleWaypointPrefab;
+
     Vector2 gridSize = new Vector2(7f, 7f);
 
     public GameObject playerReference;
@@ -88,17 +96,17 @@ public class HexGridCreator : MonoBehaviour {
                 int myX = x * 2;
                 int myY = y * 2;
 
-                Point lowVertex = new Point(myX + xOffset, myY, lowVertexPosition, Point.Movement.inverted);
-                Point lowLeftVertex = new Point(myX - 1 + xOffset, myY + 1, lowLeftVertexPosition, Point.Movement.straight);
-                Point lowRightVertex = new Point(myX + 1 + xOffset, myY + 1, lowRightVertexPosition, Point.Movement.straight);
-                Point highRightVertex = new Point(myX + 1 + xOffset, myY + 2, highRightVertexPosition, Point.Movement.inverted);
-                Point highLeftVertex = new Point(myX - 1 + xOffset, myY + 2, highLeftVertexPosition, Point.Movement.inverted);
-                Point highVertex = new Point(myX + xOffset, myY + 3, highVertexPosition, Point.Movement.straight);
+                Point lowVertex = new Point(myX + xOffset, myY, lowVertexPosition, Point.Movement.inverted, Point.Type.blue);
+                Point lowLeftVertex = new Point(myX - 1 + xOffset, myY + 1, lowLeftVertexPosition, Point.Movement.straight, Point.Type.blue);
+                Point lowRightVertex = new Point(myX + 1 + xOffset, myY + 1, lowRightVertexPosition, Point.Movement.straight, Point.Type.blue);
+                Point highRightVertex = new Point(myX + 1 + xOffset, myY + 2, highRightVertexPosition, Point.Movement.inverted, Point.Type.blue);
+                Point highLeftVertex = new Point(myX - 1 + xOffset, myY + 2, highLeftVertexPosition, Point.Movement.inverted, Point.Type.blue);
+                Point highVertex = new Point(myX + xOffset, myY + 3, highVertexPosition, Point.Movement.straight, Point.Type.blue);
 
                 if (!DoesPointAlredyExist(lowVertex))
                     WaypointGrid.Add(lowVertex);
                 if (!DoesPointAlredyExist(lowLeftVertex))
-                    WaypointGrid.Add(lowLeftVertex);
+                    WaypointGrid.Add(lowLeftVertex);    
                 if (!DoesPointAlredyExist(lowRightVertex))
                     WaypointGrid.Add(lowRightVertex);
                 if (!DoesPointAlredyExist(highRightVertex))
@@ -107,6 +115,24 @@ public class HexGridCreator : MonoBehaviour {
                     WaypointGrid.Add(highLeftVertex);
                 if (!DoesPointAlredyExist(highVertex))
                     WaypointGrid.Add(highVertex);
+
+                //stupid way to remove waypoints
+                if(y == 0 && x == 2 || y == 1 && x == 1 || y == 2 && x == 1 || y == 3 && x == 0)
+                {
+                    WaypointGrid.Remove(lowLeftVertex);
+                }
+                if (y == 0 && x == (int)gridSize.x - 2 || y == 1 && x == (int)gridSize.x - 2 || y == 2 && x == (int)gridSize.x - 1 || y == 3 && x == (int)gridSize.x - 1)
+                {
+                    WaypointGrid.Remove(lowRightVertex);
+                }
+                if (y == (int)gridSize.y -1  && x == 2 || y == (int)gridSize.y - 2 && x == 1 || y == (int)gridSize.y - 3 && x == 1 || y == 3 && x == 0)
+                {
+                    WaypointGrid.Remove(highLeftVertex);
+                }
+                if (y == (int)gridSize.y - 1 && x == (int)gridSize.x - 2 || y == (int)gridSize.y - 2 && x == (int)gridSize.x - 2 || y == (int)gridSize.y - 3 && x == (int)gridSize.x - 1 || y == 3 && x == (int)gridSize.x - 1)
+                {
+                    WaypointGrid.Remove(highRightVertex);
+                }
             }
         }
     }
@@ -146,8 +172,38 @@ public class HexGridCreator : MonoBehaviour {
     {
         foreach (Point point in WaypointGrid)
         {
-            Transform instantiatedWaypoint = Instantiate(waypointPrefab, point.worldPosition, Quaternion.identity);
-            instantiatedWaypoint.parent = mapContainer;
+            point.SetTypeFromCoords(gridSize);
+        }
+
+        foreach (Point point in WaypointGrid)
+        {
+            switch (point.type)
+            {
+                case Point.Type.blue:
+                    Transform instantiatedBlueWaypoint = Instantiate(blueWaypointPrefab, point.worldPosition, Quaternion.identity);
+                    instantiatedBlueWaypoint.parent = mapContainer;
+                    break;
+                case Point.Type.red:
+                    Transform instantiatedRedWaypoint = Instantiate(redWaypointPrefab, point.worldPosition, Quaternion.identity);
+                    instantiatedRedWaypoint.parent = mapContainer;
+                    break;
+                case Point.Type.yellow:
+                    Transform instantiatedYellowWaypoint = Instantiate(yellowWaypointPrefab, point.worldPosition, Quaternion.identity);
+                    instantiatedYellowWaypoint.parent = mapContainer;
+                    break;
+                case Point.Type.green:
+                    Transform instantiatedGreenWaypoint = Instantiate(greenWaypointPrefab, point.worldPosition, Quaternion.identity);
+                    instantiatedGreenWaypoint.parent = mapContainer;
+                    break;
+                case Point.Type.purple:
+                    Transform instantiatedPurpleWaypoint = Instantiate(purpleWaypointPrefab, point.worldPosition, Quaternion.identity);
+                    instantiatedPurpleWaypoint.parent = mapContainer;
+                    break;
+                case Point.Type.grey:
+                    Transform instantiatedGreyWaypoint = Instantiate(greyWaypointPrefab, point.worldPosition, Quaternion.identity);
+                    instantiatedGreyWaypoint.parent = mapContainer;
+                    break;
+            }
         }
     }
 
@@ -167,7 +223,7 @@ public class HexGridCreator : MonoBehaviour {
 
         for(int i = 0; i < WaypointGrid.Count; i++)
         {
-            if(point.type == Point.Movement.straight)
+            if(point.movementType == Point.Movement.straight)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 1)
                     destinations.Add(WaypointGrid[i]);
@@ -177,7 +233,7 @@ public class HexGridCreator : MonoBehaviour {
                     destinations.Add(WaypointGrid[i]);
             }
 
-            if (point.type == Point.Movement.inverted)
+            if (point.movementType == Point.Movement.inverted)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 1)
                     destinations.Add(WaypointGrid[i]);
