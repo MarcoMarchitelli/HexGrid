@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     GameManager gameManager;
-    Point currentWayPoint;
+    public Point currentWayPoint;
 
     //public HexGridCreator hexGrid;
     public LayerMask targetLayer;

@@ -39,6 +39,7 @@ public class HexGridCreator : MonoBehaviour {
         InstantiateHexagons();
     }
 
+    //adding widht to hexagon
     void AddWays()
     {
         hexWidth = 1.723f;
@@ -72,7 +73,7 @@ public class HexGridCreator : MonoBehaviour {
 
             for (int x = 0; x < (int)gridSize.x; x++)
             {
-
+                //create hex object at hexPosition with empty type as default
                 Vector3 hexPosition = new Vector3(-gridSize.x + x * hexWidth + offset, 0, -gridSize.y + y * hexHeight * .75f);
                 Hexagon hex = new Hexagon(x, y, hexPosition, Hexagon.Type.empty);
 
@@ -86,6 +87,7 @@ public class HexGridCreator : MonoBehaviour {
 
                 HexGrid.Add(hex);
 
+                //creating 6 vertices around hex object, in world positions
                 Vector3 lowVertexPosition = hexPosition + Vector3.forward * (-hexHeight / 2);
                 Vector3 lowLeftVertexPosition = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (-hexWidth / 2);
                 Vector3 lowRightVertexPosition = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (hexWidth / 2);
@@ -96,13 +98,15 @@ public class HexGridCreator : MonoBehaviour {
                 int myX = x * 2;
                 int myY = y * 2;
 
-                Point lowVertex = new Point(myX + xOffset, myY, lowVertexPosition, Point.Movement.inverted, Point.Type.blue);
-                Point lowLeftVertex = new Point(myX - 1 + xOffset, myY + 1, lowLeftVertexPosition, Point.Movement.straight, Point.Type.blue);
-                Point lowRightVertex = new Point(myX + 1 + xOffset, myY + 1, lowRightVertexPosition, Point.Movement.straight, Point.Type.blue);
-                Point highRightVertex = new Point(myX + 1 + xOffset, myY + 2, highRightVertexPosition, Point.Movement.inverted, Point.Type.blue);
-                Point highLeftVertex = new Point(myX - 1 + xOffset, myY + 2, highLeftVertexPosition, Point.Movement.inverted, Point.Type.blue);
-                Point highVertex = new Point(myX + xOffset, myY + 3, highVertexPosition, Point.Movement.straight, Point.Type.blue);
+                //creating 6 Point objects based on the 6 previous positions
+                Point lowVertex = new Point(myX + xOffset, myY, lowVertexPosition, Point.Movement.inverted);
+                Point lowLeftVertex = new Point(myX - 1 + xOffset, myY + 1, lowLeftVertexPosition, Point.Movement.straight);
+                Point lowRightVertex = new Point(myX + 1 + xOffset, myY + 1, lowRightVertexPosition, Point.Movement.straight);
+                Point highRightVertex = new Point(myX + 1 + xOffset, myY + 2, highRightVertexPosition, Point.Movement.inverted);
+                Point highLeftVertex = new Point(myX - 1 + xOffset, myY + 2, highLeftVertexPosition, Point.Movement.inverted);
+                Point highVertex = new Point(myX + xOffset, myY + 3, highVertexPosition, Point.Movement.straight);
 
+                //checking to be sure not to add duplicates
                 if (!DoesPointAlredyExist(lowVertex))
                     WaypointGrid.Add(lowVertex);
                 if (!DoesPointAlredyExist(lowLeftVertex))
@@ -170,11 +174,6 @@ public class HexGridCreator : MonoBehaviour {
 
     void InstantiateWaypoints()
     {
-        foreach (Point point in WaypointGrid)
-        {
-            point.SetTypeFromCoords(gridSize);
-        }
-
         foreach (Point point in WaypointGrid)
         {
             switch (point.type)
