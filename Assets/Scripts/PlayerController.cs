@@ -31,10 +31,11 @@ public class PlayerController : MonoBehaviour {
 
                 if (pointHit != null)
                 {
-                    if (gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit))
+                    if (currentWayPoint.possibleDestinations.Contains(pointHit)/*gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit)*/)
                     {
                         transform.position = pointHit.worldPosition + Vector3.up * .5f;
                         currentWayPoint = pointHit;
+                        CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                     }
                 }
             }
