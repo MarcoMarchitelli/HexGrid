@@ -8,7 +8,7 @@ public class Point{
 
     public int x, y;
     public Vector3 worldPosition;
-    public List<Point> possibleDestinations;
+    public List<Vector3> possibleDestinations;
     public Type type;
     public bool isStartingPoint;
 
@@ -23,7 +23,7 @@ public class Point{
         y = _y;
         worldPosition = _worldPosition;
         isStartingPoint = false;
-        possibleDestinations = new List<Point>();
+        possibleDestinations = new List<Vector3>();
         SetTypeFromCoords();
     }
 
@@ -34,7 +34,7 @@ public class Point{
         worldPosition = _worldPosition;
         type = _type;
         isStartingPoint = _isStartingPoint;
-        possibleDestinations = new List<Point>();
+        possibleDestinations = new List<Vector3>();
     }
 
     public Point()

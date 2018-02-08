@@ -13,16 +13,16 @@ public static class CustomLogger{
         switch (type)
         {
             case LoggerType.UnityLogger:
+                UnityEngine.Debug.LogFormat(message, args);
+                break;
             case LoggerType.ScreenLogger:
                 currentLogString = String.Format(message,args) + Environment.NewLine + currentLogString;
-                UnityEngine.Debug.LogFormat(message, args);
                 break;
             default:
                 UnityEngine.Debug.LogFormat(message, args);
                 break;
         }
     }
-
 }
 
 public enum LoggerType

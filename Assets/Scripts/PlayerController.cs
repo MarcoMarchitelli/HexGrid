@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour {
 
                 if (pointHit != null)
                 {
-                    if (currentWayPoint.possibleDestinations.Contains(pointHit)/*gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit)*/)
+                    if (currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition)/*gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit.worldPosition)*/)
                     {
                         transform.position = pointHit.worldPosition + Vector3.up * .5f;
                         currentWayPoint = pointHit;
