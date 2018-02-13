@@ -10,6 +10,11 @@ public class PlayerController : MonoBehaviour {
     //public HexGridCreator hexGrid;
     public LayerMask targetLayer;
 
+    public enum State
+    {
+        idle, moving, ability
+    }
+
 	void Awake () {
         gameManager = FindObjectOfType<GameManager>();
 	}
