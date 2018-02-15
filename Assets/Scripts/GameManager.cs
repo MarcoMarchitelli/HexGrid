@@ -6,23 +6,25 @@ using TMPro;
 public class GameManager : MonoBehaviour {
 
     public PlayerController[] players;
+    public UIManager uiManager;
     public HexGridCreator gridReference;
-
-    public TextMeshProUGUI currentTurnVisualizer;
 
     PlayerController currentActivePlayer;
 
 	void Awake () {
         gridReference = FindObjectOfType<HexGridCreator>();
         InstantiatePlayers();
-        players[0].currentState = PlayerController.State.active;
+        players[0].currentState = PlayerController.State.start;
         currentActivePlayer = players[0];
+        string msg = "It's the " + currentActivePlayer.name + " player's turn.";
+        uiManager.PrintTop(msg);
     }
 
     void Update()
     {
-        string msg = "It's the " + currentActivePlayer.name + " player's turn.";
-        currentTurnVisualizer.text = msg;
+
+        string movesRemainingString = "You have " + currentActivePlayer.possibleMoves + " moves remaining!";
+        uiManager.PrintLeft(movesRemainingString);
 
         for (int i = 0; i < players.Length; i++)
         {
@@ -30,13 +32,17 @@ public class GameManager : MonoBehaviour {
             {
                 if(i != players.Length - 1)
                 {
-                    players[i + 1].currentState = PlayerController.State.active;
+                    players[i + 1].currentState = PlayerController.State.start;
                     currentActivePlayer = players[i + 1];
+                    string msg = "It's the " + currentActivePlayer.name + " player's turn.";
+                    uiManager.PrintTop(msg);
                 }
                 else
                 {
-                    players[0].currentState = PlayerController.State.active;
+                    players[0].currentState = PlayerController.State.start;
                     currentActivePlayer = players[0];
+                    string msg = "It's the " + currentActivePlayer.name + " player's turn.";
+                    uiManager.PrintTop(msg);
                 }
             }
         }
@@ -71,4 +77,56 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
+
+    public int NumberOfPossiblesMoves(PlayerController player)
+    {
+        int moves = 4;
+
+        if(player.name == "yellow" && player.currentWayPoint.type == Point.Type.yellow)
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                if(players[i].name != "yellow" && players[i].currentWayPoint.type == Point.Type.yellow)
+                {
+                    moves = 3;
+                }
+            }
+        }
+
+        if (player.name == "green" && player.currentWayPoint.type == Point.Type.green)
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].name != "green" && players[i].currentWayPoint.type == Point.Type.green)
+                {
+                    moves = 3;
+                }
+            }
+        }
+
+        if (player.name == "blue" && player.currentWayPoint.type == Point.Type.blue)
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].name != "blue" && players[i].currentWayPoint.type == Point.Type.blue)
+                {
+                    moves = 3;
+                }
+            }
+        }
+
+        if (player.name == "red" && player.currentWayPoint.type == Point.Type.red)
+        {
+            for (int i = 0; i < players.Length; i++)
+            {
+                if (players[i].name != "red" && players[i].currentWayPoint.type == Point.Type.red)
+                {
+                    moves = 3;
+                }
+            }
+        }
+
+        return moves;
+    }
+
 }
