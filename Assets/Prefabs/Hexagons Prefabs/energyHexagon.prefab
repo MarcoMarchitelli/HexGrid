@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4252391888528906}
   - component: {fileID: 33869147776551362}
   - component: {fileID: 23421102726240360}
-  m_Layer: 0
+  - component: {fileID: 135040796956074088}
+  m_Layer: 9
   m_Name: energyHexagon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -55,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 1ed2f8196f0feb4428d96c74e161965e, type: 2}
+  - {fileID: 2100000, guid: f4636a54b3ca1f140a4da6546c00612f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -82,3 +83,15 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1238852830779800}
   m_Mesh: {fileID: 4300000, guid: d0d0375ab07df984abc8fdad143862d8, type: 3}
+--- !u!135 &135040796956074088
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1238852830779800}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}

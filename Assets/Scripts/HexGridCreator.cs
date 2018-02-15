@@ -50,6 +50,8 @@ public class HexGridCreator : MonoBehaviour {
         hexHeight += waysWitdth;
     }
 
+
+    //FUNCTIONS TO BUILD GRID AND DATA
     public void CreateGrid()
     {
 
@@ -333,6 +335,8 @@ public class HexGridCreator : MonoBehaviour {
         return false;
     }
 
+
+    //FUNCTIONS TO RETREIVE DATA
     public List<Vector3> GetPossibleDestinationsFromPoint(Point point)
     {
         List<Vector3> destinations = new List<Vector3>();
@@ -423,4 +427,51 @@ public class HexGridCreator : MonoBehaviour {
         return destinations;
     }
 
+    public Point GetPointFromWorldPosition(Vector3 worldPosition)
+    {
+        for (int i = 0; i < WaypointGrid.Count; i++)
+        {
+            if (Mathf.Approximately(worldPosition.x, WaypointGrid[i].worldPosition.x) && Mathf.Approximately(worldPosition.z, WaypointGrid[i].worldPosition.z))
+            {
+                return WaypointGrid[i];
+            }
+        }
+        return null;
+    }
+
+    public Hexagon GetHexagonFromWorldPosition(Vector3 worldPosition)
+    {
+        for (int i = 0; i < HexGrid.Count; i++)
+        {
+            if (Mathf.Approximately(worldPosition.x, HexGrid[i].worldPosition.x) && Mathf.Approximately(worldPosition.z, HexGrid[i].worldPosition.z))
+            {
+                return HexGrid[i];
+            }
+        }
+        return null;
+    }
+
+    public Point GetPointFromCoords(int x, int y)
+    {
+        foreach (Point point in WaypointGrid)
+        {
+            if(point.x == x && point.y == y)
+            {
+                return point;
+            }
+        }
+        return null;
+    }
+
+    public Hexagon GetHexagonFromCoords(int x, int y)
+    {
+        foreach (Hexagon hex in HexGrid)
+        {
+            if (hex.x == x && hex.y == y)
+            {
+                return hex;
+            }
+        }
+        return null;
+    }
 }

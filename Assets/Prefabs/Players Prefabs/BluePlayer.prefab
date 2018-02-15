@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23667949609884278}
   - component: {fileID: 114141098667847442}
   m_Layer: 0
-  m_Name: Player
+  m_Name: BluePlayer
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36,8 +36,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1112427851965284}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 500, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 498.33, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 68f7bfbda3cd00d4aaa0a317d37743bd, type: 2}
+  - {fileID: 2100000, guid: 48c5d0b0753306b4983632d3ceb170dd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -90,20 +90,27 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1112427851965284}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 791eb8750c3dd0c458fcdf8b7ef135ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: blue
   currentWayPoint:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
-    movementType: 0
+    possibleDestinations: []
     type: 0
-  targetLayer:
+    isStartingPoint: 0
+  currentState: 0
+  cardPrefab: {fileID: 4097142438760948, guid: 434becdb47512b34db5224a884dec18a, type: 2}
+  movingLayer:
     serializedVersion: 2
     m_Bits: 256
+  placingLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!136 &136562085081409652
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -2,60 +2,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     GameManager gameManager;
-    public Point currentWayPoint;
 
-    //public HexGridCreator hexGrid;
-    public LayerMask targetLayer;
+    public string name;
+    [HideInInspector]
+    public Point startingWayPoint;
+    public Point currentWayPoint;
+    public State currentState = State.idle;
+
+    public Transform cardPrefab;
+
+    public LayerMask movingLayer, placingLayer;
 
     public enum State
     {
-        idle, moving, ability
+        idle, ability, active
     }
 
-	void Awake () {
+    void Awake()
+    {
         gameManager = FindObjectOfType<GameManager>();
-	}
+    }
 
     private void Start()
     {
-        currentWayPoint = gameManager.gridReference.WaypointGrid[0];
+        currentWayPoint = startingWayPoint;
     }
 
-    void Update () {
+    void Update()
+    {
 
         RaycastHit hitInfo;
 
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, targetLayer))
+        if(currentState != State.idle)
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, movingLayer))
             {
-                Point pointHit = GetPointFromWorldPosition(hitInfo.collider.transform.position);
-
-                if (pointHit != null)
+                if (Input.GetMouseButtonDown(0))
                 {
-                    if (currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition)/*gameManager.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit.worldPosition)*/)
+                    Point pointHit = gameManager.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
+
+                    if (pointHit != null)
                     {
-                        transform.position = pointHit.worldPosition + Vector3.up * .5f;
-                        currentWayPoint = pointHit;
-                        CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
+                        if (currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition))
+                        {
+                            transform.position = pointHit.worldPosition + Vector3.up * .5f;
+                            currentWayPoint = pointHit;
+                            CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
+                        }
                     }
                 }
             }
-        }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                currentState = State.idle;
+            }
+        }  
     }
 
-    public Point GetPointFromWorldPosition(Vector3 worldPosition)
-    {
-        for (int i = 0; i < gameManager.gridReference.WaypointGrid.Count; i++)
-        {
-            if (Mathf.Approximately(worldPosition.x, gameManager.gridReference.WaypointGrid[i].worldPosition.x) && Mathf.Approximately(worldPosition.z, gameManager.gridReference.WaypointGrid[i].worldPosition.z))
-            {
-                return gameManager.gridReference.WaypointGrid[i];
-            }
-        }
-        return null;
-    }
+    
 }
