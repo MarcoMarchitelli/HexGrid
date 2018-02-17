@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
     public PlayerController[] players;
     public UIManager uiManager;
     public HexGridCreator gridReference;
 
     PlayerController currentActivePlayer;
 
-	void Awake () {
+    string bottomLeftMsg;
+
+    void Awake()
+    {
         gridReference = FindObjectOfType<HexGridCreator>();
         InstantiatePlayers();
         players[0].currentState = PlayerController.State.start;
@@ -22,15 +25,11 @@ public class GameManager : MonoBehaviour {
 
     void Update()
     {
-
-        string movesRemainingString = "You have " + currentActivePlayer.possibleMoves + " moves remaining!";
-        uiManager.PrintLeft(movesRemainingString);
-
         for (int i = 0; i < players.Length; i++)
         {
-            if(players[i] == currentActivePlayer && players[i].currentState == PlayerController.State.idle)
+            if (players[i] == currentActivePlayer && players[i].currentState == PlayerController.State.idle)
             {
-                if(i != players.Length - 1)
+                if (i != players.Length - 1)
                 {
                     players[i + 1].currentState = PlayerController.State.start;
                     currentActivePlayer = players[i + 1];
@@ -82,15 +81,19 @@ public class GameManager : MonoBehaviour {
     {
         int moves = 4;
 
-        if(player.name == "yellow" && player.currentWayPoint.type == Point.Type.yellow)
+        if (player.name == "yellow" && player.currentWayPoint.type == Point.Type.yellow)
         {
             for (int i = 0; i < players.Length; i++)
             {
-                if(players[i].name != "yellow" && players[i].currentWayPoint.type == Point.Type.yellow)
+                if (players[i].name != "yellow" && players[i].currentWayPoint.type == Point.Type.yellow)
                 {
                     moves = 3;
                 }
             }
+        }
+        else if (player.name == "yellow" && player.currentWayPoint.type != Point.Type.yellow)
+        {
+            moves = 3;
         }
 
         if (player.name == "green" && player.currentWayPoint.type == Point.Type.green)
@@ -103,6 +106,10 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+        else if (player.name == "green" && player.currentWayPoint.type != Point.Type.green)
+        {
+            moves = 3;
+        }
 
         if (player.name == "blue" && player.currentWayPoint.type == Point.Type.blue)
         {
@@ -113,6 +120,10 @@ public class GameManager : MonoBehaviour {
                     moves = 3;
                 }
             }
+        }
+        else if (player.name == "blue" && player.currentWayPoint.type != Point.Type.blue)
+        {
+            moves = 3;
         }
 
         if (player.name == "red" && player.currentWayPoint.type == Point.Type.red)
@@ -125,8 +136,21 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
+        else if (player.name == "red" && player.currentWayPoint.type != Point.Type.red)
+        {
+            moves = 3;
+        }
 
         return moves;
     }
 
+    public void SetCurrentPlayerPlacing()
+    {
+        currentActivePlayer.currentState = PlayerController.State.ability;
+    }
+
+    public void SetCurrentPlayerIdle()
+    {
+        currentActivePlayer.currentState = PlayerController.State.idle;
+    }
 }

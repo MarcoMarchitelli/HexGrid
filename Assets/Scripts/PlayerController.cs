@@ -14,10 +14,14 @@ public class PlayerController : MonoBehaviour
     public State currentState = State.idle;
     [HideInInspector]
     public int possibleMoves = 3;
+    [HideInInspector]
+    public bool hasUsedAbility;
 
     public Transform cardPrefab;
 
     public LayerMask movingLayer, placingLayer;
+
+    string bottomLeftMsg;
 
     public enum State
     {
@@ -36,44 +40,108 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
-        if (currentState == State.start)
+        switch (currentState)
         {
-            possibleMoves = gameManager.NumberOfPossiblesMoves(this);
-            currentState = State.moving;
-        }
+            case State.idle:
+                break;
 
-        if (currentState == State.moving)
-        {
-            RaycastHit hitInfo;
+            case State.start:
+                possibleMoves = gameManager.NumberOfPossiblesMoves(this);
+                currentState = State.moving;
+                hasUsedAbility = false;
+                break;
 
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, movingLayer))
-            {
-                if (Input.GetMouseButtonDown(0))
+            case State.moving:
+
+                bottomLeftMsg = "You have " + possibleMoves + " moves remaining!";
+                gameManager.uiManager.PrintLeft(bottomLeftMsg);
+
+                if (possibleMoves <= 0)
                 {
-                    Point pointHit = gameManager.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
+                    currentState = State.ability;
+                }
 
-                    if (pointHit != null)
+                RaycastHit hitInfo;
+
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, movingLayer))
+                {
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        if (currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition))
+                        Point pointHit = gameManager.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
+
+                        if (pointHit != null)
                         {
-                            transform.position = pointHit.worldPosition + Vector3.up * .5f;
-                            currentWayPoint = pointHit;
-                            possibleMoves--;
-                            if (possibleMoves <= 0)
+                            if (currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition))
                             {
-                                currentState = State.ability;
+                                if (possibleMoves > 0)
+                                {
+                                    transform.position = pointHit.worldPosition + Vector3.up * .5f;
+                                    currentWayPoint = pointHit;
+                                    possibleMoves--;
+                                }
+                                CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                             }
-                            CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                         }
                     }
                 }
-            }
-        }
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            currentState = State.idle;
+                break;
+
+            case State.ability:
+
+                bottomLeftMsg = "Use A/D to rotate the card. Leftclick to place it!";
+                gameManager.uiManager.PrintLeft(bottomLeftMsg);
+
+                RaycastHit placingHitInfo;
+
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, placingLayer))
+                {
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
+
+                        if (hexHit != null)
+                        {
+                            if (hexHit.card == null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit))
+                            {
+                                gameManager.uiManager.currentInstantiatedCard.gameObject.GetComponent<CardController>().Place(hexHit.worldPosition);
+                                hexHit.card = gameManager.uiManager.currentInstantiatedCard;
+                                hasUsedAbility = true;
+                            }
+                            else
+                            if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().isBeingMod == false)
+                            {
+                                hexHit.card.GetComponent<CardController>().isBeingMod = true;
+                            }
+                            else if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().isBeingMod == true)
+                            {
+                                hexHit.card.GetComponent<CardController>().Place(hexHit.worldPosition);
+                                hasUsedAbility = true;
+                            }
+                        }
+                    }
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
+
+                        if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().isBeingMod == true)
+                        {
+                            DestroyImmediate(hexHit.card.gameObject);
+                            hasUsedAbility = true;
+                        }
+                    }
+                }
+
+                if (Input.GetMouseButtonDown(1) && !hasUsedAbility)
+                {
+                    DestroyImmediate(gameManager.uiManager.currentInstantiatedCard.gameObject);
+                    currentState = State.moving;
+                }
+
+                break;
+
+            default:
+                break;
         }
     }
 }

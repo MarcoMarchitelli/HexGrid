@@ -9,6 +9,7 @@ public class Point{
     public int x, y;
     public Vector3 worldPosition;
     public List<Vector3> possibleDestinations;
+    public List<Hexagon> nearHexagons;
     public Type type;
     public bool isStartingPoint;
 
@@ -24,6 +25,7 @@ public class Point{
         worldPosition = _worldPosition;
         isStartingPoint = false;
         possibleDestinations = new List<Vector3>();
+        nearHexagons = new List<Hexagon>();
         SetTypeFromCoords();
     }
 
@@ -35,6 +37,7 @@ public class Point{
         type = _type;
         isStartingPoint = _isStartingPoint;
         possibleDestinations = new List<Vector3>();
+        nearHexagons = new List<Hexagon>();
     }
 
     public Point()

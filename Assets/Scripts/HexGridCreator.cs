@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HexGridCreator : MonoBehaviour {
+public class HexGridCreator : MonoBehaviour
+{
 
     //Hexagon prefabs
     public Transform emptyHexagonPrefab;
@@ -37,6 +38,7 @@ public class HexGridCreator : MonoBehaviour {
         CreateGrid();
         CreateSpecialWaypoints();
         SetDestinationsForEachPoint();
+        SetNearHexagonsForEachPoint();
         InstantiateWaypoints();
         InstantiateHexagons();
     }
@@ -73,7 +75,7 @@ public class HexGridCreator : MonoBehaviour {
             {
                 offset = hexWidth / 2;
                 xOffset = 1;
-            } 
+            }
 
             for (int x = 0; x < (int)gridSize.x; x++)
             {
@@ -82,8 +84,8 @@ public class HexGridCreator : MonoBehaviour {
                 Hexagon hex = new Hexagon(x, y, hexPosition, Hexagon.Type.empty);
 
                 //da cambiare
-                if(y == 0 && x <= 1 || y==0 && x == (int)gridSize.x -1 || y == 1 && x == 0 || y==1 && x == (int)gridSize.x - 1 || y == 2 && x == 0 ||
-                    y == (int)gridSize.y - 1 && x <= 1 || y == (int)gridSize.y - 1 && x == (int)gridSize.x - 1 || y == (int)gridSize.y - 2 && x == 0 || 
+                if (y == 0 && x <= 1 || y == 0 && x == (int)gridSize.x - 1 || y == 1 && x == 0 || y == 1 && x == (int)gridSize.x - 1 || y == 2 && x == 0 ||
+                    y == (int)gridSize.y - 1 && x <= 1 || y == (int)gridSize.y - 1 && x == (int)gridSize.x - 1 || y == (int)gridSize.y - 2 && x == 0 ||
                     y == (int)gridSize.y - 2 && x == (int)gridSize.x - 1 || y == (int)gridSize.y - 3 && x == 0)
                 {
                     continue;
@@ -97,8 +99,8 @@ public class HexGridCreator : MonoBehaviour {
                 Vector3 lowRightVertexPosition = hexPosition + Vector3.forward * (-hexHeight * .25f) + Vector3.right * (hexWidth / 2);
                 Vector3 highRightVertexPosition = hexPosition + Vector3.forward * (hexHeight * .25f) + Vector3.right * (hexWidth / 2);
                 Vector3 highLeftVertexPosition = hexPosition + Vector3.forward * (hexHeight * .25f) + Vector3.right * (-hexWidth / 2);
-                Vector3 highVertexPosition = hexPosition + Vector3.forward * (hexHeight/2);
-                
+                Vector3 highVertexPosition = hexPosition + Vector3.forward * (hexHeight / 2);
+
                 int myX = x * 2;
                 int myY = y * 2;
 
@@ -114,7 +116,7 @@ public class HexGridCreator : MonoBehaviour {
                 if (!DoesPointAlredyExist(lowVertex))
                     WaypointGrid.Add(lowVertex);
                 if (!DoesPointAlredyExist(lowLeftVertex))
-                    WaypointGrid.Add(lowLeftVertex);    
+                    WaypointGrid.Add(lowLeftVertex);
                 if (!DoesPointAlredyExist(lowRightVertex))
                     WaypointGrid.Add(lowRightVertex);
                 if (!DoesPointAlredyExist(highRightVertex))
@@ -125,7 +127,7 @@ public class HexGridCreator : MonoBehaviour {
                     WaypointGrid.Add(highVertex);
 
                 //stupid way to remove waypoints
-                if(y == 0 && x == 2 || y == 1 && x == 1 || y == 2 && x == 1 || y == 3 && x == 0)
+                if (y == 0 && x == 2 || y == 1 && x == 1 || y == 2 && x == 1 || y == 3 && x == 0)
                 {
                     WaypointGrid.Remove(lowLeftVertex);
                 }
@@ -133,7 +135,7 @@ public class HexGridCreator : MonoBehaviour {
                 {
                     WaypointGrid.Remove(lowRightVertex);
                 }
-                if (y == (int)gridSize.y -1  && x == 2 || y == (int)gridSize.y - 2 && x == 1 || y == (int)gridSize.y - 3 && x == 1 || y == 3 && x == 0)
+                if (y == (int)gridSize.y - 1 && x == 2 || y == (int)gridSize.y - 2 && x == 1 || y == (int)gridSize.y - 3 && x == 1 || y == 3 && x == 0)
                 {
                     WaypointGrid.Remove(highLeftVertex);
                 }
@@ -221,11 +223,11 @@ public class HexGridCreator : MonoBehaviour {
 
         foreach (Point point in WaypointGrid)
         {
-            if(point.y == (int)MyData.startingYellowPoint.y)
+            if (point.y == (int)MyData.startingYellowPoint.y)
             {
                 yellowStartingPointY = point.worldPosition.z;
             }
-            if(point.x == (int)MyData.startingYellowPoint.x)
+            if (point.x == (int)MyData.startingYellowPoint.x)
             {
                 yellowStartingPointX = point.worldPosition.x;
             }
@@ -273,7 +275,7 @@ public class HexGridCreator : MonoBehaviour {
         //win waypoint
         foreach (Hexagon hex in HexGrid)
         {
-            if(hex.x == 3 && hex.y == 3)
+            if (hex.x == 3 && hex.y == 3)
             {
                 startingPointX = hex.worldPosition.x;
                 startingPointY = hex.worldPosition.z;
@@ -325,23 +327,22 @@ public class HexGridCreator : MonoBehaviour {
         }
     }
 
-    bool DoesPointAlredyExist(Point point)
+    void SetNearHexagonsForEachPoint()
     {
-        for (int i = 0; i < WaypointGrid.Count; i++)
+        foreach (Point point in WaypointGrid)
         {
-            if (point.x == WaypointGrid[i].x && point.y == WaypointGrid[i].y)
-                return true;
+            if (point.type != Point.Type.win || !point.isStartingPoint)
+            {
+                point.nearHexagons = GetNearHexagonsFromPoint(point);
+            }
         }
-        return false;
     }
 
-
-    //FUNCTIONS TO RETREIVE DATA
     public List<Vector3> GetPossibleDestinationsFromPoint(Point point)
     {
         List<Vector3> destinations = new List<Vector3>();
 
-        for(int i = 0; i < WaypointGrid.Count; i++)
+        for (int i = 0; i < WaypointGrid.Count; i++)
         {
             //starting point yellow
             if (point.type == Point.Type.yellow && point.isStartingPoint)
@@ -385,7 +386,7 @@ public class HexGridCreator : MonoBehaviour {
             }
 
             //win point
-            if(point.type == Point.Type.win)
+            if (point.type == Point.Type.win)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 2)
                     destinations.Add(WaypointGrid[i].worldPosition);
@@ -402,7 +403,7 @@ public class HexGridCreator : MonoBehaviour {
             }
 
             //general straight movement point
-            if(point.y % 2 != 0)
+            if (point.y % 2 != 0)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 1)
                     destinations.Add(WaypointGrid[i].worldPosition);
@@ -426,6 +427,19 @@ public class HexGridCreator : MonoBehaviour {
 
         return destinations;
     }
+
+    bool DoesPointAlredyExist(Point point)
+    {
+        for (int i = 0; i < WaypointGrid.Count; i++)
+        {
+            if (point.x == WaypointGrid[i].x && point.y == WaypointGrid[i].y)
+                return true;
+        }
+        return false;
+    }
+
+
+    //FUNCTIONS TO RETREIVE DATA
 
     public Point GetPointFromWorldPosition(Vector3 worldPosition)
     {
@@ -455,7 +469,7 @@ public class HexGridCreator : MonoBehaviour {
     {
         foreach (Point point in WaypointGrid)
         {
-            if(point.x == x && point.y == y)
+            if (point.x == x && point.y == y)
             {
                 return point;
             }
@@ -473,5 +487,44 @@ public class HexGridCreator : MonoBehaviour {
             }
         }
         return null;
+    }
+
+    public List<Hexagon> GetNearHexagonsFromPoint(Point point)
+    {
+        List<Hexagon> nearHexagons = new List<Hexagon>();
+
+        if (point.y % 2 != 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                //down
+                if (hex.y == (point.y - 3) / 2 && hex.x == point.x / 2)
+                    nearHexagons.Add(hex);
+                //top right
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x + 1) / 2)
+                    nearHexagons.Add(hex);
+                //top left
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x - 1) / 2)
+                    nearHexagons.Add(hex);
+            }
+        }
+
+        if (point.y % 2 == 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                //top
+                if (hex.y == point.y / 2 && hex.x == point.x / 2)
+                    nearHexagons.Add(hex);
+                //down right
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x + 1) / 2)
+                    nearHexagons.Add(hex);
+                //down left
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x - 1) / 2)
+                    nearHexagons.Add(hex);
+            }
+        }
+
+        return nearHexagons;
     }
 }
