@@ -4,12 +4,17 @@ using UnityEngine;
 
 public class CardController : MonoBehaviour {
 
-    bool isPlaced = false;
-    public bool isBeingMod = false;
+    public enum State
+    {
+        inHand, selectedFromHand, selectedFromMap, placed
+    }
+    public State state = State.inHand;
+
+    public bool isShield = true;
 
     void Update()
     {
-        if (!isPlaced)
+        if (state == State.selectedFromHand)
         {
             Vector3 myMousePos = Input.mousePosition;
             myMousePos.z = 19f;
@@ -24,7 +29,7 @@ public class CardController : MonoBehaviour {
             }
         }
 
-        if (isBeingMod)
+        if (state == State.selectedFromMap)
         {
             transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
             if (Input.GetKeyDown(KeyCode.A))
@@ -41,7 +46,6 @@ public class CardController : MonoBehaviour {
     public void Place(Vector3 _position)
     {
         transform.position = _position + Vector3.up * .5f;
-        isPlaced = true;
-        isBeingMod = false;
+        state = State.placed;
     }
 }
