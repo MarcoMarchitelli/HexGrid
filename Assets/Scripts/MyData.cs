@@ -9,4 +9,5 @@ public static class MyData {
     public static Vector2 startingBluePoint = new Vector2(12,0);
     public static Vector2 startingGreenPoint = new Vector2(12,15);
 
+    public static Vector3 prefabsPosition = new Vector3(500f, 0, 0);
 }

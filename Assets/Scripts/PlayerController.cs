@@ -17,7 +17,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool hasUsedAbility;
 
-    public Transform cardPrefab;
+    public Transform[] cards;
+    CardController selectedCard;
 
     public LayerMask movingLayer, placingLayer;
 
@@ -31,6 +32,12 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
+        Transform cardsParent = GameObject.Find(name + "PlayerCards").transform;
+        cards = new Transform[cardsParent.childCount];
+        for (int i = 0; i < cardsParent.transform.childCount; i++)
+        {
+            cards[i] = cardsParent.GetChild(i);
+        }
     }
 
     private void Start()
@@ -46,6 +53,7 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.start:
+                gameManager.uiManager.DisplayHand(this);
                 possibleMoves = gameManager.NumberOfPossiblesMoves(this);
                 currentState = State.moving;
                 hasUsedAbility = false;
@@ -102,20 +110,24 @@ public class PlayerController : MonoBehaviour
 
                         if (hexHit != null)
                         {
+                            //Already have card selected. Leftclick to place
                             if (hexHit.card == null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit))
                             {
-                                gameManager.uiManager.currentInstantiatedCard.gameObject.GetComponent<CardController>().Place(hexHit.worldPosition);
-                                hexHit.card = gameManager.uiManager.currentInstantiatedCard;
+                                selectedCard.Place(hexHit.worldPosition);
+                                hexHit.card = selectedCard.transform;
                                 hasUsedAbility = true;
                             }
                             else
-                            if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().isBeingMod == false)
+                            //I select a card already placed on an Hexagon with leftclick
+                            if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().state == CardController.State.placed)
                             {
-                                hexHit.card.GetComponent<CardController>().isBeingMod = true;
+                                selectedCard = hexHit.card.GetComponent<CardController>();
+                                selectedCard.state = CardController.State.selectedFromMap;
                             }
-                            else if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().isBeingMod == true)
+                            //The card that i selected from the map. Place it with leftclick
+                            else if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && selectedCard.state == CardController.State.selectedFromMap)
                             {
-                                hexHit.card.GetComponent<CardController>().Place(hexHit.worldPosition);
+                                selectedCard.Place(hexHit.worldPosition);
                                 hasUsedAbility = true;
                             }
                         }
@@ -124,17 +136,19 @@ public class PlayerController : MonoBehaviour
                     {
                         Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
 
-                        if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().isBeingMod == true)
+                        //The card that i selected from the map. Unselect it by rightclicking
+                        if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && selectedCard.state == CardController.State.selectedFromMap)
                         {
-                            DestroyImmediate(hexHit.card.gameObject);
+                            UnselectCard();
                             hasUsedAbility = true;
+                            hexHit.card = null;
                         }
                     }
                 }
 
                 if (Input.GetMouseButtonDown(1) && !hasUsedAbility)
                 {
-                    DestroyImmediate(gameManager.uiManager.currentInstantiatedCard.gameObject);
+                    UnselectCard();
                     currentState = State.moving;
                 }
 
@@ -143,5 +157,22 @@ public class PlayerController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void SelectCard(int index)
+    {
+        selectedCard = cards[index].GetComponent<CardController>();
+        if(selectedCard.state == CardController.State.inHand)
+        {
+            selectedCard.state = CardController.State.selectedFromHand;
+            currentState = State.ability;
+        }    
+    }
+
+    public void UnselectCard()
+    {
+        selectedCard.state = CardController.State.inHand;
+        selectedCard.transform.position = MyData.prefabsPosition;
+        selectedCard = null;
     }
 }

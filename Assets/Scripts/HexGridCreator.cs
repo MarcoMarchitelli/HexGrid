@@ -159,19 +159,19 @@ public class HexGridCreator : MonoBehaviour
             switch (hex.type)
             {
                 case Hexagon.Type.empty:
-                    Transform instantiatedEmptyHex = Instantiate(emptyHexagonPrefab, hex.worldPosition, /*Quaternion.Euler(Vector3.up * 90)*/Quaternion.identity);
+                    Transform instantiatedEmptyHex = Instantiate(emptyHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90)/*Quaternion.identity*/);
                     instantiatedEmptyHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.energy:
-                    Transform instantiatedEnergyHex = Instantiate(energyHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    Transform instantiatedEnergyHex = Instantiate(energyHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedEnergyHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.ability:
-                    Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedAbilityHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.win:
-                    Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedWinHex.parent = mapContainer;
                     break;
             }

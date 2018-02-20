@@ -144,9 +144,9 @@ public class GameManager : MonoBehaviour
         return moves;
     }
 
-    public void SetCurrentPlayerPlacing()
+    public void CurrentPlayerSelect(int index)
     {
-        currentActivePlayer.currentState = PlayerController.State.ability;
+        currentActivePlayer.SelectCard(index);
     }
 
     public void SetCurrentPlayerIdle()
