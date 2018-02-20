@@ -153,4 +153,44 @@ public class GameManager : MonoBehaviour
     {
         currentActivePlayer.currentState = PlayerController.State.idle;
     }
+
+    public List<AgentPosition> FindPointsInRange(int range, PlayerController player) {
+        List<AgentPosition> pointsInRange = new List<AgentPosition>();
+        bool doesUncheckExist = true;
+
+        if (range > 0) {
+            pointsInRange.Add(new AgentPosition(player.currentWayPoint, range));
+
+        }
+        do {
+            
+            for (int i = 0; i < pointsInRange.Count; i++) {
+                if (!pointsInRange[i].isChecked) {
+                    if(pointsInRange[i].moves > 0) {
+                        foreach (Point point in pointsInRange[i].point.possibleDestinations) {
+                            pointsInRange.Add(new AgentPosition(point, pointsInRange[i].moves--));
+                        }
+                    }
+                    pointsInRange[i].isChecked = true;
+                    doesUncheckExist = false;
+                }
+            }
+        } while (doesUncheckExist);
+
+        return pointsInRange;
+    }
+
+    public class AgentPosition {
+        public Point point;
+        public Vector3 worldPosition;
+        public int moves;
+        public bool isChecked;
+
+        public AgentPosition(Point _point, int _moves) {
+            point = _point;
+            worldPosition = _point.worldPosition;
+            moves = _moves;
+            isChecked = false;
+        }
+    }
 }
