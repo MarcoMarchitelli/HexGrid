@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
     public HexGridCreator gridReference;
 
-    PlayerController currentActivePlayer;
+    [HideInInspector]
+    public PlayerController currentActivePlayer;
 
     string bottomLeftMsg;
 
@@ -55,22 +56,22 @@ public class GameManager : MonoBehaviour
             {
                 case "red":
                     Point redStart = gridReference.GetPointFromCoords((int)MyData.startingRedPoint.x, (int)MyData.startingRedPoint.y);
-                    players[i].transform.position = redStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = redStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = redStart;
                     break;
                 case "yellow":
                     Point yellowStart = gridReference.GetPointFromCoords((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y);
-                    players[i].transform.position = yellowStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = yellowStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = yellowStart;
                     break;
                 case "blue":
                     Point blueStart = gridReference.GetPointFromCoords((int)MyData.startingBluePoint.x, (int)MyData.startingBluePoint.y);
-                    players[i].transform.position = blueStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = blueStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = blueStart;
                     break;
                 case "green":
                     Point greenStart = gridReference.GetPointFromCoords((int)MyData.startingGreenPoint.x, (int)MyData.startingGreenPoint.y);
-                    players[i].transform.position = greenStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = greenStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = greenStart;
                     break;
             }

@@ -159,19 +159,19 @@ public class HexGridCreator : MonoBehaviour
             switch (hex.type)
             {
                 case Hexagon.Type.empty:
-                    Transform instantiatedEmptyHex = Instantiate(emptyHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90)/*Quaternion.identity*/);
+                    Transform instantiatedEmptyHex = Instantiate(emptyHexagonPrefab, hex.worldPosition, /*Quaternion.Euler(Vector3.up * 90)*/Quaternion.identity);
                     instantiatedEmptyHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.energy:
-                    Transform instantiatedEnergyHex = Instantiate(energyHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    Transform instantiatedEnergyHex = Instantiate(energyHexagonPrefab, hex.worldPosition, Quaternion.identity);
                     instantiatedEnergyHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.ability:
-                    Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.identity);
                     instantiatedAbilityHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.win:
-                    Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.identity);
                     instantiatedWinHex.parent = mapContainer;
                     break;
             }
@@ -527,4 +527,74 @@ public class HexGridCreator : MonoBehaviour
 
         return nearHexagons;
     }
+
+    public List<Point> GetSixPointsAroundHexagon(Hexagon hex)
+    {
+        List<Point> pointsAroundHex = new List<Point>();
+
+        if(hex.y % 2 == 0)
+        {
+            foreach (Point point in WaypointGrid)
+            {
+                if (point.x == hex.x * 2 && point.y == hex.y * 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 && point.y == hex.y * 2 + 3)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+            }
+        }
+        else 
+        if(hex.y % 2 != 0)
+        {
+            foreach (Point point in WaypointGrid)
+            {
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 3)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 + 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 + 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 + 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 + 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+            }
+        }
+        
+        return pointsAroundHex;
+    }
+
 }
