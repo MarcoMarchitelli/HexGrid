@@ -9,7 +9,8 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager;
     public HexGridCreator gridReference;
 
-    PlayerController currentActivePlayer;
+    [HideInInspector]
+    public PlayerController currentActivePlayer;
 
     string bottomLeftMsg;
 
@@ -55,22 +56,22 @@ public class GameManager : MonoBehaviour
             {
                 case "red":
                     Point redStart = gridReference.GetPointFromCoords((int)MyData.startingRedPoint.x, (int)MyData.startingRedPoint.y);
-                    players[i].transform.position = redStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = redStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = redStart;
                     break;
                 case "yellow":
                     Point yellowStart = gridReference.GetPointFromCoords((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y);
-                    players[i].transform.position = yellowStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = yellowStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = yellowStart;
                     break;
                 case "blue":
                     Point blueStart = gridReference.GetPointFromCoords((int)MyData.startingBluePoint.x, (int)MyData.startingBluePoint.y);
-                    players[i].transform.position = blueStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = blueStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = blueStart;
                     break;
                 case "green":
                     Point greenStart = gridReference.GetPointFromCoords((int)MyData.startingGreenPoint.x, (int)MyData.startingGreenPoint.y);
-                    players[i].transform.position = greenStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.parent.position = greenStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = greenStart;
                     break;
             }
@@ -144,13 +145,53 @@ public class GameManager : MonoBehaviour
         return moves;
     }
 
-    public void SetCurrentPlayerPlacing()
+    public void CurrentPlayerSelect(int index)
     {
-        currentActivePlayer.currentState = PlayerController.State.ability;
+        currentActivePlayer.SelectCard(index);
     }
 
     public void SetCurrentPlayerIdle()
     {
         currentActivePlayer.currentState = PlayerController.State.idle;
     }
+
+    //public List<AgentPosition> FindPointsInRange(int range, PlayerController player) {
+    //    List<AgentPosition> pointsInRange = new List<AgentPosition>();
+    //    bool doesUncheckExist = true;
+
+    //    if (range > 0) {
+    //        pointsInRange.Add(new AgentPosition(player.currentWayPoint, range));
+
+    //    }
+    //    do {
+            
+    //        for (int i = 0; i < pointsInRange.Count; i++) {
+    //            if (!pointsInRange[i].isChecked) {
+    //                if(pointsInRange[i].moves > 0) {
+    //                    foreach (Point point in pointsInRange[i].point.possibleDestinations) {
+    //                        pointsInRange.Add(new AgentPosition(point, pointsInRange[i].moves--));
+    //                    }
+    //                }
+    //                pointsInRange[i].isChecked = true;
+    //                doesUncheckExist = false;
+    //            }
+    //        }
+    //    } while (doesUncheckExist);
+
+    //    return pointsInRange;
+    //}
+
+    //public class AgentPosition {
+    //    public Point point;
+    //    public Vector3 worldPosition;
+    //    public int moves;
+    //    public bool isChecked;
+
+    //    public AgentPosition(Point _point, int _moves) {
+    //        point = _point;
+    //        worldPosition = _point.worldPosition;
+    //        moves = _moves;
+    //        isChecked = false;
+    //    }
+    //}
 }

@@ -1,14 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour {
 
     public TextMeshProUGUI topBigSection, leftMediumSection;
 
-    public Transform currentInstantiatedCard;
+    public GameObject[] Buttons;
 
+    GameManager gameManager;
+
+    public void Awake()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
+    public void Update()
+    {
+        DisplayHand(gameManager.currentActivePlayer);
+    }
 
     public void PrintTop(string msg)
     {
@@ -20,11 +32,20 @@ public class UIManager : MonoBehaviour {
         leftMediumSection.text = msg;
     }
 
-    public void SpawnCardCardOnClick(Transform cardToInstantiate)
+    public void DisplayHand(PlayerController activePlayer)
     {
-        Vector3 myMousePos = Input.mousePosition;
-        myMousePos.y = 1f;
-        currentInstantiatedCard = Instantiate(cardToInstantiate, Camera.main.ScreenToWorldPoint(myMousePos), Quaternion.identity);
+        for (int i = 0; i < activePlayer.cards.Length; i++)
+        {
+            if(activePlayer.cards[i].GetComponent<CardController>().state != CardController.State.inHand)
+            {
+                Buttons[i].GetComponent<Image>().color = Color.red;
+                Buttons[i].GetComponent<Button>().enabled = false;
+            }
+            else
+            {
+                Buttons[i].GetComponent<Image>().color = Color.green;
+                Buttons[i].GetComponent<Button>().enabled = true;
+            }
+        }
     }
-
 }
