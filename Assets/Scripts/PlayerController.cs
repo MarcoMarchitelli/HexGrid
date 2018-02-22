@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public Point currentWayPoint;
     public State currentState = State.idle;
     [HideInInspector]
-    public int possibleMoves = 3;
+    public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3;
     [HideInInspector]
     public bool hasUsedAbility;
 
@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
                 possibleMoves = gameManager.NumberOfPossiblesMoves(this);
                 currentState = State.moving;
                 hasUsedAbility = false;
+                energyPoints++;
                 break;
 
             case State.moving:

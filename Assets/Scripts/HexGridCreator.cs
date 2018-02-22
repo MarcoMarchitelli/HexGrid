@@ -221,6 +221,11 @@ public class HexGridCreator : MonoBehaviour
         float yellowStartingPointX = 0f, yellowStartingPointY = 0f;
         float startingPointX = 0f, startingPointY = 0f;
 
+        float blueSpecialPointX = 0f, blueSpecialPointY = 0f;
+        float redSpecialPointX = 0f, redSpecialPointY = 0f;
+        float greenSpecialPointX = 0f, greenSpecialPointY = 0f;
+        float yellowSpecialPointX = 0f, yellowSpecialPointY = 0f;
+
         foreach (Point point in WaypointGrid)
         {
             if (point.y == (int)MyData.startingYellowPoint.y)
@@ -258,6 +263,43 @@ public class HexGridCreator : MonoBehaviour
             {
                 greenStartingPointX = point.worldPosition.x;
             }
+
+            if (point.y== (int)MyData.specialYellowPoint.y)
+            {
+                yellowSpecialPointY = point.worldPosition.z;
+            }
+            if(point.x== (int)MyData.specialYellowPoint.x)
+            {
+                yellowSpecialPointX = point.worldPosition.x;
+            }
+
+            if (point.y == (int)MyData.specialBluePoint.y)
+            {
+                blueSpecialPointX = point.worldPosition.z;
+            }
+            if (point.x == (int)MyData.specialBluePoint.x)
+            {
+                blueSpecialPointX = point.worldPosition.x;
+            }
+
+            if (point.y == (int)MyData.specialRedPoint.y)
+            {
+                blueSpecialPointY = point.worldPosition.z;
+            }
+            if (point.x == (int)MyData.specialRedPoint.x)
+            {
+                blueSpecialPointX = point.worldPosition.x;
+            }
+
+            if(point.y == (int)MyData.specialGreenPoint.y)
+            {
+                greenSpecialPointX = point.worldPosition.z;
+            }
+            if(point.x == (int)MyData.specialGreenPoint.x)
+            {
+                greenSpecialPointY = point.worldPosition.x;
+            }
+
         }
 
         Point yellowStartingPoint = new Point((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y, new Vector3(yellowStartingPointX, 0f, yellowStartingPointY), Point.Type.yellow, true);
