@@ -6,7 +6,9 @@ public class CardController : MonoBehaviour
 {
     GameManager gameManager;
     int eulerAngle = 0;
+    int placedEulerAngle;
     public int extractableEnergy = 0;
+    public Hexagon hexImOn;
 
     public enum State
     {
@@ -53,7 +55,7 @@ public class CardController : MonoBehaviour
 
         if (state == State.selectedFromMap)
         {
-            transform.position = new Vector3(transform.position.x, 1f, transform.position.z);
+            transform.position = new Vector3(transform.position.x, 3f, transform.position.z);
             if (Input.GetKeyDown(KeyCode.A))
             {
                 transform.Rotate(Vector3.up * -60);
@@ -75,9 +77,12 @@ public class CardController : MonoBehaviour
     {
         if (state == State.selectedFromHand || state == State.selectedFromMap)
         {
+            placedEulerAngle = eulerAngle;
             BlockPaths(hex);
             transform.position = hex.worldPosition + Vector3.up * .5f;
             state = State.placed;
+            hexImOn = hex;
+            hexImOn.card = this;
             if (type == Type.card2)
             {
                 extractableEnergy = 0;
@@ -415,5 +420,10 @@ public class CardController : MonoBehaviour
                     extractableEnergy++;
                 break;
         }
+    }
+
+    public void SetRotationBackToPlaced()
+    {
+        transform.rotation = Quaternion.Euler(new Vector3(0, (float)placedEulerAngle, 0));
     }
 }

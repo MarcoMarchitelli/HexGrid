@@ -145,11 +145,13 @@ public class GameManager : MonoBehaviour
         return moves;
     }
 
+    //Called when clickin card buttons
     public void CurrentPlayerSelect(int index)
     {
         currentActivePlayer.SelectCard(index);
     }
 
+    //called when clicking endturn button
     public void SetCurrentPlayerIdle()
     {
         currentActivePlayer.currentState = PlayerController.State.idle;

@@ -199,7 +199,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1287196242754890}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 500, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -207,7 +207,7 @@ Transform:
   - {fileID: 4907386421731752}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4776632285379450
 Transform:
   m_ObjectHideFlags: 1
@@ -471,9 +471,12 @@ MonoBehaviour:
   - {fileID: 4861242943396792, guid: 49d0ec244966ba04ba27a59e06ee8dc2, type: 2}
   - {fileID: 4097142438760948, guid: 434becdb47512b34db5224a884dec18a, type: 2}
   - {fileID: 4135634690672830, guid: 4d99b94fc5630f443b7f7aa003327d87, type: 2}
-  movingLayer:
+  pointLayer:
     serializedVersion: 2
     m_Bits: 256
-  placingLayer:
+  hexLayer:
     serializedVersion: 2
     m_Bits: 512
+  cardLayer:
+    serializedVersion: 2
+    m_Bits: 1024

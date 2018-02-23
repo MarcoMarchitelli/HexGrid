@@ -7,7 +7,7 @@ public class Hexagon {
 
     public int x, y;
     public Vector3 worldPosition;
-    public Transform card;
+    public CardController card;
     public Type type;
 
     public enum Type
