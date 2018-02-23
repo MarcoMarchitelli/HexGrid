@@ -8,15 +8,6 @@ public class CardController : MonoBehaviour
     int eulerAngle = 0;
     public int extractableEnergy = 0;
 
-    public List<Hexagon> aroundHexes = new List<Hexagon>();
-
-    public Hexagon topLeft = new Hexagon();
-    public Hexagon topRight = new Hexagon();
-    public Hexagon left = new Hexagon();
-    public Hexagon right = new Hexagon();
-    public Hexagon botLeft = new Hexagon();
-    public Hexagon botRight = new Hexagon();
-
     public enum State
     {
         inHand, selectedFromHand, selectedFromMap, placed
@@ -299,14 +290,14 @@ public class CardController : MonoBehaviour
 
     void SetExtractableEnergy(Hexagon myHex)
     {
-        aroundHexes = gameManager.gridReference.GetHexagonsAroundHexagon(myHex);
+        List<Hexagon> aroundHexes = gameManager.gridReference.GetHexagonsAroundHexagon(myHex);
 
-        //Hexagon topLeft = new Hexagon();
-        //Hexagon topRight = new Hexagon();
-        //Hexagon left = new Hexagon();
-        //Hexagon right = new Hexagon();
-        //Hexagon botLeft = new Hexagon();
-        //Hexagon botRight = new Hexagon();
+        Hexagon topLeft = new Hexagon();
+        Hexagon topRight = new Hexagon();
+        Hexagon left = new Hexagon();
+        Hexagon right = new Hexagon();
+        Hexagon botLeft = new Hexagon();
+        Hexagon botRight = new Hexagon();
 
         if (myHex.y % 2 != 0)
         {
