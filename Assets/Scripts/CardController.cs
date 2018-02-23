@@ -6,6 +6,16 @@ public class CardController : MonoBehaviour
 {
     GameManager gameManager;
     int eulerAngle = 0;
+    public int extractableEnergy = 0;
+
+    public List<Hexagon> aroundHexes = new List<Hexagon>();
+
+    public Hexagon topLeft = new Hexagon();
+    public Hexagon topRight = new Hexagon();
+    public Hexagon left = new Hexagon();
+    public Hexagon right = new Hexagon();
+    public Hexagon botLeft = new Hexagon();
+    public Hexagon botRight = new Hexagon();
 
     public enum State
     {
@@ -72,11 +82,16 @@ public class CardController : MonoBehaviour
 
     public void Place(Hexagon hex)
     {
-        if(state == State.selectedFromHand || state == State.selectedFromMap)
+        if (state == State.selectedFromHand || state == State.selectedFromMap)
         {
             BlockPaths(hex);
             transform.position = hex.worldPosition + Vector3.up * .5f;
             state = State.placed;
+            if (type == Type.card2)
+            {
+                extractableEnergy = 0;
+                SetExtractableEnergy(hex);
+            }
         }
     }
 
@@ -188,7 +203,7 @@ public class CardController : MonoBehaviour
                     break;
             }
         }
-        else 
+        else
         if (type == Type.card2)
         {
             switch (eulerAngle)
@@ -236,7 +251,7 @@ public class CardController : MonoBehaviour
                     break;
             }
         }
-        else 
+        else
         if (type == Type.card3)
         {
             switch (eulerAngle)
@@ -277,6 +292,137 @@ public class CardController : MonoBehaviour
         foreach (Point point in pointsAroundCard)
         {
             point.possibleDestinations = gameManager.gridReference.GetPossibleDestinationsFromPoint(point);
+        }
+
+        extractableEnergy = 0;
+    }
+
+    void SetExtractableEnergy(Hexagon myHex)
+    {
+        aroundHexes = gameManager.gridReference.GetHexagonsAroundHexagon(myHex);
+
+        //Hexagon topLeft = new Hexagon();
+        //Hexagon topRight = new Hexagon();
+        //Hexagon left = new Hexagon();
+        //Hexagon right = new Hexagon();
+        //Hexagon botLeft = new Hexagon();
+        //Hexagon botRight = new Hexagon();
+
+        if (myHex.y % 2 != 0)
+        {
+            foreach (Hexagon hex in aroundHexes)
+            {
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
+                {
+                    botLeft = hex;
+                }
+                else
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x + 1)
+                {
+                    botRight = hex;
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x + 1)
+                {
+                    right = hex;
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x - 1)
+                {
+                    left = hex;
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
+                {
+                    topLeft = hex;
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x + 1)
+                {
+                    topRight = hex;
+                }
+            }
+        }
+        else
+            if (myHex.y % 2 == 0)
+        {
+            foreach (Hexagon hex in aroundHexes)
+            {
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
+                {
+                    botRight = hex;
+                }
+                else
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x - 1)
+                {
+                    botLeft = hex;
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x + 1)
+                {
+                    right = hex;
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x - 1)
+                {
+                    left = hex;
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
+                {
+                    topRight = hex;
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x - 1)
+                {
+                    topLeft = hex;
+                }
+            }
+        }
+
+        switch (eulerAngle)
+        {
+            case 0:
+                if (right != null && right.type == Hexagon.Type.energy && !right.card)
+                    extractableEnergy++;
+                if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
+                    extractableEnergy++;
+                break;
+            case 60:
+            case -300:
+                if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
+                    extractableEnergy++;
+                if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
+                    extractableEnergy++;
+                break;
+            case 120:
+            case -240:
+                if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
+                    extractableEnergy++;
+                if (right != null && right.type == Hexagon.Type.energy && !right.card)
+                    extractableEnergy++;
+                break;
+            case 180:
+            case -180:
+                if (left != null && left.type == Hexagon.Type.energy && !left.card)
+                    extractableEnergy++;
+                if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
+                    extractableEnergy++;
+                break;
+            case 240:
+            case -120:
+                if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
+                    extractableEnergy++;
+                if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
+                    extractableEnergy++;
+                break;
+            case 300:
+            case -60:
+                if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
+                    extractableEnergy++;
+                if (left != null && left.type == Hexagon.Type.energy && !left.card)
+                    extractableEnergy++;
+                break;
         }
     }
 }

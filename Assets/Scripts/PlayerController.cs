@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
                 currentState = State.moving;
                 hasUsedAbility = false;
                 energyPoints++;
+                energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
                 break;
 
             case State.moving:

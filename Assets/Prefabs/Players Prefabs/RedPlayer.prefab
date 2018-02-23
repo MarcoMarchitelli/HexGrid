@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 4231158732332972}
   - component: {fileID: 114267717185229600}
   m_Layer: 0
-  m_Name: Behaviour
+  m_Name: RedBehaviour
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -464,6 +464,8 @@ MonoBehaviour:
     isStartingPoint: 0
   currentState: 0
   possibleMoves: 3
+  energyPoints: 0
+  victoryPoints: 3
   hasUsedAbility: 0
   cards:
   - {fileID: 4861242943396792, guid: 49d0ec244966ba04ba27a59e06ee8dc2, type: 2}

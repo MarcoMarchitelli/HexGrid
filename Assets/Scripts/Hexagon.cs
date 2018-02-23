@@ -23,6 +23,11 @@ public class Hexagon {
         type = _type;
     }
 
+    public Hexagon()
+    {
+
+    }
+
     public void setType(Type _type)
     {
         type = _type;
