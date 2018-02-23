@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour
                     currentState = State.moving;
                 }
 
-                if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromMap)
+                if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromMap)
                 {
                     UnselectCard();
                     hasUsedAbility = true;

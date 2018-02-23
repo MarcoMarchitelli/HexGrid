@@ -63,6 +63,7 @@ public class CardController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.D))
             {
                 transform.Rotate(Vector3.up * 60);
+                eulerAngle += 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
             }
