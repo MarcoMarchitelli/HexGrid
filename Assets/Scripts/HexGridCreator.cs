@@ -23,10 +23,10 @@ public class HexGridCreator : MonoBehaviour
 
     //public GameObject playerReference;
 
-    [Range(0.1f, 1f)]
-    public float waysWitdth = 0.5f;
+    [Range(0.1f, 3f)]
+    public float waysWitdth = 1f;
 
-    float hexWidth = 1.723f, hexHeight = 2.000f;
+    float hexWidth = 1.723f * 2, hexHeight = 2.000f * 2;
 
     public List<Hexagon> HexGrid = new List<Hexagon>();
     public List<Point> WaypointGrid = new List<Point>();

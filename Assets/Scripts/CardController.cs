@@ -35,7 +35,7 @@ public class CardController : MonoBehaviour
         if (state == State.selectedFromHand)
         {
             Vector3 myMousePos = Input.mousePosition;
-            myMousePos.z = 19f;
+            myMousePos.z = 2f;
             transform.position = Camera.main.ScreenToWorldPoint(myMousePos);
             if (Input.GetKeyDown(KeyCode.A))
             {
