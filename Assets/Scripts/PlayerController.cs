@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case State.idle:
+                selectedCard = null;
                 break;
 
             case State.start:

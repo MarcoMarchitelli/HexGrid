@@ -61,7 +61,10 @@ public class UIManager : MonoBehaviour
         {
             for (int i = 0; i < Buttons.Length; i++)
             {
-                Buttons[i].GetComponent<Button>().enabled = true;
+                if(activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
+                {
+                    Buttons[i].GetComponent<Button>().enabled = true;
+                } 
             }
         }
     }

@@ -201,6 +201,9 @@ public class HexGridCreator : MonoBehaviour
                     instantiatedGreenWaypoint.parent = mapContainer;
                     break;
                 case Point.Type.win:
+                    Transform instantiatedWinWaypoint = Instantiate(purpleWaypointPrefab, point.worldPosition + Vector3.up * .5f, Quaternion.identity);
+                    instantiatedWinWaypoint.parent = mapContainer;
+                    break;
                 case Point.Type.purple:
                     Transform instantiatedPurpleWaypoint = Instantiate(purpleWaypointPrefab, point.worldPosition, Quaternion.identity);
                     instantiatedPurpleWaypoint.parent = mapContainer;
