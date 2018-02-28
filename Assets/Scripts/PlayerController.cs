@@ -90,7 +90,10 @@ public class PlayerController : MonoBehaviour
                                 {
                                     transform.parent.position = pointHit.worldPosition + Vector3.up * .7f;
                                     currentWayPoint = pointHit;
-                                    possibleMoves--;
+                                    if (currentWayPoint.type == Point.Type.purple || currentWayPoint.type == Point.Type.win)
+                                        possibleMoves = 0;
+                                    else
+                                        possibleMoves--;
                                 }
                                 CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                             }
@@ -107,7 +110,7 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard = cardHitInfo.collider.GetComponentInParent<CardController>();
 
-                        if(selectedCard && selectedCard.state == CardController.State.placed)
+                        if (selectedCard && selectedCard.state == CardController.State.placed)
                         {
                             selectedCard.state = CardController.State.selectedFromMap;
                             currentState = State.ability;
@@ -116,20 +119,21 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                    break;
+                break;
 
             case State.ability:
 
                 if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromHand)
                 {
                     bottomLeftMsg = "Use A/D to rotate the card. \nLeftclick to place it. \nRightclick to undo.";
-                }else 
-                if(!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromMap)
+                }
+                else
+                if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromMap)
                 {
                     bottomLeftMsg = "Use A/D to rotate the card.\nLeftclick to place it.\nSpace to return it to it's owner's hand.\nRightclick to undo.";
                 }
                 else
-                if(!hasUsedAbility && !selectedCard)
+                if (!hasUsedAbility && !selectedCard)
                 {
                     bottomLeftMsg = "Select a card from your hand,\nor from the map.";
                 }
@@ -137,7 +141,7 @@ public class PlayerController : MonoBehaviour
                 {
                     bottomLeftMsg = "You've ended your actions for this turn. \nLet the other players have fun too!";
                 }
-                
+
                 gameManager.uiManager.PrintLeft(bottomLeftMsg);
 
                 RaycastHit placingHitInfo;
@@ -167,7 +171,7 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromHand)
                     {
                         UnselectCard();
-                        if(possibleMoves != 0)
+                        if (possibleMoves != 0)
                             currentState = State.moving;
                     }
                 }
@@ -206,7 +210,7 @@ public class PlayerController : MonoBehaviour
                 if (!selectedCard)
                 {
                     //(SELECT)
-                    if(Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out selectingHitInfo, 100, cardLayer))
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out selectingHitInfo, 100, cardLayer))
                     {
                         if (Input.GetMouseButtonDown(0))
                         {

@@ -6,7 +6,7 @@ public class CardController : MonoBehaviour
 {
     GameManager gameManager;
     int eulerAngle = 0;
-    int placedEulerAngle;
+    public int placedEulerAngle;
     public int extractableEnergy = 0;
     public Hexagon hexImOn;
 
@@ -497,5 +497,6 @@ public class CardController : MonoBehaviour
     public void SetRotationBackToPlaced()
     {
         transform.rotation = Quaternion.Euler(new Vector3(0, (float)placedEulerAngle, 0));
+        eulerAngle = placedEulerAngle;
     }
 }

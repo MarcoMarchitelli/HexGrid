@@ -22,7 +22,7 @@ public class MaterialChange : MonoBehaviour {
         {
             return;
         }else
-        if (gameManager.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position))
+        if (gameManager.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) && gameManager.currentActivePlayer.possibleMoves != 0)
         {
             myRenderer.material.color = Color.green;
         }else
