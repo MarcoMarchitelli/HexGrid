@@ -90,6 +90,9 @@ public class PlayerController : MonoBehaviour
                                 {
                                     transform.parent.position = pointHit.worldPosition + Vector3.up * .7f;
                                     currentWayPoint = pointHit;
+                                    if (currentWayPoint.isFinalWaypoint && isMyColor(currentWayPoint))
+                                        energyPoints++;
+
                                     if (currentWayPoint.type == Point.Type.purple || currentWayPoint.type == Point.Type.win)
                                         possibleMoves = 0;
                                     else
@@ -239,5 +242,20 @@ public class PlayerController : MonoBehaviour
         selectedCard.state = CardController.State.inHand;
         selectedCard.transform.position = MyData.prefabsPosition;
         selectedCard = null;
+    }
+
+    public bool isMyColor(Point point)
+    {
+
+        if (name == "yellow" && point.type == Point.Type.yellow)
+            return true;
+        if (name == "green" && point.type == Point.Type.green)
+            return true;
+        if (name == "blue" && point.type == Point.Type.blue)
+            return true;
+        if (name == "red" && point.type == Point.Type.red)
+            return true;
+
+        return false;
     }
 }

@@ -222,12 +222,7 @@ public class HexGridCreator : MonoBehaviour
         float redStartingPointX = 0f, redStartingPointY = 0f;
         float greenStartingPointX = 0f, greenStartingPointY = 0f;
         float yellowStartingPointX = 0f, yellowStartingPointY = 0f;
-        float startingPointX = 0f, startingPointY = 0f;
-
-        float blueSpecialPointX = 0f, blueSpecialPointY = 0f;
-        float redSpecialPointX = 0f, redSpecialPointY = 0f;
-        float greenSpecialPointX = 0f, greenSpecialPointY = 0f;
-        float yellowSpecialPointX = 0f, yellowSpecialPointY = 0f;
+        float winPointX = 0f, winPointY = 0f;
 
         foreach (Point point in WaypointGrid)
         {
@@ -266,43 +261,6 @@ public class HexGridCreator : MonoBehaviour
             {
                 greenStartingPointX = point.worldPosition.x;
             }
-
-            if (point.y == (int)MyData.specialYellowPoint.y)
-            {
-                yellowSpecialPointY = point.worldPosition.z;
-            }
-            if (point.x == (int)MyData.specialYellowPoint.x)
-            {
-                yellowSpecialPointX = point.worldPosition.x;
-            }
-
-            if (point.y == (int)MyData.specialBluePoint.y)
-            {
-                blueSpecialPointX = point.worldPosition.z;
-            }
-            if (point.x == (int)MyData.specialBluePoint.x)
-            {
-                blueSpecialPointX = point.worldPosition.x;
-            }
-
-            if (point.y == (int)MyData.specialRedPoint.y)
-            {
-                blueSpecialPointY = point.worldPosition.z;
-            }
-            if (point.x == (int)MyData.specialRedPoint.x)
-            {
-                blueSpecialPointX = point.worldPosition.x;
-            }
-
-            if (point.y == (int)MyData.specialGreenPoint.y)
-            {
-                greenSpecialPointX = point.worldPosition.z;
-            }
-            if (point.x == (int)MyData.specialGreenPoint.x)
-            {
-                greenSpecialPointY = point.worldPosition.x;
-            }
-
         }
 
         Point yellowStartingPoint = new Point((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y, new Vector3(yellowStartingPointX, 0f, yellowStartingPointY), Point.Type.yellow, true);
@@ -322,12 +280,34 @@ public class HexGridCreator : MonoBehaviour
         {
             if (hex.x == 3 && hex.y == 3)
             {
-                startingPointX = hex.worldPosition.x;
-                startingPointY = hex.worldPosition.z;
+                winPointX = hex.worldPosition.x;
+                winPointY = hex.worldPosition.z;
             }
         }
-        Point winPoint = new Point(7, 7, new Vector3(startingPointX, 0f, startingPointY), Point.Type.win, false);
+
+        Point winPoint = new Point(7, 7, new Vector3(winPointX, 0f, winPointY), Point.Type.win, false);
         WaypointGrid.Add(winPoint);
+
+        //final waypoints
+        foreach (Point point in WaypointGrid)
+        {
+            if(point.x == (int)MyData.specialYellowPoint.x && point.y == (int)MyData.specialYellowPoint.y && point.type == Point.Type.yellow)
+            {
+                point.isFinalWaypoint = true;
+            }
+            if (point.x == (int)MyData.specialBluePoint.x && point.y == (int)MyData.specialBluePoint.y && point.type == Point.Type.blue)
+            {
+                point.isFinalWaypoint = true;
+            }
+            if (point.x == (int)MyData.specialGreenPoint.x && point.y == (int)MyData.specialGreenPoint.y && point.type == Point.Type.green)
+            {
+                point.isFinalWaypoint = true;
+            }
+            if (point.x == (int)MyData.specialRedPoint.x && point.y == (int)MyData.specialRedPoint.y && point.type == Point.Type.red)
+            {
+                point.isFinalWaypoint = true;
+            }
+        }
     }
 
     void SetDestinationsForEachPoint()
