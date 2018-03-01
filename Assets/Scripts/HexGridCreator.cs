@@ -21,12 +21,12 @@ public class HexGridCreator : MonoBehaviour
 
     Vector2 gridSize = new Vector2(7f, 7f);
 
-    public GameObject playerReference;
+    //public GameObject playerReference;
 
-    [Range(0.1f, 1f)]
-    public float waysWitdth = 0.5f;
+    [Range(0.1f, 3f)]
+    public float waysWitdth = 1f;
 
-    float hexWidth = 1.723f, hexHeight = 2.000f;
+    float hexWidth = 1.723f * 2, hexHeight = 2.000f * 2;
 
     public List<Hexagon> HexGrid = new List<Hexagon>();
     public List<Point> WaypointGrid = new List<Point>();
@@ -159,19 +159,19 @@ public class HexGridCreator : MonoBehaviour
             switch (hex.type)
             {
                 case Hexagon.Type.empty:
-                    Transform instantiatedEmptyHex = Instantiate(emptyHexagonPrefab, hex.worldPosition, /*Quaternion.Euler(Vector3.up * 90)*/Quaternion.identity);
+                    Transform instantiatedEmptyHex = Instantiate(emptyHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedEmptyHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.energy:
-                    Transform instantiatedEnergyHex = Instantiate(energyHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    Transform instantiatedEnergyHex = Instantiate(energyHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedEnergyHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.ability:
-                    Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedAbilityHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.win:
-                    Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.identity);
+                    Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedWinHex.parent = mapContainer;
                     break;
             }
@@ -201,6 +201,9 @@ public class HexGridCreator : MonoBehaviour
                     instantiatedGreenWaypoint.parent = mapContainer;
                     break;
                 case Point.Type.win:
+                    Transform instantiatedWinWaypoint = Instantiate(purpleWaypointPrefab, point.worldPosition + Vector3.up * .5f, Quaternion.identity);
+                    instantiatedWinWaypoint.parent = mapContainer;
+                    break;
                 case Point.Type.purple:
                     Transform instantiatedPurpleWaypoint = Instantiate(purpleWaypointPrefab, point.worldPosition, Quaternion.identity);
                     instantiatedPurpleWaypoint.parent = mapContainer;
@@ -219,12 +222,7 @@ public class HexGridCreator : MonoBehaviour
         float redStartingPointX = 0f, redStartingPointY = 0f;
         float greenStartingPointX = 0f, greenStartingPointY = 0f;
         float yellowStartingPointX = 0f, yellowStartingPointY = 0f;
-        float startingPointX = 0f, startingPointY = 0f;
-
-        float blueSpecialPointX = 0f, blueSpecialPointY = 0f;
-        float redSpecialPointX = 0f, redSpecialPointY = 0f;
-        float greenSpecialPointX = 0f, greenSpecialPointY = 0f;
-        float yellowSpecialPointX = 0f, yellowSpecialPointY = 0f;
+        float winPointX = 0f, winPointY = 0f;
 
         foreach (Point point in WaypointGrid)
         {
@@ -263,43 +261,6 @@ public class HexGridCreator : MonoBehaviour
             {
                 greenStartingPointX = point.worldPosition.x;
             }
-
-            if (point.y== (int)MyData.specialYellowPoint.y)
-            {
-                yellowSpecialPointY = point.worldPosition.z;
-            }
-            if(point.x== (int)MyData.specialYellowPoint.x)
-            {
-                yellowSpecialPointX = point.worldPosition.x;
-            }
-
-            if (point.y == (int)MyData.specialBluePoint.y)
-            {
-                blueSpecialPointX = point.worldPosition.z;
-            }
-            if (point.x == (int)MyData.specialBluePoint.x)
-            {
-                blueSpecialPointX = point.worldPosition.x;
-            }
-
-            if (point.y == (int)MyData.specialRedPoint.y)
-            {
-                blueSpecialPointY = point.worldPosition.z;
-            }
-            if (point.x == (int)MyData.specialRedPoint.x)
-            {
-                blueSpecialPointX = point.worldPosition.x;
-            }
-
-            if(point.y == (int)MyData.specialGreenPoint.y)
-            {
-                greenSpecialPointX = point.worldPosition.z;
-            }
-            if(point.x == (int)MyData.specialGreenPoint.x)
-            {
-                greenSpecialPointY = point.worldPosition.x;
-            }
-
         }
 
         Point yellowStartingPoint = new Point((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y, new Vector3(yellowStartingPointX, 0f, yellowStartingPointY), Point.Type.yellow, true);
@@ -319,12 +280,34 @@ public class HexGridCreator : MonoBehaviour
         {
             if (hex.x == 3 && hex.y == 3)
             {
-                startingPointX = hex.worldPosition.x;
-                startingPointY = hex.worldPosition.z;
+                winPointX = hex.worldPosition.x;
+                winPointY = hex.worldPosition.z;
             }
         }
-        Point winPoint = new Point(7, 7, new Vector3(startingPointX, 0f, startingPointY), Point.Type.win, false);
+
+        Point winPoint = new Point(7, 7, new Vector3(winPointX, 0f, winPointY), Point.Type.win, false);
         WaypointGrid.Add(winPoint);
+
+        //final waypoints
+        foreach (Point point in WaypointGrid)
+        {
+            if(point.x == (int)MyData.specialYellowPoint.x && point.y == (int)MyData.specialYellowPoint.y && point.type == Point.Type.yellow)
+            {
+                point.isFinalWaypoint = true;
+            }
+            if (point.x == (int)MyData.specialBluePoint.x && point.y == (int)MyData.specialBluePoint.y && point.type == Point.Type.blue)
+            {
+                point.isFinalWaypoint = true;
+            }
+            if (point.x == (int)MyData.specialGreenPoint.x && point.y == (int)MyData.specialGreenPoint.y && point.type == Point.Type.green)
+            {
+                point.isFinalWaypoint = true;
+            }
+            if (point.x == (int)MyData.specialRedPoint.x && point.y == (int)MyData.specialRedPoint.y && point.type == Point.Type.red)
+            {
+                point.isFinalWaypoint = true;
+            }
+        }
     }
 
     void SetDestinationsForEachPoint()
@@ -378,6 +361,45 @@ public class HexGridCreator : MonoBehaviour
                 point.nearHexagons = GetNearHexagonsFromPoint(point);
             }
         }
+    }
+
+    public List<Hexagon> GetNearHexagonsFromPoint(Point point)
+    {
+        List<Hexagon> nearHexagons = new List<Hexagon>();
+
+        if (point.y % 2 != 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                //down
+                if (hex.y == (point.y - 3) / 2 && hex.x == point.x / 2)
+                    nearHexagons.Add(hex);
+                //top right
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x + 1) / 2)
+                    nearHexagons.Add(hex);
+                //top left
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x - 1) / 2)
+                    nearHexagons.Add(hex);
+            }
+        }
+
+        if (point.y % 2 == 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                //top
+                if (hex.y == point.y / 2 && hex.x == point.x / 2)
+                    nearHexagons.Add(hex);
+                //down right
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x + 1) / 2)
+                    nearHexagons.Add(hex);
+                //down left
+                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x - 1) / 2)
+                    nearHexagons.Add(hex);
+            }
+        }
+
+        return nearHexagons;
     }
 
     public List<Vector3> GetPossibleDestinationsFromPoint(Point point)
@@ -531,50 +553,11 @@ public class HexGridCreator : MonoBehaviour
         return null;
     }
 
-    public List<Hexagon> GetNearHexagonsFromPoint(Point point)
-    {
-        List<Hexagon> nearHexagons = new List<Hexagon>();
-
-        if (point.y % 2 != 0)
-        {
-            foreach (Hexagon hex in HexGrid)
-            {
-                //down
-                if (hex.y == (point.y - 3) / 2 && hex.x == point.x / 2)
-                    nearHexagons.Add(hex);
-                //top right
-                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x + 1) / 2)
-                    nearHexagons.Add(hex);
-                //top left
-                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x - 1) / 2)
-                    nearHexagons.Add(hex);
-            }
-        }
-
-        if (point.y % 2 == 0)
-        {
-            foreach (Hexagon hex in HexGrid)
-            {
-                //top
-                if (hex.y == point.y / 2 && hex.x == point.x / 2)
-                    nearHexagons.Add(hex);
-                //down right
-                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x + 1) / 2)
-                    nearHexagons.Add(hex);
-                //down left
-                if (hex.y == (point.y - 1) / 2 && hex.x == (point.x - 1) / 2)
-                    nearHexagons.Add(hex);
-            }
-        }
-
-        return nearHexagons;
-    }
-
     public List<Point> GetSixPointsAroundHexagon(Hexagon hex)
     {
         List<Point> pointsAroundHex = new List<Point>();
 
-        if(hex.y % 2 == 0)
+        if (hex.y % 2 == 0)
         {
             foreach (Point point in WaypointGrid)
             {
@@ -604,8 +587,8 @@ public class HexGridCreator : MonoBehaviour
                 }
             }
         }
-        else 
-        if(hex.y % 2 != 0)
+        else
+        if (hex.y % 2 != 0)
         {
             foreach (Point point in WaypointGrid)
             {
@@ -635,8 +618,87 @@ public class HexGridCreator : MonoBehaviour
                 }
             }
         }
-        
+
         return pointsAroundHex;
+    }
+
+    public List<Hexagon> GetHexagonsAroundHexagon(Hexagon myHex)
+    {
+        List<Hexagon> aroundHexagons = new List<Hexagon>();
+
+        if (myHex.y % 2 != 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+            }
+        }
+        else
+            if (myHex.y % 2 == 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+            }
+        }
+
+        return aroundHexagons;
     }
 
 }

@@ -120,7 +120,7 @@ GameObject:
   - component: {fileID: 4821174435063644}
   - component: {fileID: 114133456572387770}
   m_Layer: 0
-  m_Name: Behaviour
+  m_Name: GreenBehaviour
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147,7 +147,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1366672024537596}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 501, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -155,7 +155,7 @@ Transform:
   - {fileID: 4994131057729092}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!4 &4421178188453006
 Transform:
   m_ObjectHideFlags: 1
@@ -464,14 +464,19 @@ MonoBehaviour:
     isStartingPoint: 0
   currentState: 0
   possibleMoves: 3
+  energyPoints: 0
+  victoryPoints: 3
   hasUsedAbility: 0
   cards:
   - {fileID: 4861242943396792, guid: 49d0ec244966ba04ba27a59e06ee8dc2, type: 2}
   - {fileID: 4097142438760948, guid: 434becdb47512b34db5224a884dec18a, type: 2}
   - {fileID: 4135634690672830, guid: 4d99b94fc5630f443b7f7aa003327d87, type: 2}
-  movingLayer:
+  pointLayer:
     serializedVersion: 2
     m_Bits: 256
-  placingLayer:
+  hexLayer:
     serializedVersion: 2
     m_Bits: 512
+  cardLayer:
+    serializedVersion: 2
+    m_Bits: 1024

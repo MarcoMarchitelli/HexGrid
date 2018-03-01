@@ -12,6 +12,7 @@ public class Point{
     public List<Hexagon> nearHexagons;
     public Type type;
     public bool isStartingPoint;
+    public bool isFinalWaypoint;
 
     public enum Type
     {
@@ -24,6 +25,7 @@ public class Point{
         y = _y;
         worldPosition = _worldPosition;
         isStartingPoint = false;
+        isFinalWaypoint = false;
         possibleDestinations = new List<Vector3>();
         nearHexagons = new List<Hexagon>();
         SetTypeFromCoords();
@@ -36,6 +38,7 @@ public class Point{
         worldPosition = _worldPosition;
         type = _type;
         isStartingPoint = _isStartingPoint;
+        isFinalWaypoint = false;
         possibleDestinations = new List<Vector3>();
         nearHexagons = new List<Hexagon>();
     }

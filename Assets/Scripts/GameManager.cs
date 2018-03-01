@@ -12,14 +12,19 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public PlayerController currentActivePlayer;
 
+    [HideInInspector]
+    public CameraBehaviour mainCamera;
+
     string bottomLeftMsg;
 
     void Awake()
     {
         gridReference = FindObjectOfType<HexGridCreator>();
+        mainCamera = FindObjectOfType<CameraBehaviour>();
         InstantiatePlayers();
         players[0].currentState = PlayerController.State.start;
         currentActivePlayer = players[0];
+        mainCamera.SetTransform(currentActivePlayer);
         string msg = "It's the " + currentActivePlayer.name + " player's turn.";
         uiManager.PrintTop(msg);
     }
@@ -34,6 +39,7 @@ public class GameManager : MonoBehaviour
                 {
                     players[i + 1].currentState = PlayerController.State.start;
                     currentActivePlayer = players[i + 1];
+                    mainCamera.SetTransform(currentActivePlayer);
                     string msg = "It's the " + currentActivePlayer.name + " player's turn.";
                     uiManager.PrintTop(msg);
                 }
@@ -41,6 +47,7 @@ public class GameManager : MonoBehaviour
                 {
                     players[0].currentState = PlayerController.State.start;
                     currentActivePlayer = players[0];
+                    mainCamera.SetTransform(currentActivePlayer);
                     string msg = "It's the " + currentActivePlayer.name + " player's turn.";
                     uiManager.PrintTop(msg);
                 }
@@ -145,11 +152,13 @@ public class GameManager : MonoBehaviour
         return moves;
     }
 
+    //Called when clickin card buttons
     public void CurrentPlayerSelect(int index)
     {
         currentActivePlayer.SelectCard(index);
     }
 
+    //called when clicking endturn button
     public void SetCurrentPlayerIdle()
     {
         currentActivePlayer.currentState = PlayerController.State.idle;

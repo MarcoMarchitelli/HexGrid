@@ -18,10 +18,11 @@ public class PlayerController : MonoBehaviour
     public bool hasUsedAbility;
 
     public Transform[] cards;
-    CardController selectedCard;
+    [HideInInspector]
+    public CardController selectedCard;
     Hexagon lastSelectedHex;
 
-    public LayerMask movingLayer, placingLayer;
+    public LayerMask pointLayer, hexLayer, cardLayer;
 
     string bottomLeftMsg;
 
@@ -51,6 +52,7 @@ public class PlayerController : MonoBehaviour
         switch (currentState)
         {
             case State.idle:
+                selectedCard = null;
                 break;
 
             case State.start:
@@ -58,6 +60,7 @@ public class PlayerController : MonoBehaviour
                 currentState = State.moving;
                 hasUsedAbility = false;
                 energyPoints++;
+                energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
                 break;
 
             case State.moving:
@@ -73,7 +76,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit hitInfo;
 
                 //moving ray
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, movingLayer))
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, pointLayer))
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -87,7 +90,13 @@ public class PlayerController : MonoBehaviour
                                 {
                                     transform.parent.position = pointHit.worldPosition + Vector3.up * .7f;
                                     currentWayPoint = pointHit;
-                                    possibleMoves--;
+                                    if (currentWayPoint.isFinalWaypoint && isMyColor(currentWayPoint))
+                                        energyPoints++;
+
+                                    if (currentWayPoint.type == Point.Type.purple || currentWayPoint.type == Point.Type.win)
+                                        possibleMoves = 0;
+                                    else
+                                        possibleMoves--;
                                 }
                                 CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                             }
@@ -95,128 +104,125 @@ public class PlayerController : MonoBehaviour
                     }
                 }
 
-                RaycastHit modHitInfo;
+                RaycastHit cardHitInfo;
 
-                //modifying ray
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out modHitInfo, 100, placingLayer))
+                //select card from map and go to ability
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out cardHitInfo, 100, cardLayer))
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(modHitInfo.collider.transform.position);
+                        selectedCard = cardHitInfo.collider.GetComponentInParent<CardController>();
 
-                        if (hexHit != null)
+                        if (selectedCard && selectedCard.state == CardController.State.placed)
                         {
-                            //Select card from map
-                            if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().state == CardController.State.placed)
-                            {
-                                selectedCard = hexHit.card.GetComponent<CardController>();
-                                selectedCard.state = CardController.State.selectedFromMap;
-                                selectedCard.FreePaths(hexHit);
-                                lastSelectedHex = hexHit;
-                            }
-                            //Replace card from map
-                            else if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && selectedCard.state == CardController.State.selectedFromMap)
-                            {
-                                selectedCard.Place(hexHit);
-                                hasUsedAbility = true;
-                                currentState = State.ability;
-                            }
-                        }
-                    }
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(modHitInfo.collider.transform.position);
-
-                        //The card that i selected from the map. Remove it by rightclicking
-                        if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && selectedCard.state == CardController.State.selectedFromMap)
-                        {
-                            UnselectCard();
-                            hasUsedAbility = true;
-                            hexHit.card = null;
+                            selectedCard.state = CardController.State.selectedFromMap;
                             currentState = State.ability;
+                            selectedCard.FreePaths(selectedCard.hexImOn);
                         }
                     }
                 }
 
-                //if(Input.GetMouseButtonDown(1) && modifyingCard && !hasUsedAbility)
-                //{
-                //    UnselectCard();
-                //    hasUsedAbility = true;
-                //    currentState = State.ability;
-                //}
                 break;
 
             case State.ability:
 
-                bottomLeftMsg = "Use A/D to rotate the card. Leftclick to place it!";
+                if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromHand)
+                {
+                    bottomLeftMsg = "Use A/D to rotate the card. \nLeftclick to place it. \nRightclick to undo.";
+                }
+                else
+                if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromMap)
+                {
+                    bottomLeftMsg = "Use A/D to rotate the card.\nLeftclick to place it.\nSpace to return it to it's owner's hand.\nRightclick to undo.";
+                }
+                else
+                if (!hasUsedAbility && !selectedCard)
+                {
+                    bottomLeftMsg = "Select a card from your hand,\nor from the map.";
+                }
+                else
+                {
+                    bottomLeftMsg = "You've ended your actions for this turn. \nLet the other players have fun too!";
+                }
+
                 gameManager.uiManager.PrintLeft(bottomLeftMsg);
 
                 RaycastHit placingHitInfo;
 
-                //if i leftclick on an Hexagon...
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, placingLayer))
+                //Se ho carta selezionata. E se l'ho selezionata da mano -->
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasUsedAbility)
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    //(PLACE)
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, hexLayer))
                     {
-                        Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
-
-                        if (hexHit != null)
+                        if (Input.GetMouseButtonDown(0))
                         {
-                            //Already have card selected. Leftclick to place
-                            if (hexHit.card == null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit))
+                            Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
+
+                            if (hexHit != null)
                             {
-                                selectedCard.Place(hexHit);
-                                hexHit.card = selectedCard.transform;
-                                hasUsedAbility = true;
-                            }
-                            else
-                            //I select a card already placed on an Hexagon
-                            if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && hexHit.card.GetComponent<CardController>().state == CardController.State.placed)
-                            {
-                                lastSelectedHex = hexHit;
-                                selectedCard = lastSelectedHex.card.GetComponent<CardController>();
-                                selectedCard.state = CardController.State.selectedFromMap;
-                                selectedCard.FreePaths(lastSelectedHex);
-                            }
-                            //Place the card selected from the map
-                            else if (lastSelectedHex == hexHit && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromMap)
-                            {
-                                selectedCard.Place(lastSelectedHex);
-                                hasUsedAbility = true;
-                                lastSelectedHex = null;
+                                if (hexHit.card == null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit))
+                                {
+                                    selectedCard.Place(hexHit);
+                                    hasUsedAbility = true;
+                                }
                             }
                         }
                     }
-                    //if (Input.GetMouseButtonDown(1))
-                    //{
-                    //    Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
 
-                    //    //The card that i selected from the map. Unselect it by rightclicking
-                    //    if (hexHit.card != null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit) && selectedCard.state == CardController.State.selectedFromMap)
-                    //    {
-                    //        UnselectCard();
-                    //        hasUsedAbility = true;
-                    //        hexHit.card = null;
-                    //    }
-                    //}
+                    //(UNDO)
+                    if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromHand)
+                    {
+                        UnselectCard();
+                        if (possibleMoves != 0)
+                            currentState = State.moving;
+                    }
                 }
 
-                if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromHand)
+                //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !hasUsedAbility)
                 {
-                    UnselectCard();
-                    currentState = State.moving;
+                    //(PLACE)
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        selectedCard.Place(selectedCard.hexImOn);
+                        hasUsedAbility = true;
+                    }
+
+                    //(UNDO)
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        selectedCard.SetRotationBackToPlaced();
+                        selectedCard.Place(selectedCard.hexImOn);
+                        if (possibleMoves != 0)
+                            currentState = State.moving;
+                        selectedCard = null;
+                    }
+
+                    //(RETURN TO OWNER'S HAND)
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        UnselectCard();
+                        hasUsedAbility = true;
+                    }
                 }
 
-                if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromMap)
+                RaycastHit selectingHitInfo;
+
+                //Se non ho carta selezionata. Quindi l'ho selezionata dalla mappa -->
+                if (!selectedCard)
                 {
-                    UnselectCard();
-                    hasUsedAbility = true;
-                    lastSelectedHex.card = null;
+                    //(SELECT)
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out selectingHitInfo, 100, cardLayer))
+                    {
+                        if (Input.GetMouseButtonDown(0))
+                        {
+                            selectedCard = selectingHitInfo.collider.GetComponentInParent<CardController>();
+                            selectedCard.state = CardController.State.selectedFromMap;
+                        }
+                    }
                 }
 
-                break;
-
-            default:
                 break;
         }
     }
@@ -236,5 +242,20 @@ public class PlayerController : MonoBehaviour
         selectedCard.state = CardController.State.inHand;
         selectedCard.transform.position = MyData.prefabsPosition;
         selectedCard = null;
+    }
+
+    public bool isMyColor(Point point)
+    {
+
+        if (name == "yellow" && point.type == Point.Type.yellow)
+            return true;
+        if (name == "green" && point.type == Point.Type.green)
+            return true;
+        if (name == "blue" && point.type == Point.Type.blue)
+            return true;
+        if (name == "red" && point.type == Point.Type.red)
+            return true;
+
+        return false;
     }
 }

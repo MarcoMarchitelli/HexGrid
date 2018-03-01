@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
-public class UIManager : MonoBehaviour {
+public class UIManager : MonoBehaviour
+{
 
     public TextMeshProUGUI topBigSection, leftMediumSection;
 
@@ -36,7 +38,7 @@ public class UIManager : MonoBehaviour {
     {
         for (int i = 0; i < activePlayer.cards.Length; i++)
         {
-            if(activePlayer.cards[i].GetComponent<CardController>().state != CardController.State.inHand)
+            if (activePlayer.cards[i].GetComponent<CardController>().state != CardController.State.inHand)
             {
                 Buttons[i].GetComponent<Image>().color = Color.red;
                 Buttons[i].GetComponent<Button>().enabled = false;
@@ -47,5 +49,33 @@ public class UIManager : MonoBehaviour {
                 Buttons[i].GetComponent<Button>().enabled = true;
             }
         }
+
+        if (activePlayer.selectedCard || activePlayer.hasUsedAbility)
+        {
+            for (int i = 0; i < Buttons.Length; i++)
+            {
+                Buttons[i].GetComponent<Button>().enabled = false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < Buttons.Length; i++)
+            {
+                if(activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
+                {
+                    Buttons[i].GetComponent<Button>().enabled = true;
+                } 
+            }
+        }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

@@ -69,8 +69,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1473672070350450}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.11, y: 0, z: -0.004}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.3}
+  m_LocalPosition: {x: 2.223, y: 0, z: -0.004}
+  m_LocalScale: {x: 1, y: 1, z: 0.6}
   m_Children: []
   m_Father: {fileID: 4861242943396792}
   m_RootOrder: 1
@@ -81,13 +81,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1373915395873458}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0.4, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 4861242943396792}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!4 &4861242943396792
 Transform:
   m_ObjectHideFlags: 1
@@ -95,7 +95,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1037459399663264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 31.615192, y: 5.1653395, z: -20.451319}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4846814016244644}
@@ -184,7 +184,7 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1373915395873458}
-  m_Mesh: {fileID: 4300000, guid: d0d0375ab07df984abc8fdad143862d8, type: 3}
+  m_Mesh: {fileID: 4300000, guid: cb5556a565e241d4b927373d33a81104, type: 3}
 --- !u!114 &114911762374348820
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,7 +196,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1751b6029cb4d5d479336d772d0e719a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  extractableEnergy: 0
+  hexImOn:
+    x: 0
+    y: 0
+    worldPosition: {x: 0, y: 0, z: 0}
+    card: {fileID: 0}
+    type: 0
   state: 0
+  type: 0
   isShield: 1
 --- !u!135 &135630341431364660
 SphereCollider:
