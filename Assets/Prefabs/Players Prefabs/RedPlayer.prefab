@@ -19,9 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4670076091706156}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: RedPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,7 +36,7 @@ GameObject:
   - component: {fileID: 4934590831583376}
   - component: {fileID: 33020294818406662}
   - component: {fileID: 23963478456047676}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: L_Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53,7 +53,7 @@ GameObject:
   - component: {fileID: 4107034948104008}
   - component: {fileID: 33058132241887750}
   - component: {fileID: 23514491618949160}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69,7 +69,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4776632285379450}
   - component: {fileID: 95019838522232576}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hypogeum_Character (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4231158732332972}
   - component: {fileID: 114267717185229600}
-  m_Layer: 0
+  - component: {fileID: 136717678906135536}
+  m_Layer: 11
   m_Name: RedBehaviour
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -102,7 +103,7 @@ GameObject:
   - component: {fileID: 4087483030699740}
   - component: {fileID: 33887967184409080}
   - component: {fileID: 23439776239646430}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +118,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4907386421731752}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Graphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +135,7 @@ GameObject:
   - component: {fileID: 4143150536078314}
   - component: {fileID: 33339267814898234}
   - component: {fileID: 23529389946615454}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,6 +455,7 @@ MonoBehaviour:
     nearHexagons: []
     type: 0
     isStartingPoint: 0
+    isFinalWaypoint: 0
   currentWayPoint:
     x: 0
     y: 0
@@ -462,15 +464,18 @@ MonoBehaviour:
     nearHexagons: []
     type: 0
     isStartingPoint: 0
+    isFinalWaypoint: 0
   currentState: 0
   possibleMoves: 3
   energyPoints: 0
   victoryPoints: 3
   hasUsedAbility: 0
+  isBetting: 0
   cards:
   - {fileID: 4861242943396792, guid: 49d0ec244966ba04ba27a59e06ee8dc2, type: 2}
   - {fileID: 4097142438760948, guid: 434becdb47512b34db5224a884dec18a, type: 2}
   - {fileID: 4135634690672830, guid: 4d99b94fc5630f443b7f7aa003327d87, type: 2}
+  selectedCard: {fileID: 0}
   pointLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -480,3 +485,19 @@ MonoBehaviour:
   cardLayer:
     serializedVersion: 2
     m_Bits: 1024
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 2048
+--- !u!136 &136717678906135536
+CapsuleCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1663048661811846}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.2
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}

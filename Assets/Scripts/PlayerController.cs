@@ -15,20 +15,22 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3;
     [HideInInspector]
-    public bool hasUsedAbility;
+    public bool hasUsedAbility, isBetting;
 
     public Transform[] cards;
     [HideInInspector]
     public CardController selectedCard;
     Hexagon lastSelectedHex;
 
-    public LayerMask pointLayer, hexLayer, cardLayer;
+    List<PlayerController> playersToRob = new List<PlayerController>();
+
+    public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
 
     string bottomLeftMsg;
 
     public enum State
     {
-        idle, start, moving, ability
+        idle, start, moving, card, bet
     }
 
     void Awake()
@@ -61,6 +63,7 @@ public class PlayerController : MonoBehaviour
                 hasUsedAbility = false;
                 energyPoints++;
                 energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
+                ToggleBet();
                 break;
 
             case State.moving:
@@ -70,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
                 if (possibleMoves <= 0)
                 {
-                    currentState = State.ability;
+                    currentState = State.card;
                 }
 
                 RaycastHit hitInfo;
@@ -97,6 +100,8 @@ public class PlayerController : MonoBehaviour
                                         possibleMoves = 0;
                                     else
                                         possibleMoves--;
+
+                                    ToggleBet();
                                 }
                                 CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                             }
@@ -116,7 +121,7 @@ public class PlayerController : MonoBehaviour
                         if (selectedCard && selectedCard.state == CardController.State.placed)
                         {
                             selectedCard.state = CardController.State.selectedFromMap;
-                            currentState = State.ability;
+                            currentState = State.card;
                             selectedCard.FreePaths(selectedCard.hexImOn);
                         }
                     }
@@ -124,7 +129,7 @@ public class PlayerController : MonoBehaviour
 
                 break;
 
-            case State.ability:
+            case State.card:
 
                 if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromHand)
                 {
@@ -224,6 +229,30 @@ public class PlayerController : MonoBehaviour
                 }
 
                 break;
+
+            case State.bet:
+                
+                if (!isBetting)
+                {
+                    RaycastHit betHitInfo;
+
+                    gameManager.uiManager.PrintLeft("Select a player to attack.");
+
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out betHitInfo, 100, playerLayer))
+                    {
+
+                        PlayerController playerHit = betHitInfo.collider.GetComponent<PlayerController>();
+
+                        //Seleziono un player nemico da attaccare
+                        if (Input.GetMouseButtonDown(0) && playerHit && playersToRob.Contains(playerHit))
+                        {
+                            StartCoroutine(gameManager.Bet(this, playerHit));
+                            isBetting = true;
+                        }
+                    }
+                }
+
+                break;
         }
     }
 
@@ -233,7 +262,7 @@ public class PlayerController : MonoBehaviour
         if (selectedCard.state == CardController.State.inHand)
         {
             selectedCard.state = CardController.State.selectedFromHand;
-            currentState = State.ability;
+            currentState = State.card;
         }
     }
 
@@ -242,6 +271,23 @@ public class PlayerController : MonoBehaviour
         selectedCard.state = CardController.State.inHand;
         selectedCard.transform.position = MyData.prefabsPosition;
         selectedCard = null;
+    }
+
+    public void ToggleBet()
+    {
+        playersToRob = gameManager.FindPlayersInRange(2, this);
+
+        if (playersToRob.Count == 0)
+        {
+            gameManager.uiManager.betButton.enabled = false;
+            gameManager.uiManager.betButton.image.color = Color.red;
+        }
+        else if (playersToRob.Count > 0)
+        {
+            gameManager.uiManager.betButton.enabled = true;
+            gameManager.uiManager.betButton.image.color = Color.green;
+        }
+
     }
 
     public bool isMyColor(Point point)

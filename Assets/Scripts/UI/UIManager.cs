@@ -8,9 +8,11 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
 
-    public TextMeshProUGUI topBigSection, leftMediumSection;
+    public TextMeshProUGUI topBigSection, leftMediumSection, bigCentralSection;
 
-    public GameObject[] Buttons;
+    public GameObject[] cardButtons;
+
+    public Button betButton;
 
     GameManager gameManager;
 
@@ -34,36 +36,41 @@ public class UIManager : MonoBehaviour
         leftMediumSection.text = msg;
     }
 
+    public void PrintBigNews(string msg)
+    {
+        bigCentralSection.text = msg;
+    }
+
     public void DisplayHand(PlayerController activePlayer)
     {
         for (int i = 0; i < activePlayer.cards.Length; i++)
         {
             if (activePlayer.cards[i].GetComponent<CardController>().state != CardController.State.inHand)
             {
-                Buttons[i].GetComponent<Image>().color = Color.red;
-                Buttons[i].GetComponent<Button>().enabled = false;
+                cardButtons[i].GetComponent<Image>().color = Color.red;
+                cardButtons[i].GetComponent<Button>().enabled = false;
             }
             else
             {
-                Buttons[i].GetComponent<Image>().color = Color.green;
-                Buttons[i].GetComponent<Button>().enabled = true;
+                cardButtons[i].GetComponent<Image>().color = Color.green;
+                cardButtons[i].GetComponent<Button>().enabled = true;
             }
         }
 
         if (activePlayer.selectedCard || activePlayer.hasUsedAbility)
         {
-            for (int i = 0; i < Buttons.Length; i++)
+            for (int i = 0; i < cardButtons.Length; i++)
             {
-                Buttons[i].GetComponent<Button>().enabled = false;
+                cardButtons[i].GetComponent<Button>().enabled = false;
             }
         }
         else
         {
-            for (int i = 0; i < Buttons.Length; i++)
+            for (int i = 0; i < cardButtons.Length; i++)
             {
                 if(activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
                 {
-                    Buttons[i].GetComponent<Button>().enabled = true;
+                    cardButtons[i].GetComponent<Button>().enabled = true;
                 } 
             }
         }

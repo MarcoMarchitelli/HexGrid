@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public CameraBehaviour mainCamera;
 
+    int energyBet;
+    bool hasBet;
+
     string bottomLeftMsg;
 
     void Awake()
@@ -164,43 +167,149 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.currentState = PlayerController.State.idle;
     }
 
-    //public List<AgentPosition> FindPointsInRange(int range, PlayerController player) {
-    //    List<AgentPosition> pointsInRange = new List<AgentPosition>();
-    //    bool doesUncheckExist = true;
+    public void SetCurrenPlayerBet()
+    {
+        currentActivePlayer.currentState = PlayerController.State.bet;
+    }
 
-    //    if (range > 0) {
-    //        pointsInRange.Add(new AgentPosition(player.currentWayPoint, range));
+    public IEnumerator Bet(PlayerController attacker, PlayerController defender)
+    {
+        int attackerBet, defenderBet;
+        string announcement;
+        string[] messages = { "The winner is...", null, null};
 
-    //    }
-    //    do {
-            
-    //        for (int i = 0; i < pointsInRange.Count; i++) {
-    //            if (!pointsInRange[i].isChecked) {
-    //                if(pointsInRange[i].moves > 0) {
-    //                    foreach (Point point in pointsInRange[i].point.possibleDestinations) {
-    //                        pointsInRange.Add(new AgentPosition(point, pointsInRange[i].moves--));
-    //                    }
-    //                }
-    //                pointsInRange[i].isChecked = true;
-    //                doesUncheckExist = false;
-    //            }
-    //        }
-    //    } while (doesUncheckExist);
+        while(!hasBet)
+        {
+            uiManager.PrintBigNews("It's " + attacker.name + "'s time to bet !");
+            uiManager.PrintLeft("Enter a number to bet some energy.");
 
-    //    return pointsInRange;
-    //}
+            yield return StartCoroutine(WaitForNumberInput(attacker));
+        }
 
-    //public class AgentPosition {
-    //    public Point point;
-    //    public Vector3 worldPosition;
-    //    public int moves;
-    //    public bool isChecked;
+        attackerBet = energyBet;
+        hasBet = false;
 
-    //    public AgentPosition(Point _point, int _moves) {
-    //        point = _point;
-    //        worldPosition = _point.worldPosition;
-    //        moves = _moves;
-    //        isChecked = false;
-    //    }
-    //}
+        while (!hasBet)
+        {
+            uiManager.PrintBigNews("It's " + defender.name + "'s time to bet !");
+            uiManager.PrintLeft("Enter a number to bet some energy.");
+
+            yield return StartCoroutine(WaitForNumberInput(defender));
+        }
+
+        defenderBet = energyBet;
+
+        if (attackerBet > defenderBet)
+        {
+            announcement = attacker.name + "!! \nCongratulations!";
+            attacker.energyPoints -= attackerBet;
+            defender.energyPoints -= defenderBet;
+            attacker.victoryPoints++;
+            defender.victoryPoints--;
+        }
+        else
+        if (attackerBet < defenderBet)
+        {
+            announcement = defender.name + "!! \nCongratulations!";
+            attacker.energyPoints -= attackerBet;
+            defender.energyPoints -= defenderBet;
+            attacker.victoryPoints--;
+            defender.victoryPoints++;
+        }   
+        else
+            announcement = "Noone! It's a Draw!";
+
+        messages[1] = announcement;
+
+        StartCoroutine(WaitForWinnerAnnoucement(messages, 3));
+    }
+
+    public IEnumerator WaitForNumberInput(PlayerController player)
+    {
+        
+        while (!hasBet)
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                if (Input.GetKeyDown(i.ToString()) && i <= player.energyPoints)
+                {
+                    hasBet = true;
+                    energyBet = i;
+                }
+            }
+            yield return null;
+        }
+    }
+
+    public IEnumerator WaitForWinnerAnnoucement(string[] messages, float seconds)
+    {
+        foreach (string message in messages)
+        {
+            uiManager.PrintBigNews(message);
+            yield return new WaitForSeconds(seconds);
+        }
+    }
+
+    public List<AgentPosition> FindPointsInRange(int range, PlayerController player)
+    {
+        List<AgentPosition> pointsInRange = new List<AgentPosition>();
+
+        if (range > 0)
+        {
+            pointsInRange.Add(new AgentPosition(player.currentWayPoint, range));
+        }
+
+        for (int i = 0; i < pointsInRange.Count; i++)
+        {
+            if (!pointsInRange[i].isChecked)
+            {
+                if (pointsInRange[i].moves > 0)
+                {
+                    foreach (Vector3 destination in pointsInRange[i].point.possibleDestinations)
+                    {
+                        pointsInRange.Add(new AgentPosition(gridReference.GetPointFromWorldPosition(destination), pointsInRange[i].moves - 1));
+                    }
+                }
+                pointsInRange[i].isChecked = true;
+            }
+        }
+
+        return pointsInRange;
+    }
+
+    public List<PlayerController> FindPlayersInRange(int range, PlayerController player)
+    {
+        List<PlayerController> playersInRange = new List<PlayerController>();
+
+        List<AgentPosition> pointsInRange = FindPointsInRange(range, player);
+
+        foreach (AgentPosition agent in pointsInRange)
+        {
+            foreach (PlayerController _player in players)
+            {
+                if (agent.point == _player.currentWayPoint && player != _player)
+                {
+                    playersInRange.Add(_player);
+                }
+            }
+        }
+
+        return playersInRange;
+    }
+}
+
+public class AgentPosition
+
+{
+    public Point point;
+    //mosse rimaste
+    public int moves;
+    public bool isChecked;
+
+    public AgentPosition(Point _point, int _moves)
+    {
+        point = _point;
+        moves = _moves;
+        isChecked = false;
+    }
 }

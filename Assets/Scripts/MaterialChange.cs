@@ -7,7 +7,6 @@ public class MaterialChange : MonoBehaviour {
     MeshRenderer myRenderer;
     GameManager gameManager;
 
-    public Material newMaterial;
     Color originalColor;
 
 	void Awake () {
@@ -15,6 +14,27 @@ public class MaterialChange : MonoBehaviour {
         myRenderer = GetComponent<MeshRenderer>();
         originalColor = myRenderer.material.color;
     }
+
+    //private void Update()
+    //{
+    //    isInRange = false;
+    //    foreach (AgentPosition agent in gameManager.currentActivePlayer.pointsInRange)
+    //    {
+    //        if (transform.position == agent.point.worldPosition)
+    //        {
+    //            isInRange = true;
+    //        }
+    //    }
+
+    //    if (isInRange)
+    //    {
+    //        myRenderer.material.color = Color.black;
+    //    }
+    //    else
+    //    {
+    //        myRenderer.material.color = originalColor;
+    //    }
+    //}
 
     private void OnMouseEnter()
     {
@@ -25,7 +45,7 @@ public class MaterialChange : MonoBehaviour {
         if (gameManager.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) && gameManager.currentActivePlayer.possibleMoves != 0)
         {
             myRenderer.material.color = Color.green;
-        }else
+        }else if(gameManager.currentActivePlayer.currentState != PlayerController.State.moving)
         {
             myRenderer.material.color = Color.red;
         }
