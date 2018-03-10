@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     public CameraBehaviour mainCamera;
 
     int energyBet;
-    bool hasBet;
+    bool hasBet, winnerAnnounced;
 
     string bottomLeftMsg;
 
@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
         return moves;
     }
 
-    //Called when clickin card buttons
+    //called when clickin card buttons
     public void CurrentPlayerSelect(int index)
     {
         currentActivePlayer.SelectCard(index);
@@ -167,16 +167,34 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.currentState = PlayerController.State.idle;
     }
 
+    //called when clicking bet button
     public void SetCurrenPlayerBet()
     {
+        currentActivePlayer.previousState = currentActivePlayer.currentState;
         currentActivePlayer.currentState = PlayerController.State.bet;
+    }
+
+    //called when clicking undo movement button
+    public void UndoMoveCurrentPlayer()
+    {
+        currentActivePlayer.possibleMoves = currentActivePlayer.turnStartMoves;
+        currentActivePlayer.MoveToPoint(currentActivePlayer.turnStartPoint);
+        currentActivePlayer.currentWayPoint = currentActivePlayer.turnStartPoint;
+        currentActivePlayer.currentState = PlayerController.State.moving;
+        uiManager.ToggleUndoMoves(currentActivePlayer);
+    }
+
+    public void Win(PlayerController player)
+    {
+        uiManager.Win(player);
     }
 
     public IEnumerator Bet(PlayerController attacker, PlayerController defender)
     {
         int attackerBet, defenderBet;
         string announcement;
-        string[] messages = { "The winner is...", null, null};
+        bool atkWon = false;
+        string[] messages = { "The winner is...", null};
 
         while(!hasBet)
         {
@@ -198,14 +216,14 @@ public class GameManager : MonoBehaviour
         }
 
         defenderBet = energyBet;
+        hasBet = false;
 
         if (attackerBet > defenderBet)
         {
             announcement = attacker.name + "!! \nCongratulations!";
             attacker.energyPoints -= attackerBet;
             defender.energyPoints -= defenderBet;
-            attacker.victoryPoints++;
-            defender.victoryPoints--;
+            atkWon = true;
         }
         else
         if (attackerBet < defenderBet)
@@ -213,15 +231,22 @@ public class GameManager : MonoBehaviour
             announcement = defender.name + "!! \nCongratulations!";
             attacker.energyPoints -= attackerBet;
             defender.energyPoints -= defenderBet;
-            attacker.victoryPoints--;
-            defender.victoryPoints++;
         }   
         else
             announcement = "Noone! It's a Draw!";
 
         messages[1] = announcement;
 
-        StartCoroutine(WaitForWinnerAnnoucement(messages, 3));
+        while(!winnerAnnounced)
+            yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 3));
+
+        uiManager.PrintBigNews(null);
+        attacker.victoryPoints++;
+        defender.victoryPoints--;
+
+        winnerAnnounced = false;
+        attacker.currentState = attacker.previousState;
+        attacker.isBetting = false;
     }
 
     public IEnumerator WaitForNumberInput(PlayerController player)
@@ -248,6 +273,7 @@ public class GameManager : MonoBehaviour
             uiManager.PrintBigNews(message);
             yield return new WaitForSeconds(seconds);
         }
+        winnerAnnounced = true;
     }
 
     public List<AgentPosition> FindPointsInRange(int range, PlayerController player)

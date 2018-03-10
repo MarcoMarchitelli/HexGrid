@@ -10,10 +10,12 @@ public class PlayerController : MonoBehaviour
     public string name;
     [HideInInspector]
     public Point startingWayPoint;
-    public Point currentWayPoint;
+    public Point currentWayPoint, turnStartPoint;
     public State currentState = State.idle;
     [HideInInspector]
-    public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3;
+    public State previousState;
+    [HideInInspector]
+    public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3, turnStartMoves;
     [HideInInspector]
     public bool hasUsedAbility, isBetting;
 
@@ -22,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public CardController selectedCard;
     Hexagon lastSelectedHex;
 
-    List<PlayerController> playersToRob = new List<PlayerController>();
+    public List<PlayerController> playersToRob = new List<PlayerController>();
 
     public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
 
@@ -59,11 +61,13 @@ public class PlayerController : MonoBehaviour
 
             case State.start:
                 possibleMoves = gameManager.NumberOfPossiblesMoves(this);
-                currentState = State.moving;
+                turnStartMoves = possibleMoves;
+                turnStartPoint = currentWayPoint;
                 hasUsedAbility = false;
                 energyPoints++;
                 energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
-                ToggleBet();
+                gameManager.uiManager.ToggleBet(this);
+                currentState = State.moving;
                 break;
 
             case State.moving:
@@ -93,15 +97,28 @@ public class PlayerController : MonoBehaviour
                                 {
                                     transform.parent.position = pointHit.worldPosition + Vector3.up * .7f;
                                     currentWayPoint = pointHit;
+
                                     if (currentWayPoint.isFinalWaypoint && isMyColor(currentWayPoint))
                                         energyPoints++;
 
-                                    if (currentWayPoint.type == Point.Type.purple || currentWayPoint.type == Point.Type.win)
+                                    if (currentWayPoint.type == Point.Type.purple)
+                                    {
                                         possibleMoves = 0;
+                                    }
+                                    else
+                                        if (currentWayPoint.type == Point.Type.win)
+                                        {
+                                            possibleMoves = 0;
+                                            if (victoryPoints >= 5)
+                                            {
+                                                gameManager.Win(this);
+                                            }
+                                        }
                                     else
                                         possibleMoves--;
 
-                                    ToggleBet();
+                                    gameManager.uiManager.ToggleBet(this);
+                                    gameManager.uiManager.ToggleUndoMoves(this);
                                 }
                                 CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                             }
@@ -231,12 +248,12 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.bet:
-                
+
                 if (!isBetting)
                 {
                     RaycastHit betHitInfo;
 
-                    gameManager.uiManager.PrintLeft("Select a player to attack.");
+                    gameManager.uiManager.PrintLeft("Select a player to attack.\nRightclick to undo.");
 
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out betHitInfo, 100, playerLayer))
                     {
@@ -249,6 +266,12 @@ public class PlayerController : MonoBehaviour
                             StartCoroutine(gameManager.Bet(this, playerHit));
                             isBetting = true;
                         }
+                    }
+
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        currentState = previousState;
+                        isBetting = false;
                     }
                 }
 
@@ -273,23 +296,6 @@ public class PlayerController : MonoBehaviour
         selectedCard = null;
     }
 
-    public void ToggleBet()
-    {
-        playersToRob = gameManager.FindPlayersInRange(2, this);
-
-        if (playersToRob.Count == 0)
-        {
-            gameManager.uiManager.betButton.enabled = false;
-            gameManager.uiManager.betButton.image.color = Color.red;
-        }
-        else if (playersToRob.Count > 0)
-        {
-            gameManager.uiManager.betButton.enabled = true;
-            gameManager.uiManager.betButton.image.color = Color.green;
-        }
-
-    }
-
     public bool isMyColor(Point point)
     {
 
@@ -303,5 +309,10 @@ public class PlayerController : MonoBehaviour
             return true;
 
         return false;
+    }
+
+    public void MoveToPoint(Point point)
+    {
+        transform.parent.position = point.worldPosition + Vector3.up * .7f;
     }
 }

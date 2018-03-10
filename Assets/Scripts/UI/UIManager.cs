@@ -7,12 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-
     public TextMeshProUGUI topBigSection, leftMediumSection, bigCentralSection;
+
+    public GameObject winOverlay;
 
     public GameObject[] cardButtons;
 
-    public Button betButton;
+    public Button betButton, undoMovesButton;
 
     GameManager gameManager;
 
@@ -39,6 +40,38 @@ public class UIManager : MonoBehaviour
     public void PrintBigNews(string msg)
     {
         bigCentralSection.text = msg;
+    }
+
+    public void ToggleBet(PlayerController player)
+    {
+        player.playersToRob = gameManager.FindPlayersInRange(2, gameManager.currentActivePlayer);
+
+        if (player.playersToRob.Count == 0)
+        {
+            betButton.enabled = false;
+            betButton.image.color = Color.red;
+        }
+        else if (player.playersToRob.Count > 0)
+        {
+            betButton.enabled = true;
+            betButton.image.color = Color.green;
+        }
+
+    }
+
+    public void ToggleUndoMoves(PlayerController player)
+    {
+        if (player.possibleMoves != player.turnStartMoves)
+        {
+            undoMovesButton.enabled = true;
+            undoMovesButton.image.color = Color.green;
+        }
+        else
+            if (player.possibleMoves == player.turnStartMoves)
+        {
+            undoMovesButton.enabled = false;
+            undoMovesButton.image.color = Color.red;
+        }
     }
 
     public void DisplayHand(PlayerController activePlayer)
@@ -68,12 +101,18 @@ public class UIManager : MonoBehaviour
         {
             for (int i = 0; i < cardButtons.Length; i++)
             {
-                if(activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
+                if (activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
                 {
                     cardButtons[i].GetComponent<Button>().enabled = true;
-                } 
+                }
             }
         }
+    }
+
+    public void Win(PlayerController player)
+    {
+        winOverlay.SetActive(true);
+        winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.name + " Wins !";
     }
 
     public void Restart()
