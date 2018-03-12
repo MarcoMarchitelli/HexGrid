@@ -7,13 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    #region Public Variables
+
     public TextMeshProUGUI topBigSection, leftMediumSection, bigCentralSection;
-
     public GameObject winOverlay;
-
     public GameObject[] cardButtons;
-
     public Button betButton, undoMovesButton;
+
+    #endregion
 
     GameManager gameManager;
 
@@ -26,6 +27,8 @@ public class UIManager : MonoBehaviour
     {
         DisplayHand(gameManager.currentActivePlayer);
     }
+
+    #region Print Functions
 
     public void PrintTop(string msg)
     {
@@ -41,6 +44,10 @@ public class UIManager : MonoBehaviour
     {
         bigCentralSection.text = msg;
     }
+
+    #endregion
+
+    #region Button Toggle Functions
 
     public void ToggleBet(PlayerController player)
     {
@@ -61,13 +68,13 @@ public class UIManager : MonoBehaviour
 
     public void ToggleUndoMoves(PlayerController player)
     {
-        if (player.possibleMoves != player.turnStartMoves)
+        if (player.possibleMoves != player.turnStartMoves && player.currentState == PlayerController.State.moving)
         {
             undoMovesButton.enabled = true;
             undoMovesButton.image.color = Color.green;
         }
         else
-            if (player.possibleMoves == player.turnStartMoves)
+            if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.currentState == PlayerController.State.bet || player.currentState == PlayerController.State.card)
         {
             undoMovesButton.enabled = false;
             undoMovesButton.image.color = Color.red;
@@ -108,6 +115,8 @@ public class UIManager : MonoBehaviour
             }
         }
     }
+
+    #endregion
 
     public void Win(PlayerController player)
     {

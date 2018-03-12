@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour
 
     GameManager gameManager;
 
+    #region Public Variables
+
     public string name;
     [HideInInspector]
     public Point startingWayPoint;
@@ -18,16 +20,15 @@ public class PlayerController : MonoBehaviour
     public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3, turnStartMoves;
     [HideInInspector]
     public bool hasUsedAbility, isBetting;
-
     public Transform[] cards;
     [HideInInspector]
     public CardController selectedCard;
-    Hexagon lastSelectedHex;
-
     public List<PlayerController> playersToRob = new List<PlayerController>();
-
     public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
 
+    #endregion
+
+    Hexagon lastSelectedHex;
     string bottomLeftMsg;
 
     public enum State
@@ -60,6 +61,8 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case State.start:
+
+                #region Start
                 possibleMoves = gameManager.NumberOfPossiblesMoves(this);
                 turnStartMoves = possibleMoves;
                 turnStartPoint = currentWayPoint;
@@ -68,9 +71,14 @@ public class PlayerController : MonoBehaviour
                 energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
                 gameManager.uiManager.ToggleBet(this);
                 currentState = State.moving;
+                #endregion
+
                 break;
 
             case State.moving:
+
+                #region Moving
+                gameManager.uiManager.ToggleUndoMoves(this);
 
                 bottomLeftMsg = "You have " + possibleMoves + " moves remaining!";
                 gameManager.uiManager.PrintLeft(bottomLeftMsg);
@@ -80,6 +88,7 @@ public class PlayerController : MonoBehaviour
                     currentState = State.card;
                 }
 
+                
                 RaycastHit hitInfo;
 
                 //moving ray
@@ -137,17 +146,20 @@ public class PlayerController : MonoBehaviour
 
                         if (selectedCard && selectedCard.state == CardController.State.placed)
                         {
+                            gameManager.uiManager.ToggleUndoMoves(this);
                             selectedCard.state = CardController.State.selectedFromMap;
                             currentState = State.card;
                             selectedCard.FreePaths(selectedCard.hexImOn);
                         }
                     }
                 }
+                #endregion
 
                 break;
 
             case State.card:
 
+                #region Card
                 if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromHand)
                 {
                     bottomLeftMsg = "Use A/D to rotate the card. \nLeftclick to place it. \nRightclick to undo.";
@@ -174,6 +186,7 @@ public class PlayerController : MonoBehaviour
                 //Se ho carta selezionata. E se l'ho selezionata da mano -->
                 if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasUsedAbility)
                 {
+                    gameManager.uiManager.ToggleUndoMoves(this);
                     //(PLACE)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, hexLayer))
                     {
@@ -204,6 +217,7 @@ public class PlayerController : MonoBehaviour
                 //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
                 if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !hasUsedAbility)
                 {
+                    gameManager.uiManager.ToggleUndoMoves(this);
                     //(PLACE)
                     if (Input.GetMouseButtonDown(0))
                     {
@@ -239,16 +253,19 @@ public class PlayerController : MonoBehaviour
                     {
                         if (Input.GetMouseButtonDown(0))
                         {
+                            gameManager.uiManager.ToggleUndoMoves(this);
                             selectedCard = selectingHitInfo.collider.GetComponentInParent<CardController>();
                             selectedCard.state = CardController.State.selectedFromMap;
                         }
                     }
                 }
+                #endregion
 
                 break;
 
             case State.bet:
 
+                #region Bet
                 if (!isBetting)
                 {
                     RaycastHit betHitInfo;
@@ -274,11 +291,13 @@ public class PlayerController : MonoBehaviour
                         isBetting = false;
                     }
                 }
+                #endregion
 
                 break;
         }
     }
 
+    #region Card Selection
     public void SelectCard(int index)
     {
         selectedCard = cards[index].GetComponent<CardController>();
@@ -295,6 +314,7 @@ public class PlayerController : MonoBehaviour
         selectedCard.transform.position = MyData.prefabsPosition;
         selectedCard = null;
     }
+    #endregion
 
     public bool isMyColor(Point point)
     {
