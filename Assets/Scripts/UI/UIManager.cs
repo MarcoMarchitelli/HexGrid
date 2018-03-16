@@ -53,12 +53,12 @@ public class UIManager : MonoBehaviour
     {
         player.playersToRob = gameManager.FindPlayersInRange(2, gameManager.currentActivePlayer);
 
-        if (player.playersToRob.Count == 0)
+        if (player.playersToRob.Count == 0 || player.hasBet)
         {
             betButton.enabled = false;
             betButton.image.color = Color.red;
         }
-        else if (player.playersToRob.Count > 0)
+        else if (player.playersToRob.Count > 0 && !player.hasBet)
         {
             betButton.enabled = true;
             betButton.image.color = Color.green;

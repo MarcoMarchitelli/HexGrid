@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3, turnStartMoves;
     [HideInInspector]
-    public bool hasUsedAbility, isBetting;
+    public bool hasUsedAbility, hasBet;
     public Transform[] cards;
     [HideInInspector]
     public CardController selectedCard;
@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviour
                 turnStartMoves = possibleMoves;
                 turnStartPoint = currentWayPoint;
                 hasUsedAbility = false;
+                hasBet = false;
                 energyPoints++;
                 energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
                 gameManager.uiManager.ToggleBet(this);
@@ -144,7 +145,7 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard = cardHitInfo.collider.GetComponentInParent<CardController>();
 
-                        if (selectedCard && selectedCard.state == CardController.State.placed)
+                        if (selectedCard && selectedCard.state == CardController.State.placed && currentWayPoint.nearHexagons.Contains(selectedCard.hexImOn))
                         {
                             gameManager.uiManager.ToggleUndoMoves(this);
                             selectedCard.state = CardController.State.selectedFromMap;
@@ -266,7 +267,7 @@ public class PlayerController : MonoBehaviour
             case State.bet:
 
                 #region Bet
-                if (!isBetting)
+                if (!hasBet)
                 {
                     RaycastHit betHitInfo;
 
@@ -281,14 +282,12 @@ public class PlayerController : MonoBehaviour
                         if (Input.GetMouseButtonDown(0) && playerHit && playersToRob.Contains(playerHit))
                         {
                             StartCoroutine(gameManager.Bet(this, playerHit));
-                            isBetting = true;
                         }
                     }
 
                     if (Input.GetMouseButtonDown(1))
                     {
                         currentState = previousState;
-                        isBetting = false;
                     }
                 }
                 #endregion

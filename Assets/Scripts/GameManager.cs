@@ -241,12 +241,16 @@ public class GameManager : MonoBehaviour
             yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 3));
 
         uiManager.PrintBigNews(null);
-        attacker.victoryPoints++;
-        defender.victoryPoints--;
+        if (atkWon)
+        {
+            attacker.victoryPoints++;
+            defender.victoryPoints--;
+        }
 
         winnerAnnounced = false;
         attacker.currentState = attacker.previousState;
-        attacker.isBetting = false;
+        attacker.hasBet = true;
+        uiManager.ToggleBet(attacker);
     }
 
     public IEnumerator WaitForNumberInput(PlayerController player)
