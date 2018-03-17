@@ -9,7 +9,7 @@ public class UIManager : MonoBehaviour
 {
     #region Public Variables
 
-    public TextMeshProUGUI topBigSection, leftMediumSection, bigCentralSection;
+    public TextMeshProUGUI topLeftSection, topRightSection, leftMediumSection, bigCentralSection;
     public GameObject winOverlay;
     public GameObject[] cardButtons;
     public Button betButton, undoMovesButton;
@@ -30,9 +30,14 @@ public class UIManager : MonoBehaviour
 
     #region Print Functions
 
-    public void PrintTop(string msg)
+    public void PrintTopLeft(string msg)
     {
-        topBigSection.text = msg;
+        topLeftSection.text = msg;
+    }
+
+    public void PrintTopRight(string msg)
+    {
+        topRightSection.text = msg;
     }
 
     public void PrintLeft(string msg)
@@ -51,17 +56,19 @@ public class UIManager : MonoBehaviour
 
     public void ToggleBet(PlayerController player)
     {
-        player.playersToRob = gameManager.FindPlayersInRange(2, gameManager.currentActivePlayer);
+        player.playersToRob = gameManager.FindPlayersInRange(2, player);
 
         if (player.playersToRob.Count == 0 || player.hasBet)
         {
             betButton.enabled = false;
             betButton.image.color = Color.red;
+            player.canBet = false;
         }
         else if (player.playersToRob.Count > 0 && !player.hasBet)
         {
             betButton.enabled = true;
             betButton.image.color = Color.green;
+            player.canBet = true;
         }
 
     }
@@ -121,7 +128,7 @@ public class UIManager : MonoBehaviour
     public void Win(PlayerController player)
     {
         winOverlay.SetActive(true);
-        winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.name + " Wins !";
+        winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.type.ToString() + " Wins !";
     }
 
     public void Restart()

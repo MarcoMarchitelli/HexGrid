@@ -10,12 +10,13 @@ public class GameManager : MonoBehaviour
     public HexGridCreator gridReference;
 
     [HideInInspector]
+    public EFM efm;
+    [HideInInspector]
     public PlayerController currentActivePlayer;
-
     [HideInInspector]
     public CameraBehaviour mainCamera;
 
-    int energyBet;
+    int energyBet, turnCount = 1;
     bool hasBet, winnerAnnounced;
 
     string bottomLeftMsg;
@@ -24,12 +25,15 @@ public class GameManager : MonoBehaviour
     {
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
+        efm = FindObjectOfType<EFM>();
         InstantiatePlayers();
         players[0].currentState = PlayerController.State.start;
         currentActivePlayer = players[0];
         mainCamera.SetTransform(currentActivePlayer);
-        string msg = "It's the " + currentActivePlayer.name + " player's turn.";
-        uiManager.PrintTop(msg);
+        string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
+        uiManager.PrintTopLeft(msg);
+        msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+        uiManager.PrintTopRight(msg);
     }
 
     void Update()
@@ -43,16 +47,24 @@ public class GameManager : MonoBehaviour
                     players[i + 1].currentState = PlayerController.State.start;
                     currentActivePlayer = players[i + 1];
                     mainCamera.SetTransform(currentActivePlayer);
-                    string msg = "It's the " + currentActivePlayer.name + " player's turn.";
-                    uiManager.PrintTop(msg);
+                    string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
+                    uiManager.PrintTopLeft(msg);
+                    turnCount++;
+                    efm.ChangePhase(turnCount);
+                    msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    uiManager.PrintTopRight(msg);
                 }
                 else
                 {
                     players[0].currentState = PlayerController.State.start;
                     currentActivePlayer = players[0];
                     mainCamera.SetTransform(currentActivePlayer);
-                    string msg = "It's the " + currentActivePlayer.name + " player's turn.";
-                    uiManager.PrintTop(msg);
+                    string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
+                    uiManager.PrintTopLeft(msg);
+                    turnCount++;
+                    efm.ChangePhase(turnCount);
+                    msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    uiManager.PrintTopRight(msg);
                 }
             }
         }
@@ -62,26 +74,26 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < players.Length; i++)
         {
-            switch (players[i].name)
+            switch (players[i].type)
             {
-                case "red":
+                case PlayerController.Type.underground:
                     Point redStart = gridReference.GetPointFromCoords((int)MyData.startingRedPoint.x, (int)MyData.startingRedPoint.y);
-                    players[i].transform.parent.position = redStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.position = redStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = redStart;
                     break;
-                case "yellow":
+                case PlayerController.Type.hypogeum:
                     Point yellowStart = gridReference.GetPointFromCoords((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y);
-                    players[i].transform.parent.position = yellowStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.position = yellowStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = yellowStart;
                     break;
-                case "blue":
+                case PlayerController.Type.underwater:
                     Point blueStart = gridReference.GetPointFromCoords((int)MyData.startingBluePoint.x, (int)MyData.startingBluePoint.y);
-                    players[i].transform.parent.position = blueStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.position = blueStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = blueStart;
                     break;
-                case "green":
+                case PlayerController.Type.forest:
                     Point greenStart = gridReference.GetPointFromCoords((int)MyData.startingGreenPoint.x, (int)MyData.startingGreenPoint.y);
-                    players[i].transform.parent.position = greenStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.position = greenStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = greenStart;
                     break;
             }
@@ -92,62 +104,62 @@ public class GameManager : MonoBehaviour
     {
         int moves = 4;
 
-        if (player.name == "yellow" && player.currentWayPoint.type == Point.Type.yellow)
+        if (player.type == PlayerController.Type.hypogeum && player.currentWayPoint.type == Point.Type.hypogeum)
         {
             for (int i = 0; i < players.Length; i++)
             {
-                if (players[i].name != "yellow" && players[i].currentWayPoint.type == Point.Type.yellow)
+                if (players[i].type != PlayerController.Type.hypogeum && players[i].currentWayPoint.type == Point.Type.hypogeum)
                 {
                     moves = 3;
                 }
             }
         }
-        else if (player.name == "yellow" && player.currentWayPoint.type != Point.Type.yellow)
+        else if (player.type == PlayerController.Type.hypogeum && player.currentWayPoint.type != Point.Type.hypogeum)
         {
             moves = 3;
         }
 
-        if (player.name == "green" && player.currentWayPoint.type == Point.Type.green)
+        if (player.type == PlayerController.Type.forest && player.currentWayPoint.type == Point.Type.forest)
         {
             for (int i = 0; i < players.Length; i++)
             {
-                if (players[i].name != "green" && players[i].currentWayPoint.type == Point.Type.green)
+                if (players[i].type != PlayerController.Type.forest && players[i].currentWayPoint.type == Point.Type.forest)
                 {
                     moves = 3;
                 }
             }
         }
-        else if (player.name == "green" && player.currentWayPoint.type != Point.Type.green)
+        else if (player.type == PlayerController.Type.forest && player.currentWayPoint.type != Point.Type.forest)
         {
             moves = 3;
         }
 
-        if (player.name == "blue" && player.currentWayPoint.type == Point.Type.blue)
+        if (player.type == PlayerController.Type.underwater && player.currentWayPoint.type == Point.Type.underwater)
         {
             for (int i = 0; i < players.Length; i++)
             {
-                if (players[i].name != "blue" && players[i].currentWayPoint.type == Point.Type.blue)
+                if (players[i].type != PlayerController.Type.underwater && players[i].currentWayPoint.type == Point.Type.underwater)
                 {
                     moves = 3;
                 }
             }
         }
-        else if (player.name == "blue" && player.currentWayPoint.type != Point.Type.blue)
+        else if (player.type == PlayerController.Type.underwater && player.currentWayPoint.type != Point.Type.underwater)
         {
             moves = 3;
         }
 
-        if (player.name == "red" && player.currentWayPoint.type == Point.Type.red)
+        if (player.type == PlayerController.Type.underground && player.currentWayPoint.type == Point.Type.underground)
         {
             for (int i = 0; i < players.Length; i++)
             {
-                if (players[i].name != "red" && players[i].currentWayPoint.type == Point.Type.red)
+                if (players[i].type != PlayerController.Type.underground && players[i].currentWayPoint.type == Point.Type.underground)
                 {
                     moves = 3;
                 }
             }
         }
-        else if (player.name == "red" && player.currentWayPoint.type != Point.Type.red)
+        else if (player.type == PlayerController.Type.underground && player.currentWayPoint.type != Point.Type.underground)
         {
             moves = 3;
         }
@@ -191,14 +203,14 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator Bet(PlayerController attacker, PlayerController defender)
     {
-        int attackerBet, defenderBet;
+        int attackerBet, defenderBet, modifiersID;
         string announcement;
         bool atkWon = false;
         string[] messages = { "The winner is...", null};
 
         while(!hasBet)
         {
-            uiManager.PrintBigNews("It's " + attacker.name + "'s time to bet !");
+            uiManager.PrintBigNews("It's " + attacker.type.ToString() + "'s time to bet !");
             uiManager.PrintLeft("Enter a number to bet some energy.");
 
             yield return StartCoroutine(WaitForNumberInput(attacker));
@@ -209,7 +221,7 @@ public class GameManager : MonoBehaviour
 
         while (!hasBet)
         {
-            uiManager.PrintBigNews("It's " + defender.name + "'s time to bet !");
+            uiManager.PrintBigNews("It's " + defender.type.ToString() + "'s time to bet !");
             uiManager.PrintLeft("Enter a number to bet some energy.");
 
             yield return StartCoroutine(WaitForNumberInput(defender));
@@ -220,7 +232,7 @@ public class GameManager : MonoBehaviour
 
         if (attackerBet > defenderBet)
         {
-            announcement = attacker.name + "!! \nCongratulations!";
+            announcement = attacker.type.ToString() + "!! \nCongratulations!";
             attacker.energyPoints -= attackerBet;
             defender.energyPoints -= defenderBet;
             atkWon = true;
@@ -228,7 +240,7 @@ public class GameManager : MonoBehaviour
         else
         if (attackerBet < defenderBet)
         {
-            announcement = defender.name + "!! \nCongratulations!";
+            announcement = defender.type.ToString() + "!! \nCongratulations!";
             attacker.energyPoints -= attackerBet;
             defender.energyPoints -= defenderBet;
         }   

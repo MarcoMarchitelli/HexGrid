@@ -16,7 +16,7 @@ public class Point{
 
     public enum Type
     {
-        blue, red, green, yellow, grey, purple, win
+        underwater, underground, forest, hypogeum, grey, purple, win
     }
 
     public Point(int _x, int _y, Vector3 _worldPosition)
@@ -55,17 +55,17 @@ public class Point{
             case 0:
                 if (x == 4 || x == 6)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 if (x == 8 || x == 10)
                 {
-                    type = Type.blue;
+                    type = Type.underwater;
                 }
                 break;
             case 1:
                 if (x == 5)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 if (x == 7)
                 {
@@ -73,13 +73,13 @@ public class Point{
                 }
                 if (x == 9)
                 {
-                    type = Type.blue;
+                    type = Type.underwater;
                 }
                 break;
             case 2:
                 if (x == 3 || x == 5)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 if (x == 7)
                 {
@@ -87,33 +87,33 @@ public class Point{
                 }
                 if (x == 9 || x == 11)
                 {
-                    type = Type.blue;
+                    type = Type.underwater;
                 }
                 break;
             case 3:
                 if (x == 4 || x == 6)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 if (x == 8 || x == 10)
                 {
-                    type = Type.blue;
+                    type = Type.underwater;
                 }
                 break;
             case 4:
                 if (x == 2 || x == 4 || x == 6)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 if (x == 8 || x == 10 || x == 12)
                 {
-                    type = Type.blue;
+                    type = Type.underwater;
                 }
                 break;
             case 5:
                 if (x == 3 || x == 5)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 if (x == 7)
                 {
@@ -121,17 +121,17 @@ public class Point{
                 }
                 if (x == 9 || x == 11)
                 {
-                    type = Type.blue;
+                    type = Type.underwater;
                 }
                 break;
             case 6:
                 if (x == 1 || x == 5 || x == 3)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 if (x == 9 || x == 11 || x == 13)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 7)
                 {
@@ -145,11 +145,11 @@ public class Point{
                 }
                 if (x == 10)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 4)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 break;
             case 8:
@@ -159,13 +159,13 @@ public class Point{
                 }
                 if (x == 10)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 break;
             case 9:
                 if (x == 9 || x == 11 || x == 13)
                 {
-                    type = Type.yellow;
+                    type = Type.hypogeum;
                 }
                 if (x == 7)
                 {
@@ -175,7 +175,7 @@ public class Point{
             case 10:
                 if (x == 3 || x == 5)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 7)
                 {
@@ -183,33 +183,33 @@ public class Point{
                 }
                 if (x == 9 || x == 11)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 break;
             case 11:
                 if (x == 2 || x == 4 || x == 6)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 8 || x == 10 || x == 12)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 break;
             case 12:
                 if (x == 4 || x == 6)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 8 || x == 10)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 break;
             case 13:
                 if (x == 3 || x == 5)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 7)
                 {
@@ -217,13 +217,13 @@ public class Point{
                 }
                 if (x == 9 || x == 11)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 break;
             case 14:
                 if (x == 5)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 7)
                 {
@@ -231,17 +231,17 @@ public class Point{
                 }
                 if (x == 9)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 break;
             case 15:
                 if (x == 4 || x == 6)
                 {
-                    type = Type.red;
+                    type = Type.underground;
                 }
                 if (x == 8 || x == 10)
                 {
-                    type = Type.green;
+                    type = Type.forest;
                 }
                 break;
         }

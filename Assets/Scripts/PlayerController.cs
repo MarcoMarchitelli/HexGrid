@@ -5,11 +5,23 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+    // yellow = hypogeum, blue = underwater, green = forest, red = underground
+
     GameManager gameManager;
+
+    public enum Type
+    {
+        hypogeum, underwater, forest, underground
+    }
+
+    public enum State
+    {
+        idle, start, moving, card, bet
+    }
 
     #region Public Variables
 
-    public string name;
+    public Type type, weaknessType, strenghtType;
     [HideInInspector]
     public Point startingWayPoint;
     public Point currentWayPoint, turnStartPoint;
@@ -19,7 +31,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3, turnStartMoves;
     [HideInInspector]
-    public bool hasUsedAbility, hasBet;
+    public bool hasUsedAbility, hasBet, canBet;
     public Transform[] cards;
     [HideInInspector]
     public CardController selectedCard;
@@ -31,15 +43,10 @@ public class PlayerController : MonoBehaviour
     Hexagon lastSelectedHex;
     string bottomLeftMsg;
 
-    public enum State
-    {
-        idle, start, moving, card, bet
-    }
-
     void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
-        Transform cardsParent = GameObject.Find(name + "PlayerCards").transform;
+        Transform cardsParent = GameObject.Find(type.ToString() + "PlayerCards").transform;
         cards = new Transform[cardsParent.childCount];
         for (int i = 0; i < cardsParent.transform.childCount; i++)
         {
@@ -71,6 +78,7 @@ public class PlayerController : MonoBehaviour
                 energyPoints++;
                 energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
                 gameManager.uiManager.ToggleBet(this);
+                gameManager.uiManager.ToggleUndoMoves(this);
                 currentState = State.moving;
                 #endregion
 
@@ -79,17 +87,23 @@ public class PlayerController : MonoBehaviour
             case State.moving:
 
                 #region Moving
-                gameManager.uiManager.ToggleUndoMoves(this);
 
+                #region Instructions Message
                 bottomLeftMsg = "You have " + possibleMoves + " moves remaining!";
+
+                if (canBet)
+                {
+                    bottomLeftMsg += "\nAnd you can bet!";
+                }
+
                 gameManager.uiManager.PrintLeft(bottomLeftMsg);
+                #endregion
 
                 if (possibleMoves <= 0)
                 {
                     currentState = State.card;
                 }
 
-                
                 RaycastHit hitInfo;
 
                 //moving ray
@@ -105,7 +119,7 @@ public class PlayerController : MonoBehaviour
                             {
                                 if (possibleMoves > 0)
                                 {
-                                    transform.parent.position = pointHit.worldPosition + Vector3.up * .7f;
+                                    transform.position = pointHit.worldPosition + Vector3.up * .7f;
                                     currentWayPoint = pointHit;
 
                                     if (currentWayPoint.isFinalWaypoint && isMyColor(currentWayPoint))
@@ -161,6 +175,8 @@ public class PlayerController : MonoBehaviour
             case State.card:
 
                 #region Card
+
+                #region Instructions Change
                 if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromHand)
                 {
                     bottomLeftMsg = "Use A/D to rotate the card. \nLeftclick to place it. \nRightclick to undo.";
@@ -176,11 +192,17 @@ public class PlayerController : MonoBehaviour
                     bottomLeftMsg = "Select a card from your hand,\nor from the map.";
                 }
                 else
+                if(canBet)
+                {
+                    bottomLeftMsg = "You can bet!";
+                }
+                else
                 {
                     bottomLeftMsg = "You've ended your actions for this turn. \nLet the other players have fun too!";
                 }
 
                 gameManager.uiManager.PrintLeft(bottomLeftMsg);
+                #endregion
 
                 RaycastHit placingHitInfo;
 
@@ -201,6 +223,7 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedCard.Place(hexHit);
                                     hasUsedAbility = true;
+                                    gameManager.uiManager.ToggleBet(this);
                                 }
                             }
                         }
@@ -224,6 +247,7 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard.Place(selectedCard.hexImOn);
                         hasUsedAbility = true;
+                        gameManager.uiManager.ToggleBet(this);
                     }
 
                     //(UNDO)
@@ -241,12 +265,13 @@ public class PlayerController : MonoBehaviour
                     {
                         UnselectCard();
                         hasUsedAbility = true;
+                        gameManager.uiManager.ToggleBet(this);
                     }
                 }
 
                 RaycastHit selectingHitInfo;
 
-                //Se non ho carta selezionata. Quindi l'ho selezionata dalla mappa -->
+                //Se non ho carta selezionata. Quindi la seleziono dalla mappa -->
                 if (!selectedCard)
                 {
                     //(SELECT)
@@ -257,6 +282,7 @@ public class PlayerController : MonoBehaviour
                             gameManager.uiManager.ToggleUndoMoves(this);
                             selectedCard = selectingHitInfo.collider.GetComponentInParent<CardController>();
                             selectedCard.state = CardController.State.selectedFromMap;
+                            selectedCard.FreePaths(selectedCard.hexImOn);
                         }
                     }
                 }
@@ -318,13 +344,13 @@ public class PlayerController : MonoBehaviour
     public bool isMyColor(Point point)
     {
 
-        if (name == "yellow" && point.type == Point.Type.yellow)
+        if (type == Type.hypogeum && point.type == Point.Type.hypogeum)
             return true;
-        if (name == "green" && point.type == Point.Type.green)
+        if (type == Type.forest && point.type == Point.Type.forest)
             return true;
-        if (name == "blue" && point.type == Point.Type.blue)
+        if (type == Type.underwater && point.type == Point.Type.underwater)
             return true;
-        if (name == "red" && point.type == Point.Type.red)
+        if (type == Type.underground && point.type == Point.Type.underground)
             return true;
 
         return false;

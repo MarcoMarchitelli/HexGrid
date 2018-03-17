@@ -11,18 +11,18 @@ public class CameraBehaviour : MonoBehaviour
     public void SetTransform(PlayerController player)
     {
         transform.DOMove(new Vector3(player.startingWayPoint.worldPosition.x, offset.y, player.startingWayPoint.worldPosition.z), 1);
-        switch (player.name)
+        switch (player.type)
         {
-            case "yellow":
+            case PlayerController.Type.hypogeum:
                 transform.DORotate(new Vector3(50f, 30f, 0), 1);
                 break;
-            case "blue":
+            case PlayerController.Type.underwater:
                 transform.DORotate(new Vector3(50f, -30f, 0), 1);
                 break;
-            case "green":
+            case PlayerController.Type.forest:
                 transform.DORotate(new Vector3(50f, 210f, 0), 1);
                 break;
-            case "red":
+            case PlayerController.Type.underground:
                 transform.DORotate(new Vector3(50f, -210f, 0), 1);
                 break;
         }

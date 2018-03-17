@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 135435534742913806}
   - component: {fileID: 114429270781600194}
   m_Layer: 8
-  m_Name: WayPoint
+  m_Name: PurplePoint
   m_TagString: Waypoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1110570929552424}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.805, z: 0}
+  m_LocalPosition: {x: 4.972147, y: 13.356414, z: 5.2751966}
   m_LocalScale: {x: 0.6, y: 0.4, z: 0.6}
   m_Children: []
   m_Father: {fileID: 0}
@@ -57,7 +57,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 94a7fd9154a42c54db6935a899a165ed, type: 2}
+  - {fileID: 2100000, guid: b3e85394f3b04f6429689191291c693a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -95,7 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0a9044cdc59c04c812ff9607eb9b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  newMaterial: {fileID: 2100000, guid: 1ed2f8196f0feb4428d96c74e161965e, type: 2}
 --- !u!135 &135435534742913806
 SphereCollider:
   m_ObjectHideFlags: 1
