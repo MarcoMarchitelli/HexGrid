@@ -42,7 +42,7 @@ public class MaterialChange : MonoBehaviour {
         {
             return;
         }else
-        if (gameManager.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) && gameManager.currentActivePlayer.possibleMoves != 0)
+        if (gameManager.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) && gameManager.currentActivePlayer.possibleMoves != 0 && gameManager.currentActivePlayer.currentState == PlayerController.State.moving)
         {
             myRenderer.material.color = Color.green;
         }else if(gameManager.currentActivePlayer.currentState != PlayerController.State.moving)
@@ -51,7 +51,6 @@ public class MaterialChange : MonoBehaviour {
         }
     }
         
-
     private void OnMouseExit()
     {
         myRenderer.material.color = originalColor;

@@ -7,12 +7,14 @@ using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
+    #region Public Variables
 
-    public TextMeshProUGUI topBigSection, leftMediumSection, bigCentralSection;
-
+    public TextMeshProUGUI topLeftSection, topRightSection, leftMediumSection, bigCentralSection;
+    public GameObject winOverlay;
     public GameObject[] cardButtons;
+    public Button betButton, undoMovesButton;
 
-    public Button betButton;
+    #endregion
 
     GameManager gameManager;
 
@@ -26,9 +28,16 @@ public class UIManager : MonoBehaviour
         DisplayHand(gameManager.currentActivePlayer);
     }
 
-    public void PrintTop(string msg)
+    #region Print Functions
+
+    public void PrintTopLeft(string msg)
     {
-        topBigSection.text = msg;
+        topLeftSection.text = msg;
+    }
+
+    public void PrintTopRight(string msg)
+    {
+        topRightSection.text = msg;
     }
 
     public void PrintLeft(string msg)
@@ -39,6 +48,44 @@ public class UIManager : MonoBehaviour
     public void PrintBigNews(string msg)
     {
         bigCentralSection.text = msg;
+    }
+
+    #endregion
+
+    #region Button Toggle Functions
+
+    public void ToggleBet(PlayerController player)
+    {
+        player.playersToRob = gameManager.FindPlayersInRange(2, player);
+
+        if (player.playersToRob.Count == 0 || player.hasBet)
+        {
+            betButton.enabled = false;
+            betButton.image.color = Color.red;
+            player.canBet = false;
+        }
+        else if (player.playersToRob.Count > 0 && !player.hasBet)
+        {
+            betButton.enabled = true;
+            betButton.image.color = Color.green;
+            player.canBet = true;
+        }
+
+    }
+
+    public void ToggleUndoMoves(PlayerController player)
+    {
+        if (player.possibleMoves != player.turnStartMoves && player.currentState == PlayerController.State.moving)
+        {
+            undoMovesButton.enabled = true;
+            undoMovesButton.image.color = Color.green;
+        }
+        else
+            if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.currentState == PlayerController.State.bet || player.currentState == PlayerController.State.card)
+        {
+            undoMovesButton.enabled = false;
+            undoMovesButton.image.color = Color.red;
+        }
     }
 
     public void DisplayHand(PlayerController activePlayer)
@@ -68,12 +115,20 @@ public class UIManager : MonoBehaviour
         {
             for (int i = 0; i < cardButtons.Length; i++)
             {
-                if(activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
+                if (activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
                 {
                     cardButtons[i].GetComponent<Button>().enabled = true;
-                } 
+                }
             }
         }
+    }
+
+    #endregion
+
+    public void Win(PlayerController player)
+    {
+        winOverlay.SetActive(true);
+        winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.type.ToString() + " Wins !";
     }
 
     public void Restart()
