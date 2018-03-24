@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject winOverlay;
     public GameObject[] cardButtons;
     public Button betButton, undoMovesButton;
+    public RectTransform modifiersSection;
 
     #endregion
 
@@ -50,6 +51,24 @@ public class UIManager : MonoBehaviour
         bigCentralSection.text = msg;
     }
 
+    public void PrintPlayersModifiers()
+    {
+        PlayerController[] players = gameManager.players;
+
+        TextMeshProUGUI playerType, playerWeakness, playerStrength;
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            playerType = modifiersSection.GetChild(i).GetComponent<TextMeshProUGUI>();
+            playerWeakness = playerType.rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
+            playerStrength = playerType.rectTransform.GetChild(1).GetComponent<TextMeshProUGUI>();
+
+            playerType.text = players[i].type.ToString();
+            playerWeakness.text = players[i].weaknessType.ToString();
+            playerStrength.text = players[i].strenghtType.ToString();
+        }
+    }
+
     #endregion
 
     #region Button Toggle Functions
@@ -64,7 +83,7 @@ public class UIManager : MonoBehaviour
             betButton.image.color = Color.red;
             player.canBet = false;
         }
-        else if (player.playersToRob.Count > 0 && !player.hasBet)
+        else if (player.playersToRob.Count > 0 && !player.hasBet && player.energyPoints >= 1)
         {
             betButton.enabled = true;
             betButton.image.color = Color.green;
@@ -75,16 +94,16 @@ public class UIManager : MonoBehaviour
 
     public void ToggleUndoMoves(PlayerController player)
     {
-        if (player.possibleMoves != player.turnStartMoves && player.currentState == PlayerController.State.moving)
-        {
-            undoMovesButton.enabled = true;
-            undoMovesButton.image.color = Color.green;
-        }
-        else
-            if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.currentState == PlayerController.State.bet || player.currentState == PlayerController.State.card)
+        if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.currentState == PlayerController.State.bet || player.currentState == PlayerController.State.card)
         {
             undoMovesButton.enabled = false;
             undoMovesButton.image.color = Color.red;
+        }
+        else
+        if (player.possibleMoves != player.turnStartMoves)
+        {
+            undoMovesButton.enabled = true;
+            undoMovesButton.image.color = Color.green;
         }
     }
 
@@ -121,6 +140,14 @@ public class UIManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ToggleModifiersDisplay()
+    {
+        if (modifiersSection.gameObject.activeSelf)
+            modifiersSection.gameObject.SetActive(false);
+        else
+            modifiersSection.gameObject.SetActive(true);
     }
 
     #endregion

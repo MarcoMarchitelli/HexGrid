@@ -99,6 +99,8 @@ public class PlayerController : MonoBehaviour
                 gameManager.uiManager.PrintLeft(bottomLeftMsg);
                 #endregion
 
+                gameManager.uiManager.ToggleUndoMoves(this);
+
                 if (possibleMoves <= 0)
                 {
                     currentState = State.card;
@@ -233,8 +235,7 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromHand)
                     {
                         UnselectCard();
-                        if (possibleMoves != 0)
-                            currentState = State.moving;
+                        currentState = State.moving;
                     }
                 }
 
@@ -255,8 +256,7 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard.SetRotationBackToPlaced();
                         selectedCard.Place(selectedCard.hexImOn);
-                        if (possibleMoves != 0)
-                            currentState = State.moving;
+                        currentState = State.moving;
                         selectedCard = null;
                     }
 
@@ -316,6 +316,8 @@ public class PlayerController : MonoBehaviour
                         currentState = previousState;
                     }
                 }
+                gameManager.uiManager.ToggleBet(this);
+
                 #endregion
 
                 break;
@@ -358,6 +360,6 @@ public class PlayerController : MonoBehaviour
 
     public void MoveToPoint(Point point)
     {
-        transform.parent.position = point.worldPosition + Vector3.up * .7f;
+        transform.position = point.worldPosition + Vector3.up * .7f;
     }
 }
