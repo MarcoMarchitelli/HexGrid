@@ -29,9 +29,7 @@ public class GameManager : MonoBehaviour
         InstantiatePlayers();
         players[0].currentState = PlayerController.State.start;
         currentActivePlayer = players[0];
-        string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
-        uiManager.PrintTopLeft(msg);
-        msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+        string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
         uiManager.PrintTopRight(msg);
     }
 
@@ -40,6 +38,11 @@ public class GameManager : MonoBehaviour
         mainCamera.SetTransform(currentActivePlayer);
         efm.SetPhase(efm.currentPhase, players);
         uiManager.PrintPlayersModifiers();
+        uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     void Update()
@@ -52,26 +55,32 @@ public class GameManager : MonoBehaviour
                 {
                     players[i + 1].currentState = PlayerController.State.start;
                     currentActivePlayer = players[i + 1];
+                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+                    if (currentActivePlayer.UIrefresh != null)
+                    {
+                        currentActivePlayer.UIrefresh(currentActivePlayer);
+                    }
                     mainCamera.SetTransform(currentActivePlayer);
-                    string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
-                    uiManager.PrintTopLeft(msg);
                     turnCount++;
                     efm.AutoChangePhase(turnCount);
                     uiManager.PrintPlayersModifiers();
-                    msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
                     uiManager.PrintTopRight(msg);
                 }
                 else
                 {
                     players[0].currentState = PlayerController.State.start;
                     currentActivePlayer = players[0];
+                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+                    if (currentActivePlayer.UIrefresh != null)
+                    {
+                        currentActivePlayer.UIrefresh(currentActivePlayer);
+                    }
                     mainCamera.SetTransform(currentActivePlayer);
-                    string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
-                    uiManager.PrintTopLeft(msg);
                     turnCount++;
                     efm.AutoChangePhase(turnCount);
                     uiManager.PrintPlayersModifiers();
-                    msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
                     uiManager.PrintTopRight(msg);
                 }
             }
@@ -185,6 +194,7 @@ public class GameManager : MonoBehaviour
     //called when clicking endturn button
     public void SetCurrentPlayerIdle()
     {
+        uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
         currentActivePlayer.currentState = PlayerController.State.idle;
     }
 
@@ -193,6 +203,10 @@ public class GameManager : MonoBehaviour
     {
         currentActivePlayer.previousState = currentActivePlayer.currentState;
         currentActivePlayer.currentState = PlayerController.State.bet;
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     //called when clicking undo movement button
@@ -202,7 +216,10 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.MoveToPoint(currentActivePlayer.turnStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.turnStartPoint;
         currentActivePlayer.currentState = PlayerController.State.moving;
-        uiManager.ToggleUndoMoves(currentActivePlayer);
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
     #endregion
 

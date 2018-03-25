@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI topLeftSection, topRightSection, leftMediumSection, bigCentralSection;
     public GameObject winOverlay;
     public GameObject[] cardButtons;
-    public Button betButton, undoMovesButton;
+    public Button betButton, undoMovesButton, endTurnButton;
     public RectTransform modifiersSection;
 
     #endregion
@@ -24,10 +24,10 @@ public class UIManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
     }
 
-    public void Update()
-    {
-        DisplayHand(gameManager.currentActivePlayer);
-    }
+    //public void Update()
+    //{
+    //    DisplayHand(gameManager.currentActivePlayer);
+    //}
 
     #region Print Functions
 
@@ -142,20 +142,99 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void ToggleEndTurnButton(PlayerController player)
+    {
+        if (player.currentState == PlayerController.State.bet || player.selectedCard != null && !player.hasUsedAbility)
+        {
+            endTurnButton.enabled = false;
+        }
+        else
+        {
+            endTurnButton.enabled = true;
+        }
+    }
+
+    #endregion
+
+    public void SubscribeToPlayerUIRefreshEvent(PlayerController player)
+    {
+        player.UIrefresh += DisplayHand;
+        player.UIrefresh += ToggleBet;
+        player.UIrefresh += ToggleUndoMoves;
+        player.UIrefresh += ToggleEndTurnButton;
+        player.UIrefresh += RefreshAllPrintFunctions;
+    }
+
+    public void UnsubscribeToPlayerUIRefreshEvent(PlayerController player)
+    {
+        player.UIrefresh -= DisplayHand;
+        player.UIrefresh -= ToggleBet;
+        player.UIrefresh -= ToggleUndoMoves;
+        player.UIrefresh -= ToggleEndTurnButton;
+        player.UIrefresh -= RefreshAllPrintFunctions;
+    }
+
+    public void RefreshAllPrintFunctions(PlayerController player)
+    {
+        string msg = "It's the " + player.type.ToString() + " player's turn.";
+        PrintTopLeft(msg);
+
+        if (player.currentState == PlayerController.State.moving)
+        {
+            msg = "You have " + player.possibleMoves + " moves remaining!";
+            if (player.canBet)
+            {
+                msg += "\nAnd you can bet!";
+            }
+            PrintLeft(msg);
+        }
+        else if (player.currentState == PlayerController.State.card)
+        {
+            if (!player.hasUsedAbility && player.selectedCard && player.selectedCard.state == CardController.State.selectedFromHand)
+            {
+                msg = "Use A/D to rotate the card. \nLeftclick to place it. \nRightclick to undo.";
+            }
+            else
+                if (!player.hasUsedAbility && player.selectedCard && player.selectedCard.state == CardController.State.selectedFromMap)
+            {
+                msg = "Use A/D to rotate the card.\nLeftclick to place it.\nSpace to return it to it's owner's hand.\nRightclick to undo.";
+            }
+            else
+                if (!player.hasUsedAbility && !player.selectedCard)
+            {
+                msg = "Select a card from your hand,\nor from the map.";
+            }
+            else
+                if (player.canBet)
+            {
+                msg = "You can bet!";
+            }
+            else
+            {
+                msg = "You've ended your actions for this turn. \nLet the other players have fun too!";
+            }
+
+            PrintLeft(msg);
+        }
+        else if(player.currentState == PlayerController.State.bet)
+        {
+            PrintLeft("Select a player to attack.\nRightclick to undo.");
+        }
+
+    }
+
+    public void Win(PlayerController player)
+    {
+        winOverlay.SetActive(true);
+        winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.type.ToString() + " Wins !";
+    }
+
     public void ToggleModifiersDisplay()
     {
         if (modifiersSection.gameObject.activeSelf)
             modifiersSection.gameObject.SetActive(false);
         else
             modifiersSection.gameObject.SetActive(true);
-    }
-
-    #endregion
-
-    public void Win(PlayerController player)
-    {
-        winOverlay.SetActive(true);
-        winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.type.ToString() + " Wins !";
     }
 
     public void Restart()

@@ -2079,6 +2079,11 @@ Prefab:
       objectReference: {fileID: 579163208}
     - target: {fileID: 114228028317262384, guid: 28d570db160faf0428f898b8828dc1e6,
         type: 2}
+      propertyPath: endTurnButton
+      value: 
+      objectReference: {fileID: 910236223}
+    - target: {fileID: 114228028317262384, guid: 28d570db160faf0428f898b8828dc1e6,
+        type: 2}
       propertyPath: modifiersSection
       value: 
       objectReference: {fileID: 1958058102}
@@ -2549,6 +2554,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 731288847}
   m_Script: {fileID: 11500000, guid: 8d4b4cc53c5afb041ab8a3e1dd53d874, type: 3}
+--- !u!114 &910236223 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114151759082896028, guid: 0fcf8e5930a2859409933cea425ebe4a,
+    type: 2}
+  m_PrefabInternal: {fileID: 1865766688}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!224 &927690718 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224721631942989460, guid: 071c4b551a0038c4fbf39033d57fb3bc,
