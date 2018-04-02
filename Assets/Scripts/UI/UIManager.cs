@@ -24,11 +24,6 @@ public class UIManager : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
     }
 
-    //public void Update()
-    //{
-    //    DisplayHand(gameManager.currentActivePlayer);
-    //}
-
     #region Print Functions
 
     public void PrintTopLeft(string msg)
@@ -94,7 +89,7 @@ public class UIManager : MonoBehaviour
 
     public void ToggleUndoMoves(PlayerController player)
     {
-        if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.currentState == PlayerController.State.bet || player.currentState == PlayerController.State.card)
+        if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.hasBet || player.currentState == PlayerController.State.bet || player.currentState == PlayerController.State.card)
         {
             undoMovesButton.enabled = false;
             undoMovesButton.image.color = Color.red;
@@ -123,7 +118,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (activePlayer.selectedCard || activePlayer.hasUsedAbility)
+        if (activePlayer.selectedCard || activePlayer.hasUsedAbility || activePlayer.currentState == PlayerController.State.bet)
         {
             for (int i = 0; i < cardButtons.Length; i++)
             {

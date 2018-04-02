@@ -189,6 +189,10 @@ public class GameManager : MonoBehaviour
     public void CurrentPlayerSelect(int index)
     {
         currentActivePlayer.SelectCard(index);
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     //called when clicking endturn button
@@ -196,6 +200,10 @@ public class GameManager : MonoBehaviour
     {
         uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
         currentActivePlayer.currentState = PlayerController.State.idle;
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     //called when clicking bet button
@@ -315,21 +323,30 @@ public class GameManager : MonoBehaviour
         {
             if (!doesAttackerDoubleSteal)
             {
-                attacker.victoryPoints++;
-                defender.victoryPoints--;
+                if (defender.victoryPoints != 0)
+                {
+                    attacker.victoryPoints++;
+                    defender.victoryPoints--;
+                }   
             }
             else
             {
-                attacker.victoryPoints++;
-                defender.victoryPoints--;
-                attacker.victoryPoints++;
-                defender.victoryPoints--;
+                if (defender.victoryPoints != 0)
+                {
+                    attacker.victoryPoints++;
+                    defender.victoryPoints--;
+                    attacker.victoryPoints++;
+                    defender.victoryPoints--;
+                }  
             }
         }
 
         attacker.currentState = attacker.previousState;
-        attacker.hasBet = true;
         uiManager.ToggleBet(attacker);
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     public IEnumerator WaitForNumberInput(PlayerController player, int roleIndex)

@@ -103,6 +103,7 @@ public class PlayerController : MonoBehaviour
 
                 if (possibleMoves <= 0)
                 {
+                    flag = false;
                     currentState = State.card;
                     if (UIrefresh != null)
                     {
@@ -123,7 +124,7 @@ public class PlayerController : MonoBehaviour
                         {
                             if (currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition))
                             {
-                                if (possibleMoves > 0)
+                                if (possibleMoves > 0 && CheckIfPointIsWalkable(pointHit))
                                 {
                                     transform.position = pointHit.worldPosition + Vector3.up * .7f;
                                     currentWayPoint = pointHit;
@@ -174,6 +175,7 @@ public class PlayerController : MonoBehaviour
                                 UIrefresh(this);
                             }
                             selectedCard.state = CardController.State.selectedFromMap;
+                            flag = false;
                             currentState = State.card;
                             selectedCard.FreePaths(selectedCard.hexImOn);
                         }
@@ -192,10 +194,6 @@ public class PlayerController : MonoBehaviour
                 //Se ho carta selezionata. E se l'ho selezionata da mano -->
                 if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasUsedAbility)
                 {
-                    if (UIrefresh != null)
-                    {
-                        UIrefresh(this);
-                    }
                     //(PLACE)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, hexLayer))
                     {
@@ -222,6 +220,7 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromHand)
                     {
                         UnselectCard();
+                        flag = false;
                         currentState = State.moving;
                     }
                 }
@@ -308,18 +307,24 @@ public class PlayerController : MonoBehaviour
                         //Seleziono un player nemico da attaccare
                         if (Input.GetMouseButtonDown(0) && playerHit && playersToRob.Contains(playerHit))
                         {
+                            hasBet = true;
+                            if (UIrefresh != null)
+                            {
+                                UIrefresh(this);
+                            }
                             StartCoroutine(gameManager.Bet(this, playerHit));
                         }
                     }
 
+                    //UNDO
                     if (Input.GetMouseButtonDown(1))
                     {
                         currentState = previousState;
+                        if (UIrefresh != null)
+                        {
+                            UIrefresh(this);
+                        }
                     }
-                }
-                if (UIrefresh != null)
-                {
-                    UIrefresh(this);
                 }
 
                 #endregion
@@ -355,6 +360,19 @@ public class PlayerController : MonoBehaviour
         }
     }
     #endregion
+
+    bool CheckIfPointIsWalkable(Point point)
+    {
+        PlayerController[] players = gameManager.players;
+
+        foreach (PlayerController player in players)
+        {
+            if (player.currentWayPoint == point)
+                return false;
+        }
+
+        return true;
+    }
 
     public bool isMyColor(Point point)
     {
