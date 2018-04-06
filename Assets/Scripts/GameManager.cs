@@ -7,8 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController[] players;
     public UIManager uiManager;
-    public HexGridCreator gridReference;
 
+    [HideInInspector]
+    public HexGridCreator gridReference;
     [HideInInspector]
     public EFM efm;
     [HideInInspector]
@@ -21,13 +22,16 @@ public class GameManager : MonoBehaviour
 
     string bottomLeftMsg;
 
+    public static GameManager instance;
+
     void Awake()
     {
+        instance = this;
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
         efm = FindObjectOfType<EFM>();
         InstantiatePlayers();
-        players[0].currentState = PlayerController.State.start;
+        players[0].currentAction = PlayerController.Action.start;
         currentActivePlayer = players[0];
         string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
         uiManager.PrintTopRight(msg);
@@ -49,11 +53,11 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < players.Length; i++)
         {
-            if (players[i] == currentActivePlayer && players[i].currentState == PlayerController.State.idle)
+            if (players[i] == currentActivePlayer && players[i].currentAction == PlayerController.Action.idle)
             {
                 if (i != players.Length - 1)
                 {
-                    players[i + 1].currentState = PlayerController.State.start;
+                    players[i + 1].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[i + 1];
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
@@ -69,7 +73,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    players[0].currentState = PlayerController.State.start;
+                    players[0].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[0];
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
@@ -185,8 +189,9 @@ public class GameManager : MonoBehaviour
     }
 
     #region Button Functions
+
     //called when clickin card buttons
-    public void CurrentPlayerSelect(int index)
+    public void CurrentPlayerSelectCard(int index)
     {
         currentActivePlayer.SelectCard(index);
         if (currentActivePlayer.UIrefresh != null)
@@ -199,18 +204,7 @@ public class GameManager : MonoBehaviour
     public void SetCurrentPlayerIdle()
     {
         uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
-        currentActivePlayer.currentState = PlayerController.State.idle;
-        if (currentActivePlayer.UIrefresh != null)
-        {
-            currentActivePlayer.UIrefresh(currentActivePlayer);
-        }
-    }
-
-    //called when clicking bet button
-    public void SetCurrenPlayerBet()
-    {
-        currentActivePlayer.previousState = currentActivePlayer.currentState;
-        currentActivePlayer.currentState = PlayerController.State.bet;
+        currentActivePlayer.currentAction = PlayerController.Action.idle;
         if (currentActivePlayer.UIrefresh != null)
         {
             currentActivePlayer.UIrefresh(currentActivePlayer);
@@ -223,12 +217,18 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.possibleMoves = currentActivePlayer.turnStartMoves;
         currentActivePlayer.MoveToPoint(currentActivePlayer.turnStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.turnStartPoint;
-        currentActivePlayer.currentState = PlayerController.State.moving;
+        currentActivePlayer.currentAction = PlayerController.Action.moving;
         if (currentActivePlayer.UIrefresh != null)
         {
             currentActivePlayer.UIrefresh(currentActivePlayer);
         }
     }
+
+    public void ChoseAction(int actionIndex)
+    {
+        currentActivePlayer.ChoseAction(actionIndex);
+    }
+
     #endregion
 
     public void Win(PlayerController player)
@@ -236,7 +236,15 @@ public class GameManager : MonoBehaviour
         uiManager.Win(player);
     }
 
+    public void ConfirmAction()
+    {
+        currentActivePlayer.currentAction = PlayerController.Action.start;
+
+        currentActivePlayer.actions--;
+    }
+
     #region Bet related functions
+
     public IEnumerator Bet(PlayerController attacker, PlayerController defender)
     {
         PlayerController winner;
@@ -293,23 +301,6 @@ public class GameManager : MonoBehaviour
         attacker.energyPoints -= attackerBet;
         defender.energyPoints -= defenderBet;
 
-        //if (attackerBet > defenderBet)
-        //{
-        //    announcement = attacker.type.ToString() + "!! \nCongratulations!";
-        //    attacker.energyPoints -= attackerBet;
-        //    defender.energyPoints -= defenderBet;
-        //    atkWon = true;
-        //}
-        //else
-        //if (attackerBet < defenderBet)
-        //{
-        //    announcement = defender.type.ToString() + "!! \nCongratulations!";
-        //    attacker.energyPoints -= attackerBet;
-        //    defender.energyPoints -= defenderBet;
-        //}   
-        //else
-        //    announcement = "Noone! It's a Draw!";
-
         messages[1] = announcement;
 
         //result show
@@ -341,7 +332,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        attacker.currentState = attacker.previousState;
+        attacker.currentAction = attacker.previousState;
         uiManager.ToggleBet(attacker);
         if (currentActivePlayer.UIrefresh != null)
         {
@@ -394,6 +385,7 @@ public class GameManager : MonoBehaviour
         }
         winnerAnnounced = true;
     }
+
     #endregion
 
     public List<AgentPosition> FindPointsInRange(int range, PlayerController player)

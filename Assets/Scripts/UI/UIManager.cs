@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI topLeftSection, topRightSection, leftMediumSection, bigCentralSection;
     public GameObject winOverlay;
     public GameObject[] cardButtons;
-    public Button betButton, undoMovesButton, endTurnButton;
+    public Button moveButton, betButton, placeCardButton, rotateCardButton, sellCardButton, buyCardButton, undoMovesButton, endTurnButton, confirmButton;
     public RectTransform modifiersSection;
 
     #endregion
@@ -66,14 +66,28 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region Button Toggle Functions
+    #region Action Button Toggle Functions
+
+    public void ToggleMove(PlayerController player)
+    {
+        if (player.actions <= 0 || player.possibleMoves >= 0)
+        {
+            moveButton.enabled = false;
+            moveButton.image.color = Color.red;
+        }
+        else
+        {
+            moveButton.enabled = true;
+            moveButton.image.color = Color.green;
+        }
+    }
 
     public void ToggleBet(PlayerController player)
     {
         player.playersToRob = gameManager.FindPlayersInRange(2, player);
 
-        if (player.playersToRob.Count == 0 || player.hasBet)
-        {
+        if (player.playersToRob.Count == 0 || player.hasBet || player.actions <= 0)
+        { 
             betButton.enabled = false;
             betButton.image.color = Color.red;
             player.canBet = false;
@@ -87,18 +101,81 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void ToggleUndoMoves(PlayerController player)
+    public void TogglePlaceCardButton(PlayerController player)
     {
-        if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.hasBet || player.currentState == PlayerController.State.bet || player.currentState == PlayerController.State.card)
+        if(player.actions <= 0)
         {
-            undoMovesButton.enabled = false;
-            undoMovesButton.image.color = Color.red;
+            placeCardButton.enabled = false;
+            placeCardButton.image.color = Color.red;
         }
         else
-        if (player.possibleMoves != player.turnStartMoves)
         {
-            undoMovesButton.enabled = true;
-            undoMovesButton.image.color = Color.green;
+            placeCardButton.enabled = true;
+            placeCardButton.image.color = Color.green;
+        }
+    }
+
+    public void ToggleRotateCardButton(PlayerController player)
+    {
+        if (player.actions <= 0)
+        {
+            rotateCardButton.enabled = false;
+            rotateCardButton.image.color = Color.red;
+        }
+        else
+        {
+            rotateCardButton.enabled = true;
+            rotateCardButton.image.color = Color.green;
+        }
+    }
+
+    public void ToggleBuyCardButton(PlayerController player)
+    {
+        if (player.actions <= 0)
+        {
+            buyCardButton.enabled = false;
+            buyCardButton.image.color = Color.red;
+        }
+        else
+        {
+            buyCardButton.enabled = true;
+            buyCardButton.image.color = Color.green;
+        }
+    }
+
+    public void ToggleSellCardButton(PlayerController player)
+    {
+        if (player.actions <= 0)
+        {
+            sellCardButton.enabled = false;
+            sellCardButton.image.color = Color.red;
+        }
+        else
+        {
+            sellCardButton.enabled = true;
+            sellCardButton.image.color = Color.green;
+        }
+    }
+
+    #endregion
+
+    #region Others Button Toggle Funcions
+
+    public void ToggleUndoMoves(PlayerController player)
+    {
+        if (undoMovesButton.gameObject.activeSelf)
+        {
+            if (player.possibleMoves == player.turnStartMoves || player.hasUsedAbility || player.hasBet || player.currentAction == PlayerController.Action.bet || player.currentAction == PlayerController.Action.placeCard)
+            {
+                undoMovesButton.enabled = false;
+                undoMovesButton.image.color = Color.red;
+            }
+            else
+        if (player.possibleMoves != player.turnStartMoves)
+            {
+                undoMovesButton.enabled = true;
+                undoMovesButton.image.color = Color.green;
+            }
         }
     }
 
@@ -118,7 +195,7 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        if (activePlayer.selectedCard || activePlayer.hasUsedAbility || activePlayer.currentState == PlayerController.State.bet)
+        if (activePlayer.selectedCard || activePlayer.hasUsedAbility || activePlayer.currentAction == PlayerController.Action.bet)
         {
             for (int i = 0; i < cardButtons.Length; i++)
             {
@@ -139,7 +216,7 @@ public class UIManager : MonoBehaviour
 
     public void ToggleEndTurnButton(PlayerController player)
     {
-        if (player.currentState == PlayerController.State.bet || player.selectedCard != null && !player.hasUsedAbility)
+        if (player.currentAction == PlayerController.Action.bet || player.selectedCard != null && !player.hasUsedAbility)
         {
             endTurnButton.enabled = false;
         }
@@ -151,21 +228,62 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    #region Action Button Press
+
+    public void OnMoveButton()
+    {
+        undoMovesButton.gameObject.SetActive(true);
+        confirmButton.gameObject.SetActive(true);
+    }
+
+    public void OnBetButton()
+    {
+        confirmButton.gameObject.SetActive(true);
+    }
+
+    public void OnConfirmButton()
+    {
+        undoMovesButton.gameObject.SetActive(false);
+        confirmButton.gameObject.SetActive(false);
+    }
+
+    #endregion
+
     public void SubscribeToPlayerUIRefreshEvent(PlayerController player)
     {
-        player.UIrefresh += DisplayHand;
+        //action buttons
         player.UIrefresh += ToggleBet;
+        player.UIrefresh += TogglePlaceCardButton;
+        player.UIrefresh += ToggleRotateCardButton;
+        player.UIrefresh += ToggleBuyCardButton;
+        player.UIrefresh += ToggleSellCardButton;
+        player.UIrefresh += ToggleMove;
+
+        //other buttons
+        player.UIrefresh += DisplayHand;
         player.UIrefresh += ToggleUndoMoves;
         player.UIrefresh += ToggleEndTurnButton;
+
+        //infos
         player.UIrefresh += RefreshAllPrintFunctions;
     }
 
     public void UnsubscribeToPlayerUIRefreshEvent(PlayerController player)
     {
-        player.UIrefresh -= DisplayHand;
+        //action buttons
         player.UIrefresh -= ToggleBet;
+        player.UIrefresh -= TogglePlaceCardButton;
+        player.UIrefresh -= ToggleRotateCardButton;
+        player.UIrefresh -= ToggleBuyCardButton;
+        player.UIrefresh -= ToggleSellCardButton;
+        player.UIrefresh -= ToggleMove;
+
+        //other buttons
+        player.UIrefresh -= DisplayHand;
         player.UIrefresh -= ToggleUndoMoves;
         player.UIrefresh -= ToggleEndTurnButton;
+
+        //infos
         player.UIrefresh -= RefreshAllPrintFunctions;
     }
 
@@ -174,7 +292,12 @@ public class UIManager : MonoBehaviour
         string msg = "It's the " + player.type.ToString() + " player's turn.";
         PrintTopLeft(msg);
 
-        if (player.currentState == PlayerController.State.moving)
+        if(player.currentAction == PlayerController.Action.start)
+        {
+            msg = "Chose an action to make!\n" + player.actions + " actions remaining.";
+            PrintLeft(msg);
+        }
+        else if (player.currentAction == PlayerController.Action.moving)
         {
             msg = "You have " + player.possibleMoves + " moves remaining!";
             if (player.canBet)
@@ -183,7 +306,7 @@ public class UIManager : MonoBehaviour
             }
             PrintLeft(msg);
         }
-        else if (player.currentState == PlayerController.State.card)
+        else if (player.currentAction == PlayerController.Action.placeCard)
         {
             if (!player.hasUsedAbility && player.selectedCard && player.selectedCard.state == CardController.State.selectedFromHand)
             {
@@ -211,7 +334,7 @@ public class UIManager : MonoBehaviour
 
             PrintLeft(msg);
         }
-        else if(player.currentState == PlayerController.State.bet)
+        else if(player.currentAction == PlayerController.Action.bet)
         {
             PrintLeft("Select a player to attack.\nRightclick to undo.");
         }
