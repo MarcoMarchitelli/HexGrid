@@ -7,8 +7,9 @@ public class GameManager : MonoBehaviour
 {
     public PlayerController[] players;
     public UIManager uiManager;
-    public HexGridCreator gridReference;
 
+    [HideInInspector]
+    public HexGridCreator gridReference;
     [HideInInspector]
     public EFM efm;
     [HideInInspector]
@@ -21,49 +22,69 @@ public class GameManager : MonoBehaviour
 
     string bottomLeftMsg;
 
+    public static GameManager instance;
+
     void Awake()
     {
+        instance = this;
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
         efm = FindObjectOfType<EFM>();
         InstantiatePlayers();
-        players[0].currentState = PlayerController.State.start;
+        players[0].currentAction = PlayerController.Action.start;
         currentActivePlayer = players[0];
-        mainCamera.SetTransform(currentActivePlayer);
-        string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
-        uiManager.PrintTopLeft(msg);
-        msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+        string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
         uiManager.PrintTopRight(msg);
+    }
+
+    private void Start()
+    {
+        mainCamera.SetTransform(currentActivePlayer);
+        efm.SetPhase(efm.currentPhase, players);
+        uiManager.PrintPlayersModifiers();
+        uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     void Update()
     {
         for (int i = 0; i < players.Length; i++)
         {
-            if (players[i] == currentActivePlayer && players[i].currentState == PlayerController.State.idle)
+            if (players[i] == currentActivePlayer && players[i].currentAction == PlayerController.Action.idle)
             {
                 if (i != players.Length - 1)
                 {
-                    players[i + 1].currentState = PlayerController.State.start;
+                    players[i + 1].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[i + 1];
+                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+                    if (currentActivePlayer.UIrefresh != null)
+                    {
+                        currentActivePlayer.UIrefresh(currentActivePlayer);
+                    }
                     mainCamera.SetTransform(currentActivePlayer);
-                    string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
-                    uiManager.PrintTopLeft(msg);
                     turnCount++;
-                    efm.ChangePhase(turnCount);
-                    msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    efm.AutoChangePhase(turnCount);
+                    uiManager.PrintPlayersModifiers();
+                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
                     uiManager.PrintTopRight(msg);
                 }
                 else
                 {
-                    players[0].currentState = PlayerController.State.start;
+                    players[0].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[0];
+                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+                    if (currentActivePlayer.UIrefresh != null)
+                    {
+                        currentActivePlayer.UIrefresh(currentActivePlayer);
+                    }
                     mainCamera.SetTransform(currentActivePlayer);
-                    string msg = "It's the " + currentActivePlayer.type.ToString() + " player's turn.";
-                    uiManager.PrintTopLeft(msg);
                     turnCount++;
-                    efm.ChangePhase(turnCount);
-                    msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    efm.AutoChangePhase(turnCount);
+                    uiManager.PrintPlayersModifiers();
+                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
                     uiManager.PrintTopRight(msg);
                 }
             }
@@ -167,23 +188,27 @@ public class GameManager : MonoBehaviour
         return moves;
     }
 
+    #region Button Functions
+
     //called when clickin card buttons
-    public void CurrentPlayerSelect(int index)
+    public void CurrentPlayerSelectCard(int index)
     {
         currentActivePlayer.SelectCard(index);
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     //called when clicking endturn button
     public void SetCurrentPlayerIdle()
     {
-        currentActivePlayer.currentState = PlayerController.State.idle;
-    }
-
-    //called when clicking bet button
-    public void SetCurrenPlayerBet()
-    {
-        currentActivePlayer.previousState = currentActivePlayer.currentState;
-        currentActivePlayer.currentState = PlayerController.State.bet;
+        uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        currentActivePlayer.currentAction = PlayerController.Action.idle;
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
     //called when clicking undo movement button
@@ -192,94 +217,163 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.possibleMoves = currentActivePlayer.turnStartMoves;
         currentActivePlayer.MoveToPoint(currentActivePlayer.turnStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.turnStartPoint;
-        currentActivePlayer.currentState = PlayerController.State.moving;
-        uiManager.ToggleUndoMoves(currentActivePlayer);
+        currentActivePlayer.currentAction = PlayerController.Action.moving;
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
+
+    public void ChoseAction(int actionIndex)
+    {
+        currentActivePlayer.ChoseAction(actionIndex);
+    }
+
+    #endregion
 
     public void Win(PlayerController player)
     {
         uiManager.Win(player);
     }
 
+    public void ConfirmAction()
+    {
+        currentActivePlayer.currentAction = PlayerController.Action.start;
+
+        currentActivePlayer.actions--;
+    }
+
+    #region Bet related functions
+
     public IEnumerator Bet(PlayerController attacker, PlayerController defender)
     {
-        int attackerBet, defenderBet, modifiersID;
-        string announcement;
-        bool atkWon = false;
+        PlayerController winner;
+        int attackerBet, defenderBet;
+        string announcement = null;
+        bool atkWon = false, doesAttackerDoubleSteal;
         string[] messages = { "The winner is...", null};
+        winnerAnnounced = false;
 
-        while(!hasBet)
+        #region The 2 players betting
+        //attacker bet
+        while (!hasBet)
         {
             uiManager.PrintBigNews("It's " + attacker.type.ToString() + "'s time to bet !");
             uiManager.PrintLeft("Enter a number to bet some energy.");
 
-            yield return StartCoroutine(WaitForNumberInput(attacker));
+            yield return StartCoroutine(WaitForNumberInput(attacker, 0));
         }
 
         attackerBet = energyBet;
         hasBet = false;
 
+        ///defender bet
         while (!hasBet)
         {
             uiManager.PrintBigNews("It's " + defender.type.ToString() + "'s time to bet !");
             uiManager.PrintLeft("Enter a number to bet some energy.");
 
-            yield return StartCoroutine(WaitForNumberInput(defender));
+            yield return StartCoroutine(WaitForNumberInput(defender, 1));
         }
 
         defenderBet = energyBet;
         hasBet = false;
+        #endregion
 
-        if (attackerBet > defenderBet)
+        winner = efm.FightResult(attacker, defender, attackerBet, defenderBet, out doesAttackerDoubleSteal);
+
+        #region Check fight result
+        if(winner == null)
+        {
+            announcement = "Noone! It's a Draw!";
+        }else 
+        if(winner == attacker)
         {
             announcement = attacker.type.ToString() + "!! \nCongratulations!";
-            attacker.energyPoints -= attackerBet;
-            defender.energyPoints -= defenderBet;
             atkWon = true;
-        }
-        else
-        if (attackerBet < defenderBet)
+        }else
+        if(winner == defender)
         {
             announcement = defender.type.ToString() + "!! \nCongratulations!";
-            attacker.energyPoints -= attackerBet;
-            defender.energyPoints -= defenderBet;
-        }   
-        else
-            announcement = "Noone! It's a Draw!";
+        }
+        #endregion
+
+        attacker.energyPoints -= attackerBet;
+        defender.energyPoints -= defenderBet;
 
         messages[1] = announcement;
 
+        //result show
         while(!winnerAnnounced)
-            yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 3));
+            yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 2));
 
         uiManager.PrintBigNews(null);
+
+        //PV update
         if (atkWon)
         {
-            attacker.victoryPoints++;
-            defender.victoryPoints--;
+            if (!doesAttackerDoubleSteal)
+            {
+                if (defender.victoryPoints != 0)
+                {
+                    attacker.victoryPoints++;
+                    defender.victoryPoints--;
+                }   
+            }
+            else
+            {
+                if (defender.victoryPoints != 0)
+                {
+                    attacker.victoryPoints++;
+                    defender.victoryPoints--;
+                    attacker.victoryPoints++;
+                    defender.victoryPoints--;
+                }  
+            }
         }
 
-        winnerAnnounced = false;
-        attacker.currentState = attacker.previousState;
-        attacker.hasBet = true;
+        attacker.currentAction = attacker.previousState;
         uiManager.ToggleBet(attacker);
+        if (currentActivePlayer.UIrefresh != null)
+        {
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+        }
     }
 
-    public IEnumerator WaitForNumberInput(PlayerController player)
+    public IEnumerator WaitForNumberInput(PlayerController player, int roleIndex)
     {
-        
-        while (!hasBet)
+
+        if(roleIndex == 0)
         {
-            for (int i = 0; i < 10; i++)
+            while (!hasBet)
             {
-                if (Input.GetKeyDown(i.ToString()) && i <= player.energyPoints)
+                foreach(int i in efm.atkNumbers)
                 {
-                    hasBet = true;
-                    energyBet = i;
+                    if (Input.GetKeyDown(i.ToString()) && i <= player.energyPoints)
+                    {
+                        hasBet = true;
+                        energyBet = i;
+                    }
                 }
+                yield return null;
             }
-            yield return null;
+        }else
+            if(roleIndex == 1)
+        {
+            while (!hasBet)
+            {
+                foreach (int i in efm.defNumbers)
+                {
+                    if (Input.GetKeyDown(i.ToString()) && i <= player.energyPoints)
+                    {
+                        hasBet = true;
+                        energyBet = i;
+                    }
+                }
+                yield return null;
+            }
         }
+
     }
 
     public IEnumerator WaitForWinnerAnnoucement(string[] messages, float seconds)
@@ -291,6 +385,8 @@ public class GameManager : MonoBehaviour
         }
         winnerAnnounced = true;
     }
+
+    #endregion
 
     public List<AgentPosition> FindPointsInRange(int range, PlayerController player)
     {

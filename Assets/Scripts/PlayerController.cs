@@ -5,18 +5,19 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
-    // yellow = hypogeum, blue = underwater, green = forest, red = underground
+    public delegate void UIevent(PlayerController player);
 
     GameManager gameManager;
+    public UIevent UIrefresh;
 
     public enum Type
     {
         hypogeum, underwater, forest, underground
     }
 
-    public enum State
+    public enum Action
     {
-        idle, start, moving, card, bet
+        idle, start, moving, buyCard, sellCard, placeCard, rotateCard, bet
     }
 
     #region Public Variables
@@ -24,12 +25,14 @@ public class PlayerController : MonoBehaviour
     public Type type, weaknessType, strenghtType;
     [HideInInspector]
     public Point startingWayPoint;
+    [HideInInspector]
     public Point currentWayPoint, turnStartPoint;
-    public State currentState = State.idle;
     [HideInInspector]
-    public State previousState;
+    public Action currentAction = Action.idle;
     [HideInInspector]
-    public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3, turnStartMoves;
+    public Action previousState;
+    [HideInInspector]
+    public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3, turnStartMoves, actions = 2;
     [HideInInspector]
     public bool hasUsedAbility, hasBet, canBet;
     public Transform[] cards;
@@ -41,6 +44,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     Hexagon lastSelectedHex;
+    bool uiRefreshFlag, isFirstStart = true;
     string bottomLeftMsg;
 
     void Awake()
@@ -61,47 +65,67 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        switch (currentState)
+        switch (currentAction)
         {
-            case State.idle:
+            case Action.idle:
                 selectedCard = null;
                 break;
 
-            case State.start:
+            case Action.start:
 
                 #region Start
-                possibleMoves = gameManager.NumberOfPossiblesMoves(this);
-                turnStartMoves = possibleMoves;
-                turnStartPoint = currentWayPoint;
-                hasUsedAbility = false;
-                hasBet = false;
-                energyPoints++;
-                energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
-                gameManager.uiManager.ToggleBet(this);
-                gameManager.uiManager.ToggleUndoMoves(this);
-                currentState = State.moving;
+
+                if (isFirstStart)
+                {
+                    possibleMoves = gameManager.NumberOfPossiblesMoves(this);
+                    turnStartMoves = possibleMoves;
+                    turnStartPoint = currentWayPoint;
+                    hasUsedAbility = false;
+                    hasBet = false;
+                    energyPoints++;
+                    energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
+                    if (UIrefresh != null)
+                    {
+                        UIrefresh(this);
+                    }
+                    isFirstStart = false;
+                }
+                else
+                {
+                    if (!uiRefreshFlag)
+                    {
+                        if (UIrefresh != null)
+                        {
+                            UIrefresh(this);
+                        }
+                        uiRefreshFlag = true;
+                    }
+                }
+
                 #endregion
 
                 break;
 
-            case State.moving:
+            case Action.moving:
 
                 #region Moving
 
-                #region Instructions Message
-                bottomLeftMsg = "You have " + possibleMoves + " moves remaining!";
-
-                if (canBet)
+                if (!uiRefreshFlag)
                 {
-                    bottomLeftMsg += "\nAnd you can bet!";
+                    if (UIrefresh != null)
+                    {
+                        UIrefresh(this);
+                        uiRefreshFlag = true;
+                    }
                 }
-
-                gameManager.uiManager.PrintLeft(bottomLeftMsg);
-                #endregion
 
                 if (possibleMoves <= 0)
                 {
-                    currentState = State.card;
+                    uiRefreshFlag = false;
+                    if (UIrefresh != null)
+                    {
+                        UIrefresh(this);
+                    }
                 }
 
                 RaycastHit hitInfo;
@@ -113,103 +137,55 @@ public class PlayerController : MonoBehaviour
                     {
                         Point pointHit = gameManager.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
 
-                        if (pointHit != null)
+                        if (pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && possibleMoves > 0 && CheckIfPointIsWalkable(pointHit))
                         {
-                            if (currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition))
+
+                            transform.position = pointHit.worldPosition + Vector3.up * .7f;
+                            currentWayPoint = pointHit;
+
+                            if (currentWayPoint.isFinalWaypoint && isMyColor(currentWayPoint))
+                                energyPoints++;
+
+                            if (currentWayPoint.type == Point.Type.purple)
                             {
-                                if (possibleMoves > 0)
-                                {
-                                    transform.position = pointHit.worldPosition + Vector3.up * .7f;
-                                    currentWayPoint = pointHit;
-
-                                    if (currentWayPoint.isFinalWaypoint && isMyColor(currentWayPoint))
-                                        energyPoints++;
-
-                                    if (currentWayPoint.type == Point.Type.purple)
-                                    {
-                                        possibleMoves = 0;
-                                    }
-                                    else
-                                        if (currentWayPoint.type == Point.Type.win)
-                                        {
-                                            possibleMoves = 0;
-                                            if (victoryPoints >= 5)
-                                            {
-                                                gameManager.Win(this);
-                                            }
-                                        }
-                                    else
-                                        possibleMoves--;
-
-                                    gameManager.uiManager.ToggleBet(this);
-                                    gameManager.uiManager.ToggleUndoMoves(this);
-                                }
-                                CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
+                                possibleMoves = 0;
                             }
+                            else
+                            if (currentWayPoint.type == Point.Type.win)
+                            {
+                                possibleMoves = 0;
+                                if (victoryPoints >= 5)
+                                {
+                                    gameManager.Win(this);
+                                }
+                            }
+                            else
+                                possibleMoves--;
+
+                            if (UIrefresh != null)
+                            {
+                                UIrefresh(this);
+                            }
+
+                            CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
                         }
+
                     }
                 }
 
-                RaycastHit cardHitInfo;
-
-                //select card from map and go to ability
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out cardHitInfo, 100, cardLayer))
-                {
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        selectedCard = cardHitInfo.collider.GetComponentInParent<CardController>();
-
-                        if (selectedCard && selectedCard.state == CardController.State.placed && currentWayPoint.nearHexagons.Contains(selectedCard.hexImOn))
-                        {
-                            gameManager.uiManager.ToggleUndoMoves(this);
-                            selectedCard.state = CardController.State.selectedFromMap;
-                            currentState = State.card;
-                            selectedCard.FreePaths(selectedCard.hexImOn);
-                        }
-                    }
-                }
                 #endregion
 
                 break;
 
-            case State.card:
+            case Action.placeCard:
 
-                #region Card
-
-                #region Instructions Change
-                if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromHand)
-                {
-                    bottomLeftMsg = "Use A/D to rotate the card. \nLeftclick to place it. \nRightclick to undo.";
-                }
-                else
-                if (!hasUsedAbility && selectedCard && selectedCard.state == CardController.State.selectedFromMap)
-                {
-                    bottomLeftMsg = "Use A/D to rotate the card.\nLeftclick to place it.\nSpace to return it to it's owner's hand.\nRightclick to undo.";
-                }
-                else
-                if (!hasUsedAbility && !selectedCard)
-                {
-                    bottomLeftMsg = "Select a card from your hand,\nor from the map.";
-                }
-                else
-                if(canBet)
-                {
-                    bottomLeftMsg = "You can bet!";
-                }
-                else
-                {
-                    bottomLeftMsg = "You've ended your actions for this turn. \nLet the other players have fun too!";
-                }
-
-                gameManager.uiManager.PrintLeft(bottomLeftMsg);
-                #endregion
+                #region Place Card
 
                 RaycastHit placingHitInfo;
 
                 //Se ho carta selezionata. E se l'ho selezionata da mano -->
                 if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasUsedAbility)
                 {
-                    gameManager.uiManager.ToggleUndoMoves(this);
                     //(PLACE)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, hexLayer))
                     {
@@ -223,7 +199,10 @@ public class PlayerController : MonoBehaviour
                                 {
                                     selectedCard.Place(hexHit);
                                     hasUsedAbility = true;
-                                    gameManager.uiManager.ToggleBet(this);
+                                    if (UIrefresh != null)
+                                    {
+                                        UIrefresh(this);
+                                    }
                                 }
                             }
                         }
@@ -233,41 +212,18 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromHand)
                     {
                         UnselectCard();
-                        if (possibleMoves != 0)
-                            currentState = State.moving;
+                        uiRefreshFlag = false;
+                        currentAction = Action.moving;
                     }
                 }
 
-                //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !hasUsedAbility)
-                {
-                    gameManager.uiManager.ToggleUndoMoves(this);
-                    //(PLACE)
-                    if (Input.GetMouseButtonDown(0))
-                    {
-                        selectedCard.Place(selectedCard.hexImOn);
-                        hasUsedAbility = true;
-                        gameManager.uiManager.ToggleBet(this);
-                    }
+                #endregion
 
-                    //(UNDO)
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        selectedCard.SetRotationBackToPlaced();
-                        selectedCard.Place(selectedCard.hexImOn);
-                        if (possibleMoves != 0)
-                            currentState = State.moving;
-                        selectedCard = null;
-                    }
+                break;
 
-                    //(RETURN TO OWNER'S HAND)
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        UnselectCard();
-                        hasUsedAbility = true;
-                        gameManager.uiManager.ToggleBet(this);
-                    }
-                }
+            case Action.rotateCard:
+
+                #region Rotate Card
 
                 RaycastHit selectingHitInfo;
 
@@ -279,25 +235,72 @@ public class PlayerController : MonoBehaviour
                     {
                         if (Input.GetMouseButtonDown(0))
                         {
-                            gameManager.uiManager.ToggleUndoMoves(this);
                             selectedCard = selectingHitInfo.collider.GetComponentInParent<CardController>();
-                            selectedCard.state = CardController.State.selectedFromMap;
-                            selectedCard.FreePaths(selectedCard.hexImOn);
+
+                            if (selectedCard && selectedCard.state == CardController.State.placed && currentWayPoint.nearHexagons.Contains(selectedCard.hexImOn))
+                            {
+                                selectedCard.state = CardController.State.selectedFromMap;
+                                selectedCard.FreePaths(selectedCard.hexImOn);
+                                if (UIrefresh != null)
+                                {
+                                    UIrefresh(this);
+                                }
+                            }
                         }
                     }
                 }
+
+                //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !hasUsedAbility)
+                {
+
+                    //(PLACE)
+                    if (Input.GetMouseButtonDown(0))
+                    {
+                        selectedCard.Place(selectedCard.hexImOn);
+                        hasUsedAbility = true;
+                        if (UIrefresh != null)
+                        {
+                            UIrefresh(this);
+                        }
+                    }
+
+                    //(UNDO)
+                    if (Input.GetMouseButtonDown(1))
+                    {
+                        selectedCard.SetRotationBackToPlaced();
+                        selectedCard.Place(selectedCard.hexImOn);
+                        currentAction = Action.moving;
+                        selectedCard = null;
+                        if (UIrefresh != null)
+                        {
+                            UIrefresh(this);
+                        }
+                    }
+
+                    //(RETURN TO OWNER'S HAND)
+                    if (Input.GetKeyDown(KeyCode.Space))
+                    {
+                        UnselectCard();
+                        hasUsedAbility = true;
+                        if (UIrefresh != null)
+                        {
+                            UIrefresh(this);
+                        }
+                    }
+
+                }
+
                 #endregion
 
                 break;
 
-            case State.bet:
+            case Action.bet:
 
                 #region Bet
                 if (!hasBet)
                 {
                     RaycastHit betHitInfo;
-
-                    gameManager.uiManager.PrintLeft("Select a player to attack.\nRightclick to undo.");
 
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out betHitInfo, 100, playerLayer))
                     {
@@ -307,15 +310,26 @@ public class PlayerController : MonoBehaviour
                         //Seleziono un player nemico da attaccare
                         if (Input.GetMouseButtonDown(0) && playerHit && playersToRob.Contains(playerHit))
                         {
+                            hasBet = true;
+                            if (UIrefresh != null)
+                            {
+                                UIrefresh(this);
+                            }
                             StartCoroutine(gameManager.Bet(this, playerHit));
                         }
                     }
 
+                    //UNDO
                     if (Input.GetMouseButtonDown(1))
                     {
-                        currentState = previousState;
+                        currentAction = previousState;
+                        if (UIrefresh != null)
+                        {
+                            UIrefresh(this);
+                        }
                     }
                 }
+
                 #endregion
 
                 break;
@@ -329,7 +343,11 @@ public class PlayerController : MonoBehaviour
         if (selectedCard.state == CardController.State.inHand)
         {
             selectedCard.state = CardController.State.selectedFromHand;
-            currentState = State.card;
+            currentAction = Action.placeCard;
+        }
+        if (UIrefresh != null)
+        {
+            UIrefresh(this);
         }
     }
 
@@ -338,8 +356,26 @@ public class PlayerController : MonoBehaviour
         selectedCard.state = CardController.State.inHand;
         selectedCard.transform.position = MyData.prefabsPosition;
         selectedCard = null;
+
+        if (UIrefresh != null)
+        {
+            UIrefresh(this);
+        }
     }
     #endregion
+
+    bool CheckIfPointIsWalkable(Point point)
+    {
+        PlayerController[] players = gameManager.players;
+
+        foreach (PlayerController player in players)
+        {
+            if (player.currentWayPoint == point)
+                return false;
+        }
+
+        return true;
+    }
 
     public bool isMyColor(Point point)
     {
@@ -358,6 +394,38 @@ public class PlayerController : MonoBehaviour
 
     public void MoveToPoint(Point point)
     {
-        transform.parent.position = point.worldPosition + Vector3.up * .7f;
+        transform.position = point.worldPosition + Vector3.up * .7f;
     }
+
+    public void ChoseAction(int actionIndex)
+    {
+        switch (actionIndex)
+        {
+            case 0:
+                currentAction = Action.moving;
+                break;
+            case 1:
+                currentAction = Action.buyCard;
+                break;
+            case 2:
+                currentAction = Action.sellCard;
+                break;
+            case 3:
+                currentAction = Action.placeCard;
+                break;
+            case 4:
+                currentAction = Action.rotateCard;
+                break;
+            case 5:
+                currentAction = Action.bet;
+                break;
+        }
+
+        if(UIrefresh != null)
+        {
+            UIrefresh(this);
+        }
+
+    }
+
 }
