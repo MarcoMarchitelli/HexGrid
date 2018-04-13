@@ -174,7 +174,7 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
-  turnStartPoint:
+  moveStartPoint:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
@@ -183,19 +183,17 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
-  currentState: 0
+  currentAction: 0
   previousState: 0
   possibleMoves: 3
   energyPoints: 0
   victoryPoints: 3
-  turnStartMoves: 0
+  moveStartMoves: 0
+  actions: 2
   hasUsedAbility: 0
   hasBet: 0
   canBet: 0
-  cards:
-  - {fileID: 4861242943396792, guid: 49d0ec244966ba04ba27a59e06ee8dc2, type: 2}
-  - {fileID: 4097142438760948, guid: 434becdb47512b34db5224a884dec18a, type: 2}
-  - {fileID: 4135634690672830, guid: 4d99b94fc5630f443b7f7aa003327d87, type: 2}
+  cards: []
   selectedCard: {fileID: 0}
   playersToRob: []
   pointLayer:

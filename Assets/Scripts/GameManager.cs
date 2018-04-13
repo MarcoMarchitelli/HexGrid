@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour
     public PlayerController[] players;
     public UIManager uiManager;
 
+    [Header("Cards Prefabs")]
+    public Transform prefabCard1;
+    public Transform prefabCard2;
+    public Transform prefabCard3;
+
     [HideInInspector]
     public HexGridCreator gridReference;
     [HideInInspector]
@@ -19,7 +24,6 @@ public class GameManager : MonoBehaviour
 
     int energyBet, turnCount = 1;
     bool hasBet, winnerAnnounced;
-
     string bottomLeftMsg;
 
     public static GameManager instance;
@@ -214,9 +218,9 @@ public class GameManager : MonoBehaviour
     //called when clicking undo movement button
     public void UndoMoveCurrentPlayer()
     {
-        currentActivePlayer.possibleMoves = currentActivePlayer.turnStartMoves;
-        currentActivePlayer.MoveToPoint(currentActivePlayer.turnStartPoint);
-        currentActivePlayer.currentWayPoint = currentActivePlayer.turnStartPoint;
+        currentActivePlayer.possibleMoves = currentActivePlayer.beforeMoveActionMoves;
+        currentActivePlayer.MoveToPoint(currentActivePlayer.moveStartPoint);
+        currentActivePlayer.currentWayPoint = currentActivePlayer.moveStartPoint;
         currentActivePlayer.currentAction = PlayerController.Action.moving;
         if (currentActivePlayer.UIrefresh != null)
         {
@@ -229,18 +233,115 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.ChoseAction(actionIndex);
     }
 
+    public void ConfirmAction()
+    {
+        switch (currentActivePlayer.currentAction)
+        {
+            case PlayerController.Action.moving:
+                break;
+            case PlayerController.Action.buyCard:
+                ConfirmBoughtCards();
+                break;
+            case PlayerController.Action.sellCard:
+                break;
+            case PlayerController.Action.placeCard:
+                break;
+            case PlayerController.Action.rotateCard:
+                break;
+            case PlayerController.Action.bet:
+                break;
+        }
+
+        currentActivePlayer.currentAction = PlayerController.Action.start;
+        currentActivePlayer.actions--;
+
+        if (currentActivePlayer.UIrefresh != null)
+            currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
+    }
+
+    public void UndoAction()
+    {
+        switch (currentActivePlayer.currentAction)
+        {
+            case PlayerController.Action.idle:
+                break;
+            case PlayerController.Action.start:
+                break;
+            case PlayerController.Action.moving:
+                UndoMoveCurrentPlayer();
+                break;
+            case PlayerController.Action.buyCard:
+                UndoBoughtCards();
+                break;
+            case PlayerController.Action.sellCard:
+                break;
+            case PlayerController.Action.placeCard:
+                break;
+            case PlayerController.Action.rotateCard:
+                break;
+            case PlayerController.Action.bet:
+                break;
+        }
+
+        currentActivePlayer.currentAction = PlayerController.Action.start;
+
+        if (currentActivePlayer.UIrefresh != null)
+            currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
+    }
+
+    #endregion
+
+    #region Specific Confirm Actions
+
+    void ConfirmBoughtCards()
+    {
+        List<int> cardsBought = uiManager.cardShopScript.cardsBought;
+
+        foreach (int cardType in cardsBought)
+        {
+            switch (cardType)
+            {
+                case 1:
+                    Transform instantiatedCard1 = Instantiate(prefabCard1, MyData.prefabsPosition, Quaternion.identity);
+                    currentActivePlayer.cards.Add(instantiatedCard1);
+                    break;
+                case 2:
+                    Transform instantiatedCard2 = Instantiate(prefabCard2, MyData.prefabsPosition, Quaternion.identity);
+                    currentActivePlayer.cards.Add(instantiatedCard2);
+                    break;
+                case 3:
+                    Transform instantiatedCard3 = Instantiate(prefabCard3, MyData.prefabsPosition, Quaternion.identity);
+                    currentActivePlayer.cards.Add(instantiatedCard3);
+                    break;
+            }
+        }
+
+        currentActivePlayer.hasBought = false;
+
+        uiManager.cardShopScript.cardsBought.Clear();
+    }
+
+    #endregion
+
+    #region Specific Undo Actions
+
+    void UndoBoughtCards()
+    {
+        if (currentActivePlayer.hasBought)
+        {
+            currentActivePlayer.energyPoints = currentActivePlayer.beforeBuyActionEnergyPoints;
+
+            currentActivePlayer.hasBought = false;
+
+            uiManager.cardShopScript.cardsBought.Clear();
+        }
+    }
+
     #endregion
 
     public void Win(PlayerController player)
     {
         uiManager.Win(player);
-    }
-
-    public void ConfirmAction()
-    {
-        currentActivePlayer.currentAction = PlayerController.Action.start;
-
-        currentActivePlayer.actions--;
     }
 
     #region Bet related functions

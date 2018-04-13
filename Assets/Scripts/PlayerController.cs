@@ -6,8 +6,6 @@ public class PlayerController : MonoBehaviour
 {
 
     public delegate void UIevent(PlayerController player);
-
-    GameManager gameManager;
     public UIevent UIrefresh;
 
     public enum Type
@@ -26,16 +24,18 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Point startingWayPoint;
     [HideInInspector]
-    public Point currentWayPoint, turnStartPoint;
+    public Point currentWayPoint, moveStartPoint;
     [HideInInspector]
     public Action currentAction = Action.idle;
     [HideInInspector]
     public Action previousState;
     [HideInInspector]
-    public int possibleMoves = 3, energyPoints = 0, victoryPoints = 3, turnStartMoves, actions = 2;
+    public int energyPoints = 0, victoryPoints = 3, actions = 2;
     [HideInInspector]
-    public bool hasUsedAbility, hasBet, canBet;
-    public Transform[] cards;
+    public int possibleMoves = 3, beforeMoveActionMoves;
+    [HideInInspector]
+    public bool hasUsedAbility, hasBet, canBet, hasBought;
+    public List<Transform> cards;
     [HideInInspector]
     public CardController selectedCard;
     public List<PlayerController> playersToRob = new List<PlayerController>();
@@ -44,23 +44,15 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     Hexagon lastSelectedHex;
-    bool uiRefreshFlag, isFirstStart = true;
+    bool uiRefreshFlag, isFirstTime = true;
     string bottomLeftMsg;
-
-    void Awake()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-        Transform cardsParent = GameObject.Find(type.ToString() + "PlayerCards").transform;
-        cards = new Transform[cardsParent.childCount];
-        for (int i = 0; i < cardsParent.transform.childCount; i++)
-        {
-            cards[i] = cardsParent.GetChild(i);
-        }
-    }
+    [HideInInspector]
+    public int beforeBuyActionEnergyPoints;
 
     private void Start()
     {
         currentWayPoint = startingWayPoint;
+        cards = new List<Transform>();
     }
 
     void Update()
@@ -69,37 +61,24 @@ public class PlayerController : MonoBehaviour
         {
             case Action.idle:
                 selectedCard = null;
+                isFirstTime = true;
+                uiRefreshFlag = false;
                 break;
 
             case Action.start:
 
                 #region Start
 
-                if (isFirstStart)
+                if (isFirstTime)
                 {
-                    possibleMoves = gameManager.NumberOfPossiblesMoves(this);
-                    turnStartMoves = possibleMoves;
-                    turnStartPoint = currentWayPoint;
                     hasUsedAbility = false;
                     hasBet = false;
                     energyPoints++;
-                    energyPoints += cards[1].GetComponent<CardController>().extractableEnergy;
                     if (UIrefresh != null)
                     {
                         UIrefresh(this);
                     }
-                    isFirstStart = false;
-                }
-                else
-                {
-                    if (!uiRefreshFlag)
-                    {
-                        if (UIrefresh != null)
-                        {
-                            UIrefresh(this);
-                        }
-                        uiRefreshFlag = true;
-                    }
+                    isFirstTime = false;
                 }
 
                 #endregion
@@ -110,24 +89,6 @@ public class PlayerController : MonoBehaviour
 
                 #region Moving
 
-                if (!uiRefreshFlag)
-                {
-                    if (UIrefresh != null)
-                    {
-                        UIrefresh(this);
-                        uiRefreshFlag = true;
-                    }
-                }
-
-                if (possibleMoves <= 0)
-                {
-                    uiRefreshFlag = false;
-                    if (UIrefresh != null)
-                    {
-                        UIrefresh(this);
-                    }
-                }
-
                 RaycastHit hitInfo;
 
                 //moving ray
@@ -135,7 +96,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (Input.GetMouseButtonDown(0))
                     {
-                        Point pointHit = gameManager.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
+                        Point pointHit = GameManager.instance.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
 
                         if (pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && possibleMoves > 0 && CheckIfPointIsWalkable(pointHit))
                         {
@@ -156,7 +117,7 @@ public class PlayerController : MonoBehaviour
                                 possibleMoves = 0;
                                 if (victoryPoints >= 5)
                                 {
-                                    gameManager.Win(this);
+                                    GameManager.instance.Win(this);
                                 }
                             }
                             else
@@ -191,7 +152,7 @@ public class PlayerController : MonoBehaviour
                     {
                         if (Input.GetMouseButtonDown(0))
                         {
-                            Hexagon hexHit = gameManager.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
+                            Hexagon hexHit = GameManager.instance.gridReference.GetHexagonFromWorldPosition(placingHitInfo.collider.transform.position);
 
                             if (hexHit != null)
                             {
@@ -315,7 +276,7 @@ public class PlayerController : MonoBehaviour
                             {
                                 UIrefresh(this);
                             }
-                            StartCoroutine(gameManager.Bet(this, playerHit));
+                            StartCoroutine(GameManager.instance.Bet(this, playerHit));
                         }
                     }
 
@@ -366,7 +327,7 @@ public class PlayerController : MonoBehaviour
 
     bool CheckIfPointIsWalkable(Point point)
     {
-        PlayerController[] players = gameManager.players;
+        PlayerController[] players = GameManager.instance.players;
 
         foreach (PlayerController player in players)
         {
@@ -403,9 +364,12 @@ public class PlayerController : MonoBehaviour
         {
             case 0:
                 currentAction = Action.moving;
+                possibleMoves = beforeMoveActionMoves = 3;
+                moveStartPoint = currentWayPoint;
                 break;
             case 1:
                 currentAction = Action.buyCard;
+                beforeBuyActionEnergyPoints = energyPoints;
                 break;
             case 2:
                 currentAction = Action.sellCard;
@@ -426,6 +390,11 @@ public class PlayerController : MonoBehaviour
             UIrefresh(this);
         }
 
+    }
+
+    public void AddCard(Transform card)
+    {
+        cards.Add(card);
     }
 
 }
