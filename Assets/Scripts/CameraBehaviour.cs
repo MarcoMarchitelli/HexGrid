@@ -5,7 +5,6 @@ using DG.Tweening;
 
 public class CameraBehaviour : MonoBehaviour
 {
-
     public Vector3 offset;
 
     public void SetTransform(PlayerController player)

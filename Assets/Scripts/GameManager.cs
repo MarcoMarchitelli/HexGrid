@@ -33,16 +33,16 @@ public class GameManager : MonoBehaviour
         instance = this;
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
-        efm = FindObjectOfType<EFM>();
+        efm = FindObjectOfType<EFM>();  
+    }
+
+    private void Start()
+    {
         InstantiatePlayers();
         players[0].currentAction = PlayerController.Action.start;
         currentActivePlayer = players[0];
         string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
         uiManager.PrintTopRight(msg);
-    }
-
-    private void Start()
-    {
         mainCamera.SetTransform(currentActivePlayer);
         efm.SetPhase(efm.currentPhase, players);
         uiManager.PrintPlayersModifiers();
