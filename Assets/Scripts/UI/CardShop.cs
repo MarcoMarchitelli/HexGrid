@@ -20,9 +20,9 @@ public class CardShop : MonoBehaviour {
     public int card2Price;
     public int card3Price;
 
-    public void ToggleBuyButtons()
+    public void ToggleBuyButtons(PlayerController player)
     {
-        playerEnergy = GameManager.instance.currentActivePlayer.energyPoints;
+        playerEnergy = player.energyPoints;
         if (playerEnergy >= card3Price)
         {
             buyCard3.enabled = true;
@@ -87,7 +87,7 @@ public class CardShop : MonoBehaviour {
 
         GameManager.instance.currentActivePlayer.hasBought = true;
 
-        ToggleBuyButtons();
+        ToggleBuyButtons(GameManager.instance.currentActivePlayer);
     }
 
 }

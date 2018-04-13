@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
-    GameManager gameManager;
     int eulerAngle = 0;
+    [HideInInspector]
     public int placedEulerAngle;
+    [HideInInspector]
     public int extractableEnergy = 0;
+    [HideInInspector]
     public Hexagon hexImOn;
 
     public enum State
@@ -20,15 +22,14 @@ public class CardController : MonoBehaviour
         card1, card2, card3
     }
 
+    [HideInInspector]
     public State state = State.inHand;
+    [HideInInspector]
     public Type type;
+    [HideInInspector]
+    public PlayerController player;
 
     public bool isShield = true;
-
-    private void Awake()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-    }
 
     void Update()
     {
@@ -88,12 +89,13 @@ public class CardController : MonoBehaviour
                 extractableEnergy = 0;
                 SetExtractableEnergy(hex);
             }
+            player.cardsInHand.Remove(this);
         }
     }
 
     public void BlockPaths(Hexagon hex)
     {
-        List<Point> pointsAroundCard = gameManager.gridReference.GetSixPointsAroundHexagon(hex);
+        List<Point> pointsAroundCard = GameManager.instance.gridReference.GetSixPointsAroundHexagon(hex);
 
         Point bottom = null;
         Point bottomRight = null;
@@ -355,11 +357,11 @@ public class CardController : MonoBehaviour
 
     public void FreePaths(Hexagon hex)
     {
-        List<Point> pointsAroundCard = gameManager.gridReference.GetSixPointsAroundHexagon(hex);
+        List<Point> pointsAroundCard = GameManager.instance.gridReference.GetSixPointsAroundHexagon(hex);
 
         foreach (Point point in pointsAroundCard)
         {
-            point.possibleDestinations = gameManager.gridReference.GetPossibleDestinationsFromPoint(point);
+            point.possibleDestinations = GameManager.instance.gridReference.GetPossibleDestinationsFromPoint(point);
         }
 
         extractableEnergy = 0;
@@ -367,7 +369,7 @@ public class CardController : MonoBehaviour
 
     void SetExtractableEnergy(Hexagon myHex)
     {
-        List<Hexagon> aroundHexes = gameManager.gridReference.GetHexagonsAroundHexagon(myHex);
+        List<Hexagon> aroundHexes = GameManager.instance.gridReference.GetHexagonsAroundHexagon(myHex);
 
         Hexagon topLeft = new Hexagon();
         Hexagon topRight = new Hexagon();

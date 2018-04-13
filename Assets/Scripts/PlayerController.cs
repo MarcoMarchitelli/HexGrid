@@ -34,25 +34,28 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public int possibleMoves = 3, beforeMoveActionMoves;
     [HideInInspector]
-    public bool hasUsedAbility, hasBet, canBet, hasBought;
-    public List<Transform> cards;
+    public int numberOfCards1InHand = 0, numberOfCards2InHand = 0, numberOfCards3InHand = 0;
     [HideInInspector]
-    public CardController selectedCard;
+    public bool hasPlacedCard, hasBet, canBet, hasBought;
+    public List<CardController> cardsInHand;
+    [HideInInspector]
+    public CardController selectedCard, lastPlacedCard;
     public List<PlayerController> playersToRob = new List<PlayerController>();
     public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
+    [HideInInspector]
+    public int beforeBuyActionEnergyPoints;
 
     #endregion
 
     Hexagon lastSelectedHex;
     bool uiRefreshFlag, isFirstTime = true;
     string bottomLeftMsg;
-    [HideInInspector]
-    public int beforeBuyActionEnergyPoints;
+    
 
     private void Start()
     {
         currentWayPoint = startingWayPoint;
-        cards = new List<Transform>();
+        cardsInHand = new List<CardController>();
     }
 
     void Update()
@@ -71,9 +74,10 @@ public class PlayerController : MonoBehaviour
 
                 if (isFirstTime)
                 {
-                    hasUsedAbility = false;
+                    hasPlacedCard = false;
                     hasBet = false;
                     energyPoints++;
+                    actions = 2;
                     if (UIrefresh != null)
                     {
                         UIrefresh(this);
@@ -104,7 +108,7 @@ public class PlayerController : MonoBehaviour
                             transform.position = pointHit.worldPosition + Vector3.up * .7f;
                             currentWayPoint = pointHit;
 
-                            if (currentWayPoint.isFinalWaypoint && isMyColor(currentWayPoint))
+                            if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
                                 energyPoints++;
 
                             if (currentWayPoint.type == Point.Type.purple)
@@ -145,7 +149,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit placingHitInfo;
 
                 //Se ho carta selezionata. E se l'ho selezionata da mano -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasUsedAbility)
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasPlacedCard)
                 {
                     //(PLACE)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, hexLayer))
@@ -156,10 +160,12 @@ public class PlayerController : MonoBehaviour
 
                             if (hexHit != null)
                             {
-                                if (hexHit.card == null && !hasUsedAbility && currentWayPoint.nearHexagons.Contains(hexHit))
+                                if (hexHit.card == null)
                                 {
                                     selectedCard.Place(hexHit);
-                                    hasUsedAbility = true;
+                                    lastPlacedCard = selectedCard;
+                                    selectedCard = null;
+                                    hasPlacedCard = true;
                                     if (UIrefresh != null)
                                     {
                                         UIrefresh(this);
@@ -170,11 +176,9 @@ public class PlayerController : MonoBehaviour
                     }
 
                     //(UNDO)
-                    if (Input.GetMouseButtonDown(1) && !hasUsedAbility && selectedCard.state == CardController.State.selectedFromHand)
+                    if (Input.GetMouseButtonDown(1) && !hasPlacedCard && selectedCard.state == CardController.State.selectedFromHand)
                     {
                         UnselectCard();
-                        uiRefreshFlag = false;
-                        currentAction = Action.moving;
                     }
                 }
 
@@ -212,14 +216,14 @@ public class PlayerController : MonoBehaviour
                 }
 
                 //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !hasUsedAbility)
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap)
                 {
 
                     //(PLACE)
                     if (Input.GetMouseButtonDown(0))
                     {
                         selectedCard.Place(selectedCard.hexImOn);
-                        hasUsedAbility = true;
+                        hasPlacedCard = true;
                         if (UIrefresh != null)
                         {
                             UIrefresh(this);
@@ -243,7 +247,7 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetKeyDown(KeyCode.Space))
                     {
                         UnselectCard();
-                        hasUsedAbility = true;
+                        hasPlacedCard = true;
                         if (UIrefresh != null)
                         {
                             UIrefresh(this);
@@ -298,13 +302,13 @@ public class PlayerController : MonoBehaviour
     }
 
     #region Card Selection
-    public void SelectCard(int index)
+
+    public void SelectCard(CardController card)
     {
-        selectedCard = cards[index].GetComponent<CardController>();
+        selectedCard = card;
         if (selectedCard.state == CardController.State.inHand)
         {
             selectedCard.state = CardController.State.selectedFromHand;
-            currentAction = Action.placeCard;
         }
         if (UIrefresh != null)
         {
@@ -323,7 +327,55 @@ public class PlayerController : MonoBehaviour
             UIrefresh(this);
         }
     }
+
+    public void SendCardInHand(CardController card)
+    {
+        cardsInHand.Add(card);
+        card.FreePaths(card.hexImOn);
+        card.state = CardController.State.inHand;
+        card.transform.position = MyData.prefabsPosition;
+        switch (card.type)
+        {
+            case CardController.Type.card1:
+                numberOfCards1InHand++;
+                break;
+            case CardController.Type.card2:
+                numberOfCards2InHand++;
+                break;
+            case CardController.Type.card3:
+                numberOfCards3InHand++;
+                break;
+        }
+        lastPlacedCard = null;
+
+        if (UIrefresh != null)
+        {
+            UIrefresh(this);
+        }
+    }
+
     #endregion
+
+    public void SetNumberOfCardTypesInHand()
+    {
+        numberOfCards1InHand = numberOfCards2InHand = numberOfCards3InHand = 0;
+
+        foreach (CardController card in cardsInHand)
+        {
+            switch (card.type)
+            {
+                case CardController.Type.card1:
+                    numberOfCards1InHand++;
+                    break;
+                case CardController.Type.card2:
+                    numberOfCards2InHand++;
+                    break;
+                case CardController.Type.card3:
+                    numberOfCards3InHand++;
+                    break;
+            }
+        }
+    }
 
     bool CheckIfPointIsWalkable(Point point)
     {
@@ -338,7 +390,7 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
-    public bool isMyColor(Point point)
+    public bool IsMyColor(Point point)
     {
 
         if (type == Type.hypogeum && point.type == Point.Type.hypogeum)
@@ -349,6 +401,19 @@ public class PlayerController : MonoBehaviour
             return true;
         if (type == Type.underground && point.type == Point.Type.underground)
             return true;
+
+        return false;
+    }
+
+    public bool HasCardInNearHexagons()
+    {
+        List<Hexagon> nearHexagons = currentWayPoint.nearHexagons;
+
+        foreach (Hexagon hex in nearHexagons)
+        {
+            if (hex.card)
+                return true;
+        }
 
         return false;
     }
@@ -376,9 +441,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case 3:
                 currentAction = Action.placeCard;
+                //nothing to do
                 break;
             case 4:
                 currentAction = Action.rotateCard;
+                //nothing to do
                 break;
             case 5:
                 currentAction = Action.bet;
@@ -392,9 +459,10 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void AddCard(Transform card)
+    public void AddCard(CardController card)
     {
-        cards.Add(card);
+        cardsInHand.Add(card);
+        card.state = CardController.State.inHand;
     }
 
 }

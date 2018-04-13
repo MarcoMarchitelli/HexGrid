@@ -192,19 +192,13 @@ public class GameManager : MonoBehaviour
         return moves;
     }
 
-    #region Button Functions
-
-    //called when clickin card buttons
-    public void CurrentPlayerSelectCard(int index)
+    public void ChoseAction(int actionIndex)
     {
-        currentActivePlayer.SelectCard(index);
-        if (currentActivePlayer.UIrefresh != null)
-        {
-            currentActivePlayer.UIrefresh(currentActivePlayer);
-        }
+        currentActivePlayer.ChoseAction(actionIndex);
     }
 
-    //called when clicking endturn button
+    #region Button Functions
+
     public void SetCurrentPlayerIdle()
     {
         uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
@@ -215,7 +209,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //called when clicking undo movement button
     public void UndoMoveCurrentPlayer()
     {
         currentActivePlayer.possibleMoves = currentActivePlayer.beforeMoveActionMoves;
@@ -228,23 +221,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ChoseAction(int actionIndex)
-    {
-        currentActivePlayer.ChoseAction(actionIndex);
-    }
-
     public void ConfirmAction()
     {
         switch (currentActivePlayer.currentAction)
         {
             case PlayerController.Action.moving:
+                //nothing to do
                 break;
             case PlayerController.Action.buyCard:
-                ConfirmBoughtCards();
+                ConfirmBuyCards();
                 break;
             case PlayerController.Action.sellCard:
                 break;
             case PlayerController.Action.placeCard:
+                //nothing to do
                 break;
             case PlayerController.Action.rotateCard:
                 break;
@@ -271,11 +261,12 @@ public class GameManager : MonoBehaviour
                 UndoMoveCurrentPlayer();
                 break;
             case PlayerController.Action.buyCard:
-                UndoBoughtCards();
+                UndoBuyCards();
                 break;
             case PlayerController.Action.sellCard:
                 break;
             case PlayerController.Action.placeCard:
+                UndoPlaceCard();
                 break;
             case PlayerController.Action.rotateCard:
                 break;
@@ -293,7 +284,7 @@ public class GameManager : MonoBehaviour
 
     #region Specific Confirm Actions
 
-    void ConfirmBoughtCards()
+    void ConfirmBuyCards()
     {
         List<int> cardsBought = uiManager.cardShopScript.cardsBought;
 
@@ -303,15 +294,33 @@ public class GameManager : MonoBehaviour
             {
                 case 1:
                     Transform instantiatedCard1 = Instantiate(prefabCard1, MyData.prefabsPosition, Quaternion.identity);
-                    currentActivePlayer.cards.Add(instantiatedCard1);
+                    CardController card1Controller = instantiatedCard1.GetComponent<CardController>();
+                    if (card1Controller)
+                    {
+                        currentActivePlayer.cardsInHand.Add(card1Controller);
+                        card1Controller.player = currentActivePlayer;
+                        currentActivePlayer.numberOfCards1InHand++;
+                    }
                     break;
                 case 2:
                     Transform instantiatedCard2 = Instantiate(prefabCard2, MyData.prefabsPosition, Quaternion.identity);
-                    currentActivePlayer.cards.Add(instantiatedCard2);
+                    CardController card2Controller = instantiatedCard2.GetComponent<CardController>();
+                    if (card2Controller)
+                    {
+                        currentActivePlayer.cardsInHand.Add(card2Controller);
+                        card2Controller.player = currentActivePlayer;
+                        currentActivePlayer.numberOfCards2InHand++;
+                    }
                     break;
                 case 3:
                     Transform instantiatedCard3 = Instantiate(prefabCard3, MyData.prefabsPosition, Quaternion.identity);
-                    currentActivePlayer.cards.Add(instantiatedCard3);
+                    CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
+                    if (card3Controller)
+                    {
+                        currentActivePlayer.cardsInHand.Add(card3Controller);
+                        card3Controller.player = currentActivePlayer;
+                        currentActivePlayer.numberOfCards1InHand++;
+                    }
                     break;
             }
         }
@@ -321,11 +330,27 @@ public class GameManager : MonoBehaviour
         uiManager.cardShopScript.cardsBought.Clear();
     }
 
+    void ConfirmPlaceCard()
+    {
+        switch (currentActivePlayer.lastPlacedCard.type)
+        {
+            case CardController.Type.card1:
+                currentActivePlayer.numberOfCards1InHand++;
+                break;
+            case CardController.Type.card2:
+                currentActivePlayer.numberOfCards2InHand++;
+                break;
+            case CardController.Type.card3:
+                currentActivePlayer.numberOfCards3InHand++;
+                break;
+        }
+    }
+
     #endregion
 
     #region Specific Undo Actions
 
-    void UndoBoughtCards()
+    void UndoBuyCards()
     {
         if (currentActivePlayer.hasBought)
         {
@@ -335,6 +360,15 @@ public class GameManager : MonoBehaviour
 
             uiManager.cardShopScript.cardsBought.Clear();
         }
+    }
+
+    void UndoPlaceCard()
+    {
+        if (currentActivePlayer.hasPlacedCard)
+        {    
+            currentActivePlayer.SendCardInHand(currentActivePlayer.lastPlacedCard);
+            currentActivePlayer.hasPlacedCard = false;
+        } 
     }
 
     #endregion
@@ -434,7 +468,7 @@ public class GameManager : MonoBehaviour
         }
 
         attacker.currentAction = attacker.previousState;
-        uiManager.ToggleBet(attacker);
+        uiManager.ToggleBetButton(attacker);
         if (currentActivePlayer.UIrefresh != null)
         {
             currentActivePlayer.UIrefresh(currentActivePlayer);
