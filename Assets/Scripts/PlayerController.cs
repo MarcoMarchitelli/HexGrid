@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Action previousState;
     [HideInInspector]
-    public int energyPoints = 0, victoryPoints = 3, actions = 2;
+    public int energyPoints = 2, victoryPoints = 3, actions = 2;
     [HideInInspector]
     public int possibleMoves = 3, beforeMoveActionMoves;
     [HideInInspector]
@@ -50,6 +50,7 @@ public class PlayerController : MonoBehaviour
     Hexagon lastSelectedHex;
     bool uiRefreshFlag, isFirstTime = true;
     string bottomLeftMsg;
+    int maxPE = 25;
     
 
     private void Start()
@@ -60,6 +61,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (energyPoints > maxPE)
+            energyPoints = maxPE;
+
         switch (currentAction)
         {
             case Action.idle:
@@ -104,7 +108,6 @@ public class PlayerController : MonoBehaviour
 
                         if (pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && possibleMoves > 0 && CheckIfPointIsWalkable(pointHit))
                         {
-
                             transform.position = pointHit.worldPosition + Vector3.up * .7f;
                             currentWayPoint = pointHit;
 
@@ -386,6 +389,9 @@ public class PlayerController : MonoBehaviour
             if (player.currentWayPoint == point)
                 return false;
         }
+
+        if (point.type == Point.Type.win && victoryPoints < 5)
+            return false;
 
         return true;
     }

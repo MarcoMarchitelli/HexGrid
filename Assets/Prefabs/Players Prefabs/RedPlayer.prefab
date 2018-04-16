@@ -185,16 +185,21 @@ MonoBehaviour:
     isFinalWaypoint: 0
   currentAction: 0
   previousState: 0
-  possibleMoves: 3
-  energyPoints: 0
+  energyPoints: 2
   victoryPoints: 3
-  moveStartMoves: 0
   actions: 2
-  hasUsedAbility: 0
+  possibleMoves: 3
+  beforeMoveActionMoves: 0
+  numberOfCards1InHand: 0
+  numberOfCards2InHand: 0
+  numberOfCards3InHand: 0
+  hasPlacedCard: 0
   hasBet: 0
   canBet: 0
-  cards: []
+  hasBought: 0
+  cardsInHand: []
   selectedCard: {fileID: 0}
+  lastPlacedCard: {fileID: 0}
   playersToRob: []
   pointLayer:
     serializedVersion: 2
@@ -208,6 +213,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 2048
+  beforeBuyActionEnergyPoints: 0
 --- !u!136 &136387037337043180
 CapsuleCollider:
   m_ObjectHideFlags: 1
