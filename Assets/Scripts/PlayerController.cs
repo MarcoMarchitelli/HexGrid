@@ -28,8 +28,6 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Action currentAction = Action.idle;
     [HideInInspector]
-    public Action previousState;
-    [HideInInspector]
     public int energyPoints = 2, victoryPoints = 3, actions = 2;
     [HideInInspector]
     public int possibleMoves = 3, beforeMoveActionMoves;
@@ -284,16 +282,6 @@ public class PlayerController : MonoBehaviour
                                 UIrefresh(this);
                             }
                             StartCoroutine(GameManager.instance.Bet(this, playerHit));
-                        }
-                    }
-
-                    //UNDO
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        currentAction = previousState;
-                        if (UIrefresh != null)
-                        {
-                            UIrefresh(this);
                         }
                     }
                 }

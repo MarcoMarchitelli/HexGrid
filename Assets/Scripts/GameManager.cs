@@ -382,7 +382,7 @@ public class GameManager : MonoBehaviour
         {
             if (!doesAttackerDoubleSteal)
             {
-                if (defender.victoryPoints != 0)
+                if (defender.victoryPoints >= 1)
                 {
                     attacker.victoryPoints++;
                     defender.victoryPoints--;
@@ -390,7 +390,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (defender.victoryPoints != 0)
+                if (defender.victoryPoints >= 2)
                 {
                     attacker.victoryPoints++;
                     defender.victoryPoints--;
@@ -400,8 +400,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        attacker.currentAction = attacker.previousState;
-        uiManager.ToggleBetButton(attacker);
+        currentActivePlayer.actions--;
+        currentActivePlayer.currentAction = PlayerController.Action.start;
+        uiManager.ExitAction();
+
         if (currentActivePlayer.UIrefresh != null)
         {
             currentActivePlayer.UIrefresh(currentActivePlayer);
