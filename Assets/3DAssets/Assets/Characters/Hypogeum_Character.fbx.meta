@@ -1,12 +1,13 @@
 fileFormatVersion: 2
-guid: c07f5322d0b1fe64cbe9d5f09bc81476
-timeCreated: 1521280589
+guid: 01b3e169808553d4e8961046126491b5
+timeCreated: 1523901809
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
     400000: //RootNode
+    2100000: M_HypogeumCharacter
     2300000: //RootNode
     3300000: //RootNode
     4300000: Character_Hypogeum
@@ -19,7 +20,7 @@ ModelImporter:
     second: {fileID: 2100000, guid: 5311fa86395ee7e4aa08b66cb60eb798, type: 2}
   materials:
     importMaterials: 1
-    materialName: 1
+    materialName: 0
     materialSearch: 1
     materialLocation: 1
   animations:
@@ -49,16 +50,18 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
     swapUVChannels: 0
-    generateSecondaryUV: 1
+    generateSecondaryUV: 0
     useFileUnits: 1
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
