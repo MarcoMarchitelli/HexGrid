@@ -29,8 +29,6 @@ public class CardController : MonoBehaviour
     [HideInInspector]
     public PlayerController player;
 
-    public bool isShield = true;
-
     void Update()
     {
         if (state == State.selectedFromHand)
@@ -90,6 +88,7 @@ public class CardController : MonoBehaviour
                 SetExtractableEnergy(hex);
             }
             player.cardsInHand.Remove(this);
+            GameManager.instance.cardsManager.PlacedCards.Add(this);
         }
     }
 
@@ -171,11 +170,11 @@ public class CardController : MonoBehaviour
             switch (eulerAngle)
             {
                 case 0:
-                    if(bottomRight != null && topRight != null)
+                    if (bottomRight != null && topRight != null)
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
-                    } 
+                    }
                     break;
                 case 60:
                 case -300:
@@ -183,7 +182,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomRight.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomRight.worldPosition);
-                    }    
+                    }
                     break;
                 case 120:
                 case -240:
@@ -191,7 +190,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    }   
+                    }
                     break;
                 case 180:
                 case -180:
@@ -199,7 +198,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
                         topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    }  
+                    }
                     break;
                 case 240:
                 case -120:
@@ -207,7 +206,7 @@ public class CardController : MonoBehaviour
                     {
                         topLeft.possibleDestinations.Remove(top.worldPosition);
                         top.possibleDestinations.Remove(topLeft.worldPosition);
-                    }      
+                    }
                     break;
                 case 300:
                 case -60:
@@ -215,7 +214,7 @@ public class CardController : MonoBehaviour
                     {
                         top.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(top.worldPosition);
-                    }    
+                    }
                     break;
             }
         }
@@ -225,7 +224,7 @@ public class CardController : MonoBehaviour
             switch (eulerAngle)
             {
                 case 0:
-                    if(bottomRight != null && topRight != null)
+                    if (bottomRight != null && topRight != null)
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
@@ -234,7 +233,7 @@ public class CardController : MonoBehaviour
                     {
                         topLeft.possibleDestinations.Remove(top.worldPosition);
                         top.possibleDestinations.Remove(topLeft.worldPosition);
-                    } 
+                    }
                     break;
                 case 60:
                 case -300:
@@ -247,7 +246,7 @@ public class CardController : MonoBehaviour
                     {
                         top.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(top.worldPosition);
-                    }    
+                    }
                     break;
                 case 120:
                 case -240:
@@ -260,7 +259,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
-                    } 
+                    }
                     break;
                 case 180:
                 case -180:
@@ -273,7 +272,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomRight.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomRight.worldPosition);
-                    }    
+                    }
                     break;
                 case 240:
                 case -120:
@@ -286,7 +285,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    } 
+                    }
                     break;
                 case 300:
                 case -60:
@@ -299,7 +298,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
                         topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    }  
+                    }
                     break;
             }
         }
@@ -313,7 +312,7 @@ public class CardController : MonoBehaviour
                 case -240:
                 case 240:
                 case -120:
-                    if(bottomRight != null && topRight != null)
+                    if (bottomRight != null && topRight != null)
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
@@ -365,6 +364,16 @@ public class CardController : MonoBehaviour
         }
 
         extractableEnergy = 0;
+    }
+
+    public void RotateRight()
+    {
+        FreePaths(hexImOn);
+        transform.Rotate(Vector3.up * 60);
+        eulerAngle += 60;
+        if (eulerAngle == 360 || eulerAngle == -360)
+            eulerAngle = 0;
+        BlockPaths(hexImOn);
     }
 
     void SetExtractableEnergy(Hexagon myHex)

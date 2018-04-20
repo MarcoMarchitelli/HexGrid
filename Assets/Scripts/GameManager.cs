@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public PlayerController currentActivePlayer;
     [HideInInspector]
     public CameraBehaviour mainCamera;
+    [HideInInspector]
+    public CardsManager cardsManager;
 
     int energyBet, turnCount = 1;
     bool hasBet, winnerAnnounced;
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
         efm = FindObjectOfType<EFM>();
+        cardsManager = GetComponent<CardsManager>();
         InstantiatePlayers();
     }
 
@@ -63,6 +66,7 @@ public class GameManager : MonoBehaviour
                 {
                     players[i + 1].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[i + 1];
+                    cardsManager.RotationPhase();
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
                     {
@@ -79,6 +83,7 @@ public class GameManager : MonoBehaviour
                 {
                     players[0].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[0];
+                    cardsManager.RotationPhase();
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
                     {
@@ -298,10 +303,15 @@ public class GameManager : MonoBehaviour
     void UndoPlaceCard()
     {
         if (currentActivePlayer.hasPlacedCard)
-        {    
+        {
+            cardsManager.PlacedCards.Remove(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.SendCardInHand(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.hasPlacedCard = false;
-        } 
+        }
+        if (currentActivePlayer.selectedCard)
+        {
+            currentActivePlayer.UnselectCard();
+        }
     }
 
     #endregion
