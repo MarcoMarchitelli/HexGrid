@@ -1,58 +1,37 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using cakeslice;
 
 public class MaterialChange : MonoBehaviour {
 
-    MeshRenderer myRenderer;
-    GameManager gameManager;
+    public Outline outline;
 
-    Color originalColor;
-
-	void Awake () {
-        gameManager = FindObjectOfType<GameManager>();
-        myRenderer = GetComponent<MeshRenderer>();
-        originalColor = myRenderer.material.color;
+    private void Awake()
+    {
+        outline = GetComponent<Outline>();
     }
-
-    //private void Update()
-    //{
-    //    isInRange = false;
-    //    foreach (AgentPosition agent in gameManager.currentActivePlayer.pointsInRange)
-    //    {
-    //        if (transform.position == agent.point.worldPosition)
-    //        {
-    //            isInRange = true;
-    //        }
-    //    }
-
-    //    if (isInRange)
-    //    {
-    //        myRenderer.material.color = Color.black;
-    //    }
-    //    else
-    //    {
-    //        myRenderer.material.color = originalColor;
-    //    }
-    //}
 
     private void OnMouseEnter()
     {
-        if(gameManager.currentActivePlayer.currentWayPoint.worldPosition == transform.position)
+        if(GameManager.instance.currentActivePlayer.currentWayPoint.worldPosition == transform.position)
         {
             return;
-        }else
-        if (gameManager.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) && gameManager.currentActivePlayer.possibleMoves != 0 && gameManager.currentActivePlayer.currentAction == PlayerController.Action.moving)
+        }
+        else if (GameManager.instance.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) && GameManager.instance.currentActivePlayer.possibleMoves != 0 && GameManager.instance.currentActivePlayer.currentAction == PlayerController.Action.moving)
         {
-            myRenderer.material.color = Color.green;
-        }else if(gameManager.currentActivePlayer.currentAction != PlayerController.Action.moving)
+            outline.enabled = true;
+            outline.color = 1;
+        }
+        else
         {
-            myRenderer.material.color = Color.red;
+            outline.enabled = true;
+            outline.color = 0;
         }
     }
         
     private void OnMouseExit()
     {
-        myRenderer.material.color = originalColor;
+        outline.enabled = false;
     }
 }
