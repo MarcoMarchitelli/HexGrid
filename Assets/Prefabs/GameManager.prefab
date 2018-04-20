@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4223799354143972}
   - component: {fileID: 114149320092511340}
+  - component: {fileID: 114631903122071188}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -67,3 +68,16 @@ MonoBehaviour:
   efm: {fileID: 0}
   currentActivePlayer: {fileID: 0}
   mainCamera: {fileID: 0}
+  cardsManager: {fileID: 0}
+--- !u!114 &114631903122071188
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1570569160473684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 392c63becffa05d44a3f5b839051569b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlacedCards: []

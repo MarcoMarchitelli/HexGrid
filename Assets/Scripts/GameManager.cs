@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
 
     int energyBet, turnCount = 1;
     bool hasBet, winnerAnnounced;
-    string bottomLeftMsg;
 
     public static GameManager instance;
 

@@ -207,10 +207,12 @@ public class PlayerController : MonoBehaviour
                             {
                                 selectedCard.state = CardController.State.selectedFromMap;
                                 selectedCard.FreePaths(selectedCard.hexImOn);
+                                GameManager.instance.cardsManager.PlacedCards.Remove(selectedCard);
                                 if (UIrefresh != null)
                                 {
                                     UIrefresh(this);
                                 }
+                                return;
                             }
                         }
                     }
@@ -245,15 +247,15 @@ public class PlayerController : MonoBehaviour
                     }
 
                     //(RETURN TO OWNER'S HAND)
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        UnselectCard();
-                        hasPlacedCard = true;
-                        if (UIrefresh != null)
-                        {
-                            UIrefresh(this);
-                        }
-                    }
+                    //if (Input.GetKeyDown(KeyCode.Space))
+                    //{
+                    //    UnselectCard();
+                    //    hasPlacedCard = true;
+                    //    if (UIrefresh != null)
+                    //    {
+                    //        UIrefresh(this);
+                    //    }
+                    //}
 
                 }
 
