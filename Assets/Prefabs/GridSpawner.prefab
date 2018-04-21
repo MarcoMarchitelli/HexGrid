@@ -51,6 +51,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61cf01d0388f2d64795b4511b658975c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  center: {fileID: 0}
+  mapPrefab: {fileID: 400000, guid: 13e059d44505b024bb35b99056f589a6, type: 3}
   emptyHexagonPrefab: {fileID: 4252391888528906, guid: c10b295be472b3c4d8e24f1dc302b2b0,
     type: 2}
   energyHexagonPrefab: {fileID: 4252391888528906, guid: 6f673220d6fcd304ea88b0f367e3adfe,

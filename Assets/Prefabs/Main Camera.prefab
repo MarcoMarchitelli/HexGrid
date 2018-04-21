@@ -106,7 +106,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -142,7 +141,6 @@ Camera:
   m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -165,8 +163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dbeb37911e6fd7644bdcefc70c42477a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xd: {fileID: 0}
   offset: {x: 0, y: 22, z: 0}
-  transitionTime: 1
+  transitionTime: 0
 --- !u!114 &114446203179526984
 MonoBehaviour:
   m_ObjectHideFlags: 1
