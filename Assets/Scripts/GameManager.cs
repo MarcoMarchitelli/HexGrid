@@ -206,6 +206,7 @@ public class GameManager : MonoBehaviour
                 UndoPlaceCard();
                 break;
             case PlayerController.Action.rotateCard:
+                UndoRotateCard();
                 break;
             case PlayerController.Action.bet:
                 break;
@@ -283,6 +284,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void ConfirmRotateCard()
+    {
+        currentActivePlayer.selectedCard = null;
+    }
+
     #endregion
 
     #region Specific Undo Actions
@@ -311,6 +317,26 @@ public class GameManager : MonoBehaviour
         {
             currentActivePlayer.UnselectCard();
         }
+    }
+
+    void UndoRotateCard()
+    {
+        CardController card = currentActivePlayer.selectedCard;
+        if (card && !currentActivePlayer.hasPlacedCard)
+        {
+            card.SetRotationBackToPlaced();
+            card.Place(currentActivePlayer.selectedCard.hexImOn);
+            card = null;
+        }
+        else if (currentActivePlayer.hasPlacedCard)
+        {
+            card = currentActivePlayer.lastPlacedCard;
+            card.FreePaths(card.hexImOn);
+            card.placedEulerAngle = currentActivePlayer.rotateCardStartEulerAngle;
+            card.SetRotationBackToPlaced();
+            card.Place(card.hexImOn);
+        }
+        currentActivePlayer.selectedCard = null;
     }
 
     #endregion

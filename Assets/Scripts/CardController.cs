@@ -374,6 +374,7 @@ public class CardController : MonoBehaviour
         if (eulerAngle == 360 || eulerAngle == -360)
             eulerAngle = 0;
         BlockPaths(hexImOn);
+        placedEulerAngle = eulerAngle;
     }
 
     void SetExtractableEnergy(Hexagon myHex)
@@ -510,4 +511,5 @@ public class CardController : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, (float)placedEulerAngle, 0));
         eulerAngle = placedEulerAngle;
     }
+
 }

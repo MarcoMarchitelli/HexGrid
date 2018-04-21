@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     public List<PlayerController> playersToRob = new List<PlayerController>();
     public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
     [HideInInspector]
-    public int beforeBuyActionEnergyPoints;
+    public int beforeBuyActionEnergyPoints, rotateCardStartEulerAngle;
 
     #endregion
 
@@ -208,6 +208,7 @@ public class PlayerController : MonoBehaviour
                                 selectedCard.state = CardController.State.selectedFromMap;
                                 selectedCard.FreePaths(selectedCard.hexImOn);
                                 GameManager.instance.cardsManager.PlacedCards.Remove(selectedCard);
+                                rotateCardStartEulerAngle = selectedCard.placedEulerAngle;
                                 if (UIrefresh != null)
                                 {
                                     UIrefresh(this);
@@ -227,6 +228,7 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard.Place(selectedCard.hexImOn);
                         hasPlacedCard = true;
+                        selectedCard = null;
                         if (UIrefresh != null)
                         {
                             UIrefresh(this);
@@ -238,7 +240,7 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard.SetRotationBackToPlaced();
                         selectedCard.Place(selectedCard.hexImOn);
-                        currentAction = Action.moving;
+                        lastPlacedCard = selectedCard;
                         selectedCard = null;
                         if (UIrefresh != null)
                         {
