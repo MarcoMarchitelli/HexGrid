@@ -6,10 +6,8 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public delegate void RotationPhaseEvent();
-    public delegate void GainPhaseEvent(PlayerController player);
 
     public RotationPhaseEvent RotationPhase;
-    public GainPhaseEvent GainPhase;
 
     public PlayerController[] players;
     public UIManager uiManager;

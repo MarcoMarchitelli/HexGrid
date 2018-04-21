@@ -455,6 +455,8 @@ public class PlayerController : MonoBehaviour
     public void GainPhase()
     {
         hasPlacedCard = false;
+        selectedCard = null;
+        lastPlacedCard = null;
         hasBet = false;
         actions = 2;
         energyPoints++;
