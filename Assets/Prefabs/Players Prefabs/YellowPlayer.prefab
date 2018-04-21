@@ -11,33 +11,18 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1910314513179228}
   m_IsPrefabParent: 1
---- !u!1 &1256775448563900
+--- !u!1 &1750390273999272
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4096420043621530}
-  m_Layer: 11
-  m_Name: GraphicsHypogeum
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!1 &1844091103045098
-GameObject:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4685010199999632}
-  - component: {fileID: 33944572886139512}
-  - component: {fileID: 23446322503713778}
+  - component: {fileID: 4658235423968924}
+  - component: {fileID: 33211826084168820}
+  - component: {fileID: 23107100967477646}
   m_Layer: 0
-  m_Name: Hypogeum_Character-Low
+  m_Name: Hypogeum_Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60,20 +45,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4096420043621530
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1256775448563900}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4685010199999632}
-  m_Father: {fileID: 4580714720320824}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4580714720320824
 Transform:
   m_ObjectHideFlags: 1
@@ -84,29 +55,29 @@ Transform:
   m_LocalPosition: {x: 502, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4096420043621530}
+  - {fileID: 4658235423968924}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4685010199999632
+--- !u!4 &4658235423968924
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844091103045098}
+  m_GameObject: {fileID: 1750390273999272}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.04, y: 0.04, z: 0.04}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 4096420043621530}
+  m_Father: {fileID: 4580714720320824}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23446322503713778
+--- !u!23 &23107100967477646
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844091103045098}
+  m_GameObject: {fileID: 1750390273999272}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -135,13 +106,13 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &33944572886139512
+--- !u!33 &33211826084168820
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1844091103045098}
-  m_Mesh: {fileID: 4300000, guid: c07f5322d0b1fe64cbe9d5f09bc81476, type: 3}
+  m_GameObject: {fileID: 1750390273999272}
+  m_Mesh: {fileID: 4300000, guid: 01b3e169808553d4e8961046126491b5, type: 3}
 --- !u!114 &114642795936936362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -184,17 +155,21 @@ MonoBehaviour:
     isStartingPoint: 0
     isFinalWaypoint: 0
   currentAction: 0
-  previousState: 0
-  possibleMoves: 3
-  energyPoints: 0
+  energyPoints: 2
   victoryPoints: 3
-  moveStartMoves: 0
   actions: 2
-  hasUsedAbility: 0
+  possibleMoves: 3
+  beforeMoveActionMoves: 0
+  numberOfCards1InHand: 0
+  numberOfCards2InHand: 0
+  numberOfCards3InHand: 0
+  hasPlacedCard: 0
   hasBet: 0
   canBet: 0
-  cards: []
+  hasBought: 0
+  cardsInHand: []
   selectedCard: {fileID: 0}
+  lastPlacedCard: {fileID: 0}
   playersToRob: []
   pointLayer:
     serializedVersion: 2
@@ -208,6 +183,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 2048
+  beforeBuyActionEnergyPoints: 0
 --- !u!136 &136215350353283950
 CapsuleCollider:
   m_ObjectHideFlags: 1

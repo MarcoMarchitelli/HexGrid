@@ -5,6 +5,10 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public delegate void RotationPhaseEvent();
+
+    public RotationPhaseEvent RotationPhase;
+
     public PlayerController[] players;
     public UIManager uiManager;
 
@@ -21,10 +25,11 @@ public class GameManager : MonoBehaviour
     public PlayerController currentActivePlayer;
     [HideInInspector]
     public CameraBehaviour mainCamera;
+    [HideInInspector]
+    public CardsManager cardsManager;
 
     int energyBet, turnCount = 1;
     bool hasBet, winnerAnnounced;
-    string bottomLeftMsg;
 
     public static GameManager instance;
 
@@ -34,6 +39,7 @@ public class GameManager : MonoBehaviour
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
         efm = FindObjectOfType<EFM>();
+        cardsManager = GetComponent<CardsManager>();
         InstantiatePlayers();
     }
 
@@ -63,6 +69,8 @@ public class GameManager : MonoBehaviour
                 {
                     players[i + 1].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[i + 1];
+                    if(RotationPhase != null)
+                        RotationPhase();
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
                     {
@@ -79,6 +87,8 @@ public class GameManager : MonoBehaviour
                 {
                     players[0].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[0];
+                    if (RotationPhase != null)
+                        RotationPhase();
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
                     {
@@ -123,73 +133,6 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
-    }
-
-    public int NumberOfPossiblesMoves(PlayerController player)
-    {
-        int moves = 4;
-
-        if (player.type == PlayerController.Type.hypogeum && player.currentWayPoint.type == Point.Type.hypogeum)
-        {
-            for (int i = 0; i < players.Length; i++)
-            {
-                if (players[i].type != PlayerController.Type.hypogeum && players[i].currentWayPoint.type == Point.Type.hypogeum)
-                {
-                    moves = 3;
-                }
-            }
-        }
-        else if (player.type == PlayerController.Type.hypogeum && player.currentWayPoint.type != Point.Type.hypogeum)
-        {
-            moves = 3;
-        }
-
-        if (player.type == PlayerController.Type.forest && player.currentWayPoint.type == Point.Type.forest)
-        {
-            for (int i = 0; i < players.Length; i++)
-            {
-                if (players[i].type != PlayerController.Type.forest && players[i].currentWayPoint.type == Point.Type.forest)
-                {
-                    moves = 3;
-                }
-            }
-        }
-        else if (player.type == PlayerController.Type.forest && player.currentWayPoint.type != Point.Type.forest)
-        {
-            moves = 3;
-        }
-
-        if (player.type == PlayerController.Type.underwater && player.currentWayPoint.type == Point.Type.underwater)
-        {
-            for (int i = 0; i < players.Length; i++)
-            {
-                if (players[i].type != PlayerController.Type.underwater && players[i].currentWayPoint.type == Point.Type.underwater)
-                {
-                    moves = 3;
-                }
-            }
-        }
-        else if (player.type == PlayerController.Type.underwater && player.currentWayPoint.type != Point.Type.underwater)
-        {
-            moves = 3;
-        }
-
-        if (player.type == PlayerController.Type.underground && player.currentWayPoint.type == Point.Type.underground)
-        {
-            for (int i = 0; i < players.Length; i++)
-            {
-                if (players[i].type != PlayerController.Type.underground && players[i].currentWayPoint.type == Point.Type.underground)
-                {
-                    moves = 3;
-                }
-            }
-        }
-        else if (player.type == PlayerController.Type.underground && player.currentWayPoint.type != Point.Type.underground)
-        {
-            moves = 3;
-        }
-
-        return moves;
     }
 
     public void ChoseAction(int actionIndex)
@@ -269,6 +212,7 @@ public class GameManager : MonoBehaviour
                 UndoPlaceCard();
                 break;
             case PlayerController.Action.rotateCard:
+                UndoRotateCard();
                 break;
             case PlayerController.Action.bet:
                 break;
@@ -346,6 +290,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void ConfirmRotateCard()
+    {
+        currentActivePlayer.selectedCard = null;
+    }
+
     #endregion
 
     #region Specific Undo Actions
@@ -365,10 +314,37 @@ public class GameManager : MonoBehaviour
     void UndoPlaceCard()
     {
         if (currentActivePlayer.hasPlacedCard)
-        {    
+        {
+            cardsManager.PlacedCards.Remove(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.SendCardInHand(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.hasPlacedCard = false;
-        } 
+            currentActivePlayer.energyPoints = currentActivePlayer.beforePlaceActionEnergyPoints;
+        }
+        if (currentActivePlayer.selectedCard)
+        {
+            currentActivePlayer.UnselectCard();
+        }
+    }
+
+    void UndoRotateCard()
+    {
+        CardController card = currentActivePlayer.selectedCard;
+        if (card && !currentActivePlayer.hasPlacedCard)
+        {
+            card.SetRotationBackToPlaced();
+            card.Place(currentActivePlayer.selectedCard.hexImOn);
+            card = null;
+        }
+        else if (currentActivePlayer.hasPlacedCard)
+        {
+            card = currentActivePlayer.lastPlacedCard;
+            card.FreePaths(card.hexImOn);
+            card.placedEulerAngle = currentActivePlayer.beforeRotateActionCardEulerAngle;
+            card.SetRotationBackToPlaced();
+            card.Place(card.hexImOn);
+        }
+        currentActivePlayer.energyPoints = currentActivePlayer.beforeRotateActionEnergyPoints;
+        currentActivePlayer.selectedCard = null;
     }
 
     #endregion
@@ -449,7 +425,7 @@ public class GameManager : MonoBehaviour
         {
             if (!doesAttackerDoubleSteal)
             {
-                if (defender.victoryPoints != 0)
+                if (defender.victoryPoints >= 1)
                 {
                     attacker.victoryPoints++;
                     defender.victoryPoints--;
@@ -457,7 +433,7 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                if (defender.victoryPoints != 0)
+                if (defender.victoryPoints >= 2)
                 {
                     attacker.victoryPoints++;
                     defender.victoryPoints--;
@@ -467,8 +443,10 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        attacker.currentAction = attacker.previousState;
-        uiManager.ToggleBetButton(attacker);
+        currentActivePlayer.actions--;
+        currentActivePlayer.currentAction = PlayerController.Action.start;
+        uiManager.ExitAction();
+
         if (currentActivePlayer.UIrefresh != null)
         {
             currentActivePlayer.UIrefresh(currentActivePlayer);

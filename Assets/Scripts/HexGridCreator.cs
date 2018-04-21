@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour
 {
+    public Transform center;
 
     //Hexagon prefabs
     public Transform emptyHexagonPrefab;
@@ -172,6 +173,7 @@ public class HexGridCreator : MonoBehaviour
                     break;
                 case Hexagon.Type.win:
                     Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    center = instantiatedWinHex;
                     instantiatedWinHex.parent = mapContainer;
                     break;
             }
