@@ -1,12 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: 66a39ebf62405234d985af7963be872b
-timeCreated: 1524061948
-=======
-guid: 66f162b84992c754998c726c1ea800d6
-timeCreated: 1524085501
->>>>>>> b827198e7aaf5834d5930a113dfc50211861ef31
-licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -214,8 +207,6 @@ ModelImporter:
     400198: Spine
     400200: //RootNode
     400202: Underwater_Character
-    2100000: M_Underwater_Character
-    2100002: M_Underwater_CharacterBubble
     4300000: polySurface278
     4300002: polySurface279
     4300004: polySurface280
@@ -291,11 +282,7 @@ ModelImporter:
     4300144: polySurface350
     4300146: polySurface351
     4300148: polySurface352
-<<<<<<< HEAD
     7400000: Animations_Underwater
-=======
-    7400000: Take 001
->>>>>>> b827198e7aaf5834d5930a113dfc50211861ef31
     9500000: //RootNode
     13700000: polySurface278
     13700002: polySurface279
@@ -372,26 +359,22 @@ ModelImporter:
     13700144: polySurface350
     13700146: polySurface351
     13700148: polySurface352
-<<<<<<< HEAD
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_Underwater_Character
-    second: {fileID: 2100000, guid: 79dbbb0ae5045754da00438ea7434628, type: 2}
+    second: {fileID: 2100000, guid: 3722b9beaebc5554da87f721d4c69d82, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_Underwater_CharacterBubble
-    second: {fileID: 2100000, guid: 2f9926cf5a4cc7243ad0ef9ce2c6423e, type: 2}
-=======
-  externalObjects: {}
->>>>>>> b827198e7aaf5834d5930a113dfc50211861ef31
+    second: {fileID: 2100000, guid: e29bfeb25acfb7642ac87fa8c92f73f4, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -412,7 +395,6 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-<<<<<<< HEAD
     clipAnimations:
     - serializedVersion: 16
       name: Animations_Underwater
@@ -442,9 +424,6 @@ ModelImporter:
       maskType: 3
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
-=======
-    clipAnimations: []
->>>>>>> b827198e7aaf5834d5930a113dfc50211861ef31
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -461,8 +440,6 @@ ModelImporter:
     optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
-    preserveHierarchy: 0
-    indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
