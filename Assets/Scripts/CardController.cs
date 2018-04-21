@@ -461,7 +461,38 @@ public class CardController : MonoBehaviour
         switch (type)
         {
             case Type.card1:
-
+                switch (eulerAngle)
+                {
+                    case 0:
+                        if (right != null && right.type == Hexagon.Type.energy && !right.card)
+                            extractableEnergy++;
+                        break;
+                    case 60:
+                    case -300:
+                        if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
+                            extractableEnergy++;
+                        break;
+                    case 120:
+                    case -240:
+                        if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
+                            extractableEnergy++;
+                        break;
+                    case 180:
+                    case -180:
+                        if (left != null && left.type == Hexagon.Type.energy && !left.card)
+                            extractableEnergy++;
+                        break;
+                    case 240:
+                    case -120:
+                        if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
+                            extractableEnergy++;
+                        break;
+                    case 300:
+                    case -60:
+                        if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
+                            extractableEnergy++;
+                        break;
+                }
                 break;
             case Type.card2:
                 switch (eulerAngle)
@@ -510,7 +541,62 @@ public class CardController : MonoBehaviour
                 }
                 break;
             case Type.card3:
-
+                switch (eulerAngle)
+                {
+                    case 0:
+                        if (right != null && right.type == Hexagon.Type.energy && !right.card)
+                            extractableEnergy++;
+                        if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
+                            extractableEnergy++;
+                        if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
+                            extractableEnergy++;
+                        break;
+                    case 60:
+                    case -300:
+                        if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
+                            extractableEnergy++;
+                        if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
+                            extractableEnergy++;
+                        if (left != null && left.type == Hexagon.Type.energy && !left.card)
+                            extractableEnergy++;
+                        break;
+                    case 120:
+                    case -240:
+                        if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
+                            extractableEnergy++;
+                        if (right != null && right.type == Hexagon.Type.energy && !right.card)
+                            extractableEnergy++;
+                        if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
+                            extractableEnergy++;
+                        break;
+                    case 180:
+                    case -180:
+                        if (left != null && left.type == Hexagon.Type.energy && !left.card)
+                            extractableEnergy++;
+                        if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
+                            extractableEnergy++;
+                        if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
+                            extractableEnergy++;
+                        break;
+                    case 240:
+                    case -120:
+                        if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
+                            extractableEnergy++;
+                        if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
+                            extractableEnergy++;
+                        if (right != null && right.type == Hexagon.Type.energy && !right.card)
+                            extractableEnergy++;
+                        break;
+                    case 300:
+                    case -60:
+                        if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
+                            extractableEnergy++;
+                        if (left != null && left.type == Hexagon.Type.energy && !left.card)
+                            extractableEnergy++;
+                        if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
+                            extractableEnergy++;
+                        break;
+                }
                 break;
         }
     }
