@@ -5,6 +5,12 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public delegate void RotationPhaseEvent();
+    public delegate void GainPhaseEvent(PlayerController player);
+
+    public RotationPhaseEvent RotationPhase;
+    public GainPhaseEvent GainPhase;
+
     public PlayerController[] players;
     public UIManager uiManager;
 
@@ -65,7 +71,8 @@ public class GameManager : MonoBehaviour
                 {
                     players[i + 1].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[i + 1];
-                    cardsManager.RotationPhase();
+                    if(RotationPhase != null)
+                        RotationPhase();
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
                     {
@@ -82,7 +89,8 @@ public class GameManager : MonoBehaviour
                 {
                     players[0].currentAction = PlayerController.Action.start;
                     currentActivePlayer = players[0];
-                    cardsManager.RotationPhase();
+                    if (RotationPhase != null)
+                        RotationPhase();
                     uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
                     if (currentActivePlayer.UIrefresh != null)
                     {
@@ -312,6 +320,7 @@ public class GameManager : MonoBehaviour
             cardsManager.PlacedCards.Remove(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.SendCardInHand(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.hasPlacedCard = false;
+            currentActivePlayer.energyPoints = currentActivePlayer.beforePlaceActionEnergyPoints;
         }
         if (currentActivePlayer.selectedCard)
         {
@@ -332,10 +341,11 @@ public class GameManager : MonoBehaviour
         {
             card = currentActivePlayer.lastPlacedCard;
             card.FreePaths(card.hexImOn);
-            card.placedEulerAngle = currentActivePlayer.rotateCardStartEulerAngle;
+            card.placedEulerAngle = currentActivePlayer.beforeRotateActionCardEulerAngle;
             card.SetRotationBackToPlaced();
             card.Place(card.hexImOn);
         }
+        currentActivePlayer.energyPoints = currentActivePlayer.beforeRotateActionEnergyPoints;
         currentActivePlayer.selectedCard = null;
     }
 

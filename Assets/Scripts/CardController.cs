@@ -26,7 +26,6 @@ public class CardController : MonoBehaviour
     public State state = State.inHand;
     [HideInInspector]
     public Type type;
-    [HideInInspector]
     public PlayerController player;
 
     void Update()
