@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour
 {
+    [HideInInspector]
+    public Transform center;
+
+    public Transform mapPrefab;
 
     //Hexagon prefabs
     public Transform emptyHexagonPrefab;
@@ -21,12 +25,9 @@ public class HexGridCreator : MonoBehaviour
 
     Vector2 gridSize = new Vector2(7f, 7f);
 
-    //public GameObject playerReference;
+    public float waysWitdth = 95.104395f;
 
-    [Range(0.1f, 3f)]
-    public float waysWitdth = 1f;
-
-    float hexWidth = 1.723f * 2, hexHeight = 2.000f * 2;
+    float hexWidth = 228.389342f * 2, hexHeight = 263.721525f * 2;
 
     public List<Hexagon> HexGrid = new List<Hexagon>();
     public List<Point> WaypointGrid = new List<Point>();
@@ -172,6 +173,8 @@ public class HexGridCreator : MonoBehaviour
                     break;
                 case Hexagon.Type.win:
                     Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    center = instantiatedMap;
                     instantiatedWinHex.parent = mapContainer;
                     break;
             }

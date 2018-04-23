@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class HandDisplay : MonoBehaviour {
+public class HandDisplay : MonoBehaviour
+{
 
     [Header("Cards Buttons")]
     public Button card1Button;
@@ -27,7 +28,7 @@ public class HandDisplay : MonoBehaviour {
         card2QuantityText.text = card2Number.ToString();
         card3QuantityText.text = card3Number.ToString();
 
-        if (card1Number <= 0 || player.selectedCard)
+        if (card1Number <= 0 || player.selectedCard || player.hasPlacedCard)
         {
             card1Button.enabled = false;
             card1Button.image.color = Color.red;
@@ -38,7 +39,7 @@ public class HandDisplay : MonoBehaviour {
             card1Button.image.color = Color.green;
         }
 
-        if (card2Number <= 0 || player.selectedCard)
+        if (card2Number <= 0 || player.selectedCard || player.hasPlacedCard)
         {
             card2Button.enabled = false;
             card2Button.image.color = Color.red;
@@ -49,7 +50,7 @@ public class HandDisplay : MonoBehaviour {
             card2Button.image.color = Color.green;
         }
 
-        if (card3Number <= 0 || player.selectedCard)
+        if (card3Number <= 0 || player.selectedCard || player.hasPlacedCard)
         {
             card3Button.enabled = false;
             card3Button.image.color = Color.red;
@@ -62,7 +63,7 @@ public class HandDisplay : MonoBehaviour {
     }
 
     public void SelectCard(int cardType)
-    { 
+    {
         PlayerController currentPlayer = GameManager.instance.currentActivePlayer;
         List<CardController> cards = currentPlayer.cardsInHand;
 
@@ -72,18 +73,28 @@ public class HandDisplay : MonoBehaviour {
             {
                 case 1:
                     if (card.type == CardController.Type.card1)
+                    {
                         currentPlayer.SelectCard(card);
+                        return;
+                    }
                     break;
                 case 2:
                     if (card.type == CardController.Type.card2)
+                    {
                         currentPlayer.SelectCard(card);
+                        return;
+                    }
                     break;
                 case 3:
                     if (card.type == CardController.Type.card3)
+                    {
                         currentPlayer.SelectCard(card);
+                        return;
+                    }
                     break;
             }
         }
+
     }
 
 }

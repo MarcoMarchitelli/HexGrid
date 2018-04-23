@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI topRightSection;
     public TextMeshProUGUI leftMediumSection;
     public TextMeshProUGUI bigCentralSection;
-    
+
     public GameObject[] cardButtons;
     [Header("Action Buttons")]
     public Button moveButton;
@@ -89,19 +89,28 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region Toggle Action Buttons
+    #region Action Buttons Toggle
 
     public void ToggleMoveButton(PlayerController player)
     {
+        //set color
         if (player.actions <= 0)
         {
-            moveButton.enabled = false;
             moveButton.image.color = Color.red;
         }
         else
         {
-            moveButton.enabled = true;
             moveButton.image.color = Color.green;
+        }
+
+        //set usability
+        if(player.currentAction == PlayerController.Action.start && moveButton.image.color == Color.green)
+        {
+            moveButton.enabled = true;
+        }
+        else
+        {
+            moveButton.enabled = false;
         }
     }
 
@@ -109,74 +118,119 @@ public class UIManager : MonoBehaviour
     {
         player.playersToRob = GameManager.instance.FindPlayersInRange(2, player);
 
+        //setColor
         if (player.playersToRob.Count == 0 || player.actions <= 0)
-        { 
-            betButton.enabled = false;
+        {
             betButton.image.color = Color.red;
             player.canBet = false;
         }
         else if (player.playersToRob.Count > 0 && player.energyPoints >= 1)
         {
-            betButton.enabled = true;
             betButton.image.color = Color.green;
             player.canBet = true;
+        }
+
+        //set usability
+        if (player.currentAction == PlayerController.Action.start && betButton.image.color == Color.green)
+        {
+            betButton.enabled = true;
+        }
+        else
+        {
+            betButton.enabled = false;
         }
 
     }
 
     public void TogglePlaceCardButton(PlayerController player)
     {
-        if(player.actions <= 0 || player.cardsInHand.Count <= 0)
+        //set color
+        if (player.actions <= 0 || player.cardsInHand.Count <= 0)
         {
-            placeCardButton.enabled = false;
             placeCardButton.image.color = Color.red;
         }
         else
         {
-            placeCardButton.enabled = true;
             placeCardButton.image.color = Color.green;
+        }
+
+        //set usability
+        if (player.currentAction == PlayerController.Action.start && placeCardButton.image.color == Color.green)
+        {
+            placeCardButton.enabled = true;
+        }
+        else
+        {
+            placeCardButton.enabled = false;
         }
     }
 
     public void ToggleRotateCardButton(PlayerController player)
     {
+        //set color
         if (player.actions <= 0 || !player.HasCardInNearHexagons())
         {
-            rotateCardButton.enabled = false;
             rotateCardButton.image.color = Color.red;
         }
         else
         {
-            rotateCardButton.enabled = true;
             rotateCardButton.image.color = Color.green;
+        }
+
+        //set usability
+        if (player.currentAction == PlayerController.Action.start && rotateCardButton.image.color == Color.green)
+        {
+            rotateCardButton.enabled = true;
+        }
+        else
+        {
+            rotateCardButton.enabled = false;
         }
     }
 
     public void ToggleBuyCardButton(PlayerController player)
     {
+        //set color
         if (player.actions <= 0 || player.energyPoints < 2)
         {
-            buyCardButton.enabled = false;
             buyCardButton.image.color = Color.red;
         }
         else
         {
-            buyCardButton.enabled = true;
             buyCardButton.image.color = Color.green;
+        }
+
+        //set usability
+        if (player.currentAction == PlayerController.Action.start && buyCardButton.image.color == Color.green)
+        {
+            buyCardButton.enabled = true;
+        }
+        else
+        {
+            buyCardButton.enabled = false;
         }
     }
 
     public void ToggleSellCardButton(PlayerController player)
     {
-        if (player.actions <= 0 || player.cardsInHand.Count <=0)
+        //set color
+        if (player.actions <= 0 || player.cardsInHand.Count <= 0)
         {
-            sellCardButton.enabled = false;
             sellCardButton.image.color = Color.red;
         }
         else
         {
-            sellCardButton.enabled = true;
             sellCardButton.image.color = Color.green;
+        }
+
+        //set usability
+        if (player.currentAction == PlayerController.Action.start && sellCardButton.image.color == Color.green)
+        {
+            sellCardButton.enabled = true;
+        }
+        else
+        {
+            sellCardButton.enabled = false;
         }
     }
 
@@ -201,44 +255,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //public void DisplayHand(PlayerController activePlayer)
-    //{
-    //    for (int i = 0; i < activePlayer.cards.Length; i++)
-    //    {
-    //        if (activePlayer.cards[i].GetComponent<CardController>().state != CardController.State.inHand)
-    //        {
-    //            cardButtons[i].GetComponent<Image>().color = Color.red;
-    //            cardButtons[i].GetComponent<Button>().enabled = false;
-    //        }
-    //        else
-    //        {
-    //            cardButtons[i].GetComponent<Image>().color = Color.green;
-    //            cardButtons[i].GetComponent<Button>().enabled = true;
-    //        }
-    //    }
-
-    //    if (activePlayer.selectedCard || activePlayer.hasUsedAbility || activePlayer.currentAction == PlayerController.Action.bet)
-    //    {
-    //        for (int i = 0; i < cardButtons.Length; i++)
-    //        {
-    //            cardButtons[i].GetComponent<Button>().enabled = false;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        for (int i = 0; i < cardButtons.Length; i++)
-    //        {
-    //            if (activePlayer.cards[i].GetComponent<CardController>().state == CardController.State.inHand)
-    //            {
-    //                cardButtons[i].GetComponent<Button>().enabled = true;
-    //            }
-    //        }
-    //    }
-    //}
-
     public void ToggleEndTurnButton(PlayerController player)
     {
-        if (player.currentAction == PlayerController.Action.bet || player.selectedCard != null && !player.hasPlacedCard)
+        if (player.currentAction != PlayerController.Action.start && GameManager.instance.mainCamera.isMoving)
         {
             endTurnButton.enabled = false;
         }
@@ -257,7 +276,7 @@ public class UIManager : MonoBehaviour
         //specific UI to activate
         undoMovesButton.gameObject.SetActive(true);
 
-        SetTrueConfirmUndoButtons();
+        EnterAction();
 
         GameManager.instance.ChoseAction(0);
     }
@@ -268,14 +287,14 @@ public class UIManager : MonoBehaviour
         cardShop.SetActive(true);
 
 
-        SetTrueConfirmUndoButtons();
+        EnterAction();
 
         GameManager.instance.ChoseAction(1);
     }
 
     public void OnSellButton()
     {
-        SetTrueConfirmUndoButtons();
+        EnterAction();
 
         GameManager.instance.ChoseAction(1);
     }
@@ -285,21 +304,21 @@ public class UIManager : MonoBehaviour
         //specific UI stuff
         handDisplay.SetActive(true);
 
-        SetTrueConfirmUndoButtons();
+        EnterAction();
 
         GameManager.instance.ChoseAction(3);
     }
 
     public void OnRotateCardButton()
     {
-        SetTrueConfirmUndoButtons();
+        EnterAction();
 
         GameManager.instance.ChoseAction(4);
     }
 
     public void OnBetButton()
     {
-        SetTrueConfirmUndoButtons();
+        undoButton.gameObject.SetActive(true);
 
         GameManager.instance.ChoseAction(5);
     }
@@ -308,7 +327,7 @@ public class UIManager : MonoBehaviour
 
     public void OnConfirmButton()
     {
-        SetFalseAllSpecificActionUI();
+        ExitAction();
 
         //gameplay stuff
         GameManager.instance.ConfirmAction();
@@ -316,11 +335,13 @@ public class UIManager : MonoBehaviour
 
     public void OnUndoButton()
     {
-        SetFalseAllSpecificActionUI();
+        ExitAction();
 
         //gameplay stuff
         GameManager.instance.UndoAction();
     }
+
+    #region UI refresh event stuff
 
     public void SubscribeToPlayerUIRefreshEvent(PlayerController player)
     {
@@ -362,12 +383,16 @@ public class UIManager : MonoBehaviour
         player.UIrefresh -= RefreshAllPrintFunctions;
     }
 
+    #endregion
+
+    #region News UI stuff
+
     public void RefreshAllPrintFunctions(PlayerController player)
     {
         string msg = "It's the " + player.type.ToString() + " player's turn.";
         PrintTopLeft(msg);
 
-        if(player.currentAction == PlayerController.Action.start)
+        if (player.currentAction == PlayerController.Action.start)
         {
             msg = "Chose an action to make!\n" + player.actions + " actions remaining.";
             PrintLeft(msg);
@@ -400,7 +425,7 @@ public class UIManager : MonoBehaviour
 
             PrintLeft(msg);
         }
-        else if(player.currentAction == PlayerController.Action.bet)
+        else if (player.currentAction == PlayerController.Action.bet)
         {
             PrintLeft("Select a player to attack.\nRightclick to undo.");
         }
@@ -421,6 +446,20 @@ public class UIManager : MonoBehaviour
             modifiersSection.gameObject.SetActive(true);
     }
 
+    #endregion
+
+    void EnterAction()
+    {
+        SetTrueConfirmUndo();
+    }
+
+    public void ExitAction()
+    {
+        SetFalseAllSpecificActionUI();
+    }
+
+    #region Action UI stuff
+
     void SetFalseAllSpecificActionUI()
     {
         undoMovesButton.gameObject.SetActive(false);
@@ -430,11 +469,13 @@ public class UIManager : MonoBehaviour
         handDisplay.SetActive(false);
     }
 
-    void SetTrueConfirmUndoButtons()
+    void SetTrueConfirmUndo()
     {
         confirmButton.gameObject.SetActive(true);
         undoButton.gameObject.SetActive(true);
     }
+
+    #endregion
 
     public void Restart()
     {
