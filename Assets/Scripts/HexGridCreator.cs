@@ -25,9 +25,11 @@ public class HexGridCreator : MonoBehaviour
 
     Vector2 gridSize = new Vector2(7f, 7f);
 
-    public float waysWitdth = 95.104395f;
+    //float waysWitdth = 0.95104395f;
+    //float hexWidth = 2.28389342f, hexHeight = 2.63721525f;
 
-    float hexWidth = 228.389342f * 2, hexHeight = 263.721525f * 2;
+    float waysWitdth = 0.95104395f;
+    float hexWidth = 2.28389342f, hexHeight = 2.8f;
 
     public List<Hexagon> HexGrid = new List<Hexagon>();
     public List<Point> WaypointGrid = new List<Point>();
@@ -42,19 +44,18 @@ public class HexGridCreator : MonoBehaviour
         SetNearHexagonsForEachPoint();
         InstantiateWaypoints();
         InstantiateHexagons();
+        InstantiateMap();
     }
 
     //adding widht to hexagon
     void AddWays()
     {
-        hexWidth = 1.723f;
-        hexHeight = 2.000f;
         hexWidth += waysWitdth;
         hexHeight += waysWitdth;
     }
 
-
     //FUNCTIONS TO BUILD GRID AND DATA
+
     public void CreateGrid()
     {
 
@@ -148,6 +149,18 @@ public class HexGridCreator : MonoBehaviour
         }
     }
 
+    void InstantiateMap()
+    {
+        foreach (Hexagon hex in HexGrid)
+        {
+            if(hex.type == Hexagon.Type.win)
+            {
+                Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                center = instantiatedMap;
+            }
+        }
+    }
+
     void InstantiateHexagons()
     {
         foreach (Hexagon hex in HexGrid)
@@ -173,8 +186,6 @@ public class HexGridCreator : MonoBehaviour
                     break;
                 case Hexagon.Type.win:
                     Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
-                    Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
-                    center = instantiatedMap;
                     instantiatedWinHex.parent = mapContainer;
                     break;
             }

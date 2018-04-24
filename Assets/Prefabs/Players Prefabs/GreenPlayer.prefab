@@ -422,7 +422,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4236906034398568}
   - component: {fileID: 114763792269025552}
-  - component: {fileID: 136969604178001432}
+  - component: {fileID: 136151116341562556}
   m_Layer: 11
   m_Name: GreenPlayer
   m_TagString: Player
@@ -848,7 +848,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1652866937925284}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 501, y: 0, z: 0}
+  m_LocalPosition: {x: 500.42, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4107216635361252}
@@ -1306,7 +1306,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   beforeBuyActionEnergyPoints: 0
---- !u!136 &136969604178001432
+  beforePlaceActionEnergyPoints: 0
+  beforeRotateActionEnergyPoints: 0
+  beforeRotateActionCardEulerAngle: 0
+--- !u!136 &136151116341562556
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1315,10 +1318,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.2
-  m_Height: 6
+  m_Radius: 0.5
+  m_Height: 1.5
   m_Direction: 1
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!137 &137044302549232086
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
