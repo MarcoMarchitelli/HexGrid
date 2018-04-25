@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour
 {
+<<<<<<< HEAD
     public Transform center;
+=======
+    [HideInInspector]
+    public Transform center;
+
+    public Transform mapPrefab;
+>>>>>>> 71e80326ba1a40fe6ea99b56d07341995d0a8fc2
 
     //Hexagon prefabs
     public Transform emptyHexagonPrefab;
     public Transform energyHexagonPrefab;
     public Transform abilityHexagonPrefab;
+    public Transform moveHexagonPrefab;
     public Transform winHexagonPrefab;
 
     //Waypoint prefabs
@@ -22,12 +30,11 @@ public class HexGridCreator : MonoBehaviour
 
     Vector2 gridSize = new Vector2(7f, 7f);
 
-    //public GameObject playerReference;
+    //float waysWitdth = 0.95104395f;
+    //float hexWidth = 2.28389342f, hexHeight = 2.63721525f;
 
-    [Range(0.1f, 3f)]
-    public float waysWitdth = 1f;
-
-    float hexWidth = 1.723f * 2, hexHeight = 2.000f * 2;
+    float waysWitdth = 0.95104395f;
+    float hexWidth = 2.28389342f, hexHeight = 2.8f;
 
     public List<Hexagon> HexGrid = new List<Hexagon>();
     public List<Point> WaypointGrid = new List<Point>();
@@ -42,19 +49,18 @@ public class HexGridCreator : MonoBehaviour
         SetNearHexagonsForEachPoint();
         InstantiateWaypoints();
         InstantiateHexagons();
+        InstantiateMap();
     }
 
     //adding widht to hexagon
     void AddWays()
     {
-        hexWidth = 1.723f;
-        hexHeight = 2.000f;
         hexWidth += waysWitdth;
         hexHeight += waysWitdth;
     }
 
-
     //FUNCTIONS TO BUILD GRID AND DATA
+
     public void CreateGrid()
     {
 
@@ -148,6 +154,18 @@ public class HexGridCreator : MonoBehaviour
         }
     }
 
+    void InstantiateMap()
+    {
+        foreach (Hexagon hex in HexGrid)
+        {
+            if(hex.type == Hexagon.Type.win)
+            {
+                Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                center = instantiatedMap;
+            }
+        }
+    }
+
     void InstantiateHexagons()
     {
         foreach (Hexagon hex in HexGrid)
@@ -170,6 +188,10 @@ public class HexGridCreator : MonoBehaviour
                 case Hexagon.Type.ability:
                     Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedAbilityHex.parent = mapContainer;
+                    break;
+                case Hexagon.Type.move:
+                    Transform instantiatedMoveHex = Instantiate(moveHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    instantiatedMoveHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.win:
                     Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
