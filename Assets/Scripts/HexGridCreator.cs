@@ -13,6 +13,7 @@ public class HexGridCreator : MonoBehaviour
     public Transform emptyHexagonPrefab;
     public Transform energyHexagonPrefab;
     public Transform abilityHexagonPrefab;
+    public Transform moveHexagonPrefab;
     public Transform winHexagonPrefab;
 
     //Waypoint prefabs
@@ -183,6 +184,10 @@ public class HexGridCreator : MonoBehaviour
                 case Hexagon.Type.ability:
                     Transform instantiatedAbilityHex = Instantiate(abilityHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                     instantiatedAbilityHex.parent = mapContainer;
+                    break;
+                case Hexagon.Type.move:
+                    Transform instantiatedMoveHex = Instantiate(moveHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    instantiatedMoveHex.parent = mapContainer;
                     break;
                 case Hexagon.Type.win:
                     Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
