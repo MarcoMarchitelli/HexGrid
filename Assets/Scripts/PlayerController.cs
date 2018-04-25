@@ -28,8 +28,6 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Action currentAction = Action.idle;
     [HideInInspector]
-    public Action previousState;
-    [HideInInspector]
     public int energyPoints = 2, victoryPoints = 3, actions = 2;
     [HideInInspector]
     public int possibleMoves = 3, beforeMoveActionMoves;
@@ -43,15 +41,14 @@ public class PlayerController : MonoBehaviour
     public List<PlayerController> playersToRob = new List<PlayerController>();
     public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
     [HideInInspector]
-    public int beforeBuyActionEnergyPoints;
+    public int beforeBuyActionEnergyPoints, beforePlaceActionEnergyPoints, beforeRotateActionEnergyPoints, beforeRotateActionCardEulerAngle;
 
     #endregion
 
     Hexagon lastSelectedHex;
     bool uiRefreshFlag, isFirstTime = true;
     string bottomLeftMsg;
-    int maxPE = 25;
-    
+    int maxPE = 25;  
 
     private void Start()
     {
@@ -78,14 +75,7 @@ public class PlayerController : MonoBehaviour
 
                 if (isFirstTime)
                 {
-                    hasPlacedCard = false;
-                    hasBet = false;
-                    energyPoints++;
-                    actions = 2;
-                    if (UIrefresh != null)
-                    {
-                        UIrefresh(this);
-                    }
+                    GainPhase();
                     isFirstTime = false;
                 }
 
@@ -169,6 +159,7 @@ public class PlayerController : MonoBehaviour
                                     lastPlacedCard = selectedCard;
                                     selectedCard = null;
                                     hasPlacedCard = true;
+                                    energyPoints += lastPlacedCard.extractableEnergy;
                                     if (UIrefresh != null)
                                     {
                                         UIrefresh(this);
@@ -209,10 +200,13 @@ public class PlayerController : MonoBehaviour
                             {
                                 selectedCard.state = CardController.State.selectedFromMap;
                                 selectedCard.FreePaths(selectedCard.hexImOn);
+                                GameManager.instance.cardsManager.PlacedCards.Remove(selectedCard);
+                                beforeRotateActionCardEulerAngle = selectedCard.placedEulerAngle;
                                 if (UIrefresh != null)
                                 {
                                     UIrefresh(this);
                                 }
+                                return;
                             }
                         }
                     }
@@ -227,6 +221,9 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard.Place(selectedCard.hexImOn);
                         hasPlacedCard = true;
+                        lastPlacedCard = selectedCard;
+                        selectedCard = null;
+                        energyPoints += lastPlacedCard.extractableEnergy;
                         if (UIrefresh != null)
                         {
                             UIrefresh(this);
@@ -238,7 +235,7 @@ public class PlayerController : MonoBehaviour
                     {
                         selectedCard.SetRotationBackToPlaced();
                         selectedCard.Place(selectedCard.hexImOn);
-                        currentAction = Action.moving;
+                        lastPlacedCard = selectedCard;
                         selectedCard = null;
                         if (UIrefresh != null)
                         {
@@ -247,15 +244,15 @@ public class PlayerController : MonoBehaviour
                     }
 
                     //(RETURN TO OWNER'S HAND)
-                    if (Input.GetKeyDown(KeyCode.Space))
-                    {
-                        UnselectCard();
-                        hasPlacedCard = true;
-                        if (UIrefresh != null)
-                        {
-                            UIrefresh(this);
-                        }
-                    }
+                    //if (Input.GetKeyDown(KeyCode.Space))
+                    //{
+                    //    UnselectCard();
+                    //    hasPlacedCard = true;
+                    //    if (UIrefresh != null)
+                    //    {
+                    //        UIrefresh(this);
+                    //    }
+                    //}
 
                 }
 
@@ -284,16 +281,6 @@ public class PlayerController : MonoBehaviour
                                 UIrefresh(this);
                             }
                             StartCoroutine(GameManager.instance.Bet(this, playerHit));
-                        }
-                    }
-
-                    //UNDO
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        currentAction = previousState;
-                        if (UIrefresh != null)
-                        {
-                            UIrefresh(this);
                         }
                     }
                 }
@@ -447,11 +434,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case 3:
                 currentAction = Action.placeCard;
-                //nothing to do
+                beforePlaceActionEnergyPoints = energyPoints;
                 break;
             case 4:
                 currentAction = Action.rotateCard;
-                //nothing to do
+                beforeRotateActionEnergyPoints = energyPoints;
                 break;
             case 5:
                 currentAction = Action.bet;
@@ -463,6 +450,21 @@ public class PlayerController : MonoBehaviour
             UIrefresh(this);
         }
 
+    }
+
+    public void GainPhase()
+    {
+        hasPlacedCard = false;
+        selectedCard = null;
+        lastPlacedCard = null;
+        hasBet = false;
+        actions = 2;
+        energyPoints++;
+        GameManager.instance.cardsManager.GainPhase(this);
+        if (UIrefresh != null)
+        {
+            UIrefresh(this);
+        }
     }
 
     public void AddCard(CardController card)
