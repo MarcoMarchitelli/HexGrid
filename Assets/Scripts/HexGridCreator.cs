@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour
 {
-<<<<<<< HEAD
-    public Transform center;
-=======
+
+//    public Transform center;
+
     [HideInInspector]
     public Transform center;
 
     public Transform mapPrefab;
->>>>>>> 71e80326ba1a40fe6ea99b56d07341995d0a8fc2
 
     //Hexagon prefabs
     public Transform emptyHexagonPrefab;
