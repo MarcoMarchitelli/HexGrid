@@ -37,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4580714720320824}
   - component: {fileID: 114642795936936362}
-  - component: {fileID: 136215350353283950}
+  - component: {fileID: 136833996776974160}
   m_Layer: 11
   m_Name: YellowPlayer
   m_TagString: Player
@@ -52,7 +52,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1910314513179228}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 502, y: 0, z: 0}
+  m_LocalPosition: {x: 503.48, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4658235423968924}
@@ -184,7 +184,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   beforeBuyActionEnergyPoints: 0
---- !u!136 &136215350353283950
+  beforePlaceActionEnergyPoints: 0
+  beforeRotateActionEnergyPoints: 0
+  beforeRotateActionCardEulerAngle: 0
+--- !u!136 &136833996776974160
 CapsuleCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -193,7 +196,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.2
-  m_Height: 6
+  m_Radius: 0.5
+  m_Height: 1.5
   m_Direction: 1
-  m_Center: {x: 0, y: 2, z: 0}
+  m_Center: {x: 0, y: 0.5, z: 0}

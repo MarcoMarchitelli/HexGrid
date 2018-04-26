@@ -257,7 +257,11 @@ public class UIManager : MonoBehaviour
 
     public void ToggleEndTurnButton(PlayerController player)
     {
+<<<<<<< HEAD
         if (player.currentAction != PlayerController.Action.start)
+=======
+        if (player.currentAction != PlayerController.Action.start && GameManager.instance.mainCamera.isMoving)
+>>>>>>> 71e80326ba1a40fe6ea99b56d07341995d0a8fc2
         {
             endTurnButton.enabled = false;
         }

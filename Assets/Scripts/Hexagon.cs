@@ -12,7 +12,7 @@ public class Hexagon {
 
     public enum Type
     {
-        empty, energy, ability, win
+        empty, energy, ability, move, win
     }
 
     public Hexagon(int _x, int _y, Vector3 _worldPosition, Type _type)
@@ -35,34 +35,75 @@ public class Hexagon {
 
     public void SetTypeFromCoords(Vector2 _gridSize)
     {
-        if (this.y == 0 || this.y == (int)_gridSize.y -1)
+        if (this.y == 0)
         {
-            if (this.x == 3 || this.x == 4 )
+            if (this.x == 4 || this.x == 5)
             {
                 this.type = Type.energy;
             }
+            if (this.x == 2)
+            {
+                this.type = Type.move;
+            }
         }
-        if (this.y == 1 || this.y == (int)_gridSize.y - 2)
+        if (this.y == (int)_gridSize.y - 1)
         {
-            if (this.x == 1 || this.x == 2 || this.x == 4 || this.x == 5)
+            if (this.x == 2 || this.x == 3)
             {
                 this.type = Type.energy;
             }
+            if (this.x == 5)
+            {
+                this.type = Type.move;
+            }
         }
-        if (this.y == 2 || this.y == (int)_gridSize.y - 3)
+        if (this.y == 1)
         {
-            if (this.x == 1 || this.x == 3 || this.x == 4 || this.x == 6)
+            if (this.x == 2 || this.x == 3)
             {
                 this.type = Type.energy;
+            }
+            if (this.x == 1 || this.x == 4 || this.x == 5)
+            {
+                this.type = Type.move;
+            }
+        }
+        if (this.y == (int)_gridSize.y - 2)
+        {
+            if (this.x == 3 || this.x == 4)
+            {
+                this.type = Type.energy;
+            }
+            if (this.x == 1 || this.x == 2 || this.x == 5)
+            {
+                this.type = Type.move;
+            }
+        }
+        if (this.y == 2)
+        {
+            if (this.x == 2 || this.x == 5 || this.x == 6)
+            {
+                this.type = Type.energy;
+            }
+            if (this.x == 3)
+            {
+                this.type = Type.move;
+            }
+        }
+        if (this.y == (int)_gridSize.y - 3)
+        {
+            if (this.x == 1 || this.x == 2 || this.x == 5)
+            {
+                this.type = Type.energy;
+            }
+            if (this.x == 4)
+            {
+                this.type = Type.move;
             }
         }
         if (this.y == ((int)_gridSize.y - 1) / 2)
         {
             if (this.x == 1 || this.x == 5)
-            {
-                this.type = Type.energy;
-            }
-            if (this.x == 2 || this.x == 4)
             {
                 this.type = Type.ability;
             }
@@ -70,6 +111,11 @@ public class Hexagon {
             {
                 this.type = Type.win;
             }
+            if (this.x == 0 || this.x == 6)
+            {
+                this.type = Type.move;
+            }
         }
     }
+
 }
