@@ -51,11 +51,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61cf01d0388f2d64795b4511b658975c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  center: {fileID: 0}
+  mapPrefab: {fileID: 400000, guid: 13e059d44505b024bb35b99056f589a6, type: 3}
   emptyHexagonPrefab: {fileID: 4252391888528906, guid: c10b295be472b3c4d8e24f1dc302b2b0,
     type: 2}
   energyHexagonPrefab: {fileID: 4252391888528906, guid: 6f673220d6fcd304ea88b0f367e3adfe,
     type: 2}
   abilityHexagonPrefab: {fileID: 4252391888528906, guid: 128bc267b5b67fb419ec6f9fc34fc7c0,
+    type: 2}
+  moveHexagonPrefab: {fileID: 4897408555047868, guid: 7c0751f377fff9440aebd6fa54eb856c,
     type: 2}
   winHexagonPrefab: {fileID: 4252391888528906, guid: 38eee6d263357fd4894e03ebf148d272,
     type: 2}
@@ -71,6 +75,5 @@ MonoBehaviour:
     type: 2}
   purpleWaypointPrefab: {fileID: 4808231869849446, guid: c597c9de66574c24e84c076bbc475b38,
     type: 2}
-  waysWitdth: 3
   HexGrid: []
   WaypointGrid: []
