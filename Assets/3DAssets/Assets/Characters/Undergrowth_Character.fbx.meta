@@ -120,7 +120,12 @@ ModelImporter:
     13700026: shoulder_left
     13700028: shoulder_right
     13700030: tail
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_undergrowth_character
+    second: {fileID: 2100000, guid: c8759551040f356419fbcc33df2e0244, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
