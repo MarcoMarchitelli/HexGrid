@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -30,18 +29,20 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public int energyPoints = 2, victoryPoints = 3, actions = 2;
     [HideInInspector]
-    public int possibleMoves = 3, beforeMoveActionMoves;
+    public int possibleMoves = 3;
     [HideInInspector]
     public int numberOfCards1InHand = 0, numberOfCards2InHand = 0, numberOfCards3InHand = 0;
     [HideInInspector]
-    public bool hasPlacedCard, hasBet, canBet, hasBought;
+    public int bonusMoveActions = 0, bonusAbilityActions = 0;
+    [HideInInspector]
+    public bool hasPlacedCard, hasBet, canBet, hasBought, isBonusMove, hasSold, hasDiscount;
     public List<CardController> cardsInHand;
     [HideInInspector]
-    public CardController selectedCard, lastPlacedCard;
+    public CardController selectedCard, lastPlacedCard, cardToSell;
     public List<PlayerController> playersToRob = new List<PlayerController>();
     public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
     [HideInInspector]
-    public int beforeBuyActionEnergyPoints, beforePlaceActionEnergyPoints, beforeRotateActionEnergyPoints, beforeRotateActionCardEulerAngle;
+    public int beforeActionEnergyPoints, beforeRotateActionCardEulerAngle, beforeMoveActionMoves, beforeActionBonusMoveActions;
 
     #endregion
 
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour
                 selectedCard = null;
                 isFirstTime = true;
                 uiRefreshFlag = false;
+                hasDiscount = false;
                 break;
 
             case Action.start:
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
                 if (isFirstTime)
                 {
                     GainPhase();
+                    DiscountCheck();
                     isFirstTime = false;
                 }
 
@@ -322,6 +325,7 @@ public class PlayerController : MonoBehaviour
     {
         cardsInHand.Add(card);
         card.FreePaths(card.hexImOn);
+        card.hexImOn.card = null;
         card.state = CardController.State.inHand;
         card.transform.position = MyData.prefabsPosition;
         switch (card.type)
@@ -427,18 +431,21 @@ public class PlayerController : MonoBehaviour
                 break;
             case 1:
                 currentAction = Action.buyCard;
-                beforeBuyActionEnergyPoints = energyPoints;
+                beforeActionEnergyPoints = energyPoints;
                 break;
             case 2:
                 currentAction = Action.sellCard;
+                beforeActionEnergyPoints = energyPoints;
                 break;
             case 3:
                 currentAction = Action.placeCard;
-                beforePlaceActionEnergyPoints = energyPoints;
+                beforeActionEnergyPoints = energyPoints;
+                beforeActionBonusMoveActions = bonusMoveActions;
                 break;
             case 4:
                 currentAction = Action.rotateCard;
-                beforeRotateActionEnergyPoints = energyPoints;
+                beforeActionEnergyPoints = energyPoints;
+                beforeActionBonusMoveActions = bonusMoveActions;
                 break;
             case 5:
                 currentAction = Action.bet;
@@ -459,12 +466,25 @@ public class PlayerController : MonoBehaviour
         lastPlacedCard = null;
         hasBet = false;
         actions = 2;
-        energyPoints++;
         GameManager.instance.cardsManager.GainPhase(this);
         if (UIrefresh != null)
         {
             UIrefresh(this);
         }
+    }
+
+    void DiscountCheck()
+    {
+        bool haveCardsPlaced = false;
+
+        foreach (CardController card in GameManager.instance.cardsManager.PlacedCards)
+        {
+            if (card.player == this)
+                haveCardsPlaced = true;
+        }
+
+        if (energyPoints <= 1 && !haveCardsPlaced)
+            hasDiscount = true;
     }
 
     public void AddCard(CardController card)

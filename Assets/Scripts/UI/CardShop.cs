@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CardShop : MonoBehaviour {
 
@@ -11,17 +11,44 @@ public class CardShop : MonoBehaviour {
     public Button buyCard3;
 
     int playerEnergy;
+    int card1Price;
+    int card2Price;
+    int card3Price;
 
     [HideInInspector]
     public List<int> cardsBought = new List<int>();
 
-    [Header("Card Prices")]
-    public int card1Price;
-    public int card2Price;
-    public int card3Price;
+    [Header("Card Prices Texts")]
+    public TextMeshProUGUI card1PriceText;
+    public TextMeshProUGUI card2PriceText;
+    public TextMeshProUGUI card3PriceText;
 
     public void ToggleBuyButtons(PlayerController player)
     {
+        if (player.hasDiscount)
+        {
+            card1Price = 0;
+            card2Price = 4;
+            card3Price = 6;
+        }
+        else
+        if(GameManager.instance.turnCount <= 4)
+        {
+            card1Price = 1;
+            card2Price = 2;
+            card3Price = 3;
+        }
+        else
+        {
+            card1Price = 2;
+            card2Price = 4;
+            card3Price = 6;
+        }
+
+        card1PriceText.text = card1Price.ToString() + " PE";
+        card2PriceText.text = card2Price.ToString() + " PE";
+        card3PriceText.text = card3Price.ToString() + " PE";
+
         playerEnergy = player.energyPoints;
         if (playerEnergy >= card3Price)
         {
@@ -74,6 +101,10 @@ public class CardShop : MonoBehaviour {
             case 1:
                 cardsBought.Add(1);
                 GameManager.instance.currentActivePlayer.energyPoints -= card1Price;
+                if (GameManager.instance.currentActivePlayer.hasDiscount)
+                {
+                    card1Price = 1;
+                }
                 break;
             case 2:
                 cardsBought.Add(2);

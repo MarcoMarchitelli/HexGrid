@@ -24,7 +24,11 @@ public class CardsManager : MonoBehaviour {
         foreach (CardController card in PlacedCards)
         {
             if (card.player == player)
+            {
                 player.energyPoints += card.extractableEnergy;
+                player.bonusMoveActions += card.moveHexTouched;
+                player.actions += card.abilityHexTouched;
+            }   
         }
     }
 

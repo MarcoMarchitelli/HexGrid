@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
@@ -8,6 +6,10 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour
 {
     #region Public Variables
+    
+    Color activeColor = Color.green;
+    Color inactiveColor = Color.red;
+    Color specialColor = Color.yellow;
 
     [Header("Print Sections")]
     public TextMeshProUGUI topLeftSection;
@@ -23,6 +25,7 @@ public class UIManager : MonoBehaviour
     public Button placeCardButton;
     public Button rotateCardButton;
     public Button betButton;
+    public Button bonusMoveButton;
     [Header("Other Buttons")]
     public Button undoMovesButton;
     public Button endTurnButton;
@@ -33,11 +36,15 @@ public class UIManager : MonoBehaviour
     public GameObject winOverlay;
     public GameObject cardShop;
     public GameObject handDisplay;
+    public GameObject sellCardDisplay;
+    public GameObject BonusMoveCounter;
 
     [HideInInspector]
     public CardShop cardShopScript;
     [HideInInspector]
     public HandDisplay handDisplayScript;
+    [HideInInspector]
+    public SellCardDisplay sellCardDisplayScript;
 
     #endregion
 
@@ -45,6 +52,7 @@ public class UIManager : MonoBehaviour
     {
         cardShopScript = cardShop.GetComponent<CardShop>();
         handDisplayScript = handDisplay.GetComponent<HandDisplay>();
+        sellCardDisplayScript = sellCardDisplay.GetComponent<SellCardDisplay>();
     }
 
     #region Print Functions
@@ -91,20 +99,43 @@ public class UIManager : MonoBehaviour
 
     #region Action Buttons Toggle
 
+    public void ToggleBonusMoveButton(PlayerController player)
+    {
+        //set color
+        if (player.bonusMoveActions <= 0)
+        {
+            bonusMoveButton.image.color = inactiveColor;
+        }
+        else
+        {
+            bonusMoveButton.image.color = specialColor;
+        }
+
+        //set usability
+        if (player.currentAction == PlayerController.Action.start && bonusMoveButton.image.color == specialColor)
+        {
+            bonusMoveButton.enabled = true;
+        }
+        else
+        {
+            bonusMoveButton.enabled = false;
+        }
+    }
+
     public void ToggleMoveButton(PlayerController player)
     {
         //set color
         if (player.actions <= 0)
         {
-            moveButton.image.color = Color.red;
+            moveButton.image.color = inactiveColor;
         }
         else
         {
-            moveButton.image.color = Color.green;
+            moveButton.image.color = activeColor;
         }
 
         //set usability
-        if(player.currentAction == PlayerController.Action.start && moveButton.image.color == Color.green)
+        if(player.currentAction == PlayerController.Action.start && moveButton.image.color == activeColor)
         {
             moveButton.enabled = true;
         }
@@ -121,17 +152,17 @@ public class UIManager : MonoBehaviour
         //setColor
         if (player.playersToRob.Count == 0 || player.actions <= 0)
         {
-            betButton.image.color = Color.red;
+            betButton.image.color = inactiveColor;
             player.canBet = false;
         }
         else if (player.playersToRob.Count > 0 && player.energyPoints >= 1)
         {
-            betButton.image.color = Color.green;
+            betButton.image.color = activeColor;
             player.canBet = true;
         }
 
         //set usability
-        if (player.currentAction == PlayerController.Action.start && betButton.image.color == Color.green)
+        if (player.currentAction == PlayerController.Action.start && betButton.image.color == activeColor)
         {
             betButton.enabled = true;
         }
@@ -147,15 +178,15 @@ public class UIManager : MonoBehaviour
         //set color
         if (player.actions <= 0 || player.cardsInHand.Count <= 0)
         {
-            placeCardButton.image.color = Color.red;
+            placeCardButton.image.color = inactiveColor;
         }
         else
         {
-            placeCardButton.image.color = Color.green;
+            placeCardButton.image.color = activeColor;
         }
 
         //set usability
-        if (player.currentAction == PlayerController.Action.start && placeCardButton.image.color == Color.green)
+        if (player.currentAction == PlayerController.Action.start && placeCardButton.image.color == activeColor)
         {
             placeCardButton.enabled = true;
         }
@@ -170,15 +201,15 @@ public class UIManager : MonoBehaviour
         //set color
         if (player.actions <= 0 || !player.HasCardInNearHexagons())
         {
-            rotateCardButton.image.color = Color.red;
+            rotateCardButton.image.color = inactiveColor;
         }
         else
         {
-            rotateCardButton.image.color = Color.green;
+            rotateCardButton.image.color = activeColor;
         }
 
         //set usability
-        if (player.currentAction == PlayerController.Action.start && rotateCardButton.image.color == Color.green)
+        if (player.currentAction == PlayerController.Action.start && rotateCardButton.image.color == activeColor)
         {
             rotateCardButton.enabled = true;
         }
@@ -191,17 +222,17 @@ public class UIManager : MonoBehaviour
     public void ToggleBuyCardButton(PlayerController player)
     {
         //set color
-        if (player.actions <= 0 || player.energyPoints < 2)
+        if (player.actions <= 0 || player.energyPoints <= 0 && !player.hasDiscount)
         {
-            buyCardButton.image.color = Color.red;
+            buyCardButton.image.color = inactiveColor;
         }
         else
         {
-            buyCardButton.image.color = Color.green;
+            buyCardButton.image.color = activeColor;
         }
 
         //set usability
-        if (player.currentAction == PlayerController.Action.start && buyCardButton.image.color == Color.green)
+        if (player.currentAction == PlayerController.Action.start && buyCardButton.image.color == activeColor)
         {
             buyCardButton.enabled = true;
         }
@@ -216,15 +247,15 @@ public class UIManager : MonoBehaviour
         //set color
         if (player.actions <= 0 || player.cardsInHand.Count <= 0)
         {
-            sellCardButton.image.color = Color.red;
+            sellCardButton.image.color = inactiveColor;
         }
         else
         {
-            sellCardButton.image.color = Color.green;
+            sellCardButton.image.color = activeColor;
         }
 
         //set usability
-        if (player.currentAction == PlayerController.Action.start && sellCardButton.image.color == Color.green)
+        if (player.currentAction == PlayerController.Action.start && sellCardButton.image.color == activeColor)
         {
             sellCardButton.enabled = true;
         }
@@ -245,20 +276,19 @@ public class UIManager : MonoBehaviour
             if (player.possibleMoves == player.beforeMoveActionMoves)
             {
                 undoMovesButton.enabled = false;
-                undoMovesButton.image.color = Color.red;
+                undoMovesButton.image.color = inactiveColor;
             }
             else
             {
                 undoMovesButton.enabled = true;
-                undoMovesButton.image.color = Color.green;
+                undoMovesButton.image.color = activeColor;
             }
         }
     }
 
     public void ToggleEndTurnButton(PlayerController player)
     {
-        if (player.currentAction != PlayerController.Action.start)
-        if (player.currentAction != PlayerController.Action.start && GameManager.instance.mainCamera.isMoving)
+        if (player.currentAction != PlayerController.Action.start || GameManager.instance.mainCamera.isMoving)
         {
             endTurnButton.enabled = false;
         }
@@ -271,6 +301,17 @@ public class UIManager : MonoBehaviour
     #endregion
 
     #region Action Button Press
+
+    public void OnBonusMoveButton()
+    {
+        //specific UI to activate
+        undoMovesButton.gameObject.SetActive(true);
+
+        EnterAction();
+
+        GameManager.instance.ChoseAction(0);
+        GameManager.instance.currentActivePlayer.isBonusMove = true;
+    }
 
     public void OnMoveButton()
     {
@@ -295,9 +336,12 @@ public class UIManager : MonoBehaviour
 
     public void OnSellButton()
     {
+        //specific UI stuff
+        sellCardDisplay.SetActive(true);
+
         EnterAction();
 
-        GameManager.instance.ChoseAction(1);
+        GameManager.instance.ChoseAction(2);
     }
 
     public void OnPlaceCardButton()
@@ -353,15 +397,18 @@ public class UIManager : MonoBehaviour
         player.UIrefresh += ToggleBuyCardButton;
         player.UIrefresh += ToggleSellCardButton;
         player.UIrefresh += ToggleMoveButton;
+        player.UIrefresh += ToggleBonusMoveButton;
 
         //other buttons
         player.UIrefresh += handDisplayScript.RefreshHandDisplay;
         player.UIrefresh += ToggleUndoMoves;
         player.UIrefresh += ToggleEndTurnButton;
         player.UIrefresh += cardShopScript.ToggleBuyButtons;
+        player.UIrefresh += sellCardDisplayScript.RefreshSellDisplay;
 
         //infos
         player.UIrefresh += RefreshAllPrintFunctions;
+        player.UIrefresh += RefreshBonusMoveCounter;
     }
 
     public void UnsubscribeToPlayerUIRefreshEvent(PlayerController player)
@@ -373,15 +420,18 @@ public class UIManager : MonoBehaviour
         player.UIrefresh -= ToggleBuyCardButton;
         player.UIrefresh -= ToggleSellCardButton;
         player.UIrefresh -= ToggleMoveButton;
+        player.UIrefresh -= ToggleBonusMoveButton;
 
         //other buttons
         player.UIrefresh -= handDisplayScript.RefreshHandDisplay;
         player.UIrefresh -= cardShopScript.ToggleBuyButtons;
         player.UIrefresh -= ToggleUndoMoves;
         player.UIrefresh -= ToggleEndTurnButton;
+        player.UIrefresh -= sellCardDisplayScript.RefreshSellDisplay;
 
         //infos
         player.UIrefresh -= RefreshAllPrintFunctions;
+        player.UIrefresh -= RefreshBonusMoveCounter;
     }
 
     #endregion
@@ -447,30 +497,35 @@ public class UIManager : MonoBehaviour
             modifiersSection.gameObject.SetActive(true);
     }
 
+    public void RefreshBonusMoveCounter(PlayerController player)
+    {
+        if(player.bonusMoveActions <= 1)
+        {
+            BonusMoveCounter.SetActive(false);
+        }
+        else
+        {
+            BonusMoveCounter.SetActive(true);
+            TextMeshProUGUI counter =  BonusMoveCounter.GetComponentInChildren<TextMeshProUGUI>();
+            counter.text = player.bonusMoveActions.ToString();
+        }
+    }
+
     #endregion
-
-    void EnterAction()
-    {
-        SetTrueConfirmUndo();
-    }
-
-    public void ExitAction()
-    {
-        SetFalseAllSpecificActionUI();
-    }
 
     #region Action UI stuff
 
-    void SetFalseAllSpecificActionUI()
+    public void ExitAction()
     {
         undoMovesButton.gameObject.SetActive(false);
         cardShop.SetActive(false);
+        sellCardDisplay.SetActive(false);
         confirmButton.gameObject.SetActive(false);
         undoButton.gameObject.SetActive(false);
         handDisplay.SetActive(false);
     }
 
-    void SetTrueConfirmUndo()
+    public void EnterAction()
     {
         confirmButton.gameObject.SetActive(true);
         undoButton.gameObject.SetActive(true);
