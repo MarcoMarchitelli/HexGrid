@@ -8,9 +8,11 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: M_Underwater_Coraltree1
+    2100002: M_Underwater_Coraltree
     2300000: //RootNode
     3300000: //RootNode
     4300000: Underwater_Coraltree
+    4300002: Undewater_Coraltree
     9500000: //RootNode
   externalObjects:
   - first:
@@ -20,9 +22,9 @@ ModelImporter:
     second: {fileID: 2100000, guid: 8cd891b7eb1da274bbb8dda3039e21d7, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0

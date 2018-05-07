@@ -8,6 +8,7 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: M_Hypogeum_Obelisk
+    2100002: M_Hypogeum_Obelisk1
     2300000: //RootNode
     3300000: //RootNode
     4300000: Hypogeum_Obelisk
@@ -19,9 +20,14 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_Hypogeum_Obelisk
     second: {fileID: 2100000, guid: de45a821fd9b2db4c97f7f8f98cb61d0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Hypogeum_Obelisk1
+    second: {fileID: 2100000, guid: de45a821fd9b2db4c97f7f8f98cb61d0, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
     materialLocation: 1
   animations:

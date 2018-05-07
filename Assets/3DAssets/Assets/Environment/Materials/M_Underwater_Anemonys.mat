@@ -19,7 +19,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 518d78e9b675f9d4aacc924f5735e89d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 35b73bda9307b774c8cd95451ce1a8ca, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -35,27 +35,27 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: b23ffaed464022943bf5f3e1d79868da, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2a7203e3ecdd8c94685e34a3845ae657, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 34256f2668dccbb43804dcf24132dd9e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6c511717617aeb64fa9c97bdf03f8a1f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 7bd9b44f378feb944aad02d25ae5a80a, type: 3}
+        m_Texture: {fileID: 2800000, guid: a59bd253fb3f1cf44a28dddb29630555, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 771103e0332d102439e9987394e0b7cc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 048ab02e9538c4d46ae2f7316822f237, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: a902bc0ab8b07b84c97b25165091c078, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7ad3a4ec62d104c40b109325c18431d8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 2800000, guid: 721486806394d4e44ab37943b814793a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2a6ff4837d4475042aa0b395027b6a22, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -76,5 +76,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.27761233, g: 0, b: 0.4044118, a: 1}
-    - _EmissionColor: {r: 0.89969575, g: 0.8308824, b: 1, a: 1}
+    - _Color: {r: 0.8088235, g: 0.8088235, b: 0.8088235, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
