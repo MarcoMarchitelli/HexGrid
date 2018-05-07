@@ -8,6 +8,7 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: M_Underwater_Seaweed1
+    2100002: M_Underwater_Seaweed
     2300000: //RootNode
     3300000: //RootNode
     4300000: Underwater_Seaweed
@@ -16,13 +17,18 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_Underwater_Seaweed
+    second: {fileID: 2100000, guid: e2c3f2bc0c497e744bf15b16db131556, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_Underwater_Seaweed1
     second: {fileID: 2100000, guid: e2c3f2bc0c497e744bf15b16db131556, type: 2}
   materials:
     importMaterials: 1
-    materialName: 0
+    materialName: 1
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
