@@ -8,7 +8,7 @@ Material:
   m_PrefabInternal: {fileID: 0}
   m_Name: M_Underwater_Seashroom
   m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _PARALLAXMAP _SPECGLOSSMAP
+  m_ShaderKeywords: _EMISSION _NORMALMAP _PARALLAXMAP _SPECGLOSSMAP
   m_LightmapFlags: 1
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -19,7 +19,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: 8b5791d6eac027d418bbe1141ebce934, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6c5bd3ad8de66f347a84f652be987d78, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -35,27 +35,27 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 2800000, guid: 838d62a7a6e40aa44a2bf03a35228dd9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 41a423eb803d73f41819fb171a1c44c7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d69641896fad88b45b6f8898c03b4d32, type: 3}
+        m_Texture: {fileID: 2800000, guid: 56705eabae2286d41b08aad134f75cec, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 96702adb06549d84fb5bb14fc3ada453, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: e0bf7d95b20390c4188deb863800a96d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 22e66b94de2cbc541bf491a673f7263b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 7348139f890d59840aa2a6cdeded973c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 2c9adef40ffa3de4eb0e47239db5575e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
-        m_Texture: {fileID: 2800000, guid: b775f2fc58c7cf84ca22f070916fc276, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7dee85b59d124c943a945f9bb7b08286, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:

@@ -8,11 +8,9 @@ ModelImporter:
     100000: //RootNode
     400000: //RootNode
     2100000: M_Undergrowth_Berryplant
-    2100002: M_Undergrowth_Berryplant1
     2300000: //RootNode
     3300000: //RootNode
     4300000: Undergrowth_berry
-    4300002: Undergrowth_Berryplant_Lowpoly
     9500000: //RootNode
   externalObjects:
   - first:
@@ -20,14 +18,9 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: M_Undergrowth_Berryplant
     second: {fileID: 2100000, guid: 8f75d4289f974af46bc0169839b1b09f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_Undergrowth_Berryplant1
-    second: {fileID: 2100000, guid: 8601184fab7057847a1c8d52f6641b26, type: 2}
   materials:
     importMaterials: 1
-    materialName: 1
+    materialName: 0
     materialSearch: 1
     materialLocation: 1
   animations:
