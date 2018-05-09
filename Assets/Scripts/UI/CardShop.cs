@@ -25,13 +25,7 @@ public class CardShop : MonoBehaviour {
 
     public void ToggleBuyButtons(PlayerController player)
     {
-        if (player.hasDiscount)
-        {
-            card1Price = 0;
-            card2Price = 4;
-            card3Price = 6;
-        }
-        else
+        
         if(GameManager.instance.turnCount <= 4)
         {
             card1Price = 1;
@@ -45,11 +39,26 @@ public class CardShop : MonoBehaviour {
             card3Price = 6;
         }
 
+        if (player.hasDiscount)
+        {
+            card1Price = 0;
+        }
+
         card1PriceText.text = card1Price.ToString() + " PE";
         card2PriceText.text = card2Price.ToString() + " PE";
         card3PriceText.text = card3Price.ToString() + " PE";
 
         playerEnergy = player.energyPoints;
+
+        if (player.hasBought)
+        {
+            buyCard3.enabled = false;
+            buyCard3.image.color = Color.red;
+            buyCard2.enabled = false;
+            buyCard2.image.color = Color.red;
+            buyCard1.enabled = false;
+            buyCard1.image.color = Color.red;
+        }else
         if (playerEnergy >= card3Price)
         {
             buyCard3.enabled = true;

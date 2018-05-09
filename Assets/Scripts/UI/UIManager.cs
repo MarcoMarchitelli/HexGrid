@@ -228,11 +228,14 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            buyCardButton.image.color = activeColor;
+            if (player.hasDiscount)
+                buyCardButton.image.color = specialColor;
+            else
+                buyCardButton.image.color = activeColor;
         }
 
         //set usability
-        if (player.currentAction == PlayerController.Action.start && buyCardButton.image.color == activeColor)
+        if (player.currentAction == PlayerController.Action.start && buyCardButton.image.color == activeColor || buyCardButton.image.color == specialColor)
         {
             buyCardButton.enabled = true;
         }
