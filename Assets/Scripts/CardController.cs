@@ -78,14 +78,13 @@ public class CardController : MonoBehaviour
         {
             placedEulerAngle = eulerAngle;
             BlockPaths(hex);
-            transform.position = hex.worldPosition + Vector3.up * .5f;
+            transform.position = hex.worldPosition + Vector3.up * .3f;
             state = State.placed;
             hexImOn = hex;
             hexImOn.card = this;
             ResetTouchValues();
-            SetTouchvalues(hex);
+            SetTouchvalues(hexImOn);
             player.cardsInHand.Remove(this);
-            UseTouchValues(player);
             GameManager.instance.cardsManager.PlacedCards.Add(this);
         }
     }
@@ -373,6 +372,7 @@ public class CardController : MonoBehaviour
             eulerAngle = 0;
         BlockPaths(hexImOn);
         placedEulerAngle = eulerAngle;
+        ResetTouchValues();
         SetTouchvalues(hexImOn);
     }
 
@@ -464,7 +464,7 @@ public class CardController : MonoBehaviour
         switch (type)
         {
             case Type.card1:
-                switch (eulerAngle)
+                switch (placedEulerAngle)
                 {
                     case 0:
                         if (right != null && !right.card)
@@ -564,7 +564,7 @@ public class CardController : MonoBehaviour
                 }
                 break;
             case Type.card2:
-                switch (eulerAngle)
+                switch (placedEulerAngle)
                 {
                     case 0:
                         if (right != null && !right.card)
@@ -742,7 +742,7 @@ public class CardController : MonoBehaviour
                 }
                 break;
             case Type.card3:
-                switch (eulerAngle)
+                switch (placedEulerAngle)
                 {
                     case 0:
                         if (right != null && !right.card)
@@ -1011,12 +1011,6 @@ public class CardController : MonoBehaviour
         extractableEnergy = 0;
         abilityHexTouched = 0;
         moveHexTouched = 0;
-    }
-
-    void UseTouchValues(PlayerController player)
-    {
-        player.energyPoints += extractableEnergy;
-        player.bonusMoveActions += moveHexTouched;
     }
 
 }

@@ -163,6 +163,7 @@ public class PlayerController : MonoBehaviour
                                     selectedCard = null;
                                     hasPlacedCard = true;
                                     energyPoints += lastPlacedCard.extractableEnergy;
+                                    bonusMoveActions += lastPlacedCard.moveHexTouched;
                                     if (UIrefresh != null)
                                     {
                                         UIrefresh(this);
@@ -466,6 +467,7 @@ public class PlayerController : MonoBehaviour
         lastPlacedCard = null;
         hasBet = false;
         actions = 2;
+        bonusMoveActions = 0;
         GameManager.instance.cardsManager.GainPhase(this);
         if (UIrefresh != null)
         {
