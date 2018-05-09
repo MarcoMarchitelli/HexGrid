@@ -37,6 +37,7 @@ GameObject:
   - component: {fileID: 4327857246258882}
   - component: {fileID: 33669359577482498}
   - component: {fileID: 23126062361784702}
+  - component: {fileID: 65710162301641478}
   m_Layer: 10
   m_Name: Wall (2)
   m_TagString: Untagged
@@ -54,6 +55,7 @@ GameObject:
   - component: {fileID: 4650702902062860}
   - component: {fileID: 33915235998425162}
   - component: {fileID: 23075041799321818}
+  - component: {fileID: 65950441095611466}
   m_Layer: 10
   m_Name: Wall
   m_TagString: Untagged
@@ -71,6 +73,7 @@ GameObject:
   - component: {fileID: 4483303253981000}
   - component: {fileID: 33871522990374072}
   - component: {fileID: 23033764774740054}
+  - component: {fileID: 65292384241995986}
   m_Layer: 10
   m_Name: Wall (1)
   m_TagString: Untagged
@@ -329,6 +332,42 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1510018385271488}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &65292384241995986
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1715367328960290}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1, z: 1.0000006}
+  m_Center: {x: 0, y: 0, z: 0.000030517578}
+--- !u!65 &65710162301641478
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1091770336427214}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0000005, y: 1, z: 1.0000005}
+  m_Center: {x: -0.000011444092, y: 0, z: 0.000061035156}
+--- !u!65 &65950441095611466
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1510018385271488}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114072921402715810
 MonoBehaviour:
   m_ObjectHideFlags: 1
