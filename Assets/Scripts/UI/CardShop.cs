@@ -112,7 +112,7 @@ public class CardShop : MonoBehaviour {
                 GameManager.instance.currentActivePlayer.energyPoints -= card1Price;
                 if (GameManager.instance.currentActivePlayer.hasDiscount)
                 {
-                    card1Price = 1;
+                    GameManager.instance.currentActivePlayer.hasDiscount = false;
                 }
                 break;
             case 2:
