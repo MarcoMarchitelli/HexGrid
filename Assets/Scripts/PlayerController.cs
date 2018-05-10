@@ -48,7 +48,9 @@ public class PlayerController : MonoBehaviour
     Hexagon lastSelectedHex;
     bool uiRefreshFlag, isFirstTime = true;
     string bottomLeftMsg;
-    int maxPE = 25;  
+    int maxPE = 25;
+
+    public AudioClip BetMusic;
 
     private void Start()
     {
@@ -442,6 +444,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case 5:
                 currentAction = Action.bet;
+                SoundManager.instance.PlayMusic(BetMusic, 3);
                 break;
         }
 
