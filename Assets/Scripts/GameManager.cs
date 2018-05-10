@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -27,8 +26,10 @@ public class GameManager : MonoBehaviour
     public CameraBehaviour mainCamera;
     [HideInInspector]
     public CardsManager cardsManager;
+    [HideInInspector]
+    public int turnCount = 1;
 
-    int energyBet, turnCount = 1;
+    int energyBet;
     bool hasBet, winnerAnnounced;
 
     public static GameManager instance;
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour
     }
 
     private void Start()
-    {   
+    {
         players[0].currentAction = PlayerController.Action.start;
         currentActivePlayer = players[0];
         string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
@@ -56,52 +57,6 @@ public class GameManager : MonoBehaviour
         if (currentActivePlayer.UIrefresh != null)
         {
             currentActivePlayer.UIrefresh(currentActivePlayer);
-        }
-    }
-
-    void Update()
-    {
-        for (int i = 0; i < players.Length; i++)
-        {
-            if (players[i] == currentActivePlayer && players[i].currentAction == PlayerController.Action.idle)
-            {
-                if (i != players.Length - 1)
-                {
-                    players[i + 1].currentAction = PlayerController.Action.start;
-                    currentActivePlayer = players[i + 1];
-                    if(RotationPhase != null)
-                        RotationPhase();
-                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
-                    if (currentActivePlayer.UIrefresh != null)
-                    {
-                        currentActivePlayer.UIrefresh(currentActivePlayer);
-                    }
-                    mainCamera.SetTransform(currentActivePlayer);
-                    turnCount++;
-                    efm.AutoChangePhase(turnCount);
-                    uiManager.PrintPlayersModifiers();
-                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
-                    uiManager.PrintTopRight(msg);
-                }
-                else
-                {
-                    players[0].currentAction = PlayerController.Action.start;
-                    currentActivePlayer = players[0];
-                    if (RotationPhase != null)
-                        RotationPhase();
-                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
-                    if (currentActivePlayer.UIrefresh != null)
-                    {
-                        currentActivePlayer.UIrefresh(currentActivePlayer);
-                    }
-                    mainCamera.SetTransform(currentActivePlayer);
-                    turnCount++;
-                    efm.AutoChangePhase(turnCount);
-                    uiManager.PrintPlayersModifiers();
-                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
-                    uiManager.PrintTopRight(msg);
-                }
-            }
         }
     }
 
@@ -142,14 +97,52 @@ public class GameManager : MonoBehaviour
 
     #region Button Functions
 
-    public void SetCurrentPlayerIdle()
+    public void EndTurn()
     {
-        uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
-        currentActivePlayer.currentAction = PlayerController.Action.idle;
-        if (currentActivePlayer.UIrefresh != null)
+        for (int i = 0; i < players.Length; i++)
         {
-            currentActivePlayer.UIrefresh(currentActivePlayer);
+            if (players[i] == currentActivePlayer)
+            {
+                uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+                currentActivePlayer.currentAction = PlayerController.Action.idle;
+                if (i != players.Length - 1)
+                {
+                    currentActivePlayer = players[i + 1];
+                    currentActivePlayer.currentAction = PlayerController.Action.start;
+                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+
+                    if (RotationPhase != null)
+                        RotationPhase();
+   
+                    mainCamera.SetTransform(currentActivePlayer);
+                    turnCount++;
+                    efm.AutoChangePhase(turnCount);
+                    uiManager.PrintPlayersModifiers();
+                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    uiManager.PrintTopRight(msg);
+                    break;
+                }
+                else
+                {
+                    currentActivePlayer = players[0];
+                    currentActivePlayer.currentAction = PlayerController.Action.start;
+                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+
+                    if (RotationPhase != null)
+                        RotationPhase();
+
+                    mainCamera.SetTransform(currentActivePlayer);
+                    turnCount++;
+                    efm.AutoChangePhase(turnCount);
+                    uiManager.PrintPlayersModifiers();
+                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
+                    uiManager.PrintTopRight(msg);
+                    break;
+                }
+            }
         }
+        if (currentActivePlayer.UIrefresh != null)
+            currentActivePlayer.UIrefresh(currentActivePlayer);
     }
 
     public void UndoMoveCurrentPlayer()
@@ -175,6 +168,7 @@ public class GameManager : MonoBehaviour
                 ConfirmBuyCards();
                 break;
             case PlayerController.Action.sellCard:
+                ConfirmSellCard();
                 break;
             case PlayerController.Action.placeCard:
                 //nothing to do
@@ -186,7 +180,15 @@ public class GameManager : MonoBehaviour
         }
 
         currentActivePlayer.currentAction = PlayerController.Action.start;
-        currentActivePlayer.actions--;
+        if (currentActivePlayer.isBonusMove)
+        {
+            currentActivePlayer.bonusMoveActions--;
+            currentActivePlayer.isBonusMove = false;
+        }
+        else
+        {
+            currentActivePlayer.actions--;
+        }
 
         if (currentActivePlayer.UIrefresh != null)
             currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
@@ -207,6 +209,7 @@ public class GameManager : MonoBehaviour
                 UndoBuyCards();
                 break;
             case PlayerController.Action.sellCard:
+                UndoSellCard();
                 break;
             case PlayerController.Action.placeCard:
                 UndoPlaceCard();
@@ -274,6 +277,15 @@ public class GameManager : MonoBehaviour
         uiManager.cardShopScript.cardsBought.Clear();
     }
 
+    void ConfirmSellCard()
+    {
+        currentActivePlayer.cardsInHand.Remove(currentActivePlayer.cardToSell);
+        Destroy(currentActivePlayer.cardToSell.gameObject);
+        currentActivePlayer.cardToSell = null;
+        currentActivePlayer.hasSold = false;
+        currentActivePlayer.SetNumberOfCardTypesInHand();
+    }
+
     void ConfirmPlaceCard()
     {
         switch (currentActivePlayer.lastPlacedCard.type)
@@ -303,12 +315,20 @@ public class GameManager : MonoBehaviour
     {
         if (currentActivePlayer.hasBought)
         {
-            currentActivePlayer.energyPoints = currentActivePlayer.beforeBuyActionEnergyPoints;
+            currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
 
             currentActivePlayer.hasBought = false;
 
             uiManager.cardShopScript.cardsBought.Clear();
         }
+    }
+
+    void UndoSellCard()
+    {
+        currentActivePlayer.cardToSell = null;
+        currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
+        currentActivePlayer.hasSold = false;
+        currentActivePlayer.SetNumberOfCardTypesInHand();
     }
 
     void UndoPlaceCard()
@@ -318,7 +338,8 @@ public class GameManager : MonoBehaviour
             cardsManager.PlacedCards.Remove(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.SendCardInHand(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.hasPlacedCard = false;
-            currentActivePlayer.energyPoints = currentActivePlayer.beforePlaceActionEnergyPoints;
+            currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
+            currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         }
         if (currentActivePlayer.selectedCard)
         {
@@ -343,7 +364,8 @@ public class GameManager : MonoBehaviour
             card.SetRotationBackToPlaced();
             card.Place(card.hexImOn);
         }
-        currentActivePlayer.energyPoints = currentActivePlayer.beforeRotateActionEnergyPoints;
+        currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
+        currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
     }
 

@@ -5,27 +5,6 @@ public class CameraBehaviour : MonoBehaviour
 {
     public Vector3 offset;
     public float transitionTime = 1f;
-
-
-    //public void SetTransform(PlayerController player)
-    //{
-    //    transform.DOMove(new Vector3(player.startingWayPoint.worldPosition.x, offset.y, player.startingWayPoint.worldPosition.z), transitionTime);
-    //    switch (player.type)
-    //    {
-    //        case PlayerController.Type.hypogeum:
-    //            transform.DORotate(new Vector3(50f, 30f, 0), transitionTime);
-    //            break;
-    //        case PlayerController.Type.underwater:
-    //            transform.DORotate(new Vector3(50f, -30f, 0), transitionTime);
-    //            break;
-    //        case PlayerController.Type.forest:
-    //            transform.DORotate(new Vector3(50f, 210f, 0), transitionTime);
-    //            break;
-    //        case PlayerController.Type.underground:
-    //            transform.DORotate(new Vector3(50f, -210f, 0), transitionTime);
-    //            break;
-    //    }
-   // }
     public bool isMoving = false;
 
     public void SetTransform(PlayerController player)
@@ -42,13 +21,16 @@ public class CameraBehaviour : MonoBehaviour
     IEnumerator CameraAnimation(PlayerController player)
     {
         isMoving = true;
+        if (GameManager.instance.currentActivePlayer.UIrefresh != null)
+            GameManager.instance.currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
         Vector3 target = player.startingWayPoint.worldPosition + offset;
         while (transform.position != target)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, transitionTime * Time.deltaTime);
             yield return null;
-
         }
         isMoving = false;
+        if (GameManager.instance.currentActivePlayer.UIrefresh != null)
+            GameManager.instance.currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
     }
 }

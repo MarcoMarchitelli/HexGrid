@@ -1,25 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour
 {
-
-//    public Transform center;
-
     [HideInInspector]
     public Transform center;
 
+    [Header("Graphics Prefabs")]
     public Transform mapPrefab;
+    public Transform lightPrefab;
 
-    //Hexagon prefabs
+    [Header("Hexagon Prefabs")]
     public Transform emptyHexagonPrefab;
     public Transform energyHexagonPrefab;
     public Transform abilityHexagonPrefab;
     public Transform moveHexagonPrefab;
     public Transform winHexagonPrefab;
 
-    //Waypoint prefabs
+    [Header("Waypoint Prefabs")]
     public Transform blueWaypointPrefab;
     public Transform yellowWaypointPrefab;
     public Transform redWaypointPrefab;
@@ -35,7 +33,9 @@ public class HexGridCreator : MonoBehaviour
     float waysWitdth = 0.95104395f;
     float hexWidth = 2.28389342f, hexHeight = 2.8f;
 
+    [HideInInspector]
     public List<Hexagon> HexGrid = new List<Hexagon>();
+    [HideInInspector]
     public List<Point> WaypointGrid = new List<Point>();
 
     Transform mapContainer;
@@ -161,6 +161,7 @@ public class HexGridCreator : MonoBehaviour
             {
                 Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                 center = instantiatedMap;
+                Transform instantiatedLight = Instantiate(lightPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
             }
         }
     }
@@ -194,7 +195,6 @@ public class HexGridCreator : MonoBehaviour
                     break;
                 case Hexagon.Type.win:
                     Transform instantiatedWinHex = Instantiate(winHexagonPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
-                    center = instantiatedWinHex;
                     instantiatedWinHex.parent = mapContainer;
                     break;
             }
