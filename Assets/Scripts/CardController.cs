@@ -1,13 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CardController : MonoBehaviour
 {
-    GameManager gameManager;
     int eulerAngle = 0;
+    [HideInInspector]
     public int placedEulerAngle;
-    public int extractableEnergy = 0;
+    [HideInInspector]
+    public int extractableEnergy = 0, moveHexTouched = 0, abilityHexTouched = 0;
+    [HideInInspector]
     public Hexagon hexImOn;
 
     public enum State
@@ -20,15 +21,12 @@ public class CardController : MonoBehaviour
         card1, card2, card3
     }
 
+    [HideInInspector]
     public State state = State.inHand;
+    [HideInInspector]
     public Type type;
-
-    public bool isShield = true;
-
-    private void Awake()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-    }
+    [HideInInspector]
+    public PlayerController player;
 
     void Update()
     {
@@ -79,21 +77,20 @@ public class CardController : MonoBehaviour
         {
             placedEulerAngle = eulerAngle;
             BlockPaths(hex);
-            transform.position = hex.worldPosition + Vector3.up * .5f;
+            transform.position = hex.worldPosition + Vector3.up * .3f;
             state = State.placed;
             hexImOn = hex;
             hexImOn.card = this;
-            if (type == Type.card2)
-            {
-                extractableEnergy = 0;
-                SetExtractableEnergy(hex);
-            }
+            ResetTouchValues();
+            SetTouchvalues(hexImOn);
+            player.cardsInHand.Remove(this);
+            GameManager.instance.cardsManager.PlacedCards.Add(this);
         }
     }
 
     public void BlockPaths(Hexagon hex)
     {
-        List<Point> pointsAroundCard = gameManager.gridReference.GetSixPointsAroundHexagon(hex);
+        List<Point> pointsAroundCard = GameManager.instance.gridReference.GetSixPointsAroundHexagon(hex);
 
         Point bottom = null;
         Point bottomRight = null;
@@ -169,11 +166,11 @@ public class CardController : MonoBehaviour
             switch (eulerAngle)
             {
                 case 0:
-                    if(bottomRight != null && topRight != null)
+                    if (bottomRight != null && topRight != null)
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
-                    } 
+                    }
                     break;
                 case 60:
                 case -300:
@@ -181,7 +178,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomRight.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomRight.worldPosition);
-                    }    
+                    }
                     break;
                 case 120:
                 case -240:
@@ -189,7 +186,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    }   
+                    }
                     break;
                 case 180:
                 case -180:
@@ -197,7 +194,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
                         topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    }  
+                    }
                     break;
                 case 240:
                 case -120:
@@ -205,7 +202,7 @@ public class CardController : MonoBehaviour
                     {
                         topLeft.possibleDestinations.Remove(top.worldPosition);
                         top.possibleDestinations.Remove(topLeft.worldPosition);
-                    }      
+                    }
                     break;
                 case 300:
                 case -60:
@@ -213,7 +210,7 @@ public class CardController : MonoBehaviour
                     {
                         top.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(top.worldPosition);
-                    }    
+                    }
                     break;
             }
         }
@@ -223,7 +220,7 @@ public class CardController : MonoBehaviour
             switch (eulerAngle)
             {
                 case 0:
-                    if(bottomRight != null && topRight != null)
+                    if (bottomRight != null && topRight != null)
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
@@ -232,7 +229,7 @@ public class CardController : MonoBehaviour
                     {
                         topLeft.possibleDestinations.Remove(top.worldPosition);
                         top.possibleDestinations.Remove(topLeft.worldPosition);
-                    } 
+                    }
                     break;
                 case 60:
                 case -300:
@@ -245,7 +242,7 @@ public class CardController : MonoBehaviour
                     {
                         top.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(top.worldPosition);
-                    }    
+                    }
                     break;
                 case 120:
                 case -240:
@@ -258,7 +255,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
-                    } 
+                    }
                     break;
                 case 180:
                 case -180:
@@ -271,7 +268,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomRight.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomRight.worldPosition);
-                    }    
+                    }
                     break;
                 case 240:
                 case -120:
@@ -284,7 +281,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
                         bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    } 
+                    }
                     break;
                 case 300:
                 case -60:
@@ -297,7 +294,7 @@ public class CardController : MonoBehaviour
                     {
                         bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
                         topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
-                    }  
+                    }
                     break;
             }
         }
@@ -311,7 +308,7 @@ public class CardController : MonoBehaviour
                 case -240:
                 case 240:
                 case -120:
-                    if(bottomRight != null && topRight != null)
+                    if (bottomRight != null && topRight != null)
                     {
                         bottomRight.possibleDestinations.Remove(topRight.worldPosition);
                         topRight.possibleDestinations.Remove(bottomRight.worldPosition);
@@ -355,19 +352,32 @@ public class CardController : MonoBehaviour
 
     public void FreePaths(Hexagon hex)
     {
-        List<Point> pointsAroundCard = gameManager.gridReference.GetSixPointsAroundHexagon(hex);
+        List<Point> pointsAroundCard = GameManager.instance.gridReference.GetSixPointsAroundHexagon(hex);
 
         foreach (Point point in pointsAroundCard)
         {
-            point.possibleDestinations = gameManager.gridReference.GetPossibleDestinationsFromPoint(point);
+            point.possibleDestinations = GameManager.instance.gridReference.GetPossibleDestinationsFromPoint(point);
         }
 
         extractableEnergy = 0;
     }
 
-    void SetExtractableEnergy(Hexagon myHex)
+    public void RotateRight()
     {
-        List<Hexagon> aroundHexes = gameManager.gridReference.GetHexagonsAroundHexagon(myHex);
+        FreePaths(hexImOn);
+        transform.Rotate(Vector3.up * 60);
+        eulerAngle += 60;
+        if (eulerAngle == 360 || eulerAngle == -360)
+            eulerAngle = 0;
+        BlockPaths(hexImOn);
+        placedEulerAngle = eulerAngle;
+        ResetTouchValues();
+        SetTouchvalues(hexImOn);
+    }
+
+    void SetTouchvalues(Hexagon myHex)
+    {
+        List<Hexagon> aroundHexes = GameManager.instance.gridReference.GetHexagonsAroundHexagon(myHex);
 
         Hexagon topLeft = new Hexagon();
         Hexagon topRight = new Hexagon();
@@ -376,6 +386,7 @@ public class CardController : MonoBehaviour
         Hexagon botLeft = new Hexagon();
         Hexagon botRight = new Hexagon();
 
+        //find all hex around me
         if (myHex.y % 2 != 0)
         {
             foreach (Hexagon hex in aroundHexes)
@@ -448,48 +459,542 @@ public class CardController : MonoBehaviour
             }
         }
 
-        switch (eulerAngle)
+        //set values
+        switch (type)
         {
-            case 0:
-                if (right != null && right.type == Hexagon.Type.energy && !right.card)
-                    extractableEnergy++;
-                if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
-                    extractableEnergy++;
+            case Type.card1:
+                switch (placedEulerAngle)
+                {
+                    case 0:
+                        if (right != null && !right.card)
+                            switch (right.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 60:
+                    case -300:
+                        if (botRight != null && !botRight.card)
+                            switch (botRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 120:
+                    case -240:
+                        if (botLeft != null && !botLeft.card)
+                            switch (botLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 180:
+                    case -180:
+                        if (left != null && !left.card)
+                            switch (left.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 240:
+                    case -120:
+                        if (topLeft != null && !topLeft.card)
+                            switch (topLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 300:
+                    case -60:
+                        if (topRight != null && !topRight.card)
+                            switch (topRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                }
                 break;
-            case 60:
-            case -300:
-                if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
-                    extractableEnergy++;
-                if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
-                    extractableEnergy++;
+            case Type.card2:
+                switch (placedEulerAngle)
+                {
+                    case 0:
+                        if (right != null && !right.card)
+                            switch (right.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (topLeft != null && !topLeft.card)
+                            switch (topLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 60:
+                    case -300:
+                        if (botRight != null && !botRight.card)
+                            switch (botRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (topRight != null && !topRight.card)
+                            switch (topRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 120:
+                    case -240:
+                        if (botLeft != null && !botLeft.card)
+                            switch (botLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (right != null && !right.card)
+                            switch (right.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 180:
+                    case -180:
+                        if (left != null && !left.card)
+                            switch (left.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (botRight != null && !botRight.card)
+                            switch (botRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 240:
+                    case -120:
+                        if (topLeft != null && !topLeft.card)
+                            switch (topLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (botLeft != null && !botLeft.card)
+                            switch (botLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 300:
+                    case -60:
+                        if (topRight != null && !topRight.card)
+                            switch (topRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (left != null && !left.card)
+                            switch (left.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                }
                 break;
-            case 120:
-            case -240:
-                if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
-                    extractableEnergy++;
-                if (right != null && right.type == Hexagon.Type.energy && !right.card)
-                    extractableEnergy++;
-                break;
-            case 180:
-            case -180:
-                if (left != null && left.type == Hexagon.Type.energy && !left.card)
-                    extractableEnergy++;
-                if (botRight != null && botRight.type == Hexagon.Type.energy && !botRight.card)
-                    extractableEnergy++;
-                break;
-            case 240:
-            case -120:
-                if (topLeft != null && topLeft.type == Hexagon.Type.energy && !topLeft.card)
-                    extractableEnergy++;
-                if (botLeft != null && botLeft.type == Hexagon.Type.energy && !botLeft.card)
-                    extractableEnergy++;
-                break;
-            case 300:
-            case -60:
-                if (topRight != null && topRight.type == Hexagon.Type.energy && !topRight.card)
-                    extractableEnergy++;
-                if (left != null && left.type == Hexagon.Type.energy && !left.card)
-                    extractableEnergy++;
+            case Type.card3:
+                switch (placedEulerAngle)
+                {
+                    case 0:
+                        if (right != null && !right.card)
+                            switch (right.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (topLeft != null && !topLeft.card)
+                            switch (topLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (botLeft != null && !botLeft.card)
+                            switch (botLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 60:
+                    case -300:
+                        if (botRight != null && !botRight.card)
+                            switch (botRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (topRight != null && !topRight.card)
+                            switch (topRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (left != null && !left.card)
+                            switch (left.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 120:
+                    case -240:
+                        if (botLeft != null && !botLeft.card)
+                            switch (botLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (right != null && !right.card)
+                            switch (right.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (topLeft != null && !topLeft.card)
+                            switch (topLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 180:
+                    case -180:
+                        if (left != null && !left.card)
+                            switch (left.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (botRight != null && !botRight.card)
+                            switch (botRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (topRight != null && !topRight.card)
+                            switch (topRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 240:
+                    case -120:
+                        if (topLeft != null && !topLeft.card)
+                            switch (topLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (botLeft != null && !botLeft.card)
+                            switch (botLeft.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (right != null && !right.card)
+                            switch (right.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                    case 300:
+                    case -60:
+                        if (topRight != null && !topRight.card)
+                            switch (topRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (left != null && !left.card)
+                            switch (left.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        if (botRight != null && !botRight.card)
+                            switch (botRight.type)
+                            {
+                                case Hexagon.Type.energy:
+                                    extractableEnergy++;
+                                    break;
+                                case Hexagon.Type.ability:
+                                    abilityHexTouched++;
+                                    break;
+                                case Hexagon.Type.move:
+                                    moveHexTouched++;
+                                    break;
+                            }
+                        break;
+                }
                 break;
         }
     }
@@ -499,4 +1004,12 @@ public class CardController : MonoBehaviour
         transform.rotation = Quaternion.Euler(new Vector3(0, (float)placedEulerAngle, 0));
         eulerAngle = placedEulerAngle;
     }
+
+    void ResetTouchValues()
+    {
+        extractableEnergy = 0;
+        abilityHexTouched = 0;
+        moveHexTouched = 0;
+    }
+
 }

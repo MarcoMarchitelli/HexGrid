@@ -1,30 +1,36 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class CameraBehaviour : MonoBehaviour
 {
-
     public Vector3 offset;
+    public float transitionTime = 1f;
+    public bool isMoving = false;
 
     public void SetTransform(PlayerController player)
     {
-        transform.DOMove(new Vector3(player.startingWayPoint.worldPosition.x, offset.y, player.startingWayPoint.worldPosition.z), 1);
-        switch (player.name)
+        StartCoroutine(CameraAnimation(player));
+    }
+
+    private void LateUpdate()
+    {
+        if(isMoving)
+            transform.LookAt(GameManager.instance.gridReference.center.position);
+    }
+
+    IEnumerator CameraAnimation(PlayerController player)
+    {
+        isMoving = true;
+        if (GameManager.instance.currentActivePlayer.UIrefresh != null)
+            GameManager.instance.currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
+        Vector3 target = player.startingWayPoint.worldPosition + offset;
+        while (transform.position != target)
         {
-            case "yellow":
-                transform.DORotate(new Vector3(50f, 30f, 0), 1);
-                break;
-            case "blue":
-                transform.DORotate(new Vector3(50f, -30f, 0), 1);
-                break;
-            case "green":
-                transform.DORotate(new Vector3(50f, 210f, 0), 1);
-                break;
-            case "red":
-                transform.DORotate(new Vector3(50f, -210f, 0), 1);
-                break;
+            transform.position = Vector3.MoveTowards(transform.position, target, transitionTime * Time.deltaTime);
+            yield return null;
         }
+        isMoving = false;
+        if (GameManager.instance.currentActivePlayer.UIrefresh != null)
+            GameManager.instance.currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
     }
 }

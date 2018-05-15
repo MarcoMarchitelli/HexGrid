@@ -51,9 +51,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d4b4cc53c5afb041ab8a3e1dd53d874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topBigSection: {fileID: 0}
+  topLeftSection: {fileID: 0}
+  topRightSection: {fileID: 0}
   leftMediumSection: {fileID: 0}
-  Buttons:
+  bigCentralSection: {fileID: 0}
+  cardButtons:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  moveButton: {fileID: 0}
+  buyCardButton: {fileID: 0}
+  sellCardButton: {fileID: 0}
+  placeCardButton: {fileID: 0}
+  rotateCardButton: {fileID: 0}
+  betButton: {fileID: 0}
+  bonusMoveButton: {fileID: 0}
+  undoMovesButton: {fileID: 0}
+  endTurnButton: {fileID: 0}
+  confirmButton: {fileID: 0}
+  undoButton: {fileID: 0}
+  modifiersSection: {fileID: 0}
+  winOverlay: {fileID: 0}
+  cardShop: {fileID: 0}
+  handDisplay: {fileID: 0}
+  sellCardDisplay: {fileID: 0}
+  BonusMoveCounter: {fileID: 0}
+  discountWarning: {fileID: 0}
+  cardShopScript: {fileID: 0}
+  handDisplayScript: {fileID: 0}
+  sellCardDisplayScript: {fileID: 0}

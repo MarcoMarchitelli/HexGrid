@@ -1,39 +1,34 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using cakeslice;
 
 public class MaterialChange : MonoBehaviour {
 
-    MeshRenderer myRenderer;
-    GameManager gameManager;
+    Outline outline;
 
-    public Material newMaterial;
-    Color originalColor;
-
-	void Awake () {
-        gameManager = FindObjectOfType<GameManager>();
-        myRenderer = GetComponent<MeshRenderer>();
-        originalColor = myRenderer.material.color;
+    private void Start()
+    {
+        outline = GetComponent<Outline>();
+        outline.enabled = false;
     }
 
     private void OnMouseEnter()
     {
-        if(gameManager.currentActivePlayer.currentWayPoint.worldPosition == transform.position)
+        if (GameManager.instance.currentActivePlayer.currentAction == PlayerController.Action.moving && GameManager.instance.currentActivePlayer.possibleMoves > 0 && GameManager.instance.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position))
         {
-            return;
-        }else
-        if (gameManager.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) && gameManager.currentActivePlayer.possibleMoves != 0)
+            outline.enabled = true;
+            outline.color = 1;
+        }
+        else if (GameManager.instance.currentActivePlayer.currentAction == PlayerController.Action.moving && (!GameManager.instance.currentActivePlayer.currentWayPoint.possibleDestinations.Contains(transform.position) || GameManager.instance.currentActivePlayer.possibleMoves == 0))
         {
-            myRenderer.material.color = Color.green;
-        }else
-        {
-            myRenderer.material.color = Color.red;
+            outline.enabled = true;
+            outline.color = 0;
         }
     }
         
-
     private void OnMouseExit()
     {
-        myRenderer.material.color = originalColor;
+        outline.enabled = false;
     }
 }
