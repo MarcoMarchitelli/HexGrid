@@ -7,7 +7,7 @@ public class CameraBehaviour : MonoBehaviour
     public Transform HighView;
     public float transitionTime = 1f;
     public bool isMoving = false;
-    bool isHighView = false;
+    bool isHighView = false, canChangeView = true;
     IEnumerator animation;
 
     private void Start()
@@ -18,7 +18,7 @@ public class CameraBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if (!isMoving && Input.GetKey(KeyCode.Tab))
+        if (!isMoving && Input.GetKey(KeyCode.Tab) && canChangeView)
         {
             if (isHighView)
             {
@@ -50,6 +50,8 @@ public class CameraBehaviour : MonoBehaviour
             animation = CameraAnimation(HighView.position);
             StartCoroutine(animation);
             isHighView = !isHighView;
+            canChangeView = false;
+
         }
         else if(!flag && isHighView)
         {
@@ -58,6 +60,7 @@ public class CameraBehaviour : MonoBehaviour
             animation = CameraAnimation(StandardView);
             StartCoroutine(animation);
             isHighView = !isHighView;
+            canChangeView = true;
         }
             
     }

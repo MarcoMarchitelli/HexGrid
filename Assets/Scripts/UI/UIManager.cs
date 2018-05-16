@@ -376,6 +376,7 @@ public class UIManager : MonoBehaviour
     public void OnConfirmButton()
     {
         ExitAction();
+        GameManager.instance.mainCamera.SetHighView(false);
 
         //gameplay stuff
         GameManager.instance.ConfirmAction();
@@ -384,6 +385,7 @@ public class UIManager : MonoBehaviour
     public void OnUndoButton()
     {
         ExitAction();
+        GameManager.instance.mainCamera.SetHighView(false);
 
         //gameplay stuff
         GameManager.instance.UndoAction();
