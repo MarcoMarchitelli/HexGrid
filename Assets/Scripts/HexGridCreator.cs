@@ -49,7 +49,7 @@ public class HexGridCreator : MonoBehaviour
         InstantiateWaypoints();
         InstantiateHexagons();
         InstantiateMap();
-        transform.position = transform.position + Vector3.left * 0.12f;
+        //transform.position = transform.position + Vector3.left * 0.12f;
     }
 
     //adding widht to hexagon

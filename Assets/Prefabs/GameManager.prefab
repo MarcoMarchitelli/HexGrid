@@ -52,6 +52,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ec64a87b61f444d8869a34fc321aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnFronteAzionarioValueChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: set_value
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: FloatValueEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
+      PublicKeyToken=null
+  FronteAzionarioSlider: {fileID: 0}
   players:
   - {fileID: 0}
   - {fileID: 0}
@@ -70,6 +87,7 @@ MonoBehaviour:
   mainCamera: {fileID: 0}
   cardsManager: {fileID: 0}
   turnCount: 1
+  buttonMashFightResult: 0.5
 --- !u!114 &114631903122071188
 MonoBehaviour:
   m_ObjectHideFlags: 1

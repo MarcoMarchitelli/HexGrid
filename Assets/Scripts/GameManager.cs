@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class FloatValueEvent : UnityEvent<float> { }
 
 public class GameManager : MonoBehaviour
 {
+    public FloatValueEvent OnFronteAzionarioValueChange;
+    public GameObject FronteAzionarioSlider;
     public delegate void RotationPhaseEvent();
 
     public RotationPhaseEvent RotationPhase;
@@ -28,6 +34,7 @@ public class GameManager : MonoBehaviour
     public CardsManager cardsManager;
     [HideInInspector]
     public int turnCount = 1;
+    public float buttonMashFightResult = .5f;
 
     int energyBet;
     bool hasBet, winnerAnnounced;
@@ -50,7 +57,6 @@ public class GameManager : MonoBehaviour
         currentActivePlayer = players[0];
         string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
         uiManager.PrintTopRight(msg);
-        mainCamera.SetTransform(currentActivePlayer);
         efm.SetPhase(efm.currentPhase, players);
         uiManager.PrintPlayersModifiers();
         uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
@@ -114,7 +120,6 @@ public class GameManager : MonoBehaviour
                     if (RotationPhase != null)
                         RotationPhase();
    
-                    mainCamera.SetTransform(currentActivePlayer);
                     turnCount++;
                     efm.AutoChangePhase(turnCount);
                     uiManager.PrintPlayersModifiers();
@@ -131,7 +136,6 @@ public class GameManager : MonoBehaviour
                     if (RotationPhase != null)
                         RotationPhase();
 
-                    mainCamera.SetTransform(currentActivePlayer);
                     turnCount++;
                     efm.AutoChangePhase(turnCount);
                     uiManager.PrintPlayersModifiers();
@@ -383,7 +387,7 @@ public class GameManager : MonoBehaviour
         PlayerController winner;
         int attackerBet, defenderBet;
         string announcement = null;
-        bool atkWon = false, doesAttackerDoubleSteal;
+        bool atkWon = false, doesAttackerDoubleSteal, fronteAzionarioFinished = false;
         string[] messages = { "The winner is...", null};
         winnerAnnounced = false;
 
@@ -441,10 +445,30 @@ public class GameManager : MonoBehaviour
             yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 2));
 
         uiManager.PrintBigNews(null);
-        //if(winner == null)
-        //{
-        //    StartCoroutine(ButtonMashFight(attacker, defender));
-        //}
+        if(winner == null)
+        {        
+            while (fronteAzionarioFinished)
+            {
+                yield return StartCoroutine(ButtonMashFight(attacker, defender, winner, fronteAzionarioFinished));
+            }
+            #region Check fight result
+            if (winner == null)
+            {
+                announcement = "Noone! It's a Draw!";
+            }
+            else
+            if (winner == attacker)
+            {
+                announcement = attacker.type.ToString() + "!! \nCongratulations!";
+                atkWon = true;
+            }
+            else
+            if (winner == defender)
+            {
+                announcement = defender.type.ToString() + "!! \nCongratulations!";
+            }
+            #endregion
+        }
 
         //PV update
         if (atkWon)
@@ -468,6 +492,9 @@ public class GameManager : MonoBehaviour
                 }  
             }
         }
+
+        FronteAzionarioSlider.SetActive(false);
+        buttonMashFightResult = .5f;
 
         currentActivePlayer.actions--;
         currentActivePlayer.currentAction = PlayerController.Action.start;
@@ -525,18 +552,31 @@ public class GameManager : MonoBehaviour
         winnerAnnounced = true;
     }
 
-    public IEnumerator ButtonMashFight(PlayerController attacker, PlayerController defender)
+    public IEnumerator ButtonMashFight(PlayerController attacker, PlayerController defender, PlayerController winner, bool hasFinished)
     {
-        int attackerScore = 0, defenderScore = 0;
+        buttonMashFightResult = 0.5f;
         float time = 3f, counter = 0f;
+        FronteAzionarioSlider.SetActive(true);
         while (counter < time)
         {
             counter += Time.deltaTime;
             if (Input.GetKey("enter"))
-                attackerScore++;
+                buttonMashFightResult -= .1f;
             if (Input.GetKey(KeyCode.Space))
-                defenderScore++;
+                buttonMashFightResult += .1f;
+            OnFronteAzionarioValueChange.Invoke(buttonMashFightResult);
             yield return null;
+        }
+
+        if(buttonMashFightResult > .5f)
+        {
+            winner = defender;
+            hasFinished = true;
+        }
+        else
+        {
+            winner = attacker;
+            hasFinished = true;
         }
         
     }

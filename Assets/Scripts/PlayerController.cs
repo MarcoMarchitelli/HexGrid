@@ -442,11 +442,13 @@ public class PlayerController : MonoBehaviour
                 currentAction = Action.placeCard;
                 beforeActionEnergyPoints = energyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
+                GameManager.instance.mainCamera.SetHighView(true);
                 break;
             case 4:
                 currentAction = Action.rotateCard;
                 beforeActionEnergyPoints = energyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
+                GameManager.instance.mainCamera.SetHighView(true);
                 break;
             case 5:
                 currentAction = Action.bet;
