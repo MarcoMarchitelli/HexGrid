@@ -4,12 +4,42 @@ ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: //RootNode
+    100002: Base
+    100004: Elevator
+    100006: Group1
+    100008: Group2
+    100010: Group3
     400000: //RootNode
+    400002: Base
+    400004: Elevator
+    400006: Group1
+    400008: Group2
+    400010: Group3
     2300000: //RootNode
+    2300002: Base
+    2300004: Elevator
+    2300006: Group1
+    2300008: Group2
+    2300010: Group3
     3300000: //RootNode
+    3300002: Base
+    3300004: Elevator
+    3300006: Group1
+    3300008: Group2
+    3300010: Group3
     4300000: Underground_StartingPoint
+    4300002: Base
+    4300004: Elevator
+    4300006: Group1
+    4300008: Group2
+    4300010: Group3
     2186277476908879412: ImportLogs
   externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Underground_Base
+    second: {fileID: 2100000, guid: 53131affb69d1744e89e52679397e286, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
