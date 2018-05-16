@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public float moveSpeed;
     public delegate void UIevent(PlayerController player);
     public UIevent UIrefresh;
 
@@ -49,12 +51,16 @@ public class PlayerController : MonoBehaviour
     Hexagon lastSelectedHex;
     bool uiRefreshFlag, isFirstTime = true;
     string bottomLeftMsg;
-    int maxPE = 25;  
+    int maxPE = 25;
+
+    Animator animator;
 
     private void Start()
     {
         currentWayPoint = startingWayPoint;
         cardsInHand = new List<CardController>();
+        animator = GetComponentInChildren<Animator>();
+        animator.SetBool("isRunning", false);
     }
 
     void Update()
@@ -101,34 +107,7 @@ public class PlayerController : MonoBehaviour
 
                         if (pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && possibleMoves > 0 && CheckIfPointIsWalkable(pointHit))
                         {
-                            transform.position = pointHit.worldPosition + Vector3.up * .7f;
-                            currentWayPoint = pointHit;
-
-                            if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
-                                energyPoints++;
-
-                            if (currentWayPoint.type == Point.Type.purple)
-                            {
-                                possibleMoves = 0;
-                            }
-                            else
-                            if (currentWayPoint.type == Point.Type.win)
-                            {
-                                possibleMoves = 0;
-                                if (victoryPoints >= 5)
-                                {
-                                    GameManager.instance.Win(this);
-                                }
-                            }
-                            else
-                                possibleMoves--;
-
-                            if (UIrefresh != null)
-                            {
-                                UIrefresh(this);
-                            }
-
-                            CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
+                            StartCoroutine(RunAnimation(pointHit));
                         }
 
                     }
@@ -350,6 +329,51 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    void DataStuffAfterMove(Point _pointHit)
+    {
+        currentWayPoint = _pointHit;
+
+        if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
+            energyPoints++;
+
+        if (currentWayPoint.type == Point.Type.purple)
+        {
+            possibleMoves = 0;
+        }
+        else
+        if (currentWayPoint.type == Point.Type.win)
+        {
+            possibleMoves = 0;
+            if (victoryPoints >= 5)
+            {
+                GameManager.instance.Win(this);
+            }
+        }
+        else
+            possibleMoves--;
+
+        if (UIrefresh != null)
+        {
+            UIrefresh(this);
+        }
+
+        CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
+    }
+
+    IEnumerator RunAnimation(Point targetPoint)
+    {
+        Vector3 target = targetPoint.worldPosition + Vector3.up * .7f;
+        transform.DOLookAt(target, .2f);
+        animator.SetBool("isRunning", true);
+        while (transform.position != target)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        animator.SetBool("isRunning", false);
+        DataStuffAfterMove(targetPoint);
+    }
 
     public void SetNumberOfCardTypesInHand()
     {

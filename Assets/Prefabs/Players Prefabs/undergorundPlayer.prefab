@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4969848350877064}
   - component: {fileID: 33059598980449416}
   - component: {fileID: 23604883813412018}
+  - component: {fileID: 95621878726289810}
   m_Layer: 0
   m_Name: Underground_Character
   m_TagString: Untagged
@@ -85,6 +86,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 2100000, guid: e67bc843141650a46b63558d995109d0, type: 2}
   m_StaticBatchInfo:
@@ -113,6 +115,24 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1946187790876970}
   m_Mesh: {fileID: 4300000, guid: 00829f7f33ff3bb4ca9809c79b96d8b5, type: 3}
+--- !u!95 &95621878726289810
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1946187790876970}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 9bd02164fb4e9754cb4eaddb41eabc10, type: 3}
+  m_Controller: {fileID: 9100000, guid: f94a5d2433e0cc1409d89565f36fcd41, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114936040168531598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -169,9 +189,12 @@ MonoBehaviour:
   canBet: 0
   hasBought: 0
   isBonusMove: 0
+  hasSold: 0
+  hasDiscount: 0
   cardsInHand: []
   selectedCard: {fileID: 0}
   lastPlacedCard: {fileID: 0}
+  cardToSell: {fileID: 0}
   playersToRob: []
   pointLayer:
     serializedVersion: 2
