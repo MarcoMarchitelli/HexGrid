@@ -3083,7 +3083,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1387675024228778}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 66a39ebf62405234d985af7963be872b, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 9bd02164fb4e9754cb4eaddb41eabc10, type: 3}
   m_Controller: {fileID: 9100000, guid: f94a5d2433e0cc1409d89565f36fcd41, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -3173,6 +3173,7 @@ MonoBehaviour:
   beforeRotateActionCardEulerAngle: 0
   beforeMoveActionMoves: 0
   beforeActionBonusMoveActions: 0
+  isRunning: 0
 --- !u!136 &136666181664704714
 CapsuleCollider:
   m_ObjectHideFlags: 1

@@ -276,7 +276,7 @@ public class UIManager : MonoBehaviour
     {
         if (undoMovesButton.gameObject.activeSelf)
         {
-            if (player.possibleMoves == player.beforeMoveActionMoves)
+            if (player.possibleMoves == player.beforeMoveActionMoves || player.isRunning)
             {
                 undoMovesButton.enabled = false;
                 undoMovesButton.image.color = inactiveColor;

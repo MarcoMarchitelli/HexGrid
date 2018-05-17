@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+
 using DG.Tweening;
+using cakeslice;
 
 public class PlayerController : MonoBehaviour
 {
@@ -50,6 +52,8 @@ public class PlayerController : MonoBehaviour
 
     Hexagon lastSelectedHex;
     bool uiRefreshFlag, isFirstTime = true;
+    [HideInInspector]
+    public bool isRunning = false;
     string bottomLeftMsg;
     int maxPE = 25;
 
@@ -99,17 +103,16 @@ public class PlayerController : MonoBehaviour
                 RaycastHit hitInfo;
 
                 //moving ray
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, pointLayer))
+                if (Input.GetMouseButtonDown(0) && !isRunning)
                 {
-                    if (Input.GetMouseButtonDown(0))
+                    if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, pointLayer))
                     {
                         Point pointHit = GameManager.instance.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
 
-                        if (pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && possibleMoves > 0 && CheckIfPointIsWalkable(pointHit))
+                        if(pointHit != null && GameManager.instance.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit.worldPosition) && CheckIfPointIsWalkable(pointHit) && possibleMoves > 0)
                         {
                             StartCoroutine(RunAnimation(pointHit));
                         }
-
                     }
                 }
 
@@ -366,13 +369,15 @@ public class PlayerController : MonoBehaviour
         Vector3 target = targetPoint.worldPosition + Vector3.up * .7f;
         transform.DOLookAt(target, .2f);
         animator.SetBool("isRunning", true);
+        isRunning = true;
         while (transform.position != target)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
             yield return null;
         }
         animator.SetBool("isRunning", false);
-        DataStuffAfterMove(targetPoint);
+        isRunning = false;
+        DataStuffAfterMove(targetPoint); 
     }
 
     public void SetNumberOfCardTypesInHand()
@@ -520,5 +525,4 @@ public class PlayerController : MonoBehaviour
         cardsInHand.Add(card);
         card.state = CardController.State.inHand;
     }
-
 }

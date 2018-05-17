@@ -10,6 +10,18 @@ public class HexGridCreator : MonoBehaviour
     public Transform mapPrefab;
     public Transform lightPrefab;
 
+    [Header("Final Points Prefabs")]
+    public Transform HypogeumFinalPoint;
+    public Transform UnderwaterFinalPoint;
+    public Transform ForestFinalPoint;
+    public Transform UndergroundFinalPoint;
+
+    [Header("Starting Points Prefabs")]
+    public Transform HypogeumStartingPoint;
+    public Transform UnderwaterStartingPoint;
+    public Transform ForestStartingPoint;
+    public Transform UndergroundStartingPoint;
+
     [Header("Hexagon Prefabs")]
     public Transform emptyHexagonPrefab;
     public Transform energyHexagonPrefab;
@@ -209,20 +221,71 @@ public class HexGridCreator : MonoBehaviour
             switch (point.type)
             {
                 case Point.Type.underwater:
-                    Transform instantiatedBlueWaypoint = Instantiate(blueWaypointPrefab, point.worldPosition, Quaternion.identity);
-                    instantiatedBlueWaypoint.parent = mapContainer;
+                    if (point.isFinalWaypoint)
+                    {
+                        Transform InstantiatedUnderwaterFinalPoint = Instantiate(UnderwaterFinalPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedUnderwaterFinalPoint.parent = mapContainer;
+                    }
+                    else if (point.isStartingPoint)
+                    {
+                        Transform InstantiatedUnderwaterStartingPoint = Instantiate(UnderwaterStartingPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedUnderwaterStartingPoint.parent = mapContainer;
+                    }
+                    else
+                    {
+                        Transform instantiatedBlueWaypoint = Instantiate(blueWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        instantiatedBlueWaypoint.parent = mapContainer;
+                    }
                     break;
                 case Point.Type.underground:
-                    Transform instantiatedRedWaypoint = Instantiate(redWaypointPrefab, point.worldPosition, Quaternion.identity);
-                    instantiatedRedWaypoint.parent = mapContainer;
+                    if (point.isFinalWaypoint)
+                    {
+                        Transform InstantiatedUndergroundFinalPoint = Instantiate(UndergroundFinalPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedUndergroundFinalPoint.parent = mapContainer;
+                    }
+                    else if (point.isStartingPoint)
+                    {
+                        Transform InstantiatedUndergroundStartingPoint = Instantiate(UndergroundStartingPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedUndergroundStartingPoint.parent = mapContainer;
+                    }
+                    else
+                    {
+                        Transform instantiatedRedWaypoint = Instantiate(redWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        instantiatedRedWaypoint.parent = mapContainer;
+                    }
                     break;
                 case Point.Type.hypogeum:
-                    Transform instantiatedYellowWaypoint = Instantiate(yellowWaypointPrefab, point.worldPosition, Quaternion.identity);
-                    instantiatedYellowWaypoint.parent = mapContainer;
+                    if (point.isFinalWaypoint)
+                    {
+                        Transform InstantiatedHypogeumFinalPoint = Instantiate(HypogeumFinalPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedHypogeumFinalPoint.parent = mapContainer;
+                    }
+                    else if (point.isStartingPoint)
+                    {
+                        Transform InstantiatedHypogeumStartingPoint = Instantiate(HypogeumStartingPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedHypogeumStartingPoint.parent = mapContainer;
+                    }else
+                    {
+                        Transform instantiatedYellowWaypoint = Instantiate(yellowWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        instantiatedYellowWaypoint.parent = mapContainer;
+                    }
                     break;
                 case Point.Type.forest:
-                    Transform instantiatedGreenWaypoint = Instantiate(greenWaypointPrefab, point.worldPosition, Quaternion.identity);
-                    instantiatedGreenWaypoint.parent = mapContainer;
+                    if (point.isFinalWaypoint)
+                    {
+                        Transform InstantiatedForestFinalPoint = Instantiate(ForestFinalPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedForestFinalPoint.parent = mapContainer;
+                    }
+                    else if (point.isStartingPoint)
+                    {
+                        Transform InstantiatedForestStartingPoint = Instantiate(ForestStartingPoint, point.worldPosition, Quaternion.identity);
+                        InstantiatedForestStartingPoint.parent = mapContainer;
+                    }
+                    else
+                    {
+                        Transform instantiatedGreenWaypoint = Instantiate(greenWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        instantiatedGreenWaypoint.parent = mapContainer;
+                    }
                     break;
                 case Point.Type.win:
                     Transform instantiatedWinWaypoint = Instantiate(purpleWaypointPrefab, point.worldPosition + Vector3.up * .5f, Quaternion.identity);

@@ -37,7 +37,8 @@ public class GameManager : MonoBehaviour
     public float buttonMashFightResult = .5f;
 
     int energyBet;
-    bool hasBet, winnerAnnounced;
+    bool hasBet, fightResultAnnounced, fronteAzionarioFinished = false;
+    PlayerController winner;
 
     public static GameManager instance;
 
@@ -384,12 +385,11 @@ public class GameManager : MonoBehaviour
 
     public IEnumerator Bet(PlayerController attacker, PlayerController defender)
     {
-        PlayerController winner;
         int attackerBet, defenderBet;
         string announcement = null;
-        bool atkWon = false, doesAttackerDoubleSteal, fronteAzionarioFinished = false;
+        bool atkWon = false, doesAttackerDoubleSteal;
         string[] messages = { "The winner is...", null};
-        winnerAnnounced = false;
+        fightResultAnnounced = false;
 
         #region The 2 players betting
         //attacker bet
@@ -441,16 +441,19 @@ public class GameManager : MonoBehaviour
         messages[1] = announcement;
 
         //result show
-        while(!winnerAnnounced)
+        while(!fightResultAnnounced)
             yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 2));
 
         uiManager.PrintBigNews(null);
+
         if(winner == null)
-        {        
-            while (fronteAzionarioFinished)
+        {
+            fightResultAnnounced = false;
+            while (!fronteAzionarioFinished)
             {
-                yield return StartCoroutine(ButtonMashFight(attacker, defender, winner, fronteAzionarioFinished));
+                yield return StartCoroutine(ButtonMashFight(attacker, defender));
             }
+
             #region Check fight result
             if (winner == null)
             {
@@ -468,6 +471,14 @@ public class GameManager : MonoBehaviour
                 announcement = defender.type.ToString() + "!! \nCongratulations!";
             }
             #endregion
+
+            messages[1] = announcement;
+
+            //result show
+            while (!fightResultAnnounced)
+                yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 2));
+
+            uiManager.PrintBigNews(null);
         }
 
         //PV update
@@ -549,10 +560,10 @@ public class GameManager : MonoBehaviour
             uiManager.PrintBigNews(message);
             yield return new WaitForSeconds(seconds);
         }
-        winnerAnnounced = true;
+        fightResultAnnounced = true;
     }
 
-    public IEnumerator ButtonMashFight(PlayerController attacker, PlayerController defender, PlayerController winner, bool hasFinished)
+    public IEnumerator ButtonMashFight(PlayerController attacker, PlayerController defender)
     {
         buttonMashFightResult = 0.5f;
         float time = 3f, counter = 0f;
@@ -570,15 +581,13 @@ public class GameManager : MonoBehaviour
 
         if(buttonMashFightResult > .5f)
         {
-            winner = defender;
-            hasFinished = true;
+            winner = attacker;
         }
         else
         {
-            winner = attacker;
-            hasFinished = true;
+            winner = defender;
         }
-        
+        fronteAzionarioFinished = true;
     }
 
     #endregion
@@ -631,7 +640,7 @@ public class GameManager : MonoBehaviour
     }
 }
 
-public class AgentPosition
+    public class AgentPosition
 
 {
     public Point point;
