@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 
 using DG.Tweening;
-using cakeslice;
 
 public class PlayerController : MonoBehaviour
 {
@@ -109,7 +108,7 @@ public class PlayerController : MonoBehaviour
                     {
                         Point pointHit = GameManager.instance.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
 
-                        if(pointHit != null && GameManager.instance.gridReference.GetPossibleDestinationsFromPoint(currentWayPoint).Contains(pointHit.worldPosition) && CheckIfPointIsWalkable(pointHit) && possibleMoves > 0)
+                        if(pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && CheckIfPointIsWalkable(pointHit) && possibleMoves > 0)
                         {
                             StartCoroutine(RunAnimation(pointHit));
                         }

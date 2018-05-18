@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour
             switch (cardType)
             {
                 case 1:
-                    Transform instantiatedCard1 = Instantiate(prefabCard1, MyData.prefabsPosition, Quaternion.identity);
+                    Transform instantiatedCard1 = Instantiate(prefabCard1, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
                     CardController card1Controller = instantiatedCard1.GetComponent<CardController>();
                     if (card1Controller)
                     {
@@ -255,7 +255,7 @@ public class GameManager : MonoBehaviour
                     }
                     break;
                 case 2:
-                    Transform instantiatedCard2 = Instantiate(prefabCard2, MyData.prefabsPosition, Quaternion.identity);
+                    Transform instantiatedCard2 = Instantiate(prefabCard2, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
                     CardController card2Controller = instantiatedCard2.GetComponent<CardController>();
                     if (card2Controller)
                     {
@@ -265,7 +265,7 @@ public class GameManager : MonoBehaviour
                     }
                     break;
                 case 3:
-                    Transform instantiatedCard3 = Instantiate(prefabCard3, MyData.prefabsPosition, Quaternion.identity);
+                    Transform instantiatedCard3 = Instantiate(prefabCard3, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
                     CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
                     if (card3Controller)
                     {
