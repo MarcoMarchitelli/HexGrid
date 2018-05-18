@@ -4,15 +4,19 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [System.Serializable]
-public class FloatValueEvent : UnityEvent<float> { }
+public class FloatEvent : UnityEvent<float> { }
 
 public class GameManager : MonoBehaviour
 {
-    public FloatValueEvent OnFronteAzionarioValueChange;
+    public FloatEvent OnFronteAzionarioValueChange;
     public GameObject FronteAzionarioSlider;
-    public delegate void RotationPhaseEvent();
+    public delegate void VoidEvent();
+    public delegate void PlayerControllerEvent(PlayerController player);
 
-    public RotationPhaseEvent RotationPhase;
+    public VoidEvent RotationPhase;
+    public PlayerControllerEvent TurnEnd;
+    public PlayerControllerEvent TurnStart;
+    public VoidEvent GainPhase;
 
     public PlayerController[] players;
     public UIManager uiManager;
@@ -39,6 +43,8 @@ public class GameManager : MonoBehaviour
     int energyBet;
     bool hasBet, fightResultAnnounced, fronteAzionarioFinished = false;
     PlayerController winner;
+
+    public bool isStaticEvent = false;
 
     public static GameManager instance;
 

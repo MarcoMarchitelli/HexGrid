@@ -122,7 +122,7 @@ Animator:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1946187790876970}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 9000000, guid: 9bd02164fb4e9754cb4eaddb41eabc10, type: 3}
   m_Controller: {fileID: 9100000, guid: f94a5d2433e0cc1409d89565f36fcd41, type: 2}
   m_CullingMode: 0
@@ -144,6 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 791eb8750c3dd0c458fcdf8b7ef135ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveSpeed: 2
   type: 3
   weaknessType: 0
   strenghtType: 0
@@ -212,6 +213,7 @@ MonoBehaviour:
   beforeRotateActionCardEulerAngle: 0
   beforeMoveActionMoves: 0
   beforeActionBonusMoveActions: 0
+  isRunning: 0
 --- !u!136 &136927808773968592
 CapsuleCollider:
   m_ObjectHideFlags: 1

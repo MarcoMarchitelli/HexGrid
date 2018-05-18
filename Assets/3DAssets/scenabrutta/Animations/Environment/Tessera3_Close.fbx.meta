@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f075d0c45401a644cac1b3c46c683801
+guid: 8dd8f6c297d2dad4aa548d3a5cc7d392
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -56,7 +56,27 @@ ModelImporter:
     13700006: Wall4
     13700008: Wall5
     13700010: Wall6
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Arrow_Spento
+    second: {fileID: 2100000, guid: 7a292444254717a438e8d56d282372d9, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Bulb_Spento
+    second: {fileID: 2100000, guid: 1032322fa4ae13c43ace17815c743ccd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Card
+    second: {fileID: 2100000, guid: 5c17e13bae0d9b5408f9e90a1ffbfe69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_CardArrows_Spento
+    second: {fileID: 2100000, guid: f62d55a8177a1b64d90301e96010daec, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
