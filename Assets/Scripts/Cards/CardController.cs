@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
 public class CardController : MonoBehaviour
 {
@@ -23,10 +24,17 @@ public class CardController : MonoBehaviour
 
     [HideInInspector]
     public State state = State.inHand;
-    [HideInInspector]
     public Type type;
     [HideInInspector]
     public PlayerController player;
+    [HideInInspector]
+    public Animator animator;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        animator.SetTrigger("Open");
+    }
 
     void Update()
     {
@@ -74,17 +82,19 @@ public class CardController : MonoBehaviour
     public void Place(Hexagon hex)
     {
         if (state == State.selectedFromHand || state == State.selectedFromMap)
-        {  
+        {
             BlockPaths(hex);
-            placedEulerAngle = eulerAngle;
-            transform.position = hex.worldPosition + Vector3.up * .3f;
             state = State.placed;
+            placedEulerAngle = eulerAngle;
             hexImOn = hex;
             hexImOn.card = this;
             ResetTouchValues();
             SetTouchvalues(hexImOn);
             player.cardsInHand.Remove(this);
             GameManager.instance.cardsManager.PlacedCards.Add(this);
+
+            //ANIMATION
+            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 7f));
         }
     }
 
@@ -365,7 +375,6 @@ public class CardController : MonoBehaviour
     public void RotateRight()
     {
         FreePaths(hexImOn);
-        transform.Rotate(Vector3.up * 60);
         eulerAngle += 60;
         if (eulerAngle == 360 || eulerAngle == -360)
             eulerAngle = 0;
@@ -373,6 +382,10 @@ public class CardController : MonoBehaviour
         placedEulerAngle = eulerAngle;
         ResetTouchValues();
         SetTouchvalues(hexImOn);
+
+
+        //ANIMATION
+        StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), 1f));
     }
 
     void SetTouchvalues(Hexagon myHex)
@@ -1023,4 +1036,31 @@ public class CardController : MonoBehaviour
             Destroy(this.gameObject);
         }  
     }
+
+    #region animations
+
+    IEnumerator AnimateToDestination(Vector3 Destination, float speed)
+    {
+        while (transform.position != Destination)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    IEnumerator AnimateToRotation(Vector3 TargetEulerAngle, float durationInSeconds)
+    {
+        float counter = 0f;
+        Quaternion startingRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.Euler(TargetEulerAngle);
+        while (counter < durationInSeconds)
+        {
+            counter += Time.deltaTime;
+            transform.rotation = Quaternion.Slerp(startingRotation, targetRotation, counter / durationInSeconds);
+           yield return null;
+        }
+    }
+
+    #endregion
+
 }
