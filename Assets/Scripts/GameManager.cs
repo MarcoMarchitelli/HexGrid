@@ -112,6 +112,10 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
+        if(TurnEnd != null)
+        {
+            TurnEnd(currentActivePlayer);
+        }
         for (int i = 0; i < players.Length; i++)
         {
             if (players[i] == currentActivePlayer)

@@ -30,10 +30,10 @@ public class HexGridCreator : MonoBehaviour
     public Transform winHexagonPrefab;
 
     [Header("Waypoint Prefabs")]
-    public Transform blueWaypointPrefab;
-    public Transform yellowWaypointPrefab;
-    public Transform redWaypointPrefab;
-    public Transform greenWaypointPrefab;
+    public Transform underwaterWaypointPrefab;
+    public Transform hypogeumWaypointPrefab;
+    public Transform undergroundWaypointPrefab;
+    public Transform forestWaypointPrefab;
     public Transform greyWaypointPrefab;
     public Transform purpleWaypointPrefab;
 
@@ -51,6 +51,7 @@ public class HexGridCreator : MonoBehaviour
     public List<Point> WaypointGrid = new List<Point>();
 
     Transform mapContainer;
+    Vector3 waypointSpawnOffset = new Vector3(0f, 0.1f, 0f);
 
     private void Awake()
     {
@@ -233,7 +234,7 @@ public class HexGridCreator : MonoBehaviour
                     }
                     else
                     {
-                        Transform instantiatedBlueWaypoint = Instantiate(blueWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        Transform instantiatedBlueWaypoint = Instantiate(underwaterWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
                         instantiatedBlueWaypoint.parent = mapContainer;
                     }
                     break;
@@ -250,7 +251,7 @@ public class HexGridCreator : MonoBehaviour
                     }
                     else
                     {
-                        Transform instantiatedRedWaypoint = Instantiate(redWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        Transform instantiatedRedWaypoint = Instantiate(undergroundWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
                         instantiatedRedWaypoint.parent = mapContainer;
                     }
                     break;
@@ -266,7 +267,7 @@ public class HexGridCreator : MonoBehaviour
                         InstantiatedHypogeumStartingPoint.parent = mapContainer;
                     }else
                     {
-                        Transform instantiatedYellowWaypoint = Instantiate(yellowWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        Transform instantiatedYellowWaypoint = Instantiate(hypogeumWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
                         instantiatedYellowWaypoint.parent = mapContainer;
                     }
                     break;
@@ -283,7 +284,7 @@ public class HexGridCreator : MonoBehaviour
                     }
                     else
                     {
-                        Transform instantiatedGreenWaypoint = Instantiate(greenWaypointPrefab, point.worldPosition, Quaternion.identity);
+                        Transform instantiatedGreenWaypoint = Instantiate(forestWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
                         instantiatedGreenWaypoint.parent = mapContainer;
                     }
                     break;
