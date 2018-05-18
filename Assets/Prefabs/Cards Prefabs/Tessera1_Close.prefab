@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4860805951692994}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall_Movable_Pivot_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34,7 +34,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4364932030699274}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall_Movable_Pivot_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50,7 +50,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4955147589764258}
   - component: {fileID: 137940209335112438}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,7 +65,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4877736188174684}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall_Movable_Pivot_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -80,7 +80,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4631343323119816}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall_Movable_Pivot_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,8 @@ GameObject:
   - component: {fileID: 4799893862114950}
   - component: {fileID: 33566656953343440}
   - component: {fileID: 23540923148070020}
-  m_Layer: 0
+  - component: {fileID: 135125833153756840}
+  m_Layer: 10
   m_Name: Card_Arrows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,7 +114,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4067305769891628}
   - component: {fileID: 137285228030770120}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -128,7 +129,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4179325582844318}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall_Center_Pivot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +145,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4809342663918190}
   - component: {fileID: 137935453047902276}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161,7 +162,7 @@ GameObject:
   - component: {fileID: 4556498409390786}
   - component: {fileID: 95547996585170488}
   - component: {fileID: 114470730860940734}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tessera1_Close
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4556988551043526}
   - component: {fileID: 137109334115539510}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -193,7 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4487875373677558}
   - component: {fileID: 137721673003532594}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +209,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4646890086935670}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall_Movable_Pivot_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +224,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4439121996642382}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall_Movable_Pivot_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -239,7 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4550590505629272}
   - component: {fileID: 137454223998020608}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Wall1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +255,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4741796222972328}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Tessera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -569,6 +570,19 @@ MonoBehaviour:
   state: 0
   type: 0
   player: {fileID: 0}
+  animator: {fileID: 0}
+--- !u!135 &135125833153756840
+SphereCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1187919795818680}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 90.895615
+  m_Center: {x: 0.00000023841858, y: 0, z: 4.336809e-21}
 --- !u!137 &137109334115539510
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
