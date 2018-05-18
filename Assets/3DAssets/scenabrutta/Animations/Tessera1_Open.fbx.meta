@@ -1,50 +1,40 @@
 fileFormatVersion: 2
-guid: 625ced1a26d998746998cb5df8fc7b05
+guid: 8c461111210d0274eb9d44ee0752b7c5
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
     100000: Card_Arrows
     100002: Tessera
     100004: //RootNode
-    100006: Wall_1
-    100008: Wall_1_Center_Pivot
-    100010: Wall_2
-    100012: Wall_2_Center_Pivot
-    100014: Wall_3
-    100016: Wall_3_Center_Pivot
-    100018: Wall_4
-    100020: Wall_4_Center_Pivot
-    100022: Wall_5
-    100024: Wall_5_Center_Pivot
-    100026: Wall_6
-    100028: Wall_6_Center_Pivot
-    100030: Wall_Movable_Pivot
-    100032: Wall_Movable_Pivot 1
-    100034: Wall_Movable_Pivot 2
-    100036: Wall_Movable_Pivot 3
-    100038: Wall_Movable_Pivot 4
-    100040: Wall_Movable_Pivot 5
+    100006: Wall1
+    100008: Wall2
+    100010: Wall3
+    100012: Wall4
+    100014: Wall5
+    100016: Wall6
+    100018: Wall_Center_Pivot
+    100020: Wall_Movable_Pivot_1
+    100022: Wall_Movable_Pivot_2
+    100024: Wall_Movable_Pivot_3
+    100026: Wall_Movable_Pivot_4
+    100028: Wall_Movable_Pivot_5
+    100030: Wall_Movable_Pivot_6
     400000: Card_Arrows
-    400002: //RootNode
-    400004: Tessera
-    400006: Wall_1
-    400008: Wall_1_Center_Pivot
-    400010: Wall_2
-    400012: Wall_2_Center_Pivot
-    400014: Wall_3
-    400016: Wall_3_Center_Pivot
-    400018: Wall_4
-    400020: Wall_4_Center_Pivot
-    400022: Wall_5
-    400024: Wall_5_Center_Pivot
-    400026: Wall_6
-    400028: Wall_6_Center_Pivot
-    400030: Wall_Movable_Pivot
-    400032: Wall_Movable_Pivot 1
-    400034: Wall_Movable_Pivot 2
-    400036: Wall_Movable_Pivot 3
-    400038: Wall_Movable_Pivot 4
-    400040: Wall_Movable_Pivot 5
+    400002: Tessera
+    400004: //RootNode
+    400006: Wall1
+    400008: Wall2
+    400010: Wall3
+    400012: Wall4
+    400014: Wall5
+    400016: Wall6
+    400018: Wall_Center_Pivot
+    400020: Wall_Movable_Pivot_1
+    400022: Wall_Movable_Pivot_2
+    400024: Wall_Movable_Pivot_3
+    400026: Wall_Movable_Pivot_4
+    400028: Wall_Movable_Pivot_5
+    400030: Wall_Movable_Pivot_6
     2100000: M_CardArrows_Spento
     2100002: M_Card
     2100004: M_Arrow_Spento
@@ -52,46 +42,26 @@ ModelImporter:
     2300000: Card_Arrows
     3300000: Card_Arrows
     4300000: Card_Arrows
-    4300002: Wall_1
-    4300004: Wall_2
-    4300006: Wall_3
-    4300008: Wall_4
-    4300010: Wall_5
-    4300012: Wall_6
-    7400000: Take 001
+    4300002: Wall1
+    4300004: Wall2
+    4300006: Wall3
+    4300008: Wall4
+    4300010: Wall5
+    4300012: Wall6
+    7400000: 1_Open
     9500000: //RootNode
-    13700000: Wall_1
-    13700002: Wall_2
-    13700004: Wall_3
-    13700006: Wall_4
-    13700008: Wall_5
-    13700010: Wall_6
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_Arrow_Spento
-    second: {fileID: 2100000, guid: d9258e16d20d6324690c5fc51bde9a95, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_Bulb_Spento
-    second: {fileID: 2100000, guid: fbc3a42d0bec92b43afd043874396970, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_Card
-    second: {fileID: 2100000, guid: c03093e435f187e4d9986e8d0e1fafdd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_CardArrows_Spento
-    second: {fileID: 2100000, guid: 8b0b1ea51c496b44b906ce710c8d6939, type: 2}
+    13700000: Wall1
+    13700002: Wall2
+    13700004: Wall3
+    13700006: Wall4
+    13700008: Wall5
+    13700010: Wall6
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
