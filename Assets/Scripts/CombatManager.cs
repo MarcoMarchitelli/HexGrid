@@ -1,39 +1,40 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 public class CombatManager : MonoBehaviour
 {
-    public float currentAttStr = 0f, currentDefStr = 0f;
-
     #region public things
 
-    public bool startOnPlay = false;
-
-    public FloatEvent OnFightValueChange;
-    public UnityEvent OnFightFinish;
-
-    [Header("UI Panels")]
-    public GameObject SelectionPanel;
-    public GameObject FightPanel;
-
     [Header("Values")]
-    public float fightSliderValue = 0f;
     public float baseStrength = .15f;
+    public float timerMultiplier = .5f;
+    public float maxValue = 1f;
+    public float minValue = -1f;
 
     [Header("Inputs")]
     public KeyCode attackerInput = KeyCode.Alpha1;
     public KeyCode defenderInput = KeyCode.Alpha0;
 
+    public FloatEvent OnFightValueChange;
+    public UnityEvent OnFightFinish;
+
+    [Header("UI Stuff")]
+    public GameObject SelectionPanel;
+    public GameObject FightPanel;
+    public Slider slider;
+
     #endregion
 
+    float fightSliderValue = 0f;
     float attackerBonusStrength = 0f, defenderBonusStrength = 0f;
     bool attackerModSet = false, defenderModSet = false;
 
     private void Start()
     {
-        if (startOnPlay)
-            StartFightFlow();
+        slider.maxValue = maxValue;
+        slider.minValue = minValue;
     }
 
     public void StartFightFlow()
@@ -95,14 +96,16 @@ public class CombatManager : MonoBehaviour
         float startAttStr = baseStrength + attackerBonusStrength;
         float startDefStr = baseStrength + defenderBonusStrength;
 
+        float currentAttStr = 0f, currentDefStr = 0f;
+
         float timer = 0f;
 
         while (fightSliderValue > -1 && fightSliderValue < 1)
         {
             timer += Time.deltaTime;
 
-            currentAttStr = startAttStr * timer * .5f;
-            currentDefStr = startDefStr * timer * .5f;
+            currentAttStr = startAttStr * timer * timerMultiplier;
+            currentDefStr = startDefStr * timer * timerMultiplier;
 
             if (Input.GetKeyDown(attackerInput))
             {
@@ -114,7 +117,7 @@ public class CombatManager : MonoBehaviour
                 fightSliderValue -= currentDefStr;
             }
 
-            OnFightValueChange.Invoke(fightSliderValue);
+            slider.value = fightSliderValue;
 
             yield return null;
         }
@@ -134,13 +137,13 @@ public class CombatManager : MonoBehaviour
 
     }
 
-    public void SetAttackerModifier(int mod)
+    public void SetAttackerModifier(float mod)
     {
         attackerBonusStrength = mod;
         attackerModSet = true;
     }
 
-    public void SetDefenderModifier(int mod)
+    public void SetDefenderModifier(float mod)
     {
         defenderBonusStrength = mod;
         defenderModSet = true;
@@ -153,6 +156,7 @@ public class CombatManager : MonoBehaviour
         defenderBonusStrength = 0f;
         attackerModSet = false;
         defenderModSet = false;
+        slider.value = fightSliderValue;
     }
 
 }

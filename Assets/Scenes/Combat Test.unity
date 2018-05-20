@@ -194,7 +194,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -969,12 +969,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 15
-          m_FloatArgument: 0
+          m_FloatArgument: 0.375
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -1096,12 +1096,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 10
-          m_FloatArgument: 0
+          m_FloatArgument: 0.25
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -1223,12 +1223,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 6
-          m_FloatArgument: 0
+          m_FloatArgument: 0.15
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -1605,12 +1605,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
+          m_IntArgument: 0
+          m_FloatArgument: 0.025
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2281,12 +2281,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 15
-          m_FloatArgument: 0
+          m_FloatArgument: 0.375
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2359,23 +2359,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4507562b591bc244b93acb3573b27e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentAttStr: 0
-  currentDefStr: 0
-  startOnPlay: 0
+  baseStrength: 0.15
+  timerMultiplier: 0.5
+  maxValue: 1
+  minValue: -1
+  attackerInput: 48
+  defenderInput: 49
   OnFightValueChange:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1407883837}
-        m_MethodName: set_value
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_TypeName: FloatEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   OnFightFinish:
     m_PersistentCalls:
@@ -2395,10 +2387,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   SelectionPanel: {fileID: 1304251456}
   FightPanel: {fileID: 1309234926}
-  fightSliderValue: 0
-  baseStrength: 0.15
-  attackerInput: 48
-  defenderInput: 49
+  slider: {fileID: 1407883837}
 --- !u!114 &1407883837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2622,12 +2611,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
+          m_IntArgument: 0
+          m_FloatArgument: 0.05
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2749,12 +2738,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 4
-          m_FloatArgument: 0
+          m_FloatArgument: 0.1
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2954,12 +2943,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 4
-          m_FloatArgument: 0
+          m_FloatArgument: 0.1
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -3394,12 +3383,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 8
-          m_FloatArgument: 0
+          m_FloatArgument: 0.2
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -4005,12 +3994,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 8
-          m_FloatArgument: 0
+          m_FloatArgument: 0.2
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -4132,12 +4121,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 2
-          m_FloatArgument: 0
+          m_FloatArgument: 0.05
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -4259,12 +4248,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 1
-          m_FloatArgument: 0
+          m_FloatArgument: 0.025
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -4386,12 +4375,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 10
-          m_FloatArgument: 0
+          m_FloatArgument: 0.25
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -4591,12 +4580,12 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetDefenderModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 6
-          m_FloatArgument: 0
+          m_FloatArgument: 0.15
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -4718,7 +4707,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1407883836}
         m_MethodName: SetAttackerModifier
-        m_Mode: 3
+        m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
