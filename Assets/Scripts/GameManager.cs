@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -8,8 +7,6 @@ public class FloatEvent : UnityEvent<float> { }
 
 public class GameManager : MonoBehaviour
 {
-    public FloatEvent OnFronteAzionarioValueChange;
-    public GameObject FronteAzionarioSlider;
     public delegate void VoidEvent();
     public delegate void PlayerControllerEvent(PlayerController player);
 
@@ -28,8 +25,6 @@ public class GameManager : MonoBehaviour
 
     [HideInInspector]
     public HexGridCreator gridReference;
-    [HideInInspector]
-    public EFM efm;
     [HideInInspector]
     public PlayerController currentActivePlayer;
     [HideInInspector]
@@ -53,7 +48,6 @@ public class GameManager : MonoBehaviour
         instance = this;
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
-        efm = FindObjectOfType<EFM>();
         cardsManager = GetComponent<CardsManager>();
         InstantiatePlayers();
     }
@@ -62,10 +56,6 @@ public class GameManager : MonoBehaviour
     {
         players[0].currentAction = PlayerController.Action.start;
         currentActivePlayer = players[0];
-        string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
-        uiManager.PrintTopRight(msg);
-        efm.SetPhase(efm.currentPhase, players);
-        uiManager.PrintPlayersModifiers();
         uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
         if (currentActivePlayer.UIrefresh != null)
         {
@@ -112,7 +102,7 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
-        if(TurnEnd != null)
+        if (TurnEnd != null)
         {
             TurnEnd(currentActivePlayer);
         }
@@ -130,12 +120,8 @@ public class GameManager : MonoBehaviour
 
                     if (RotationPhase != null)
                         RotationPhase();
-   
+
                     turnCount++;
-                    efm.AutoChangePhase(turnCount);
-                    uiManager.PrintPlayersModifiers();
-                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
-                    uiManager.PrintTopRight(msg);
                     break;
                 }
                 else
@@ -148,10 +134,6 @@ public class GameManager : MonoBehaviour
                         RotationPhase();
 
                     turnCount++;
-                    efm.AutoChangePhase(turnCount);
-                    uiManager.PrintPlayersModifiers();
-                    string msg = "It's the " + efm.currentPhase.ToString() + " phase.";
-                    uiManager.PrintTopRight(msg);
                     break;
                 }
             }
@@ -190,7 +172,7 @@ public class GameManager : MonoBehaviour
                 break;
             case PlayerController.Action.rotateCard:
                 break;
-            case PlayerController.Action.bet:
+            case PlayerController.Action.fight:
                 break;
         }
 
@@ -232,7 +214,7 @@ public class GameManager : MonoBehaviour
             case PlayerController.Action.rotateCard:
                 UndoRotateCard();
                 break;
-            case PlayerController.Action.bet:
+            case PlayerController.Action.fight:
                 break;
         }
 
@@ -391,217 +373,6 @@ public class GameManager : MonoBehaviour
         uiManager.Win(player);
     }
 
-    #region Bet related functions
-
-    public IEnumerator Bet(PlayerController attacker, PlayerController defender)
-    {
-        int attackerBet, defenderBet;
-        string announcement = null;
-        bool atkWon = false, doesAttackerDoubleSteal;
-        string[] messages = { "The winner is...", null};
-        fightResultAnnounced = false;
-
-        #region The 2 players betting
-        //attacker bet
-        while (!hasBet)
-        {
-            uiManager.PrintBigNews("It's " + attacker.type.ToString() + "'s time to bet !");
-            uiManager.PrintLeft("Enter a number to bet some energy.");
-
-            yield return StartCoroutine(WaitForNumberInput(attacker, 0));
-        }
-
-        attackerBet = energyBet;
-        hasBet = false;
-
-        //defender bet
-        while (!hasBet)
-        {
-            uiManager.PrintBigNews("It's " + defender.type.ToString() + "'s time to bet !");
-            uiManager.PrintLeft("Enter a number to bet some energy.");
-
-            yield return StartCoroutine(WaitForNumberInput(defender, 1));
-        }
-
-        defenderBet = energyBet;
-        hasBet = false;
-        #endregion
-
-        winner = efm.FightResult(attacker, defender, attackerBet, defenderBet, out doesAttackerDoubleSteal);
-
-        #region Check fight result
-        if(winner == null)
-        {
-            announcement = "Noone! It's a Draw!";
-        }else 
-        if(winner == attacker)
-        {
-            announcement = attacker.type.ToString() + "!! \nCongratulations!";
-            atkWon = true;
-        }else
-        if(winner == defender)
-        {
-            announcement = defender.type.ToString() + "!! \nCongratulations!";
-        }
-        #endregion
-
-        attacker.energyPoints -= attackerBet;
-        defender.energyPoints -= defenderBet;
-
-        messages[1] = announcement;
-
-        //result show
-        while(!fightResultAnnounced)
-            yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 2));
-
-        uiManager.PrintBigNews(null);
-
-        if(winner == null)
-        {
-            fightResultAnnounced = false;
-            while (!fronteAzionarioFinished)
-            {
-                yield return StartCoroutine(ButtonMashFight(attacker, defender));
-            }
-
-            #region Check fight result
-            if (winner == null)
-            {
-                announcement = "Noone! It's a Draw!";
-            }
-            else
-            if (winner == attacker)
-            {
-                announcement = attacker.type.ToString() + "!! \nCongratulations!";
-                atkWon = true;
-            }
-            else
-            if (winner == defender)
-            {
-                announcement = defender.type.ToString() + "!! \nCongratulations!";
-            }
-            #endregion
-
-            messages[1] = announcement;
-
-            //result show
-            while (!fightResultAnnounced)
-                yield return StartCoroutine(WaitForWinnerAnnoucement(messages, 2));
-
-            uiManager.PrintBigNews(null);
-        }
-
-        //PV update
-        if (atkWon)
-        {
-            if (!doesAttackerDoubleSteal)
-            {
-                if (defender.victoryPoints >= 1)
-                {
-                    attacker.victoryPoints++;
-                    defender.victoryPoints--;
-                }   
-            }
-            else
-            {
-                if (defender.victoryPoints >= 2)
-                {
-                    attacker.victoryPoints++;
-                    defender.victoryPoints--;
-                    attacker.victoryPoints++;
-                    defender.victoryPoints--;
-                }  
-            }
-        }
-
-        FronteAzionarioSlider.SetActive(false);
-        buttonMashFightResult = .5f;
-
-        currentActivePlayer.actions--;
-        currentActivePlayer.currentAction = PlayerController.Action.start;
-        uiManager.ExitAction();
-
-        if (currentActivePlayer.UIrefresh != null)
-        {
-            currentActivePlayer.UIrefresh(currentActivePlayer);
-        }
-    }
-
-    public IEnumerator WaitForNumberInput(PlayerController player, int roleIndex)
-    {
-
-        if(roleIndex == 0)
-        {
-            while (!hasBet)
-            {
-                foreach(int i in efm.atkNumbers)
-                {
-                    if (Input.GetKeyDown(i.ToString()) && i <= player.energyPoints)
-                    {
-                        hasBet = true;
-                        energyBet = i;
-                    }
-                }
-                yield return null;
-            }
-        }else
-            if(roleIndex == 1)
-        {
-            while (!hasBet)
-            {
-                foreach (int i in efm.defNumbers)
-                {
-                    if (Input.GetKeyDown(i.ToString()) && i <= player.energyPoints)
-                    {
-                        hasBet = true;
-                        energyBet = i;
-                    }
-                }
-                yield return null;
-            }
-        }
-
-    }
-
-    public IEnumerator WaitForWinnerAnnoucement(string[] messages, float seconds)
-    {
-        foreach (string message in messages)
-        {
-            uiManager.PrintBigNews(message);
-            yield return new WaitForSeconds(seconds);
-        }
-        fightResultAnnounced = true;
-    }
-
-    public IEnumerator ButtonMashFight(PlayerController attacker, PlayerController defender)
-    {
-        buttonMashFightResult = 0.5f;
-        float time = 3f, counter = 0f;
-        FronteAzionarioSlider.SetActive(true);
-        while (counter < time)
-        {
-            counter += Time.deltaTime;
-            if (Input.GetKey("enter"))
-                buttonMashFightResult -= .1f;
-            if (Input.GetKey(KeyCode.Space))
-                buttonMashFightResult += .1f;
-            OnFronteAzionarioValueChange.Invoke(buttonMashFightResult);
-            yield return null;
-        }
-
-        if(buttonMashFightResult > .5f)
-        {
-            winner = attacker;
-        }
-        else
-        {
-            winner = defender;
-        }
-        fronteAzionarioFinished = true;
-    }
-
-    #endregion
-
     public List<AgentPosition> FindPointsInRange(int range, PlayerController player)
     {
         List<AgentPosition> pointsInRange = new List<AgentPosition>();
@@ -650,7 +421,7 @@ public class GameManager : MonoBehaviour
     }
 }
 
-    public class AgentPosition
+public class AgentPosition
 
 {
     public Point point;

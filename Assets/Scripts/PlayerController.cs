@@ -17,12 +17,12 @@ public class PlayerController : MonoBehaviour
 
     public enum Action
     {
-        idle, start, moving, buyCard, sellCard, placeCard, rotateCard, bet
+        idle, start, moving, buyCard, sellCard, placeCard, rotateCard, fight
     }
 
     #region Public Variables
 
-    public Type type, weaknessType, strenghtType;
+    public Type type;
     [HideInInspector]
     public Point startingWayPoint;
     [HideInInspector]
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public int bonusMoveActions = 0, bonusAbilityActions = 0;
     [HideInInspector]
-    public bool hasPlacedCard, hasBet, canBet, hasBought, isBonusMove, hasSold, hasDiscount;
+    public bool hasPlacedCard, hasFought, canBet, hasBought, isBonusMove, hasSold, hasDiscount;
     public List<CardController> cardsInHand;
     [HideInInspector]
     public CardController selectedCard, lastPlacedCard, cardToSell;
@@ -245,10 +245,10 @@ public class PlayerController : MonoBehaviour
 
                 break;
 
-            case Action.bet:
+            case Action.fight:
 
                 #region Bet
-                if (!hasBet)
+                if (!hasFought)
                 {
                     RaycastHit betHitInfo;
 
@@ -260,12 +260,11 @@ public class PlayerController : MonoBehaviour
                         //Seleziono un player nemico da attaccare
                         if (Input.GetMouseButtonDown(0) && playerHit && playersToRob.Contains(playerHit))
                         {
-                            hasBet = true;
+                            hasFought = true;
                             if (UIrefresh != null)
                             {
                                 UIrefresh(this);
                             }
-                            StartCoroutine(GameManager.instance.Bet(this, playerHit));
                         }
                     }
                 }
@@ -479,7 +478,7 @@ public class PlayerController : MonoBehaviour
                 GameManager.instance.mainCamera.SetHighView(true);
                 break;
             case 5:
-                currentAction = Action.bet;
+                currentAction = Action.fight;
                 break;
         }
 
@@ -495,7 +494,7 @@ public class PlayerController : MonoBehaviour
         hasPlacedCard = false;
         selectedCard = null;
         lastPlacedCard = null;
-        hasBet = false;
+        hasFought = false;
         actions = 2;
         bonusMoveActions = 0;
         GameManager.instance.cardsManager.GainPhase(this);

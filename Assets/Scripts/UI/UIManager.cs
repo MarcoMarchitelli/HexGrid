@@ -77,24 +77,6 @@ public class UIManager : MonoBehaviour
         bigCentralSection.text = msg;
     }
 
-    public void PrintPlayersModifiers()
-    {
-        PlayerController[] players = GameManager.instance.players;
-
-        TextMeshProUGUI playerType, playerWeakness, playerStrength;
-
-        for (int i = 0; i < players.Length; i++)
-        {
-            playerType = modifiersSection.GetChild(i).GetComponent<TextMeshProUGUI>();
-            playerWeakness = playerType.rectTransform.GetChild(0).GetComponent<TextMeshProUGUI>();
-            playerStrength = playerType.rectTransform.GetChild(1).GetComponent<TextMeshProUGUI>();
-
-            playerType.text = players[i].type.ToString();
-            playerWeakness.text = players[i].weaknessType.ToString();
-            playerStrength.text = players[i].strenghtType.ToString();
-        }
-    }
-
     #endregion
 
     #region Action Buttons Toggle
@@ -481,7 +463,7 @@ public class UIManager : MonoBehaviour
 
             PrintLeft(msg);
         }
-        else if (player.currentAction == PlayerController.Action.bet)
+        else if (player.currentAction == PlayerController.Action.fight)
         {
             PrintLeft("Select a player to attack.\nRightclick to undo.");
         }

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4223799354143972}
   - component: {fileID: 114149320092511340}
   - component: {fileID: 114631903122071188}
+  - component: {fileID: 114253196353093120}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -52,23 +53,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ec64a87b61f444d8869a34fc321aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnFronteAzionarioValueChange:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: set_value
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: FloatValueEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
-      PublicKeyToken=null
-  FronteAzionarioSlider: {fileID: 0}
   players:
   - {fileID: 0}
   - {fileID: 0}
@@ -82,12 +66,44 @@ MonoBehaviour:
   prefabCard3: {fileID: 4592036303584386, guid: 31cc4a13d410bb74594b2ea6414cc732,
     type: 2}
   gridReference: {fileID: 0}
-  efm: {fileID: 0}
   currentActivePlayer: {fileID: 0}
   mainCamera: {fileID: 0}
   cardsManager: {fileID: 0}
   turnCount: 1
   buttonMashFightResult: 0.5
+  isStaticEvent: 0
+--- !u!114 &114253196353093120
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1570569160473684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4507562b591bc244b93acb3573b27e8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnFightValueChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: set_value
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: FloatEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  SelectionPanel: {fileID: 0}
+  FightPanel: {fileID: 0}
+  fightSliderValue: 0
+  baseStrength: 0.15
+  attackerInput: 49
+  defenderInput: 48
 --- !u!114 &114631903122071188
 MonoBehaviour:
   m_ObjectHideFlags: 1
