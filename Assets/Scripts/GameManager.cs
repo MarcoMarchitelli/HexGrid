@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,10 +11,9 @@ public class GameManager : MonoBehaviour
     public delegate void VoidEvent();
     public delegate void PlayerControllerEvent(PlayerController player);
 
-    public VoidEvent RotationPhase;
+    public VoidEvent OnRotationPhase;
     public PlayerControllerEvent TurnEnd;
-    public PlayerControllerEvent TurnStart;
-    public VoidEvent GainPhase;
+    public VoidEvent OnGainPhase;
 
     public PlayerController[] players;
     public UIManager uiManager;
@@ -36,12 +36,18 @@ public class GameManager : MonoBehaviour
     public float buttonMashFightResult = .5f;
 
     int energyBet;
-    bool hasBet, fightResultAnnounced, fronteAzionarioFinished = false;
+    bool hasBet, fightResultAnnounced;
     PlayerController winner;
 
     public bool isStaticEvent = false;
 
     public static GameManager instance;
+
+
+    public bool rotationPhaseEnded = false, gainPhaseEnded = false, discountChecked = false, turnEnded = false;
+    public int playerIndex = 0;
+
+
 
     void Awake()
     {
@@ -54,14 +60,79 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        players[0].currentAction = PlayerController.Action.start;
-        currentActivePlayer = players[0];
+        TurnStart(playerIndex);
+    }
+
+    void TurnStart(int playerIndex)
+    {
+        if (playerIndex < 0 || playerIndex >= players.Length)
+        {
+            Debug.LogWarning("OUT OF PLAYERS ARRAY!");
+            return;
+        }
+            
+        currentActivePlayer = players[playerIndex];
+
         uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+
         if (currentActivePlayer.UIrefresh != null)
         {
             currentActivePlayer.UIrefresh(currentActivePlayer);
         }
+
+        StartCoroutine(GameFlow());
     }
+
+    IEnumerator GameFlow()
+    {
+        yield return StartCoroutine(RotationPhase());
+
+        yield return StartCoroutine(GainPhase());
+
+        //if(CheckDiscount())
+            //DO STUFF
+        
+
+        yield return StartCoroutine(PlayPhase());
+    }
+
+    IEnumerator RotationPhase()
+    {
+        while (!rotationPhaseEnded)
+        {
+            //DO STUFF
+            yield return null;
+        }
+    }
+
+    IEnumerator GainPhase()
+    {
+        while (!gainPhaseEnded)
+        {
+            //DO STUFF
+            yield return null;
+        }
+    }
+
+    //bool CheckDiscount()
+    //{
+    //    if (//dicount)
+    //        return true;
+    //    else
+    //        return false;
+    //}
+
+    IEnumerator PlayPhase()
+    {
+        currentActivePlayer.currentAction = PlayerController.Action.start;
+        while (!turnEnded)
+        {
+            //PRESS END TURN BUTTON
+            yield return null;
+        }
+    }
+
+
 
     void InstantiatePlayers()
     {
@@ -102,44 +173,51 @@ public class GameManager : MonoBehaviour
 
     public void EndTurn()
     {
+        turnEnded = true;
+        if(playerIndex != 3)
+            playerIndex++;
+        else
+            playerIndex = 0;
+
+        TurnStart(playerIndex);
         if (TurnEnd != null)
         {
             TurnEnd(currentActivePlayer);
         }
-        for (int i = 0; i < players.Length; i++)
-        {
-            if (players[i] == currentActivePlayer)
-            {
-                uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
-                currentActivePlayer.currentAction = PlayerController.Action.idle;
-                if (i != players.Length - 1)
-                {
-                    currentActivePlayer = players[i + 1];
-                    currentActivePlayer.currentAction = PlayerController.Action.start;
-                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        //for (int i = 0; i < players.Length; i++)
+        //{
+        //    if (players[i] == currentActivePlayer)
+        //    {
+        //        uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        //        currentActivePlayer.currentAction = PlayerController.Action.idle;
+        //        if (i != players.Length - 1)
+        //        {
+        //            currentActivePlayer = players[i + 1];
+        //            currentActivePlayer.currentAction = PlayerController.Action.start;
+        //            uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
-                    if (RotationPhase != null)
-                        RotationPhase();
+        //            if (RotationPhase != null)
+        //                RotationPhase();
 
-                    turnCount++;
-                    break;
-                }
-                else
-                {
-                    currentActivePlayer = players[0];
-                    currentActivePlayer.currentAction = PlayerController.Action.start;
-                    uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        //            turnCount++;
+        //            break;
+        //        }
+        //        else
+        //        {
+        //            currentActivePlayer = players[0];
+        //            currentActivePlayer.currentAction = PlayerController.Action.start;
+        //            uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
-                    if (RotationPhase != null)
-                        RotationPhase();
+        //            if (RotationPhase != null)
+        //                RotationPhase();
 
-                    turnCount++;
-                    break;
-                }
-            }
-        }
-        if (currentActivePlayer.UIrefresh != null)
-            currentActivePlayer.UIrefresh(currentActivePlayer);
+        //            turnCount++;
+        //            break;
+        //        }
+        //    }
+        //}
+        //if (currentActivePlayer.UIrefresh != null)
+        //    currentActivePlayer.UIrefresh(currentActivePlayer);
     }
 
     public void UndoMoveCurrentPlayer()

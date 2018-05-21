@@ -17,7 +17,6 @@ public class CombatManager : MonoBehaviour
     public KeyCode attackerInput = KeyCode.Alpha1;
     public KeyCode defenderInput = KeyCode.Alpha0;
 
-    public FloatEvent OnFightValueChange;
     public UnityEvent OnFightFinish;
 
     [Header("UI Stuff")]
@@ -104,8 +103,8 @@ public class CombatManager : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            currentAttStr = startAttStr * timer * timerMultiplier;
-            currentDefStr = startDefStr * timer * timerMultiplier;
+            currentAttStr = startAttStr * (timer * timerMultiplier);
+            currentDefStr = startDefStr * (timer * timerMultiplier);
 
             if (Input.GetKeyDown(attackerInput))
             {

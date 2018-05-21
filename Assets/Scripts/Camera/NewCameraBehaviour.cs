@@ -13,7 +13,7 @@ public class NewCameraBehaviour : MonoBehaviour {
     public float speed = 1f;
 
     bool isHighView = false;
-    IEnumerator animation;
+    IEnumerator cameraAnimation;
 
     private void Start()
     {
@@ -27,14 +27,14 @@ public class NewCameraBehaviour : MonoBehaviour {
         {
             if (isHighView)
             {
-                animation = MoveAnimation(StandardViewPosition, HighViewPosition, speed);
-                StartCoroutine(animation);
+                cameraAnimation = MoveAnimation(StandardViewPosition, HighViewPosition, speed);
+                StartCoroutine(cameraAnimation);
                 isHighView = !isHighView;
             }
             else
             {
-                animation = MoveAnimation(HighViewPosition, StandardViewPosition, speed);
-                StartCoroutine(animation);
+                cameraAnimation = MoveAnimation(HighViewPosition, StandardViewPosition, speed);
+                StartCoroutine(cameraAnimation);
                 isHighView = !isHighView;
             }       
         }

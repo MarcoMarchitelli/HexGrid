@@ -268,7 +268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1397401097517822
 GameObject:
   m_ObjectHideFlags: 1
@@ -525,7 +525,7 @@ GameObject:
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2228,22 +2228,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4507562b591bc244b93acb3573b27e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startOnPlay: 0
-  OnFightValueChange:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114237725259539974}
-        m_MethodName: set_value
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: FloatEvent, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  baseStrength: 0.15
+  timerMultiplier: 0.5
+  maxValue: 1
+  minValue: -1
+  attackerInput: 49
+  defenderInput: 48
   OnFightFinish:
     m_PersistentCalls:
       m_Calls:
@@ -2262,10 +2252,7 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
   SelectionPanel: {fileID: 1744507992793320}
   FightPanel: {fileID: 1050550673188960}
-  fightSliderValue: 0
-  baseStrength: 0.15
-  attackerInput: 49
-  defenderInput: 48
+  slider: {fileID: 0}
 --- !u!114 &114525229479686058
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4313,8 +4300,8 @@ RectTransform:
   m_Father: {fileID: 224038385522778472}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4369,7 +4356,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

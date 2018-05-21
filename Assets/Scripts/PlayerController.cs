@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
+    public Image icon;
     public float moveSpeed;
     public delegate void UIevent(PlayerController player);
     public UIevent UIrefresh;
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     Hexagon lastSelectedHex;
-    bool uiRefreshFlag, isFirstTime = true;
+    bool isFirstTime = true;
     [HideInInspector]
     public bool isRunning = false;
     string bottomLeftMsg;
@@ -60,6 +62,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        currentAction = Action.idle;
         currentWayPoint = startingWayPoint;
         cardsInHand = new List<CardController>();
         animator = GetComponentInChildren<Animator>();
@@ -76,7 +79,6 @@ public class PlayerController : MonoBehaviour
             case Action.idle:
                 selectedCard = null;
                 isFirstTime = true;
-                uiRefreshFlag = false;
                 hasDiscount = false;
                 break;
 

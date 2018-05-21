@@ -8,7 +8,7 @@ public class CameraBehaviour : MonoBehaviour
     public float transitionTime = 1f;
     public bool isMoving = false;
     bool isHighView = false, canChangeView = true;
-    IEnumerator animation;
+    IEnumerator cameraAnimation;
 
     private void Start()
     {
@@ -22,14 +22,14 @@ public class CameraBehaviour : MonoBehaviour
         {
             if (isHighView)
             {
-                animation = CameraAnimation(StandardView);
-                StartCoroutine(animation);
+                cameraAnimation = CameraAnimation(StandardView);
+                StartCoroutine(cameraAnimation);
                 isHighView = !isHighView;
             }
             else
             {
-                animation = CameraAnimation(HighView.position);
-                StartCoroutine(animation);
+                cameraAnimation = CameraAnimation(HighView.position);
+                StartCoroutine(cameraAnimation);
                 isHighView = !isHighView;
             }
         }
@@ -45,20 +45,20 @@ public class CameraBehaviour : MonoBehaviour
     {
         if(flag && !isHighView)
         {
-            if(animation != null)
-                StopCoroutine(animation);
-            animation = CameraAnimation(HighView.position);
-            StartCoroutine(animation);
+            if(cameraAnimation != null)
+                StopCoroutine(cameraAnimation);
+            cameraAnimation = CameraAnimation(HighView.position);
+            StartCoroutine(cameraAnimation);
             isHighView = !isHighView;
             canChangeView = false;
 
         }
         else if(!flag && isHighView)
         {
-            if (animation != null)
-                StopCoroutine(animation);
-            animation = CameraAnimation(StandardView);
-            StartCoroutine(animation);
+            if (cameraAnimation != null)
+                StopCoroutine(cameraAnimation);
+            cameraAnimation = CameraAnimation(StandardView);
+            StartCoroutine(cameraAnimation);
             isHighView = !isHighView;
             canChangeView = true;
         }

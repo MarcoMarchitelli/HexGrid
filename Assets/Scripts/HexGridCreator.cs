@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour
 {
+    #region PUBLIC VARIABLES
+
     [HideInInspector]
     public Transform center;
 
@@ -36,6 +38,8 @@ public class HexGridCreator : MonoBehaviour
     public Transform forestWaypointPrefab;
     public Transform greyWaypointPrefab;
     public Transform purpleWaypointPrefab;
+
+    #endregion
 
     Vector2 gridSize = new Vector2(7f, 7f);
 
@@ -72,7 +76,7 @@ public class HexGridCreator : MonoBehaviour
         hexHeight += waysWitdth;
     }
 
-    //FUNCTIONS TO BUILD GRID AND DATA
+    #region FUNCTIONS TO BUILD GRID AND DATA
 
     public void CreateGrid()
     {
@@ -175,7 +179,7 @@ public class HexGridCreator : MonoBehaviour
             {
                 Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                 center = instantiatedMap;
-                Transform instantiatedLight = Instantiate(lightPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                Instantiate(lightPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
             }
         }
     }
@@ -590,8 +594,9 @@ public class HexGridCreator : MonoBehaviour
         return false;
     }
 
+    #endregion
 
-    //FUNCTIONS TO RETREIVE DATA
+    #region FUNCTIONS TO RETREIVE DATA
 
     public Point GetPointFromWorldPosition(Vector3 worldPosition)
     {
@@ -789,4 +794,5 @@ public class HexGridCreator : MonoBehaviour
         return aroundHexagons;
     }
 
+    #endregion
 }

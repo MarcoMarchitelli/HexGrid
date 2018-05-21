@@ -7,7 +7,7 @@ public class CardsManager : MonoBehaviour {
 
     private void Start()
     {
-        GameManager.instance.RotationPhase += RotationPhase;
+        GameManager.instance.OnRotationPhase += RotationPhase;
     }
 
     public void RotationPhase()
