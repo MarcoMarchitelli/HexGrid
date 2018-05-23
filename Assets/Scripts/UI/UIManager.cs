@@ -13,7 +13,6 @@ public class UIManager : MonoBehaviour
 
     [Header("Print Sections")]
     public TextMeshProUGUI topLeftSection;
-    public TextMeshProUGUI topRightSection;
     public TextMeshProUGUI leftMediumSection;
     public TextMeshProUGUI bigCentralSection;
 
@@ -32,7 +31,6 @@ public class UIManager : MonoBehaviour
     public Button confirmButton;
     public Button undoButton;
     [Header("Other UI Elements")]
-    public RectTransform modifiersSection;
     public GameObject winOverlay;
     public GameObject cardShop;
     public GameObject handDisplay;
@@ -60,11 +58,6 @@ public class UIManager : MonoBehaviour
     public void PrintTopLeft(string msg)
     {
         topLeftSection.text = msg;
-    }
-
-    public void PrintTopRight(string msg)
-    {
-        topRightSection.text = msg;
     }
 
     public void PrintLeft(string msg)
@@ -474,14 +467,6 @@ public class UIManager : MonoBehaviour
     {
         winOverlay.SetActive(true);
         winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.type.ToString() + " Wins !";
-    }
-
-    public void ToggleModifiersDisplay()
-    {
-        if (modifiersSection.gameObject.activeSelf)
-            modifiersSection.gameObject.SetActive(false);
-        else
-            modifiersSection.gameObject.SetActive(true);
     }
 
     public void RefreshBonusMoveCounter(PlayerController player)

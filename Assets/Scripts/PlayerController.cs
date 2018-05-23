@@ -76,27 +76,6 @@ public class PlayerController : MonoBehaviour
 
         switch (currentAction)
         {
-            case Action.idle:
-                selectedCard = null;
-                isFirstTime = true;
-                hasDiscount = false;
-                break;
-
-            case Action.start:
-
-                #region Start
-
-                if (isFirstTime)
-                {
-                    GainPhase();
-                    DiscountCheck();
-                    isFirstTime = false;
-                }
-
-                #endregion
-
-                break;
-
             case Action.moving:
 
                 #region Moving
@@ -491,22 +470,23 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void GainPhase()
+    public void TurnStart()
     {
+        currentAction = Action.start;
         hasPlacedCard = false;
         selectedCard = null;
         lastPlacedCard = null;
         hasFought = false;
         actions = 2;
         bonusMoveActions = 0;
-        GameManager.instance.cardsManager.GainPhase(this);
+        hasDiscount = DiscountCheck();
         if (UIrefresh != null)
         {
             UIrefresh(this);
         }
     }
 
-    void DiscountCheck()
+    public bool DiscountCheck()
     {
         bool haveCardsPlaced = false;
 
@@ -517,7 +497,9 @@ public class PlayerController : MonoBehaviour
         }
 
         if (energyPoints <= 1 && !haveCardsPlaced)
-            hasDiscount = true;
+            return true;
+        else
+            return false;
     }
 
     public void AddCard(CardController card)

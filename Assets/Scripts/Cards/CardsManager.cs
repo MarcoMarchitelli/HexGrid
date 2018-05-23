@@ -5,17 +5,24 @@ public class CardsManager : MonoBehaviour {
 
     public List<CardController> PlacedCards = new List<CardController>();
 
-    private void Start()
-    {
-        GameManager.instance.OnRotationPhase += RotationPhase;
-    }
-
-    public void RotationPhase()
+    public void StartRotationAnimations()
     {
         foreach (CardController card in PlacedCards)
         {
-            card.RotateRight();
+            StartCoroutine(card.RotateRight());
         }
+    }
+
+    public bool AllRotationAnimationsFinished()
+    {
+        foreach (CardController card in PlacedCards)
+        {
+            if (!card.rotateRightFlowFinished)
+                return false;
+        }
+
+        return true;
+
     }
 
     public void GainPhase(PlayerController player)
@@ -29,6 +36,7 @@ public class CardsManager : MonoBehaviour {
                 player.actions += card.abilityHexTouched;
             }   
         }
+        GameManager.instance.gainPhaseEnded = true;
     }
 
 }

@@ -29,6 +29,8 @@ public class CardController : MonoBehaviour
     public PlayerController player;
     [HideInInspector]
     public Animator animator;
+    [HideInInspector]
+    public bool closeAnimFinished = false, openAnimFinished = false, rotateRightFlowFinished = false;
 
     private void Start()
     {
@@ -372,20 +374,48 @@ public class CardController : MonoBehaviour
         extractableEnergy = 0;
     }
 
-    public void RotateRight()
+    public IEnumerator RotateRight()
     {
+        ResetAnimationFlags();
         FreePaths(hexImOn);
+        animator.SetTrigger("Close");
+
+        while (!closeAnimFinished)
+            yield return null;
+        
+        yield return StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), 1f));
+
         eulerAngle += 60;
         if (eulerAngle == 360 || eulerAngle == -360)
             eulerAngle = 0;
+
+        animator.SetTrigger("Open");
+
+        while (!openAnimFinished)
+            yield return null;
+
         BlockPaths(hexImOn);
         placedEulerAngle = eulerAngle;
         ResetTouchValues();
         SetTouchvalues(hexImOn);
+        rotateRightFlowFinished = true;
+    }
 
+    public void CloseAnimationEnd()
+    {
+        closeAnimFinished = true;
+    }
 
-        //ANIMATION
-        StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), 1f));
+    public void OpenAnimationEnd()
+    {
+        openAnimFinished = true;
+    }
+
+    public void ResetAnimationFlags()
+    {
+        closeAnimFinished = false;
+        openAnimFinished = false;
+        rotateRightFlowFinished = false;
     }
 
     void SetTouchvalues(Hexagon myHex)
