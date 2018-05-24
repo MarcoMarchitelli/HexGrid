@@ -32,7 +32,9 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public CardsManager cardsManager;
     [HideInInspector]
-    public int turnCount = 1;
+    public PlayersHUDController playersHUDcontroller;
+    [HideInInspector]
+    public int turnCount = 0;
     public float buttonMashFightResult = .5f;
 
     int energyBet;
@@ -52,6 +54,7 @@ public class GameManager : MonoBehaviour
         gridReference = FindObjectOfType<HexGridCreator>();
         mainCamera = FindObjectOfType<CameraBehaviour>();
         cardsManager = GetComponent<CardsManager>();
+        playersHUDcontroller = FindObjectOfType<PlayersHUDController>();
         InstantiatePlayers();
     }
 
@@ -141,6 +144,9 @@ public class GameManager : MonoBehaviour
             playerIndex = 0;
 
         TurnStart(playerIndex);
+
+        turnCount++;
+        playersHUDcontroller.CyclePlayersHUDs(turnCount);
     }
 
     void InstantiatePlayers()

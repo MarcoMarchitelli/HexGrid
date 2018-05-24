@@ -380,11 +380,11 @@ public class UIManager : MonoBehaviour
         player.UIrefresh += ToggleBonusMoveButton;
 
         //other buttons
-        player.UIrefresh += handDisplayScript.RefreshHandDisplay;
-        player.UIrefresh += ToggleUndoMoves;
-        player.UIrefresh += ToggleEndTurnButton;
-        player.UIrefresh += cardShopScript.ToggleBuyButtons;
-        player.UIrefresh += sellCardDisplayScript.RefreshSellDisplay;
+        //player.UIrefresh += handDisplayScript.RefreshHandDisplay;
+        //player.UIrefresh += ToggleUndoMoves;
+        //player.UIrefresh += ToggleEndTurnButton;
+        //player.UIrefresh += cardShopScript.ToggleBuyButtons;
+        //player.UIrefresh += sellCardDisplayScript.RefreshSellDisplay;
 
         //infos
         player.UIrefresh += RefreshAllPrintFunctions;

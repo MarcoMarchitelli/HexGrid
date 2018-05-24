@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
-    public Image icon;
+    public Sprite icon;
     public float moveSpeed;
     public delegate void UIevent(PlayerController player);
     public UIevent UIrefresh;
@@ -52,7 +51,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     Hexagon lastSelectedHex;
-    bool isFirstTime = true;
     [HideInInspector]
     public bool isRunning = false;
     string bottomLeftMsg;
@@ -91,6 +89,16 @@ public class PlayerController : MonoBehaviour
 
                         if(pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && CheckIfPointIsWalkable(pointHit) && possibleMoves > 0)
                         {
+                            if (pointHit.isFinalWaypoint)
+                            {
+                                if (IsMyColor(pointHit))
+                                {
+                                    StartCoroutine(RunAnimation(pointHit, hitInfo.collider.GetComponent<SmoothMoveAnimation>()));
+                                }                                    
+                                else
+                                    return;
+                            }
+
                             StartCoroutine(RunAnimation(pointHit));
                         }
                     }
@@ -317,7 +325,7 @@ public class PlayerController : MonoBehaviour
         currentWayPoint = _pointHit;
 
         if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
-            energyPoints++;
+            victoryPoints++;
 
         if (currentWayPoint.type == Point.Type.purple)
         {
@@ -357,6 +365,23 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isRunning", false);
         isRunning = false;
         DataStuffAfterMove(targetPoint); 
+    }
+
+    IEnumerator RunAnimation(Point targetPoint, SmoothMoveAnimation final)
+    {
+        StartCoroutine(final.Animation());
+        Vector3 target = targetPoint.worldPosition + Vector3.up * .7f;
+        transform.DOLookAt(target, .2f);
+        animator.SetBool("isRunning", true);
+        isRunning = true;
+        while (transform.position != target)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        animator.SetBool("isRunning", false);
+        isRunning = false;
+        DataStuffAfterMove(targetPoint);
     }
 
     public void SetNumberOfCardTypesInHand()
