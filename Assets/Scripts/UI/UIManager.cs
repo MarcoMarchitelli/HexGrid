@@ -46,10 +46,14 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
+    [HideInInspector]
+    public Animation bigNewsAnimation;
+
     void Start()
     {
         cardShopScript = cardShop.GetComponent<CardShop>();
         handDisplayScript = handDisplay.GetComponent<HandDisplay>();
+        bigNewsAnimation =  bigCentralSection.GetComponentInParent<Animation>();
         sellCardDisplayScript = sellCardDisplay.GetComponent<SellCardDisplay>();
     }
 
@@ -68,6 +72,7 @@ public class UIManager : MonoBehaviour
     public void PrintBigNews(string msg)
     {
         bigCentralSection.text = msg;
+        bigNewsAnimation.Play();
     }
 
     #endregion
@@ -266,7 +271,7 @@ public class UIManager : MonoBehaviour
 
     public void ToggleEndTurnButton(PlayerController player)
     {
-        if (player.currentAction != PlayerController.Action.start)
+        if (GameManager.instance.currentPhase != GameManager.Phase.main)
         {
             endTurnButton.enabled = false;
         }
@@ -380,11 +385,11 @@ public class UIManager : MonoBehaviour
         player.UIrefresh += ToggleBonusMoveButton;
 
         //other buttons
-        //player.UIrefresh += handDisplayScript.RefreshHandDisplay;
-        //player.UIrefresh += ToggleUndoMoves;
-        //player.UIrefresh += ToggleEndTurnButton;
-        //player.UIrefresh += cardShopScript.ToggleBuyButtons;
-        //player.UIrefresh += sellCardDisplayScript.RefreshSellDisplay;
+        player.UIrefresh += handDisplayScript.RefreshHandDisplay;
+        player.UIrefresh += ToggleUndoMoves;
+        player.UIrefresh += ToggleEndTurnButton;
+        player.UIrefresh += cardShopScript.ToggleBuyButtons;
+        player.UIrefresh += sellCardDisplayScript.RefreshSellDisplay;
 
         //infos
         player.UIrefresh += RefreshAllPrintFunctions;

@@ -26,7 +26,7 @@ public class CardShop : MonoBehaviour {
     public void ToggleBuyButtons(PlayerController player)
     {
         
-        if(GameManager.instance.turnCount <= 4)
+        if(GameManager.instance.turnCount <= 3)
         {
             card1Price = 1;
             card2Price = 2;

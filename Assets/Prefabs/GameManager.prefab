@@ -59,17 +59,18 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   uiManager: {fileID: 0}
-  prefabCard1: {fileID: 4556498409390786, guid: a14cdea4d3ce47b4689b6e81b06657f2,
+  prefabCard1: {fileID: 4390051820269844, guid: a14cdea4d3ce47b4689b6e81b06657f2,
     type: 2}
-  prefabCard2: {fileID: 4276444197973196, guid: 064aea97d18a56c4b967423340a33514,
+  prefabCard2: {fileID: 4323878196646528, guid: 064aea97d18a56c4b967423340a33514,
     type: 2}
-  prefabCard3: {fileID: 4592036303584386, guid: 31cc4a13d410bb74594b2ea6414cc732,
+  prefabCard3: {fileID: 4008817151534324, guid: 31cc4a13d410bb74594b2ea6414cc732,
     type: 2}
   gridReference: {fileID: 0}
   currentActivePlayer: {fileID: 0}
   mainCamera: {fileID: 0}
   cardsManager: {fileID: 0}
-  turnCount: 1
+  playersHUDcontroller: {fileID: 0}
+  turnCount: 0
   buttonMashFightResult: 0.5
   isStaticEvent: 0
   rotationPhaseEnded: 0
@@ -83,7 +84,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1570569160473684}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4507562b591bc244b93acb3573b27e8e, type: 3}
   m_Name: 

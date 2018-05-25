@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 
-public class PlayersHUDController : MonoBehaviour {
+public class PlayersHUDController : MonoBehaviour
+{
 
     public PlayerUI[] playerUIs;
 
@@ -14,9 +15,9 @@ public class PlayersHUDController : MonoBehaviour {
 
     public void CyclePlayersHUDs(int _turnCount)
     {
-        for (int i = 0; i < playerUIs.Length; i++)
+        for (int i = 0; i < GameManager.instance.players.Length; i++)
         {
-            playerUIs[i].SetPlayerReference(GameManager.instance.players[(i + _turnCount) % 4]);
+                playerUIs[i].SetPlayerReference(GameManager.instance.players[(i + GameManager.instance.turnCount) % 4]);
         }
     }
 

@@ -40,13 +40,23 @@ public class GameManager : MonoBehaviour
     int energyBet;
     bool hasBet, fightResultAnnounced;
     PlayerController winner;
-
+    [HideInInspector]
     public bool isStaticEvent = false;
 
     public static GameManager instance;
-
+    [HideInInspector]
     public bool rotationPhaseEnded = false, gainPhaseEnded = false, discountChecked = false, turnEnded = false;
+    [HideInInspector]
     public int playerIndex = 0;
+
+    string message = null;
+
+    public enum Phase
+    {
+        start, gain, main, rotation
+    }
+
+    public Phase currentPhase;
 
     void Awake()
     {
@@ -60,37 +70,43 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        TurnStart(playerIndex);
+        StartCoroutine(TurnStart(playerIndex));
     }
 
-    void TurnStart(int playerIndex)
+    IEnumerator TurnStart(int playerIndex)
     {
+        currentPhase = Phase.start;
+
+        #region reset values
         turnEnded = false;
         rotationPhaseEnded = false;
         gainPhaseEnded = false;
+        #endregion
 
-        if (playerIndex < 0 || playerIndex >= players.Length)
-        {
-            Debug.LogWarning("OUT OF PLAYERS ARRAY!");
-            return;
-        }
-            
         currentActivePlayer = players[playerIndex];
 
         uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
+        if (currentActivePlayer.UIrefresh != null)
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+
         print(currentActivePlayer.name + "'s Turn Start!");
+        message = "Turn Start";
+        uiManager.PrintBigNews(message);
+
+        while (uiManager.bigNewsAnimation.isPlaying)
+            yield return null;
 
         StartCoroutine(GameFlow());
     }
 
     IEnumerator GameFlow()
-    { 
+    {
         yield return StartCoroutine(GainPhase());
 
         //if(CheckDiscount())
-            //DO STUFF
-        
+        //DO STUFF
+
 
         yield return StartCoroutine(PlayPhase());
 
@@ -99,7 +115,18 @@ public class GameManager : MonoBehaviour
 
     IEnumerator GainPhase()
     {
+        currentPhase = Phase.gain;
         print("Gain Phase!");
+
+        if (currentActivePlayer.UIrefresh != null)
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+
+        message = "Gain Phase";
+        uiManager.PrintBigNews(message);
+
+        while (uiManager.bigNewsAnimation.isPlaying)
+            yield return null;
+
         while (!gainPhaseEnded)
         {
             cardsManager.GainPhase(currentActivePlayer);
@@ -110,9 +137,19 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PlayPhase()
     {
+        currentPhase = Phase.main;
         currentActivePlayer.TurnStart();
 
         print("Chose an action " + currentActivePlayer + "!");
+
+        if (currentActivePlayer.UIrefresh != null)
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+
+        message = "Main Phase";
+        uiManager.PrintBigNews(message);
+
+        while (uiManager.bigNewsAnimation.isPlaying)
+            yield return null;
 
         while (!turnEnded)
         {
@@ -126,11 +163,18 @@ public class GameManager : MonoBehaviour
 
     IEnumerator RotationPhase()
     {
+        currentPhase = Phase.rotation;
         print("Rotation Phase!");
 
+
+        if (currentActivePlayer.UIrefresh != null)
+            currentActivePlayer.UIrefresh(currentActivePlayer);
+
+        message = "Rotation Phase";
+        uiManager.PrintBigNews(message);
         cardsManager.StartRotationAnimations();
 
-        while (!rotationPhaseEnded)
+        while (!rotationPhaseEnded && uiManager.bigNewsAnimation.isPlaying)
         {
             rotationPhaseEnded = cardsManager.AllRotationAnimationsFinished();
             yield return null;
@@ -143,10 +187,9 @@ public class GameManager : MonoBehaviour
         else
             playerIndex = 0;
 
-        TurnStart(playerIndex);
+        StartCoroutine(TurnStart(playerIndex));
 
-        turnCount++;
-        playersHUDcontroller.CyclePlayersHUDs(turnCount);
+        //playersHUDcontroller.CyclePlayersHUDs(turnCount);
     }
 
     void InstantiatePlayers()
@@ -189,6 +232,7 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         turnEnded = true;
+        turnCount++;
     }
 
     public void UndoMoveCurrentPlayer()
