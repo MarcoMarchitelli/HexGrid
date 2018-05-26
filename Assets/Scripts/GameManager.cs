@@ -8,15 +8,8 @@ public class FloatEvent : UnityEvent<float> { }
 
 public class GameManager : MonoBehaviour
 {
-    public delegate void VoidEvent();
-    public delegate void PlayerControllerEvent(PlayerController player);
-
-    public VoidEvent OnRotationPhase;
-    public PlayerControllerEvent TurnEnd;
-    public VoidEvent OnGainPhase;
-
     public PlayerController[] players;
-    public UIManager uiManager;
+    //public UIManager uiManager;
 
     [Header("Cards Prefabs")]
     public Transform prefabCard1;
@@ -34,7 +27,12 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public PlayersHUDController playersHUDcontroller;
     [HideInInspector]
+    public HUDManager hudManager;
+    [HideInInspector]
+    public CombatManager combatManager;
+    [HideInInspector]
     public int turnCount = 0;
+    [HideInInspector]
     public float buttonMashFightResult = .5f;
 
     int energyBet;
@@ -65,6 +63,8 @@ public class GameManager : MonoBehaviour
         mainCamera = FindObjectOfType<CameraBehaviour>();
         cardsManager = GetComponent<CardsManager>();
         playersHUDcontroller = FindObjectOfType<PlayersHUDController>();
+        hudManager = FindObjectOfType<HUDManager>();
+        combatManager = GetComponent<CombatManager>();
         InstantiatePlayers();
     }
 
@@ -85,16 +85,16 @@ public class GameManager : MonoBehaviour
 
         currentActivePlayer = players[playerIndex];
 
-        uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        //uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
-        if (currentActivePlayer.UIrefresh != null)
-            currentActivePlayer.UIrefresh(currentActivePlayer);
+        hudManager.ToggleActionButtons();
+        hudManager.ToggleEndTurnButton(currentActivePlayer);
 
         print(currentActivePlayer.name + "'s Turn Start!");
         message = "Turn Start";
-        uiManager.PrintBigNews(message);
+        hudManager.PrintBigNews(message);
 
-        while (uiManager.bigNewsAnimation.isPlaying)
+        while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;
 
         StartCoroutine(GameFlow());
@@ -118,13 +118,13 @@ public class GameManager : MonoBehaviour
         currentPhase = Phase.gain;
         print("Gain Phase!");
 
-        if (currentActivePlayer.UIrefresh != null)
-            currentActivePlayer.UIrefresh(currentActivePlayer);
+        hudManager.ToggleActionButtons();
+        hudManager.ToggleEndTurnButton(currentActivePlayer);
 
         message = "Gain Phase";
-        uiManager.PrintBigNews(message);
+        hudManager.PrintBigNews(message);
 
-        while (uiManager.bigNewsAnimation.isPlaying)
+        while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;
 
         while (!gainPhaseEnded)
@@ -142,13 +142,13 @@ public class GameManager : MonoBehaviour
 
         print("Chose an action " + currentActivePlayer + "!");
 
-        if (currentActivePlayer.UIrefresh != null)
-            currentActivePlayer.UIrefresh(currentActivePlayer);
+        hudManager.ToggleActionButtons();
+        hudManager.ToggleEndTurnButton(currentActivePlayer);
 
         message = "Main Phase";
-        uiManager.PrintBigNews(message);
+        hudManager.PrintBigNews(message);
 
-        while (uiManager.bigNewsAnimation.isPlaying)
+        while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;
 
         while (!turnEnded)
@@ -167,20 +167,20 @@ public class GameManager : MonoBehaviour
         print("Rotation Phase!");
 
 
-        if (currentActivePlayer.UIrefresh != null)
-            currentActivePlayer.UIrefresh(currentActivePlayer);
+        hudManager.ToggleActionButtons();
+        hudManager.ToggleEndTurnButton(currentActivePlayer);
 
         message = "Rotation Phase";
-        uiManager.PrintBigNews(message);
+        hudManager.PrintBigNews(message);
         cardsManager.StartRotationAnimations();
 
-        while (!rotationPhaseEnded && uiManager.bigNewsAnimation.isPlaying)
+        while (!rotationPhaseEnded && hudManager.bigNewsAnimation.isPlaying)
         {
             rotationPhaseEnded = cardsManager.AllRotationAnimationsFinished();
             yield return null;
         }
 
-        uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
+        //uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
         if (playerIndex != 3)
             playerIndex++;
@@ -189,7 +189,12 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(TurnStart(playerIndex));
 
-        //playersHUDcontroller.CyclePlayersHUDs(turnCount);
+        playersHUDcontroller.CyclePlayersHUDs(turnCount);
+    }
+
+    public void StartFight(PlayerController attacker, PlayerController defender)
+    {
+        combatManager.StartFightFlow(attacker, defender);
     }
 
     void InstantiatePlayers()
@@ -227,6 +232,24 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.ChoseAction(actionIndex);
     }
 
+    public void SetPlayerToStart(bool flag)
+    {
+        if (!flag)
+        {
+            ConfirmAction();
+            hudManager.ToggleActionButtons();
+            hudManager.ToggleEndTurnButton(currentActivePlayer);
+            currentActivePlayer.currentAction = PlayerController.Action.start;
+        }
+        else
+        {
+            ConfirmAction();
+            hudManager.ToggleActionButtons();
+            hudManager.ToggleEndTurnButton(currentActivePlayer);
+            currentActivePlayer.currentAction = PlayerController.Action.start;
+        }
+    }
+
     #region Button Functions
 
     public void EndTurn()
@@ -241,10 +264,8 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.MoveToPoint(currentActivePlayer.moveStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.moveStartPoint;
         currentActivePlayer.currentAction = PlayerController.Action.moving;
-        if (currentActivePlayer.UIrefresh != null)
-        {
-            currentActivePlayer.UIrefresh(currentActivePlayer);
-        }
+        hudManager.ToggleActionButtons();
+        hudManager.ToggleEndTurnButton(currentActivePlayer);
     }
 
     public void ConfirmAction()
@@ -255,10 +276,8 @@ public class GameManager : MonoBehaviour
                 //nothing to do
                 break;
             case PlayerController.Action.buyCard:
-                ConfirmBuyCards();
                 break;
             case PlayerController.Action.sellCard:
-                ConfirmSellCard();
                 break;
             case PlayerController.Action.placeCard:
                 //nothing to do
@@ -280,8 +299,8 @@ public class GameManager : MonoBehaviour
             currentActivePlayer.actions--;
         }
 
-        if (currentActivePlayer.UIrefresh != null)
-            currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
+        hudManager.ToggleActionButtons();
+        hudManager.ToggleEndTurnButton(currentActivePlayer);
     }
 
     public void UndoAction()
@@ -299,7 +318,6 @@ public class GameManager : MonoBehaviour
                 UndoBuyCards();
                 break;
             case PlayerController.Action.sellCard:
-                UndoSellCard();
                 break;
             case PlayerController.Action.placeCard:
                 UndoPlaceCard();
@@ -313,89 +331,89 @@ public class GameManager : MonoBehaviour
 
         currentActivePlayer.currentAction = PlayerController.Action.start;
 
-        if (currentActivePlayer.UIrefresh != null)
-            currentActivePlayer.UIrefresh(GameManager.instance.currentActivePlayer);
+        hudManager.ToggleActionButtons();
+        hudManager.ToggleEndTurnButton(currentActivePlayer);
     }
 
     #endregion
 
     #region Specific Confirm Actions
 
-    void ConfirmBuyCards()
-    {
-        List<int> cardsBought = uiManager.cardShopScript.cardsBought;
+    //void ConfirmBuyCards()
+    //{
+    //    List<int> cardsBought = uiManager.cardShopScript.cardsBought;
 
-        foreach (int cardType in cardsBought)
-        {
-            switch (cardType)
-            {
-                case 1:
-                    Transform instantiatedCard1 = Instantiate(prefabCard1, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
-                    CardController card1Controller = instantiatedCard1.GetComponent<CardController>();
-                    if (card1Controller)
-                    {
-                        currentActivePlayer.cardsInHand.Add(card1Controller);
-                        card1Controller.player = currentActivePlayer;
-                        currentActivePlayer.numberOfCards1InHand++;
-                    }
-                    break;
-                case 2:
-                    Transform instantiatedCard2 = Instantiate(prefabCard2, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
-                    CardController card2Controller = instantiatedCard2.GetComponent<CardController>();
-                    if (card2Controller)
-                    {
-                        currentActivePlayer.cardsInHand.Add(card2Controller);
-                        card2Controller.player = currentActivePlayer;
-                        currentActivePlayer.numberOfCards2InHand++;
-                    }
-                    break;
-                case 3:
-                    Transform instantiatedCard3 = Instantiate(prefabCard3, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
-                    CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
-                    if (card3Controller)
-                    {
-                        currentActivePlayer.cardsInHand.Add(card3Controller);
-                        card3Controller.player = currentActivePlayer;
-                        currentActivePlayer.numberOfCards1InHand++;
-                    }
-                    break;
-            }
-        }
+    //    foreach (int cardType in cardsBought)
+    //    {
+    //        switch (cardType)
+    //        {
+    //            case 1:
+    //                Transform instantiatedCard1 = Instantiate(prefabCard1, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
+    //                CardController card1Controller = instantiatedCard1.GetComponent<CardController>();
+    //                if (card1Controller)
+    //                {
+    //                    currentActivePlayer.cardsInHand.Add(card1Controller);
+    //                    card1Controller.player = currentActivePlayer;
+    //                    currentActivePlayer.numberOfCards1InHand++;
+    //                }
+    //                break;
+    //            case 2:
+    //                Transform instantiatedCard2 = Instantiate(prefabCard2, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
+    //                CardController card2Controller = instantiatedCard2.GetComponent<CardController>();
+    //                if (card2Controller)
+    //                {
+    //                    currentActivePlayer.cardsInHand.Add(card2Controller);
+    //                    card2Controller.player = currentActivePlayer;
+    //                    currentActivePlayer.numberOfCards2InHand++;
+    //                }
+    //                break;
+    //            case 3:
+    //                Transform instantiatedCard3 = Instantiate(prefabCard3, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
+    //                CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
+    //                if (card3Controller)
+    //                {
+    //                    currentActivePlayer.cardsInHand.Add(card3Controller);
+    //                    card3Controller.player = currentActivePlayer;
+    //                    currentActivePlayer.numberOfCards1InHand++;
+    //                }
+    //                break;
+    //        }
+    //    }
 
-        currentActivePlayer.hasBought = false;
+    //    currentActivePlayer.hasBought = false;
 
-        uiManager.cardShopScript.cardsBought.Clear();
-    }
+    //    uiManager.cardShopScript.cardsBought.Clear();
+    //}
 
-    void ConfirmSellCard()
-    {
-        currentActivePlayer.cardsInHand.Remove(currentActivePlayer.cardToSell);
-        Destroy(currentActivePlayer.cardToSell.gameObject);
-        currentActivePlayer.cardToSell = null;
-        currentActivePlayer.hasSold = false;
-        currentActivePlayer.SetNumberOfCardTypesInHand();
-    }
+    //void ConfirmSellCard()
+    //{
+    //    currentActivePlayer.cardsInHand.Remove(currentActivePlayer.cardToSell);
+    //    Destroy(currentActivePlayer.cardToSell.gameObject);
+    //    currentActivePlayer.cardToSell = null;
+    //    currentActivePlayer.hasSold = false;
+    //    currentActivePlayer.SetNumberOfCardTypesInHand();
+    //}
 
-    void ConfirmPlaceCard()
-    {
-        switch (currentActivePlayer.lastPlacedCard.type)
-        {
-            case CardController.Type.card1:
-                currentActivePlayer.numberOfCards1InHand++;
-                break;
-            case CardController.Type.card2:
-                currentActivePlayer.numberOfCards2InHand++;
-                break;
-            case CardController.Type.card3:
-                currentActivePlayer.numberOfCards3InHand++;
-                break;
-        }
-    }
+    //void ConfirmPlaceCard()
+    //{
+    //    switch (currentActivePlayer.lastPlacedCard.type)
+    //    {
+    //        case CardController.Type.card1:
+    //            currentActivePlayer.numberOfCards1InHand++;
+    //            break;
+    //        case CardController.Type.card2:
+    //            currentActivePlayer.numberOfCards2InHand++;
+    //            break;
+    //        case CardController.Type.card3:
+    //            currentActivePlayer.numberOfCards3InHand++;
+    //            break;
+    //    }
+    //}
 
-    void ConfirmRotateCard()
-    {
-        currentActivePlayer.selectedCard = null;
-    }
+    //void ConfirmRotateCard()
+    //{
+    //    currentActivePlayer.selectedCard = null;
+    //}
 
     #endregion
 
@@ -408,18 +426,16 @@ public class GameManager : MonoBehaviour
             currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
 
             currentActivePlayer.hasBought = false;
-
-            uiManager.cardShopScript.cardsBought.Clear();
         }
     }
 
-    void UndoSellCard()
-    {
-        currentActivePlayer.cardToSell = null;
-        currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
-        currentActivePlayer.hasSold = false;
-        currentActivePlayer.SetNumberOfCardTypesInHand();
-    }
+    //void UndoSellCard()
+    //{
+    //    currentActivePlayer.cardToSell = null;
+    //    currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
+    //    currentActivePlayer.hasSold = false;
+    //    currentActivePlayer.SetNumberOfCardTypesInHand();
+    //}
 
     void UndoPlaceCard()
     {
@@ -463,7 +479,7 @@ public class GameManager : MonoBehaviour
 
     public void Win(PlayerController player)
     {
-        uiManager.Win(player);
+        hudManager.Win(player);
     }
 
     public List<AgentPosition> FindPointsInRange(int range, PlayerController player)

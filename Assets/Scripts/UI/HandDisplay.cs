@@ -1,19 +1,23 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class HandDisplay : MonoBehaviour
 {
-
     [Header("Cards Buttons")]
-    public Button card1Button;
-    public Button card2Button;
-    public Button card3Button;
+    public ButtonController card1Button;
+    public ButtonController card2Button;
+    public ButtonController card3Button;
+
     [Header("Cards Quantities")]
     public TextMeshProUGUI card1QuantityText;
     public TextMeshProUGUI card2QuantityText;
     public TextMeshProUGUI card3QuantityText;
+
+    private void OnEnable()
+    {
+        RefreshHandDisplay(GameManager.instance.currentActivePlayer);
+    }
 
     public void RefreshHandDisplay(PlayerController player)
     {
@@ -29,35 +33,35 @@ public class HandDisplay : MonoBehaviour
 
         if (card1Number <= 0 || player.selectedCard || player.hasPlacedCard)
         {
-            card1Button.enabled = false;
-            card1Button.image.color = Color.red;
+            card1Button.SetUsability(false);
+            card1Button.SetSprite(ButtonController.SpriteType.inactive);
         }
         else
         {
-            card1Button.enabled = true;
-            card1Button.image.color = Color.green;
+            card1Button.SetUsability(true);
+            card1Button.SetSprite(ButtonController.SpriteType.active);
         }
 
         if (card2Number <= 0 || player.selectedCard || player.hasPlacedCard)
         {
-            card2Button.enabled = false;
-            card2Button.image.color = Color.red;
+            card2Button.SetUsability(false);
+            card2Button.SetSprite(ButtonController.SpriteType.inactive);
         }
         else
         {
-            card2Button.enabled = true;
-            card2Button.image.color = Color.green;
+            card2Button.SetUsability(true);
+            card2Button.SetSprite(ButtonController.SpriteType.active);
         }
 
         if (card3Number <= 0 || player.selectedCard || player.hasPlacedCard)
         {
-            card3Button.enabled = false;
-            card3Button.image.color = Color.red;
+            card3Button.SetUsability(false);
+            card3Button.SetSprite(ButtonController.SpriteType.inactive);
         }
         else
         {
-            card3Button.enabled = true;
-            card3Button.image.color = Color.green;
+            card3Button.SetUsability(true);
+            card3Button.SetSprite(ButtonController.SpriteType.active);
         }
     }
 

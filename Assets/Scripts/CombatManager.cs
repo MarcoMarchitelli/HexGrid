@@ -24,6 +24,10 @@ public class CombatManager : MonoBehaviour
     public GameObject FightPanel;
     public Slider slider;
 
+    [Header("Scripts")]
+    public ModifierButtonsController attackerModController;
+    public ModifierButtonsController defenderModController;
+
     #endregion
 
     float fightSliderValue = 0f;
@@ -36,28 +40,30 @@ public class CombatManager : MonoBehaviour
         slider.minValue = minValue;
     }
 
-    public void StartFightFlow()
+    public void StartFightFlow(PlayerController attacker, PlayerController defender)
     {
         ResetValues();
-        StartCoroutine(FightFlow());
+        StartCoroutine(FightFlow(attacker, defender));
     }
 
-    IEnumerator FightFlow()
+    IEnumerator FightFlow(PlayerController attacker, PlayerController defender)
     {
-        yield return StartCoroutine(ModifiersSelection());
+        yield return StartCoroutine(ModifiersSelection(attacker, defender));
 
         yield return StartCoroutine(CountDown(3));
 
-        yield return StartCoroutine(ButtonMashFight());
+        yield return StartCoroutine(ButtonMashFight(attacker, defender));
 
         OnFightFinish.Invoke();
     }
 
-    IEnumerator ModifiersSelection()
+    IEnumerator ModifiersSelection(PlayerController attacker, PlayerController defender)
     {
         SelectionPanel.SetActive(true);
 
         print("Attacker select your bonus!");
+
+        attackerModController.ToggleModifierButtons(attacker);
 
         while (!attackerModSet)
         {
@@ -66,6 +72,8 @@ public class CombatManager : MonoBehaviour
 
         print("Attacker added " + attackerBonusStrength + " bonus strength");
         print("Defender select your bonus!");
+
+        defenderModController.ToggleModifierButtons(defender);
 
         while (!defenderModSet)
         {
@@ -90,7 +98,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    IEnumerator ButtonMashFight()
+    IEnumerator ButtonMashFight(PlayerController attacker, PlayerController defender)
     {
         float startAttStr = baseStrength + attackerBonusStrength;
         float startDefStr = baseStrength + defenderBonusStrength;
@@ -99,7 +107,7 @@ public class CombatManager : MonoBehaviour
 
         float timer = 0f;
 
-        while (fightSliderValue > -1 && fightSliderValue < 1)
+        while (fightSliderValue > minValue && fightSliderValue < maxValue)
         {
             timer += Time.deltaTime;
 
@@ -121,19 +129,23 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
 
-        if (fightSliderValue <= -1)
+        if (fightSliderValue <= minValue)
         {
             //defender won.
             print("DEFENDER WON!");
         }
-        else if (fightSliderValue >= 1)
+        else if (fightSliderValue >= maxValue)
         {
             //attacker won.
             print("ATTACKER WON!");
+            attacker.victoryPoints++;
+            if(defender.victoryPoints > 0)
+                defender.victoryPoints--;
         }
 
         FightPanel.SetActive(false);
 
+        GameManager.instance.currentActivePlayer.currentAction = PlayerController.Action.start;
     }
 
     public void SetAttackerModifier(float mod)

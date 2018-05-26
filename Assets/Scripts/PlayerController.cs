@@ -134,10 +134,7 @@ public class PlayerController : MonoBehaviour
                                     hasPlacedCard = true;
                                     energyPoints += lastPlacedCard.extractableEnergy;
                                     bonusMoveActions += lastPlacedCard.moveHexTouched;
-                                    if (UIrefresh != null)
-                                    {
-                                        UIrefresh(this);
-                                    }
+                                    GameManager.instance.SetPlayerToStart(true);
                                 }
                             }
                         }
@@ -176,10 +173,7 @@ public class PlayerController : MonoBehaviour
                                 selectedCard.FreePaths(selectedCard.hexImOn);
                                 GameManager.instance.cardsManager.PlacedCards.Remove(selectedCard);
                                 beforeRotateActionCardEulerAngle = selectedCard.placedEulerAngle;
-                                if (UIrefresh != null)
-                                {
-                                    UIrefresh(this);
-                                }
+                                GameManager.instance.hudManager.ToggleActionButtons();
                                 return;
                             }
                         }
@@ -198,10 +192,7 @@ public class PlayerController : MonoBehaviour
                         lastPlacedCard = selectedCard;
                         selectedCard = null;
                         energyPoints += lastPlacedCard.extractableEnergy;
-                        if (UIrefresh != null)
-                        {
-                            UIrefresh(this);
-                        }
+                        GameManager.instance.SetPlayerToStart(true);
                     }
 
                     //(UNDO)
@@ -211,10 +202,7 @@ public class PlayerController : MonoBehaviour
                         selectedCard.Place(selectedCard.hexImOn);
                         lastPlacedCard = selectedCard;
                         selectedCard = null;
-                        if (UIrefresh != null)
-                        {
-                            UIrefresh(this);
-                        }
+                        GameManager.instance.hudManager.ToggleActionButtons();
                     }
 
                     //(RETURN TO OWNER'S HAND)
@@ -250,10 +238,8 @@ public class PlayerController : MonoBehaviour
                         if (Input.GetMouseButtonDown(0) && playerHit && playersToRob.Contains(playerHit))
                         {
                             hasFought = true;
-                            if (UIrefresh != null)
-                            {
-                                UIrefresh(this);
-                            }
+                            GameManager.instance.StartFight(this, playerHit);
+                            GameManager.instance.hudManager.ToggleActionButtons();
                         }
                     }
                 }
@@ -324,6 +310,8 @@ public class PlayerController : MonoBehaviour
     {
         currentWayPoint = _pointHit;
 
+        playersToRob = GameManager.instance.FindPlayersInRange(2, this);
+
         if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
             victoryPoints++;
 
@@ -343,10 +331,7 @@ public class PlayerController : MonoBehaviour
         else
             possibleMoves--;
 
-        if (UIrefresh != null)
-        {
-            UIrefresh(this);
-        }
+        GameManager.instance.hudManager.ToggleActionButtons();
 
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }
@@ -488,10 +473,7 @@ public class PlayerController : MonoBehaviour
                 break;
         }
 
-        if(UIrefresh != null)
-        {
-            UIrefresh(this);
-        }
+        GameManager.instance.hudManager.ToggleActionButtons();
 
     }
 
@@ -505,10 +487,7 @@ public class PlayerController : MonoBehaviour
         actions = 2;
         bonusMoveActions = 0;
         hasDiscount = DiscountCheck();
-        if (UIrefresh != null)
-        {
-            UIrefresh(this);
-        }
+        GameManager.instance.hudManager.ToggleActionButtons();
     }
 
     public bool DiscountCheck()

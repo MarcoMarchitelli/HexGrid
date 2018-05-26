@@ -353,23 +353,23 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    public void OnConfirmButton()
-    {
-        ExitAction();
-        GameManager.instance.mainCamera.SetHighView(false);
+    //public void OnConfirmButton()
+    //{
+    //    ExitAction();
+    //    GameManager.instance.mainCamera.SetHighView(false);
 
-        //gameplay stuff
-        GameManager.instance.ConfirmAction();
-    }
+    //    //gameplay stuff
+    //    GameManager.instance.ConfirmAction();
+    //}
 
-    public void OnUndoButton()
-    {
-        ExitAction();
-        GameManager.instance.mainCamera.SetHighView(false);
+    //public void OnUndoButton()
+    //{
+    //    ExitAction();
+    //    GameManager.instance.mainCamera.SetHighView(false);
 
-        //gameplay stuff
-        GameManager.instance.UndoAction();
-    }
+    //    //gameplay stuff
+    //    GameManager.instance.UndoAction();
+    //}
 
     #region UI refresh event stuff
 
