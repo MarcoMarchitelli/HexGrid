@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
 
     public enum Action
     {
-        idle, start, moving, buyCard, sellCard, placeCard, rotateCard, fight
+        idle, start, moving, buyCard, placeCard, rotateCard, fight
     }
 
     #region Public Variables
@@ -134,7 +134,7 @@ public class PlayerController : MonoBehaviour
                                     hasPlacedCard = true;
                                     energyPoints += lastPlacedCard.extractableEnergy;
                                     bonusMoveActions += lastPlacedCard.moveHexTouched;
-                                    GameManager.instance.SetPlayerToStart(true);
+                                    GameManager.instance.ConfirmAction();
                                 }
                             }
                         }
@@ -173,7 +173,7 @@ public class PlayerController : MonoBehaviour
                                 selectedCard.FreePaths(selectedCard.hexImOn);
                                 GameManager.instance.cardsManager.PlacedCards.Remove(selectedCard);
                                 beforeRotateActionCardEulerAngle = selectedCard.placedEulerAngle;
-                                GameManager.instance.hudManager.ToggleActionButtons();
+                                GameManager.instance.hudManager.Refresh();
                                 return;
                             }
                         }
@@ -192,7 +192,7 @@ public class PlayerController : MonoBehaviour
                         lastPlacedCard = selectedCard;
                         selectedCard = null;
                         energyPoints += lastPlacedCard.extractableEnergy;
-                        GameManager.instance.SetPlayerToStart(true);
+                        GameManager.instance.ConfirmAction();
                     }
 
                     //(UNDO)
@@ -202,7 +202,7 @@ public class PlayerController : MonoBehaviour
                         selectedCard.Place(selectedCard.hexImOn);
                         lastPlacedCard = selectedCard;
                         selectedCard = null;
-                        GameManager.instance.hudManager.ToggleActionButtons();
+                        GameManager.instance.hudManager.Refresh();
                     }
 
                     //(RETURN TO OWNER'S HAND)
@@ -239,7 +239,7 @@ public class PlayerController : MonoBehaviour
                         {
                             hasFought = true;
                             GameManager.instance.StartFight(this, playerHit);
-                            GameManager.instance.hudManager.ToggleActionButtons();
+                            GameManager.instance.hudManager.Refresh();
                         }
                     }
                 }
@@ -450,10 +450,6 @@ public class PlayerController : MonoBehaviour
                 break;
             case 1:
                 currentAction = Action.buyCard;
-                beforeActionEnergyPoints = energyPoints;
-                break;
-            case 2:
-                currentAction = Action.sellCard;
                 beforeActionEnergyPoints = energyPoints;
                 break;
             case 3:

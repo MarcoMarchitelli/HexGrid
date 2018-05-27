@@ -87,8 +87,7 @@ public class GameManager : MonoBehaviour
 
         //uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         print(currentActivePlayer.name + "'s Turn Start!");
         message = "Turn Start";
@@ -118,8 +117,7 @@ public class GameManager : MonoBehaviour
         currentPhase = Phase.gain;
         print("Gain Phase!");
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         message = "Gain Phase";
         hudManager.PrintBigNews(message);
@@ -130,6 +128,7 @@ public class GameManager : MonoBehaviour
         while (!gainPhaseEnded)
         {
             cardsManager.GainPhase(currentActivePlayer);
+            playersHUDcontroller.RefreshPlayerUIs();
             //VFX E ALTRE COSE
             yield return null;
         }
@@ -142,8 +141,7 @@ public class GameManager : MonoBehaviour
 
         print("Chose an action " + currentActivePlayer + "!");
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         message = "Main Phase";
         hudManager.PrintBigNews(message);
@@ -167,8 +165,7 @@ public class GameManager : MonoBehaviour
         print("Rotation Phase!");
 
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         message = "Rotation Phase";
         hudManager.PrintBigNews(message);
@@ -237,15 +234,13 @@ public class GameManager : MonoBehaviour
         if (!flag)
         {
             ConfirmAction();
-            hudManager.ToggleActionButtons();
-            hudManager.ToggleEndTurnButton(currentActivePlayer);
+            hudManager.Refresh();
             currentActivePlayer.currentAction = PlayerController.Action.start;
         }
         else
         {
             ConfirmAction();
-            hudManager.ToggleActionButtons();
-            hudManager.ToggleEndTurnButton(currentActivePlayer);
+            hudManager.Refresh();
             currentActivePlayer.currentAction = PlayerController.Action.start;
         }
     }
@@ -264,8 +259,7 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.MoveToPoint(currentActivePlayer.moveStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.moveStartPoint;
         currentActivePlayer.currentAction = PlayerController.Action.moving;
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
     }
 
     public void ConfirmAction()
@@ -276,8 +270,6 @@ public class GameManager : MonoBehaviour
                 //nothing to do
                 break;
             case PlayerController.Action.buyCard:
-                break;
-            case PlayerController.Action.sellCard:
                 break;
             case PlayerController.Action.placeCard:
                 //nothing to do
@@ -299,8 +291,8 @@ public class GameManager : MonoBehaviour
             currentActivePlayer.actions--;
         }
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
+        playersHUDcontroller.RefreshPlayerUIs();
     }
 
     public void UndoAction()
@@ -317,8 +309,6 @@ public class GameManager : MonoBehaviour
             case PlayerController.Action.buyCard:
                 UndoBuyCards();
                 break;
-            case PlayerController.Action.sellCard:
-                break;
             case PlayerController.Action.placeCard:
                 UndoPlaceCard();
                 break;
@@ -331,8 +321,8 @@ public class GameManager : MonoBehaviour
 
         currentActivePlayer.currentAction = PlayerController.Action.start;
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
+        playersHUDcontroller.RefreshPlayerUIs();
     }
 
     #endregion

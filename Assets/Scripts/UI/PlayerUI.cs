@@ -10,6 +10,7 @@ public class PlayerUI : MonoBehaviour {
     public Image icon;
     public TextMeshProUGUI PVtext;
     public TextMeshProUGUI PEtext;
+    public TextMeshProUGUI bonusMoveActionText;
 
     public void SetPlayerReference(PlayerController _player)
     {
@@ -21,7 +22,21 @@ public class PlayerUI : MonoBehaviour {
             PVtext.text = player.victoryPoints.ToString();
         if (PEtext != null)
             PEtext.text = player.energyPoints.ToString();
+        if (bonusMoveActionText != null)
+            bonusMoveActionText.text = player.bonusMoveActions.ToString();
 
+    }
+
+    public void Refresh()
+    {
+        if (icon != null)
+            icon.sprite = player.icon;
+        if (PVtext != null)
+            PVtext.text = player.victoryPoints.ToString();
+        if (PEtext != null)
+            PEtext.text = player.energyPoints.ToString();
+        if (bonusMoveActionText != null)
+            bonusMoveActionText.text = player.bonusMoveActions.ToString();
     }
 
 }

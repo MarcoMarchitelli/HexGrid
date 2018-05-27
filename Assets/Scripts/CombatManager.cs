@@ -145,7 +145,7 @@ public class CombatManager : MonoBehaviour
 
         FightPanel.SetActive(false);
 
-        GameManager.instance.currentActivePlayer.currentAction = PlayerController.Action.start;
+        GameManager.instance.ConfirmAction();
     }
 
     public void SetAttackerModifier(float mod)

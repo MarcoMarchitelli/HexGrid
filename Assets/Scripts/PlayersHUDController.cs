@@ -21,4 +21,12 @@ public class PlayersHUDController : MonoBehaviour
         }
     }
 
+    public void RefreshPlayerUIs()
+    {
+        foreach (var playerUI in playerUIs)
+        {
+            playerUI.Refresh();
+        }
+    }
+
 }
