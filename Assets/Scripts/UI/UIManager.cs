@@ -373,51 +373,51 @@ public class UIManager : MonoBehaviour
 
     #region UI refresh event stuff
 
-    public void SubscribeToPlayerUIRefreshEvent(PlayerController player)
-    {
-        //action buttons
-        player.UIrefresh += ToggleBetButton;
-        player.UIrefresh += TogglePlaceCardButton;
-        player.UIrefresh += ToggleRotateCardButton;
-        player.UIrefresh += ToggleBuyCardButton;
-        player.UIrefresh += ToggleSellCardButton;
-        player.UIrefresh += ToggleMoveButton;
-        player.UIrefresh += ToggleBonusMoveButton;
+    //public void SubscribeToPlayerUIRefreshEvent(PlayerController player)
+    //{
+    //    //action buttons
+    //    player.UIrefresh += ToggleBetButton;
+    //    player.UIrefresh += TogglePlaceCardButton;
+    //    player.UIrefresh += ToggleRotateCardButton;
+    //    player.UIrefresh += ToggleBuyCardButton;
+    //    player.UIrefresh += ToggleSellCardButton;
+    //    player.UIrefresh += ToggleMoveButton;
+    //    player.UIrefresh += ToggleBonusMoveButton;
 
-        //other buttons
-        player.UIrefresh += handDisplayScript.RefreshHandDisplay;
-        player.UIrefresh += ToggleUndoMoves;
-        player.UIrefresh += ToggleEndTurnButton;
-        player.UIrefresh += cardShopScript.ToggleBuyButtons;
-        player.UIrefresh += sellCardDisplayScript.RefreshSellDisplay;
+    //    //other buttons
+    //    player.UIrefresh += handDisplayScript.RefreshHandDisplay;
+    //    player.UIrefresh += ToggleUndoMoves;
+    //    player.UIrefresh += ToggleEndTurnButton;
+    //    player.UIrefresh += cardShopScript.ToggleBuyButtons;
+    //    player.UIrefresh += sellCardDisplayScript.RefreshSellDisplay;
 
-        //infos
-        player.UIrefresh += RefreshAllPrintFunctions;
-        player.UIrefresh += RefreshBonusMoveCounter;
-    }
+    //    //infos
+    //    player.UIrefresh += RefreshAllPrintFunctions;
+    //    player.UIrefresh += RefreshBonusMoveCounter;
+    //}
 
-    public void UnsubscribeToPlayerUIRefreshEvent(PlayerController player)
-    {
-        //action buttons
-        player.UIrefresh -= ToggleBetButton;
-        player.UIrefresh -= TogglePlaceCardButton;
-        player.UIrefresh -= ToggleRotateCardButton;
-        player.UIrefresh -= ToggleBuyCardButton;
-        player.UIrefresh -= ToggleSellCardButton;
-        player.UIrefresh -= ToggleMoveButton;
-        player.UIrefresh -= ToggleBonusMoveButton;
+    //public void UnsubscribeToPlayerUIRefreshEvent(PlayerController player)
+    //{
+    //    //action buttons
+    //    player.UIrefresh -= ToggleBetButton;
+    //    player.UIrefresh -= TogglePlaceCardButton;
+    //    player.UIrefresh -= ToggleRotateCardButton;
+    //    player.UIrefresh -= ToggleBuyCardButton;
+    //    player.UIrefresh -= ToggleSellCardButton;
+    //    player.UIrefresh -= ToggleMoveButton;
+    //    player.UIrefresh -= ToggleBonusMoveButton;
 
-        //other buttons
-        player.UIrefresh -= handDisplayScript.RefreshHandDisplay;
-        player.UIrefresh -= cardShopScript.ToggleBuyButtons;
-        player.UIrefresh -= ToggleUndoMoves;
-        player.UIrefresh -= ToggleEndTurnButton;
-        player.UIrefresh -= sellCardDisplayScript.RefreshSellDisplay;
+    //    //other buttons
+    //    player.UIrefresh -= handDisplayScript.RefreshHandDisplay;
+    //    player.UIrefresh -= cardShopScript.ToggleBuyButtons;
+    //    player.UIrefresh -= ToggleUndoMoves;
+    //    player.UIrefresh -= ToggleEndTurnButton;
+    //    player.UIrefresh -= sellCardDisplayScript.RefreshSellDisplay;
 
-        //infos
-        player.UIrefresh -= RefreshAllPrintFunctions;
-        player.UIrefresh -= RefreshBonusMoveCounter;
-    }
+    //    //infos
+    //    player.UIrefresh -= RefreshAllPrintFunctions;
+    //    player.UIrefresh -= RefreshBonusMoveCounter;
+    //}
 
     #endregion
 

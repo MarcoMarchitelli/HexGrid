@@ -83,7 +83,14 @@ public class HUDManager : MonoBehaviour
             {
                 moveButton.SetSprite(ButtonController.SpriteType.active);
                 moveButton.SetUsability(true);
-            }            
+            }    
+            
+            //confirm move
+            if(player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
+            {
+                moveButton.SetSprite(ButtonController.SpriteType.confirm);
+                moveButton.SetUsability(true);
+            }
 
             //buy
             if (player.hasDiscount)
@@ -179,7 +186,7 @@ public class HUDManager : MonoBehaviour
         }
         else if (GameManager.instance.currentActivePlayer.currentAction == PlayerController.Action.start)
         {
-            if (GameManager.instance.currentActivePlayer.actions > 0)
+            if (GameManager.instance.currentActivePlayer.actions > 0 || GameManager.instance.currentActivePlayer.bonusMoveActions > 0)
             {
                 endTurnButton.SetUsability(true);
                 endTurnButton.SetSprite(ButtonController.SpriteType.active);

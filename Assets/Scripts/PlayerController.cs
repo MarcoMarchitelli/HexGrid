@@ -8,8 +8,6 @@ public class PlayerController : MonoBehaviour
 {
     public Sprite icon;
     public float moveSpeed;
-    public delegate void UIevent(PlayerController player);
-    public UIevent UIrefresh;
 
     public enum Type
     {
@@ -24,6 +22,7 @@ public class PlayerController : MonoBehaviour
     #region Public Variables
 
     public Type type;
+    public GameObject VFXobject;
     [HideInInspector]
     public Point startingWayPoint;
     [HideInInspector]
@@ -40,9 +39,11 @@ public class PlayerController : MonoBehaviour
     public int bonusMoveActions = 0, bonusAbilityActions = 0;
     [HideInInspector]
     public bool hasPlacedCard, hasFought, canBet, hasBought, isBonusMove, hasSold, hasDiscount;
+    [HideInInspector]
     public List<CardController> cardsInHand;
     [HideInInspector]
     public CardController selectedCard, lastPlacedCard, cardToSell;
+    [HideInInspector]
     public List<PlayerController> playersToRob = new List<PlayerController>();
     public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
     [HideInInspector]
@@ -259,10 +260,8 @@ public class PlayerController : MonoBehaviour
         {
             selectedCard.state = CardController.State.selectedFromHand;
         }
-        if (UIrefresh != null)
-        {
-            UIrefresh(this);
-        }
+
+        GameManager.instance.hudManager.Refresh();
     }
 
     public void UnselectCard()
@@ -271,10 +270,7 @@ public class PlayerController : MonoBehaviour
         selectedCard.transform.position = MyData.prefabsPosition;
         selectedCard = null;
 
-        if (UIrefresh != null)
-        {
-            UIrefresh(this);
-        }
+        GameManager.instance.hudManager.Refresh();
     }
 
     public void SendCardInHand(CardController card)
@@ -298,10 +294,7 @@ public class PlayerController : MonoBehaviour
         }
         lastPlacedCard = null;
 
-        if (UIrefresh != null)
-        {
-            UIrefresh(this);
-        }
+        GameManager.instance.hudManager.Refresh();
     }
 
     #endregion
@@ -331,7 +324,7 @@ public class PlayerController : MonoBehaviour
         else
             possibleMoves--;
 
-        GameManager.instance.hudManager.ToggleActionButtons();
+        GameManager.instance.hudManager.Refresh();
 
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }
@@ -447,6 +440,7 @@ public class PlayerController : MonoBehaviour
                 currentAction = Action.moving;
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
+                VFXobject.SetActive(true);
                 break;
             case 1:
                 currentAction = Action.buyCard;
@@ -483,6 +477,7 @@ public class PlayerController : MonoBehaviour
         actions = 2;
         bonusMoveActions = 0;
         hasDiscount = DiscountCheck();
+        playersToRob = GameManager.instance.FindPlayersInRange(2, this);
         GameManager.instance.hudManager.ToggleActionButtons();
     }
 

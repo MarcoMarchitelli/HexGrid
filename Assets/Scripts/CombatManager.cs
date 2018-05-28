@@ -18,6 +18,7 @@ public class CombatManager : MonoBehaviour
     public KeyCode defenderInput = KeyCode.Alpha0;
 
     public UnityEvent OnFightFinish;
+    public UnityEvent OnFightStart;
 
     [Header("UI Stuff")]
     public GameObject SelectionPanel;
@@ -48,6 +49,8 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator FightFlow(PlayerController attacker, PlayerController defender)
     {
+        OnFightStart.Invoke();
+
         yield return StartCoroutine(ModifiersSelection(attacker, defender));
 
         yield return StartCoroutine(CountDown(3));

@@ -267,14 +267,15 @@ public class GameManager : MonoBehaviour
         switch (currentActivePlayer.currentAction)
         {
             case PlayerController.Action.moving:
-                //nothing to do
+                currentActivePlayer.VFXobject.SetActive(false);
                 break;
             case PlayerController.Action.buyCard:
                 break;
             case PlayerController.Action.placeCard:
-                //nothing to do
+                ConfirmPlaceCard();
                 break;
             case PlayerController.Action.rotateCard:
+                ConfirmRotateCard();
                 break;
             case PlayerController.Action.fight:
                 break;
@@ -384,26 +385,30 @@ public class GameManager : MonoBehaviour
     //    currentActivePlayer.SetNumberOfCardTypesInHand();
     //}
 
-    //void ConfirmPlaceCard()
-    //{
-    //    switch (currentActivePlayer.lastPlacedCard.type)
-    //    {
-    //        case CardController.Type.card1:
-    //            currentActivePlayer.numberOfCards1InHand++;
-    //            break;
-    //        case CardController.Type.card2:
-    //            currentActivePlayer.numberOfCards2InHand++;
-    //            break;
-    //        case CardController.Type.card3:
-    //            currentActivePlayer.numberOfCards3InHand++;
-    //            break;
-    //    }
-    //}
+    void ConfirmPlaceCard()
+    {
+        switch (currentActivePlayer.lastPlacedCard.type)
+        {
+            case CardController.Type.card1:
+                currentActivePlayer.numberOfCards1InHand--;
+                break;
+            case CardController.Type.card2:
+                currentActivePlayer.numberOfCards2InHand--;
+                break;
+            case CardController.Type.card3:
+                currentActivePlayer.numberOfCards3InHand--;
+                break;
+        }
 
-    //void ConfirmRotateCard()
-    //{
-    //    currentActivePlayer.selectedCard = null;
-    //}
+        mainCamera.SetHighView(false);
+    }
+
+    void ConfirmRotateCard()
+    {
+        currentActivePlayer.selectedCard = null;
+
+        mainCamera.SetHighView(false);
+    }
 
     #endregion
 
