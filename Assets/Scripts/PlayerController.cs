@@ -70,6 +70,11 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Time.timeScale = 0;
+        }
+
         if (energyPoints > maxPE)
             energyPoints = maxPE;
 

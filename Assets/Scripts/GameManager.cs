@@ -259,6 +259,7 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.MoveToPoint(currentActivePlayer.moveStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.moveStartPoint;
         currentActivePlayer.currentAction = PlayerController.Action.moving;
+        currentActivePlayer.VFXobject.SetActive(false);
         hudManager.Refresh();
     }
 

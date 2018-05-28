@@ -42,6 +42,12 @@ public class ButtonController : MonoBehaviour {
         }
     }
 
+    public void SetSpriteSpecial()
+    {
+        if (specialSprite != null)
+            image.sprite = specialSprite;
+    }
+
     public void SetUsability(bool flag)
     {
         if (flag)

@@ -23,7 +23,12 @@ public class PlayerUI : MonoBehaviour {
         if (PEtext != null)
             PEtext.text = player.energyPoints.ToString();
         if (bonusMoveActionText != null)
-            bonusMoveActionText.text = player.bonusMoveActions.ToString();
+        {
+            if (player.bonusMoveActions > 0)
+                bonusMoveActionText.text = player.bonusMoveActions.ToString();
+            else
+                bonusMoveActionText.text = null;
+        }
 
     }
 
@@ -36,7 +41,12 @@ public class PlayerUI : MonoBehaviour {
         if (PEtext != null)
             PEtext.text = player.energyPoints.ToString();
         if (bonusMoveActionText != null)
-            bonusMoveActionText.text = player.bonusMoveActions.ToString();
+        {
+            if (player.bonusMoveActions > 0)
+                bonusMoveActionText.text = player.bonusMoveActions.ToString();
+            else
+                bonusMoveActionText.text = null;
+        }
     }
 
 }

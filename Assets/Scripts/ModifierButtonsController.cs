@@ -22,6 +22,16 @@ public class ModifierButtonsController : MonoBehaviour {
                 button.buttonController.SetSprite(ButtonController.SpriteType.inactive);
                 button.buttonController.SetUsability(false);
             }
+
+
+        }
+    }
+
+    public void SetModifierButtonsOff()
+    {
+        foreach (var button in buttons)
+        {
+            button.enabled = false;
         }
     }
 }

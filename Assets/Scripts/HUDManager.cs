@@ -22,9 +22,12 @@ public class HUDManager : MonoBehaviour
 
     [Header("Other UI Elements")]
     public GameObject winOverlay;
+    public GameObject pauseMenu;
     public GameObject[] actionIcons;
 
     #endregion
+
+    bool paused = false;
 
     [HideInInspector]
     public Animation bigNewsAnimation;
@@ -32,6 +35,33 @@ public class HUDManager : MonoBehaviour
     void Start()
     {
         bigNewsAnimation = bigCentralSection.GetComponentInParent<Animation>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (paused)
+                Pause(false);
+            else
+                Pause(true);
+        }
+    }
+
+    public void Pause(bool flag)
+    {
+        if (flag)
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0;
+            paused = true;
+        }
+        else
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+            paused = false;
+        }
     }
 
     public void Refresh()
@@ -156,6 +186,11 @@ public class HUDManager : MonoBehaviour
             {
                 moveButton.SetSprite(ButtonController.SpriteType.special);
                 moveButton.SetUsability(true);
+                if (player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
+                {
+                    moveButton.SetSprite(ButtonController.SpriteType.confirm);
+                    moveButton.SetUsability(true);
+                }
             }
             else
             {
