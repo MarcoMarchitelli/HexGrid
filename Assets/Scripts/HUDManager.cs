@@ -58,8 +58,8 @@ public class HUDManager : MonoBehaviour
         }
         else
         {
-            pauseMenu.SetActive(false);
             Time.timeScale = 1;
+            pauseMenu.SetActive(false);          
             paused = false;
         }
     }

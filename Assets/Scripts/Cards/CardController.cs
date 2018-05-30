@@ -1058,11 +1058,10 @@ public class CardController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         CardController cardHit = other.GetComponentInParent<CardController>();
+        print(name + " Collided with " + cardHit.name);
         if (cardHit != null)
         {
             GameManager.instance.cardsManager.PlacedCards.Remove(this);
-            GameManager.instance.cardsManager.PlacedCards.Remove(cardHit);
-            Destroy(cardHit.gameObject);
             Destroy(this.gameObject);
         }  
     }
