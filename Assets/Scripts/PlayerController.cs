@@ -325,6 +325,8 @@ public class PlayerController : MonoBehaviour
             possibleMoves--;
 
         GameManager.instance.hudManager.Refresh();
+        if (GameManager.instance.OnMoveEnter != null)
+            GameManager.instance.OnMoveEnter(GameManager.instance.FindPointsInRange(possibleMoves, this));
 
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }
@@ -441,6 +443,8 @@ public class PlayerController : MonoBehaviour
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
                 VFXobject.SetActive(true);
+                if (GameManager.instance.OnMoveEnter != null)
+                    GameManager.instance.OnMoveEnter(GameManager.instance.FindPointsInRange(possibleMoves, this));
                 break;
             case 1:
                 currentAction = Action.buyCard;
