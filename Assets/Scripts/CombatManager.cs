@@ -78,8 +78,6 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
 
-        attackerModController.SetModifierButtonsOff();
-
         print("Attacker added " + attackerBonusStrength + " bonus strength");
         print("Defender select your bonus!");       
 
@@ -87,8 +85,6 @@ public class CombatManager : MonoBehaviour
         {
             yield return null;
         }
-
-        defenderModController.SetModifierButtonsOff();
 
         print("Defender added " + defenderBonusStrength + " bonus strength");
 
@@ -160,6 +156,7 @@ public class CombatManager : MonoBehaviour
 
     public void SetAttackerModifier(int energy)
     {
+        attackerModController.EnableModifierButtons(true);
         switch (energy)
         {
             case 0:
@@ -189,10 +186,12 @@ public class CombatManager : MonoBehaviour
         }
         attacker.energyPoints -= energy;
         attackerModSet = true;
+        attackerModController.EnableModifierButtons(false);
     }
 
     public void SetDefenderModifier(int energy)
     {
+        defenderModController.EnableModifierButtons(true);
         switch (energy)
         {
             case 0:
@@ -222,6 +221,7 @@ public class CombatManager : MonoBehaviour
         }
         defender.energyPoints -= energy;
         defenderModSet = true;
+        defenderModController.EnableModifierButtons(false);
     }
 
     public void ResetValues()

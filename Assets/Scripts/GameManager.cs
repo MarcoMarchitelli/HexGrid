@@ -500,12 +500,13 @@ public class GameManager : MonoBehaviour
         {
             if (!pointsInRange[i].isChecked)
             {
-                if (pointsInRange[i].moves > 0)
+                if (pointsInRange[i].remainingMoves > 0)
                 {
-                    foreach (Vector3 destination in pointsInRange[i].point.possibleDestinations)
-                    {
-                        pointsInRange.Add(new AgentPosition(gridReference.GetPointFromWorldPosition(destination), pointsInRange[i].moves - 1));
-                    }
+                    if (pointsInRange[i].point.type != Point.Type.purple)
+                        foreach (Vector3 destination in pointsInRange[i].point.possibleDestinations)
+                        {
+                            pointsInRange.Add(new AgentPosition(gridReference.GetPointFromWorldPosition(destination), pointsInRange[i].remainingMoves - 1));
+                        }
                 }
                 pointsInRange[i].isChecked = true;
             }
@@ -540,13 +541,13 @@ public class AgentPosition
 {
     public Point point;
     //mosse rimaste
-    public int moves;
+    public int remainingMoves;
     public bool isChecked;
 
     public AgentPosition(Point _point, int _moves)
     {
         point = _point;
-        moves = _moves;
+        remainingMoves = _moves;
         isChecked = false;
     }
 }

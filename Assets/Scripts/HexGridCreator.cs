@@ -175,7 +175,7 @@ public class HexGridCreator : MonoBehaviour
     {
         foreach (Hexagon hex in HexGrid)
         {
-            if(hex.type == Hexagon.Type.win)
+            if (hex.type == Hexagon.Type.win)
             {
                 Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                 center = instantiatedMap;
@@ -269,7 +269,8 @@ public class HexGridCreator : MonoBehaviour
                     {
                         Transform InstantiatedHypogeumStartingPoint = Instantiate(HypogeumStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedHypogeumStartingPoint.parent = mapContainer;
-                    }else
+                    }
+                    else
                     {
                         Transform instantiatedYellowWaypoint = Instantiate(hypogeumWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
                         instantiatedYellowWaypoint.parent = mapContainer;
@@ -383,7 +384,7 @@ public class HexGridCreator : MonoBehaviour
         //final waypoints
         foreach (Point point in WaypointGrid)
         {
-            if(point.x == (int)MyData.specialYellowPoint.x && point.y == (int)MyData.specialYellowPoint.y && point.type == Point.Type.hypogeum)
+            if (point.x == (int)MyData.specialYellowPoint.x && point.y == (int)MyData.specialYellowPoint.y && point.type == Point.Type.hypogeum)
             {
                 point.isFinalWaypoint = true;
             }
@@ -453,6 +454,262 @@ public class HexGridCreator : MonoBehaviour
                 point.nearHexagons = GetNearHexagonsFromPoint(point);
             }
         }
+    }
+
+
+
+    #endregion
+
+    #region API
+
+    /// <summary>
+    /// Returns a Point with given worldPosition if it exists in the grid.
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    public Point GetPointFromWorldPosition(Vector3 worldPosition)
+    {
+        for (int i = 0; i < WaypointGrid.Count; i++)
+        {
+            if (Mathf.Approximately(worldPosition.x, WaypointGrid[i].worldPosition.x) && Mathf.Approximately(worldPosition.z, WaypointGrid[i].worldPosition.z))
+            {
+                return WaypointGrid[i];
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns a Hexagon with given worldPosition if it exists in the grid.
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    public Hexagon GetHexagonFromWorldPosition(Vector3 worldPosition)
+    {
+        for (int i = 0; i < HexGrid.Count; i++)
+        {
+            if (Mathf.Approximately(worldPosition.x, HexGrid[i].worldPosition.x) && Mathf.Approximately(worldPosition.z, HexGrid[i].worldPosition.z))
+            {
+                return HexGrid[i];
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns a Point with given x and y coordinates if it exists in the grid.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public Point GetPointFromCoords(int x, int y)
+    {
+        foreach (Point point in WaypointGrid)
+        {
+            if (point.x == x && point.y == y)
+            {
+                return point;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Returns a Hexagon with given x and y coordinates if it exists in the grid.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    public Hexagon GetHexagonFromCoords(int x, int y)
+    {
+        foreach (Hexagon hex in HexGrid)
+        {
+            if (hex.x == x && hex.y == y)
+            {
+                return hex;
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// returns up to six Point objects around the given Hexagon.
+    /// </summary>
+    /// <param name="hex"></param>
+    /// <returns></returns>
+    public List<Point> GetSixPointsAroundHexagon(Hexagon hex)
+    {
+        List<Point> pointsAroundHex = new List<Point>();
+
+        if (hex.y % 2 == 0)
+        {
+            foreach (Point point in WaypointGrid)
+            {
+                if (point.x == hex.x * 2 && point.y == hex.y * 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 && point.y == hex.y * 2 + 3)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+            }
+        }
+        else
+        if (hex.y % 2 != 0)
+        {
+            foreach (Point point in WaypointGrid)
+            {
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 3)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 + 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 + 1 && point.y == hex.y * 2 + 1)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 + 1 + 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+                if (point.x == hex.x * 2 - 1 + 1 && point.y == hex.y * 2 + 2)
+                {
+                    pointsAroundHex.Add(point);
+                }
+            }
+        }
+
+        return pointsAroundHex;
+    }
+
+    /// <summary>
+    /// returns up to six Hexagon objects around the given Hexagon.
+    /// </summary>
+    /// <param name="myHex"></param>
+    /// <returns></returns>
+    public List<Hexagon> GetHexagonsAroundHexagon(Hexagon myHex)
+    {
+        List<Hexagon> aroundHexagons = new List<Hexagon>();
+
+        if (myHex.y % 2 != 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+            }
+        }
+        else
+            if (myHex.y % 2 == 0)
+        {
+            foreach (Hexagon hex in HexGrid)
+            {
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y - 1 && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x + 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
+                {
+                    aroundHexagons.Add(hex);
+                }
+                else
+                if (hex.y == myHex.y + 1 && hex.x == myHex.x - 1)
+                {
+                    aroundHexagons.Add(hex);
+                }
+            }
+        }
+
+        return aroundHexagons;
+    }
+
+    /// <summary>
+    /// Removes/Adds given Point to the possible destinations of his possible destinations.
+    /// </summary>
+    /// <param name="point"></param>
+    /// <param name="flag">true to remove, false to add</param>
+    public void SetPointUnwalkable(Point point, bool flag)
+    {
+        if (flag)
+            for (int i = 0; i < point.possibleDestinations.Count; i++)
+            {
+                Point _point = GetPointFromWorldPosition(point.possibleDestinations[i]);
+                if (_point.possibleDestinations.Contains(point.worldPosition))
+                    point.possibleDestinations.Remove(_point.worldPosition);
+            }
+        else
+            for (int i = 0; i < point.possibleDestinations.Count; i++)
+            {
+                Point _point = GetPointFromWorldPosition(point.possibleDestinations[i]);
+                point.possibleDestinations.Add(_point.worldPosition);
+            }
     }
 
     public List<Hexagon> GetNearHexagonsFromPoint(Point point)
@@ -584,7 +841,7 @@ public class HexGridCreator : MonoBehaviour
         return destinations;
     }
 
-    bool DoesPointAlredyExist(Point point)
+    public bool DoesPointAlredyExist(Point point)
     {
         for (int i = 0; i < WaypointGrid.Count; i++)
         {
@@ -592,206 +849,6 @@ public class HexGridCreator : MonoBehaviour
                 return true;
         }
         return false;
-    }
-
-    #endregion
-
-    #region FUNCTIONS TO RETREIVE DATA
-
-    public Point GetPointFromWorldPosition(Vector3 worldPosition)
-    {
-        for (int i = 0; i < WaypointGrid.Count; i++)
-        {
-            if (Mathf.Approximately(worldPosition.x, WaypointGrid[i].worldPosition.x) && Mathf.Approximately(worldPosition.z, WaypointGrid[i].worldPosition.z))
-            {
-                return WaypointGrid[i];
-            }
-        }
-        return null;
-    }
-
-    public Hexagon GetHexagonFromWorldPosition(Vector3 worldPosition)
-    {
-        for (int i = 0; i < HexGrid.Count; i++)
-        {
-            if (Mathf.Approximately(worldPosition.x, HexGrid[i].worldPosition.x) && Mathf.Approximately(worldPosition.z, HexGrid[i].worldPosition.z))
-            {
-                return HexGrid[i];
-            }
-        }
-        return null;
-    }
-
-    public Point GetPointFromCoords(int x, int y)
-    {
-        foreach (Point point in WaypointGrid)
-        {
-            if (point.x == x && point.y == y)
-            {
-                return point;
-            }
-        }
-        return null;
-    }
-
-    public Hexagon GetHexagonFromCoords(int x, int y)
-    {
-        foreach (Hexagon hex in HexGrid)
-        {
-            if (hex.x == x && hex.y == y)
-            {
-                return hex;
-            }
-        }
-        return null;
-    }
-
-    public List<Point> GetSixPointsAroundHexagon(Hexagon hex)
-    {
-        List<Point> pointsAroundHex = new List<Point>();
-
-        if (hex.y % 2 == 0)
-        {
-            foreach (Point point in WaypointGrid)
-            {
-                if (point.x == hex.x * 2 && point.y == hex.y * 2)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 && point.y == hex.y * 2 + 3)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 1)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 - 1 && point.y == hex.y * 2 + 1)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 2)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 - 1 && point.y == hex.y * 2 + 2)
-                {
-                    pointsAroundHex.Add(point);
-                }
-            }
-        }
-        else
-        if (hex.y % 2 != 0)
-        {
-            foreach (Point point in WaypointGrid)
-            {
-                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 + 1 && point.y == hex.y * 2 + 3)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 + 1 + 1 && point.y == hex.y * 2 + 1)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 - 1 + 1 && point.y == hex.y * 2 + 1)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 + 1 + 1 && point.y == hex.y * 2 + 2)
-                {
-                    pointsAroundHex.Add(point);
-                }
-                if (point.x == hex.x * 2 - 1 + 1 && point.y == hex.y * 2 + 2)
-                {
-                    pointsAroundHex.Add(point);
-                }
-            }
-        }
-
-        return pointsAroundHex;
-    }
-
-    public List<Hexagon> GetHexagonsAroundHexagon(Hexagon myHex)
-    {
-        List<Hexagon> aroundHexagons = new List<Hexagon>();
-
-        if (myHex.y % 2 != 0)
-        {
-            foreach (Hexagon hex in HexGrid)
-            {
-                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y - 1 && hex.x == myHex.x + 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y && hex.x == myHex.x + 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y && hex.x == myHex.x - 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y + 1 && hex.x == myHex.x + 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-            }
-        }
-        else
-            if (myHex.y % 2 == 0)
-        {
-            foreach (Hexagon hex in HexGrid)
-            {
-                if (hex.y == myHex.y - 1 && hex.x == myHex.x)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y - 1 && hex.x == myHex.x - 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y && hex.x == myHex.x + 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y && hex.x == myHex.x - 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y + 1 && hex.x == myHex.x)
-                {
-                    aroundHexagons.Add(hex);
-                }
-                else
-                if (hex.y == myHex.y + 1 && hex.x == myHex.x - 1)
-                {
-                    aroundHexagons.Add(hex);
-                }
-            }
-        }
-
-        return aroundHexagons;
     }
 
     #endregion

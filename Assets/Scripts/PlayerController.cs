@@ -58,6 +58,7 @@ public class PlayerController : MonoBehaviour
     int maxPE = 25;
 
     Animator animator;
+    List<AgentPosition> reachablePoints = new List<AgentPosition>();
 
     private void Start()
     {
@@ -443,8 +444,9 @@ public class PlayerController : MonoBehaviour
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
                 VFXobject.SetActive(true);
+                reachablePoints = GameManager.instance.FindPointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)
-                    GameManager.instance.OnMoveEnter(GameManager.instance.FindPointsInRange(possibleMoves, this));
+                    GameManager.instance.OnMoveEnter(reachablePoints);
                 break;
             case 1:
                 currentAction = Action.buyCard;
