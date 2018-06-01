@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
+
     public Sprite icon;
     public float moveSpeed;
 
@@ -96,6 +97,8 @@ public class PlayerController : MonoBehaviour
                                 if (agent.point == pointHit)
                                 {
                                     StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit)));
+                                    if(GameManager.instance.OnMoveSelected != null)
+                                        GameManager.instance.OnMoveSelected();
                                     hasMoved = true;
                                 }
                             }
@@ -323,8 +326,6 @@ public class PlayerController : MonoBehaviour
             possibleMoves--;
 
         GameManager.instance.hudManager.Refresh();
-        if (GameManager.instance.OnMoveEnter != null)
-            GameManager.instance.OnMoveEnter(GameManager.instance.FindPointsInRange(possibleMoves, this));
 
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }
@@ -335,6 +336,8 @@ public class PlayerController : MonoBehaviour
         {
             yield return StartCoroutine(RunAnimation(path[i]));
         }
+
+        GameManager.instance.ConfirmAction();
     }
 
     IEnumerator RunAnimation(Point targetPoint)

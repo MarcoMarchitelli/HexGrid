@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     public delegate void AgentPositionListEvent(List<AgentPosition> points);
     public delegate void VoidEvent();
     public AgentPositionListEvent OnMoveEnter;
-    public VoidEvent OnMoveExit;
+    public VoidEvent OnMoveSelected;
 
     public PlayerController[] players;
     //public UIManager uiManager;
@@ -277,8 +277,6 @@ public class GameManager : MonoBehaviour
         {
             case PlayerController.Action.moving:
                 currentActivePlayer.VFXobject.SetActive(false);
-                if (OnMoveExit != null)
-                    OnMoveExit();
                 break;
             case PlayerController.Action.buyCard:
                 break;
@@ -317,8 +315,8 @@ public class GameManager : MonoBehaviour
                 break;
             case PlayerController.Action.moving:
                 UndoMoveCurrentPlayer();
-                if (OnMoveExit != null)
-                    OnMoveExit();
+                if (OnMoveSelected != null)
+                    OnMoveSelected();
                 break;
             case PlayerController.Action.buyCard:
                 UndoBuyCards();

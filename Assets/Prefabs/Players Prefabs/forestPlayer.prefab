@@ -1386,7 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 5ac47eb1e931f424eace19cfacfcf016, type: 3}
-  moveSpeed: 2
+  moveSpeed: 4
   type: 2
   VFXobject: {fileID: 1866073587494040}
   startingWayPoint:
@@ -1398,6 +1398,8 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
+    gCost: 0
+    hCost: 0
   currentWayPoint:
     x: 0
     y: 0
@@ -1407,6 +1409,8 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
+    gCost: 0
+    hCost: 0
   moveStartPoint:
     x: 0
     y: 0
@@ -1416,6 +1420,8 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
+    gCost: 0
+    hCost: 0
   currentAction: 0
   energyPoints: 2
   victoryPoints: 3
@@ -1455,6 +1461,7 @@ MonoBehaviour:
   beforeMoveActionMoves: 0
   beforeActionBonusMoveActions: 0
   isRunning: 0
+  hasMoved: 0
 --- !u!114 &114598198192761356
 MonoBehaviour:
   m_ObjectHideFlags: 1

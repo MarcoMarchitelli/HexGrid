@@ -12,7 +12,7 @@ public class MaterialChange : MonoBehaviour {
         outline = GetComponent<Outline>();
         outline.enabled = false;
         GameManager.instance.OnMoveEnter += TurnOutlineOn;
-        GameManager.instance.OnMoveExit += TurnOutlineOff;
+        GameManager.instance.OnMoveSelected += TurnOutlineOff;
     }
 
     void TurnOutlineOn(List<AgentPosition> points)
@@ -48,7 +48,7 @@ public class MaterialChange : MonoBehaviour {
         if (isOutlined)
             outline.color = 2;
     }
-        
+
     private void OnMouseExit()
     {
         if (isOutlined)
@@ -58,6 +58,6 @@ public class MaterialChange : MonoBehaviour {
     private void OnDisable()
     {
         GameManager.instance.OnMoveEnter -= TurnOutlineOn;
-        GameManager.instance.OnMoveExit -= TurnOutlineOff;
+        GameManager.instance.OnMoveSelected -= TurnOutlineOff;
     }
 }
