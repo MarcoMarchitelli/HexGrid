@@ -53,12 +53,12 @@ public class PlayerController : MonoBehaviour
 
     Hexagon lastSelectedHex;
     [HideInInspector]
-    public bool isRunning = false;
+    public bool isRunning = false, hasMoved = false;
     string bottomLeftMsg;
     int maxPE = 25;
 
     Animator animator;
-    List<AgentPosition> reachablePoints = new List<AgentPosition>();
+    List<AgentPosition> moveAgents = new List<AgentPosition>();
 
     private void Start()
     {
@@ -83,25 +83,22 @@ public class PlayerController : MonoBehaviour
                 RaycastHit hitInfo;
 
                 //moving ray
-                if (Input.GetMouseButtonDown(0) && !isRunning)
+                if (Input.GetMouseButtonDown(0) && !hasMoved)
                 {
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, pointLayer))
                     {
                         Point pointHit = GameManager.instance.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
 
-                        if(pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && CheckIfPointIsWalkable(pointHit) && possibleMoves > 0)
+                        if (pointHit != null)
                         {
-                            if (pointHit.isFinalWaypoint)
+                            foreach (var agent in moveAgents)
                             {
-                                if (IsMyColor(pointHit))
+                                if (agent.point == pointHit)
                                 {
-                                    StartCoroutine(RunAnimation(pointHit, hitInfo.collider.GetComponent<SmoothMoveAnimation>()));
-                                }                                    
-                                else
-                                    return;
+                                    StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit)));
+                                    hasMoved = true;
+                                }
                             }
-
-                            StartCoroutine(RunAnimation(pointHit));
                         }
                     }
                 }
@@ -332,6 +329,14 @@ public class PlayerController : MonoBehaviour
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }
 
+    IEnumerator FollowPath(List<Point> path)
+    {
+        for (int i = 0; i < path.Count; i++)
+        {
+            yield return StartCoroutine(RunAnimation(path[i]));
+        }
+    }
+
     IEnumerator RunAnimation(Point targetPoint)
     {
         Vector3 target = targetPoint.worldPosition + Vector3.up * .7f;
@@ -345,7 +350,7 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetBool("isRunning", false);
         isRunning = false;
-        DataStuffAfterMove(targetPoint); 
+        DataStuffAfterMove(targetPoint);
     }
 
     IEnumerator RunAnimation(Point targetPoint, SmoothMoveAnimation final)
@@ -441,12 +446,13 @@ public class PlayerController : MonoBehaviour
         {
             case 0:
                 currentAction = Action.moving;
+                hasMoved = false;
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
                 VFXobject.SetActive(true);
-                reachablePoints = GameManager.instance.FindPointsInRange(possibleMoves, this);
+                moveAgents = GameManager.instance.FindPointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)
-                    GameManager.instance.OnMoveEnter(reachablePoints);
+                    GameManager.instance.OnMoveEnter(moveAgents);
                 break;
             case 1:
                 currentAction = Action.buyCard;

@@ -180,48 +180,48 @@ public class CardController : MonoBehaviour
                 case 0:
                     if (bottomRight != null && topRight != null)
                     {
-                        bottomRight.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(bottomRight);
                     }
                     break;
                 case 60:
                 case -300:
                     if (bottomRight != null && bottom != null)
                     {
-                        bottomRight.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomRight);
                     }
                     break;
                 case 120:
                 case -240:
                     if (bottomLeft != null && bottom != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomLeft);
                     }
                     break;
                 case 180:
                 case -180:
                     if (bottomLeft != null && topLeft != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
-                        topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(topLeft);
+                        topLeft.possibleDestinations.Remove(bottomLeft);
                     }
                     break;
                 case 240:
                 case -120:
                     if (top != null && topLeft != null)
                     {
-                        topLeft.possibleDestinations.Remove(top.worldPosition);
-                        top.possibleDestinations.Remove(topLeft.worldPosition);
+                        topLeft.possibleDestinations.Remove(top);
+                        top.possibleDestinations.Remove(topLeft);
                     }
                     break;
                 case 300:
                 case -60:
                     if (top != null && topRight != null)
                     {
-                        top.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(top.worldPosition);
+                        top.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(top);
                     }
                     break;
             }
@@ -234,78 +234,78 @@ public class CardController : MonoBehaviour
                 case 0:
                     if (bottomRight != null && topRight != null)
                     {
-                        bottomRight.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(bottomRight);
                     }
                     if (topLeft != null && top != null)
                     {
-                        topLeft.possibleDestinations.Remove(top.worldPosition);
-                        top.possibleDestinations.Remove(topLeft.worldPosition);
+                        topLeft.possibleDestinations.Remove(top);
+                        top.possibleDestinations.Remove(topLeft);
                     }
                     break;
                 case 60:
                 case -300:
                     if (bottomRight != null && bottom != null)
                     {
-                        bottomRight.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomRight);
                     }
                     if (top != null && topRight != null)
                     {
-                        top.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(top.worldPosition);
+                        top.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(top);
                     }
                     break;
                 case 120:
                 case -240:
                     if (bottomLeft != null && bottom != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomLeft);
                     }
                     if (bottomRight != null && topRight != null)
                     {
-                        bottomRight.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(bottomRight);
                     }
                     break;
                 case 180:
                 case -180:
                     if (bottomLeft != null && topLeft != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
-                        topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(topLeft);
+                        topLeft.possibleDestinations.Remove(bottomLeft);
                     }
                     if (bottomRight != null && bottom != null)
                     {
-                        bottomRight.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomRight);
                     }
                     break;
                 case 240:
                 case -120:
                     if (topLeft != null && top != null)
                     {
-                        topLeft.possibleDestinations.Remove(top.worldPosition);
-                        top.possibleDestinations.Remove(topLeft.worldPosition);
+                        topLeft.possibleDestinations.Remove(top);
+                        top.possibleDestinations.Remove(topLeft);
                     }
                     if (bottomLeft != null && bottom != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomLeft);
                     }
                     break;
                 case 300:
                 case -60:
                     if (top != null && topRight != null)
                     {
-                        top.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(top.worldPosition);
+                        top.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(top);
                     }
                     if (bottomLeft != null && topLeft != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
-                        topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(topLeft);
+                        topLeft.possibleDestinations.Remove(bottomLeft);
                     }
                     break;
             }
@@ -322,18 +322,18 @@ public class CardController : MonoBehaviour
                 case -120:
                     if (bottomRight != null && topRight != null)
                     {
-                        bottomRight.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(bottomRight);
                     }
                     if (topLeft != null && top != null)
                     {
-                        topLeft.possibleDestinations.Remove(top.worldPosition);
-                        top.possibleDestinations.Remove(topLeft.worldPosition);
+                        topLeft.possibleDestinations.Remove(top);
+                        top.possibleDestinations.Remove(topLeft);
                     }
                     if (bottomLeft != null && bottom != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomLeft);
                     }
                     break;
                 case 60:
@@ -344,18 +344,18 @@ public class CardController : MonoBehaviour
                 case -60:
                     if (bottomRight != null && bottom != null)
                     {
-                        bottomRight.possibleDestinations.Remove(bottom.worldPosition);
-                        bottom.possibleDestinations.Remove(bottomRight.worldPosition);
+                        bottomRight.possibleDestinations.Remove(bottom);
+                        bottom.possibleDestinations.Remove(bottomRight);
                     }
                     if (top != null && topRight != null)
                     {
-                        top.possibleDestinations.Remove(topRight.worldPosition);
-                        topRight.possibleDestinations.Remove(top.worldPosition);
+                        top.possibleDestinations.Remove(topRight);
+                        topRight.possibleDestinations.Remove(top);
                     }
                     if (bottomLeft != null && topLeft != null)
                     {
-                        bottomLeft.possibleDestinations.Remove(topLeft.worldPosition);
-                        topLeft.possibleDestinations.Remove(bottomLeft.worldPosition);
+                        bottomLeft.possibleDestinations.Remove(topLeft);
+                        topLeft.possibleDestinations.Remove(bottomLeft);
                     }
                     break;
             }
@@ -1058,7 +1058,6 @@ public class CardController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         CardController cardHit = other.GetComponentInParent<CardController>();
-        print(name + " Collided with " + cardHit.name);
         if (cardHit != null)
         {
             GameManager.instance.cardsManager.PlacedCards.Remove(this);

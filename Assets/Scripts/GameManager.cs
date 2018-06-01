@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public CombatManager combatManager;
     [HideInInspector]
+    public Pathfinding pathfinding;
+    [HideInInspector]
     public int turnCount = 0;
     [HideInInspector]
     public float buttonMashFightResult = .5f;
@@ -70,6 +72,7 @@ public class GameManager : MonoBehaviour
         playersHUDcontroller = FindObjectOfType<PlayersHUDController>();
         hudManager = FindObjectOfType<HUDManager>();
         combatManager = GetComponent<CombatManager>();
+        pathfinding = GetComponent<Pathfinding>();
         InstantiatePlayers();
     }
 
@@ -503,9 +506,9 @@ public class GameManager : MonoBehaviour
                 if (pointsInRange[i].remainingMoves > 0)
                 {
                     if (pointsInRange[i].point.type != Point.Type.purple)
-                        foreach (Vector3 destination in pointsInRange[i].point.possibleDestinations)
+                        foreach (Point point in pointsInRange[i].point.possibleDestinations)
                         {
-                            pointsInRange.Add(new AgentPosition(gridReference.GetPointFromWorldPosition(destination), pointsInRange[i].remainingMoves - 1));
+                            pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
                         }
                 }
                 pointsInRange[i].isChecked = true;

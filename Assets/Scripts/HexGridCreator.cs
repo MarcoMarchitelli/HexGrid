@@ -432,16 +432,16 @@ public class HexGridCreator : MonoBehaviour
 
         foreach (Point point in WaypointGrid)
         {
-            if (yellow.possibleDestinations.Contains(point.worldPosition))
-                point.possibleDestinations.Add(yellow.worldPosition);
-            if (blue.possibleDestinations.Contains(point.worldPosition))
-                point.possibleDestinations.Add(blue.worldPosition);
-            if (green.possibleDestinations.Contains(point.worldPosition))
-                point.possibleDestinations.Add(green.worldPosition);
-            if (red.possibleDestinations.Contains(point.worldPosition))
-                point.possibleDestinations.Add(red.worldPosition);
-            if (win.possibleDestinations.Contains(point.worldPosition))
-                point.possibleDestinations.Add(win.worldPosition);
+            if (yellow.possibleDestinations.Contains(point))
+                point.possibleDestinations.Add(yellow);
+            if (blue.possibleDestinations.Contains(point))
+                point.possibleDestinations.Add(blue);
+            if (green.possibleDestinations.Contains(point))
+                point.possibleDestinations.Add(green);
+            if (red.possibleDestinations.Contains(point))
+                point.possibleDestinations.Add(red);
+            if (win.possibleDestinations.Contains(point))
+                point.possibleDestinations.Add(win);
         }
     }
 
@@ -700,15 +700,15 @@ public class HexGridCreator : MonoBehaviour
         if (flag)
             for (int i = 0; i < point.possibleDestinations.Count; i++)
             {
-                Point _point = GetPointFromWorldPosition(point.possibleDestinations[i]);
-                if (_point.possibleDestinations.Contains(point.worldPosition))
-                    point.possibleDestinations.Remove(_point.worldPosition);
+                Point _point = point.possibleDestinations[i];
+                if (_point.possibleDestinations.Contains(point))
+                    point.possibleDestinations.Remove(_point);
             }
         else
             for (int i = 0; i < point.possibleDestinations.Count; i++)
             {
-                Point _point = GetPointFromWorldPosition(point.possibleDestinations[i]);
-                point.possibleDestinations.Add(_point.worldPosition);
+                Point _point = point.possibleDestinations[i];
+                point.possibleDestinations.Add(_point);
             }
     }
 
@@ -751,9 +751,9 @@ public class HexGridCreator : MonoBehaviour
         return nearHexagons;
     }
 
-    public List<Vector3> GetPossibleDestinationsFromPoint(Point point)
+    public List<Point> GetPossibleDestinationsFromPoint(Point point)
     {
-        List<Vector3> destinations = new List<Vector3>();
+        List<Point> destinations = new List<Point>();
 
         for (int i = 0; i < WaypointGrid.Count; i++)
         {
@@ -761,80 +761,80 @@ public class HexGridCreator : MonoBehaviour
             if (point.type == Point.Type.hypogeum && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 2 && WaypointGrid[i].y == point.y)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y + 2)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
             }
             //starting point blue
             if (point.type == Point.Type.underwater && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 2 && WaypointGrid[i].y == point.y)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y + 2)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
             }
             //starting point red
             if (point.type == Point.Type.underground && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 4)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 2 && WaypointGrid[i].y == point.y)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y - 2)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
             }
             //starting point green
             if (point.type == Point.Type.forest && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 4)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 2 && WaypointGrid[i].y == point.y)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y - 2)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
             }
 
             //win point
             if (point.type == Point.Type.win)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 2)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y + 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y + 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
             }
 
             //general straight movement point
             if (point.y % 2 != 0)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y - 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y - 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
             }
 
             //general inverted movement point
             if (point.y % 2 == 0)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y + 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y + 1)
-                    destinations.Add(WaypointGrid[i].worldPosition);
+                    destinations.Add(WaypointGrid[i]);
             }
         }
 
@@ -849,6 +849,23 @@ public class HexGridCreator : MonoBehaviour
                 return true;
         }
         return false;
+    }
+
+    public List<Point> path;
+
+    private void OnDrawGizmos()
+    {
+        foreach (var point in WaypointGrid)
+        {
+            if (path != null)
+            {
+                if (path.Contains(point))
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawCube(point.worldPosition, Vector3.one);
+                }
+            }
+        }      
     }
 
     #endregion
