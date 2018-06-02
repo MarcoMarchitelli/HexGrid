@@ -185,8 +185,6 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        //uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
-
         if (playerIndex != 3)
             playerIndex++;
         else

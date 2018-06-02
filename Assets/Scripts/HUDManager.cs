@@ -113,13 +113,6 @@ public class HUDManager : MonoBehaviour
             {
                 moveButton.SetSprite(ButtonController.SpriteType.active);
                 moveButton.SetUsability(true);
-            }    
-            
-            //confirm move
-            if(player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
-            {
-                moveButton.SetSprite(ButtonController.SpriteType.confirm);
-                moveButton.SetUsability(true);
             }
 
             //buy
@@ -186,11 +179,6 @@ public class HUDManager : MonoBehaviour
             {
                 moveButton.SetSprite(ButtonController.SpriteType.special);
                 moveButton.SetUsability(true);
-                if (player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
-                {
-                    moveButton.SetSprite(ButtonController.SpriteType.confirm);
-                    moveButton.SetUsability(true);
-                }
             }
             else
             {

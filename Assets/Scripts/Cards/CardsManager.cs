@@ -31,6 +31,7 @@ public class CardsManager : MonoBehaviour {
         {
             if (card.player == player)
             {
+                card.ResourcesPopUpAnimation();
                 player.energyPoints += card.extractableEnergy;
                 player.bonusMoveActions += card.moveHexTouched;
                 player.actions += card.abilityHexTouched;
