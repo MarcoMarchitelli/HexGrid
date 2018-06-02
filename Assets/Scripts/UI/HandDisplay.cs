@@ -14,13 +14,9 @@ public class HandDisplay : MonoBehaviour
     public TextMeshProUGUI card2QuantityText;
     public TextMeshProUGUI card3QuantityText;
 
-    private void OnEnable()
+    public void RefreshHandDisplay()
     {
-        RefreshHandDisplay(GameManager.instance.currentActivePlayer);
-    }
-
-    public void RefreshHandDisplay(PlayerController player)
-    {
+        PlayerController player = GameManager.instance.currentActivePlayer;
         player.SetNumberOfCardTypesInHand();
 
         int card1Number = player.numberOfCards1InHand;
