@@ -457,6 +457,7 @@ public class GameManager : MonoBehaviour
         {
             currentActivePlayer.UnselectCard();
         }
+        mainCamera.SetHighView(false);
     }
 
     void UndoRotateCard()
@@ -479,6 +480,7 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
         currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
+        mainCamera.SetHighView(false);
     }
 
     #endregion
