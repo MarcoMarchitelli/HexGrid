@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Point{
+public class Point : IHeapItem<Point>{
 
     public int x, y;
     public Vector3 worldPosition;
@@ -14,6 +14,7 @@ public class Point{
 
     public int gCost;
     public int hCost;
+    int heapIndex;
     public Point parent;
 
     public int fCost
@@ -22,6 +23,29 @@ public class Point{
         {
             return gCost + hCost;
         }
+    }
+
+    public int HeapIndex
+    {
+        get
+        {
+            return heapIndex;
+        }
+
+        set
+        {
+            heapIndex = value;
+        }
+    }
+
+    public int CompareTo(Point pointToCompare)
+    {
+        int compare = fCost.CompareTo(pointToCompare.fCost);
+        if(compare == 0)
+        {
+            compare = hCost.CompareTo(pointToCompare.hCost);
+        }
+        return -compare;
     }
 
     public enum Type

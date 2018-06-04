@@ -1,12 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Diagnostics;
 
 public class Pathfinding : MonoBehaviour {
 
 
     public List<Point> FindPath(Point start, Point target)
     {
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+
         List<Point> openSet = new List<Point>();
         HashSet<Point> closedSet = new HashSet<Point>();
 
@@ -28,6 +32,8 @@ public class Pathfinding : MonoBehaviour {
 
             if(currentPoint == target)
             {
+                sw.Stop();
+                print("Path found after " + sw.ElapsedMilliseconds + " ms.");
                 return RetracePath(start, target);
             }
 
