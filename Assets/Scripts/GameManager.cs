@@ -488,6 +488,20 @@ public class GameManager : MonoBehaviour
         hudManager.Win(player);
     }
 
+    public bool CheckIfPointIsWalkable(Point point)
+    {
+        foreach (PlayerController player in players)
+        {
+            if (player != currentActivePlayer && player.currentWayPoint == point)
+                return false;
+        }
+
+        if (point.type == Point.Type.win && currentActivePlayer.victoryPoints < 5)
+            return false;
+
+        return true;
+    }
+
     public List<AgentPosition> FindPointsInRange(int range, PlayerController player)
     {
         List<AgentPosition> pointsInRange = new List<AgentPosition>();
@@ -506,7 +520,8 @@ public class GameManager : MonoBehaviour
                     if (pointsInRange[i].point.type != Point.Type.purple)
                         foreach (Point point in pointsInRange[i].point.possibleDestinations)
                         {
-                            pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
+                            if(CheckIfPointIsWalkable(point))
+                                pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
                         }
                 }
                 pointsInRange[i].isChecked = true;

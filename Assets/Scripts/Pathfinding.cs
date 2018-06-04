@@ -6,28 +6,19 @@ using System.Diagnostics;
 public class Pathfinding : MonoBehaviour {
 
 
-    public List<Point> FindPath(Point start, Point target)
+    public List<Point> FindPath(Point start, Point target, int mapMaxSize)
     {
         Stopwatch sw = new Stopwatch();
         sw.Start();
 
-        List<Point> openSet = new List<Point>();
+        Heap<Point> openSet = new Heap<Point>(mapMaxSize);
         HashSet<Point> closedSet = new HashSet<Point>();
 
         openSet.Add(start);
 
         while(openSet.Count > 0)
         {
-            Point currentPoint = openSet[0];
-            for (int i = 0; i < openSet.Count; i++)
-            {
-                if(openSet[i].fCost < currentPoint.fCost || openSet[i].fCost == currentPoint.fCost && openSet[i].hCost == currentPoint.hCost)
-                {
-                    currentPoint = openSet[i];
-                }
-            }
-
-            openSet.Remove(currentPoint);
+            Point currentPoint = openSet.RemoveFirst();
             closedSet.Add(currentPoint);
 
             if(currentPoint == target)
@@ -52,6 +43,10 @@ public class Pathfinding : MonoBehaviour {
                     if (!openSet.Contains(neighbour))
                     {
                         openSet.Add(neighbour);
+                    }
+                    else
+                    {
+                        openSet.UpdateItem(neighbour);  
                     }
                 }
             }

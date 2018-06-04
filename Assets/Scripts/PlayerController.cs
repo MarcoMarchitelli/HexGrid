@@ -96,10 +96,11 @@ public class PlayerController : MonoBehaviour
                             {
                                 if (agent.point == pointHit)
                                 {
-                                    StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit)));
+                                    StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit, moveAgents.Count)));
                                     if(GameManager.instance.OnMoveSelected != null)
                                         GameManager.instance.OnMoveSelected();
                                     hasMoved = true;
+                                    break;
                                 }
                             }
                         }
@@ -392,22 +393,6 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-    }
-
-    bool CheckIfPointIsWalkable(Point point)
-    {
-        PlayerController[] players = GameManager.instance.players;
-
-        foreach (PlayerController player in players)
-        {
-            if (player.currentWayPoint == point)
-                return false;
-        }
-
-        if (point.type == Point.Type.win && victoryPoints < 5)
-            return false;
-
-        return true;
     }
 
     public bool IsMyColor(Point point)
