@@ -247,10 +247,6 @@ public class HUDManager : MonoBehaviour
                 {
                     GameManager.instance.UndoAction();
                 }
-                else
-                {
-                    GameManager.instance.ConfirmAction();
-                }
                 break;
             case PlayerController.Action.buyCard:
             case PlayerController.Action.placeCard:
@@ -316,6 +312,9 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.UndoAction();
                 GameManager.instance.ChoseAction(4);
                 break;
+            case PlayerController.Action.rotateCard:
+                GameManager.instance.UndoAction();
+                break;
             default:
                 break;
         }
@@ -334,6 +333,9 @@ public class HUDManager : MonoBehaviour
             case PlayerController.Action.buyCard:
                 GameManager.instance.UndoAction();
                 GameManager.instance.ChoseAction(5);
+                break;
+            case PlayerController.Action.fight:
+                GameManager.instance.UndoAction();
                 break;
             default:
                 break;
