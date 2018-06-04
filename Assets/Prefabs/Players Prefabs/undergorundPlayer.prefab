@@ -56,6 +56,7 @@ GameObject:
   - component: {fileID: 33059598980449416}
   - component: {fileID: 23604883813412018}
   - component: {fileID: 95621878726289810}
+  - component: {fileID: 114665792983526802}
   m_Layer: 0
   m_Name: Underground_Character
   m_TagString: Untagged
@@ -73,6 +74,7 @@ GameObject:
   - component: {fileID: 4858295832397620}
   - component: {fileID: 114936040168531598}
   - component: {fileID: 136927808773968592}
+  - component: {fileID: 114716524704427748}
   m_Layer: 11
   m_Name: undergorundPlayer
   m_TagString: Player
@@ -255,6 +257,67 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114665792983526802
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1946187790876970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114716524704427748
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1971008938101426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f51de0ad234c21a4ebd50b2ec251d65b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MultipleOutlines: 0
+  OutlineInChildren: 1
+  OutlinesParent: {fileID: 4858295832397620}
+  OnMouseEnterEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114716524704427748}
+        m_MethodName: SetColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnMouseExitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114716524704427748}
+        m_MethodName: SetColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114936040168531598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -270,6 +333,7 @@ MonoBehaviour:
   moveSpeed: 4
   type: 3
   VFXobject: {fileID: 1985823480343484}
+  outlineController: {fileID: 114716524704427748}
   startingWayPoint:
     x: 0
     y: 0

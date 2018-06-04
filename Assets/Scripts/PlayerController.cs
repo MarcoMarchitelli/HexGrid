@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     public Type type;
     public GameObject VFXobject;
+    public OutlineController outlineController;
     [HideInInspector]
     public Point startingWayPoint;
     [HideInInspector]
@@ -225,7 +226,8 @@ public class PlayerController : MonoBehaviour
 
             case Action.fight:
 
-                #region Bet
+                #region Fight
+
                 if (!hasFought)
                 {
                     RaycastHit betHitInfo;
@@ -436,7 +438,7 @@ public class PlayerController : MonoBehaviour
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
                 VFXobject.SetActive(true);
-                moveAgents = GameManager.instance.FindPointsInRange(possibleMoves, this);
+                moveAgents = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)
                     GameManager.instance.OnMoveEnter(moveAgents);
                 break;
@@ -459,6 +461,11 @@ public class PlayerController : MonoBehaviour
                 break;
             case 5:
                 currentAction = Action.fight;
+                foreach (var player in playersToRob)
+                {
+                    player.outlineController.SetColor(1);
+                    player.outlineController.EnableOutline(true);
+                }
                 break;
         }
 

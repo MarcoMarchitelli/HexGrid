@@ -250,8 +250,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #region Button Functions
-
     public void EndTurn()
     {
         turnEnded = true;
@@ -284,6 +282,10 @@ public class GameManager : MonoBehaviour
                 ConfirmRotateCard();
                 break;
             case PlayerController.Action.fight:
+                foreach (var player in currentActivePlayer.playersToRob)
+                {
+                    player.outlineController.EnableOutline(false);
+                }
                 break;
         }
 
@@ -325,6 +327,10 @@ public class GameManager : MonoBehaviour
                 UndoRotateCard();
                 break;
             case PlayerController.Action.fight:
+                foreach (var player in currentActivePlayer.playersToRob)
+                {
+                    player.outlineController.EnableOutline(false);
+                }
                 break;
         }
 
@@ -333,8 +339,6 @@ public class GameManager : MonoBehaviour
         hudManager.Refresh();
         playersHUDcontroller.RefreshPlayerUIs();
     }
-
-    #endregion
 
     #region Specific Confirm Actions
 
@@ -503,7 +507,7 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public List<AgentPosition> FindPointsInRange(int range, PlayerController player)
+    public List<AgentPosition> FindWalkablePointsInRange(int range, PlayerController player)
     {
         List<AgentPosition> pointsInRange = new List<AgentPosition>();
 
@@ -536,11 +540,38 @@ public class GameManager : MonoBehaviour
         return pointsInRange;
     }
 
+    public List<AgentPosition> ScanPointsInRange(int range, PlayerController player)
+    {
+        List<AgentPosition> pointsInRange = new List<AgentPosition>();
+
+        if (range > 0)
+        {
+            pointsInRange.Add(new AgentPosition(player.currentWayPoint, range));
+        }
+
+        for (int i = 0; i < pointsInRange.Count; i++)
+        {
+            if (!pointsInRange[i].isChecked)
+            {
+                if (pointsInRange[i].remainingMoves > 0)
+                {
+                    foreach (Point point in pointsInRange[i].point.possibleDestinations)
+                    {
+                        pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
+                    }
+                }
+                pointsInRange[i].isChecked = true;
+            }
+        }
+
+        return pointsInRange;
+    }
+
     public List<PlayerController> FindPlayersInRange(int range, PlayerController player)
     {
         List<PlayerController> playersInRange = new List<PlayerController>();
 
-        List<AgentPosition> pointsInRange = FindPointsInRange(range, player);
+        List<AgentPosition> pointsInRange = ScanPointsInRange(range, player);
 
         foreach (AgentPosition agent in pointsInRange)
         {
@@ -555,6 +586,7 @@ public class GameManager : MonoBehaviour
 
         return playersInRange;
     }
+
 }
 
 public class AgentPosition

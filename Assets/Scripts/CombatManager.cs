@@ -19,6 +19,7 @@ public class CombatManager : MonoBehaviour
 
     public UnityEvent OnFightFinish;
     public UnityEvent OnFightStart;
+    public UnityEvent OnModifiersSelected;
 
     [Header("UI Stuff")]
     public GameObject SelectionPanel;
@@ -66,7 +67,6 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator ModifiersSelection()
     {
-        SelectionPanel.SetActive(true);
 
         print("Attacker select your bonus!");
 
@@ -88,12 +88,13 @@ public class CombatManager : MonoBehaviour
 
         print("Defender added " + defenderBonusStrength + " bonus strength");
 
-        SelectionPanel.SetActive(false);
+        OnModifiersSelected.Invoke();
+
     }
 
     IEnumerator CountDown(int seconds)
     {
-        FightPanel.SetActive(true);
+
         for (int i = seconds; i >= 0; i--)
         {
             if (i == 0)
