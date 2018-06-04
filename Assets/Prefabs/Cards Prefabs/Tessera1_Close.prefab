@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 95018632428630374}
   - component: {fileID: 114734648352804578}
   - component: {fileID: 54470841881418338}
+  - component: {fileID: 114104337561233070}
   m_Layer: 10
   m_Name: Tessera1_Close
   m_TagString: Untagged
@@ -196,6 +197,7 @@ GameObject:
   - component: {fileID: 4710050421737228}
   - component: {fileID: 33316609698398450}
   - component: {fileID: 23878155474292762}
+  - component: {fileID: 114849468946121696}
   m_Layer: 10
   m_Name: Card_Arrows
   m_TagString: Untagged
@@ -292,6 +294,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4584847821139464}
   - component: {fileID: 137678362128207214}
+  - component: {fileID: 114575594408157816}
   m_Layer: 10
   m_Name: Wall1
   m_TagString: Untagged
@@ -688,6 +691,52 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114104337561233070
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1456300481592680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f51de0ad234c21a4ebd50b2ec251d65b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MultipleOutlines: 1
+  OutlineInChildren: 1
+  OutlinesParent: {fileID: 4387625631901442}
+  OnMouseEnterEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114104337561233070}
+        m_MethodName: SetColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnMouseExitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114104337561233070}
+        m_MethodName: SetColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114221646649964236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -814,6 +863,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resourcePopUpText: {fileID: 114221646649964236}
   animator: {fileID: 95432170530231694}
+--- !u!114 &114575594408157816
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1731350311865820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114734648352804578
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -828,6 +892,7 @@ MonoBehaviour:
   popUp1: {fileID: 114562850164195728}
   popUp2: {fileID: 0}
   popUp3: {fileID: 0}
+  outlineController: {fileID: 114104337561233070}
   placedEulerAngle: 0
   extractableEnergy: 0
   moveHexTouched: 0
@@ -866,6 +931,21 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!114 &114849468946121696
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1658908506243484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!135 &135104220257855144
 SphereCollider:
   m_ObjectHideFlags: 1

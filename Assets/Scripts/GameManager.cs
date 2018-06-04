@@ -415,6 +415,7 @@ public class GameManager : MonoBehaviour
     {
         currentActivePlayer.selectedCard = null;
 
+        cardsManager.HighlightPlacedCards(false);
         mainCamera.SetHighView(false);
     }
 
@@ -477,6 +478,7 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
         currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
+        cardsManager.HighlightPlacedCards(false);
         mainCamera.SetHighView(false);
     }
 

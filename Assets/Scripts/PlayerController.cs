@@ -454,6 +454,7 @@ public class PlayerController : MonoBehaviour
                 currentAction = Action.rotateCard;
                 beforeActionEnergyPoints = energyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
+                GameManager.instance.cardsManager.HighlightPlacedCards(true);
                 GameManager.instance.mainCamera.SetHighView(true);
                 break;
             case 5:

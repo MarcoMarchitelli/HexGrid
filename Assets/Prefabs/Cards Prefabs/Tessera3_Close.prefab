@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4534442335834306}
   - component: {fileID: 33417405653898776}
   - component: {fileID: 23327830052993926}
+  - component: {fileID: 114344895578141684}
   m_Layer: 0
   m_Name: Card_Arrows
   m_TagString: Untagged
@@ -37,6 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4492427057445132}
   - component: {fileID: 137909618784180948}
+  - component: {fileID: 114241023224909164}
   m_Layer: 0
   m_Name: Wall5
   m_TagString: Untagged
@@ -69,6 +71,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4019610021292276}
   - component: {fileID: 137734664382367604}
+  - component: {fileID: 114797448261888576}
   m_Layer: 0
   m_Name: Wall1
   m_TagString: Untagged
@@ -131,6 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4951688171952558}
   - component: {fileID: 137812102992838602}
+  - component: {fileID: 114419226139832142}
   m_Layer: 0
   m_Name: Wall3
   m_TagString: Untagged
@@ -274,6 +278,7 @@ GameObject:
   - component: {fileID: 95924182400105982}
   - component: {fileID: 114654938821150904}
   - component: {fileID: 54640896050961592}
+  - component: {fileID: 114749595100075426}
   m_Layer: 0
   m_Name: Tessera3_Close
   m_TagString: Untagged
@@ -717,6 +722,51 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114241023224909164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1148098006587762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114344895578141684
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1115892052191740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114419226139832142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1300650160810286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114654938821150904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -728,6 +778,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1751b6029cb4d5d479336d772d0e719a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popUp1: {fileID: 0}
+  popUp2: {fileID: 0}
+  popUp3: {fileID: 0}
+  outlineController: {fileID: 114749595100075426}
   placedEulerAngle: 0
   extractableEnergy: 0
   moveHexTouched: 0
@@ -745,6 +799,67 @@ MonoBehaviour:
   closeAnimFinished: 0
   openAnimFinished: 0
   rotateRightFlowFinished: 0
+--- !u!114 &114749595100075426
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1845971164924594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f51de0ad234c21a4ebd50b2ec251d65b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MultipleOutlines: 1
+  OutlineInChildren: 1
+  OutlinesParent: {fileID: 4276803600150830}
+  OnMouseEnterEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114749595100075426}
+        m_MethodName: SetColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  OnMouseExitEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 114749595100075426}
+        m_MethodName: SetColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114797448261888576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1184048611826070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!135 &135294249560831828
 SphereCollider:
   m_ObjectHideFlags: 1

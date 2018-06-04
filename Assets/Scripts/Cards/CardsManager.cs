@@ -40,4 +40,18 @@ public class CardsManager : MonoBehaviour {
         GameManager.instance.gainPhaseEnded = true;
     }
 
+    public void HighlightPlacedCards(bool flag)
+    {
+        if(flag)
+            foreach (var card in PlacedCards)
+            {
+                card.outlineController.EnableOutline(true);
+            }
+        else
+            foreach (var card in PlacedCards)
+            {
+                card.outlineController.EnableOutline(false);
+            }
+    }
+
 }

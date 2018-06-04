@@ -8,6 +8,8 @@ public class CardController : MonoBehaviour
     public ResourcePopUp popUp2;
     public ResourcePopUp popUp3;
 
+    public OutlineController outlineController;
+
     int eulerAngle = 0;
     [HideInInspector]
     public int placedEulerAngle;
