@@ -52,10 +52,8 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    Hexagon lastSelectedHex;
     [HideInInspector]
     public bool isRunning = false, hasMoved = false;
-    string bottomLeftMsg;
     int maxPE = 25;
 
     Animator animator;

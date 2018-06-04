@@ -36,6 +36,7 @@ GameObject:
   - component: {fileID: 4227578655686308}
   - component: {fileID: 114210136872345514}
   - component: {fileID: 135364249674251454}
+  - component: {fileID: 114587403751852112}
   m_Layer: 0
   m_Name: VictoryPoint_Undergrowth
   m_TagString: Untagged
@@ -53,6 +54,7 @@ GameObject:
   - component: {fileID: 4753725964140610}
   - component: {fileID: 33111664302567056}
   - component: {fileID: 23774643438887376}
+  - component: {fileID: 114828493106637284}
   m_Layer: 0
   m_Name: Pedestal 1
   m_TagString: Untagged
@@ -70,6 +72,7 @@ GameObject:
   - component: {fileID: 4960772341613778}
   - component: {fileID: 33139349669781064}
   - component: {fileID: 23769935813154310}
+  - component: {fileID: 114093114782710852}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
@@ -216,6 +219,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1932136217546220}
   m_Mesh: {fileID: 4300000, guid: 79e21d9e1153e75449a2698b3e2e2b5f, type: 3}
+--- !u!114 &114093114782710852
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932136217546220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114210136872345514
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -245,6 +263,34 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114587403751852112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1592327643935090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0a9044cdc59c04c812ff9607eb9b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MultipleOutlines: 1
+  OutlineInChildren: 1
+--- !u!114 &114828493106637284
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1733610312254332}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!135 &135364249674251454
 SphereCollider:
   m_ObjectHideFlags: 1

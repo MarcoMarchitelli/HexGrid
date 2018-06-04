@@ -44,7 +44,6 @@ public class GameManager : MonoBehaviour
 
     int energyBet;
     bool hasBet, fightResultAnnounced;
-    PlayerController winner;
     [HideInInspector]
     public bool isStaticEvent = false;
 
@@ -517,12 +516,16 @@ public class GameManager : MonoBehaviour
             {
                 if (pointsInRange[i].remainingMoves > 0)
                 {
-                    if (pointsInRange[i].point.type != Point.Type.purple)
-                        foreach (Point point in pointsInRange[i].point.possibleDestinations)
-                        {
-                            if(CheckIfPointIsWalkable(point))
-                                pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
-                        }
+                    if (pointsInRange[i].point.type == Point.Type.purple && player.currentWayPoint != pointsInRange[i].point)
+                        continue;
+                    foreach (Point point in pointsInRange[i].point.possibleDestinations)
+                    {
+                        if (!CheckIfPointIsWalkable(point))
+                            continue;
+                        if (point.isFinalWaypoint && !player.IsMyColor(point))
+                            continue;
+                        pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
+                    }
                 }
                 pointsInRange[i].isChecked = true;
             }
