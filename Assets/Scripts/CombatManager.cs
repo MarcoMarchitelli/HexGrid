@@ -18,6 +18,7 @@ public class CombatManager : MonoBehaviour
     public KeyCode defenderInput = KeyCode.Alpha0;
 
     public UnityEvent OnFightFinish;
+    public UnityEvent OnFightStart;
 
     [Header("UI Stuff")]
     public GameObject SelectionPanel;
@@ -30,6 +31,8 @@ public class CombatManager : MonoBehaviour
 
     #endregion
 
+    PlayerController attacker, defender;
+
     float fightSliderValue = 0f;
     float attackerBonusStrength = 0f, defenderBonusStrength = 0f;
     bool attackerModSet = false, defenderModSet = false;
@@ -40,45 +43,52 @@ public class CombatManager : MonoBehaviour
         slider.minValue = minValue;
     }
 
-    public void StartFightFlow(PlayerController attacker, PlayerController defender)
+    public void StartFightFlow(PlayerController _attacker, PlayerController _defender)
     {
+        attacker = _attacker;
+        defender = _defender;
         ResetValues();
-        StartCoroutine(FightFlow(attacker, defender));
+        StartCoroutine(FightFlow());
     }
 
-    IEnumerator FightFlow(PlayerController attacker, PlayerController defender)
+    IEnumerator FightFlow()
     {
-        yield return StartCoroutine(ModifiersSelection(attacker, defender));
+        OnFightStart.Invoke();
+
+        yield return StartCoroutine(ModifiersSelection());
 
         yield return StartCoroutine(CountDown(3));
 
-        yield return StartCoroutine(ButtonMashFight(attacker, defender));
+        yield return StartCoroutine(ButtonMashFight());
 
         OnFightFinish.Invoke();
     }
 
-    IEnumerator ModifiersSelection(PlayerController attacker, PlayerController defender)
+    IEnumerator ModifiersSelection()
     {
         SelectionPanel.SetActive(true);
 
         print("Attacker select your bonus!");
 
         attackerModController.ToggleModifierButtons(attacker);
+        defenderModController.ToggleModifierButtons(defender);
 
         while (!attackerModSet)
         {
             yield return null;
         }
 
-        print("Attacker added " + attackerBonusStrength + " bonus strength");
-        print("Defender select your bonus!");
+        attackerModController.SetModifierButtonsOff();
 
-        defenderModController.ToggleModifierButtons(defender);
+        print("Attacker added " + attackerBonusStrength + " bonus strength");
+        print("Defender select your bonus!");       
 
         while (!defenderModSet)
         {
             yield return null;
         }
+
+        defenderModController.SetModifierButtonsOff();
 
         print("Defender added " + defenderBonusStrength + " bonus strength");
 
@@ -98,7 +108,7 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    IEnumerator ButtonMashFight(PlayerController attacker, PlayerController defender)
+    IEnumerator ButtonMashFight()
     {
         float startAttStr = baseStrength + attackerBonusStrength;
         float startDefStr = baseStrength + defenderBonusStrength;
@@ -145,18 +155,72 @@ public class CombatManager : MonoBehaviour
 
         FightPanel.SetActive(false);
 
-        GameManager.instance.currentActivePlayer.currentAction = PlayerController.Action.start;
+        GameManager.instance.ConfirmAction();
     }
 
-    public void SetAttackerModifier(float mod)
+    public void SetAttackerModifier(int energy)
     {
-        attackerBonusStrength = mod;
+        switch (energy)
+        {
+            case 0:
+                attackerBonusStrength = 0;
+                break;
+            case 1:
+                attackerBonusStrength = 0.025f;
+                break;
+            case 2:
+                attackerBonusStrength = 0.05f;
+                break;
+            case 4:
+                attackerBonusStrength = 0.1f;
+                break;
+            case 6:
+                attackerBonusStrength = 0.15f;
+                break;
+            case 8:
+                attackerBonusStrength = 0.20f;
+                break;
+            case 10:
+                attackerBonusStrength = 0.25f;
+                break;
+            case 15:
+                attackerBonusStrength = 0.375f;
+                break;        
+        }
+        attacker.energyPoints -= energy;
         attackerModSet = true;
     }
 
-    public void SetDefenderModifier(float mod)
+    public void SetDefenderModifier(int energy)
     {
-        defenderBonusStrength = mod;
+        switch (energy)
+        {
+            case 0:
+                defenderBonusStrength = 0;
+                break;
+            case 1:
+                defenderBonusStrength = 0.025f;
+                break;
+            case 2:
+                defenderBonusStrength = 0.05f;
+                break;
+            case 4:
+                defenderBonusStrength = 0.1f;
+                break;
+            case 6:
+                defenderBonusStrength = 0.15f;
+                break;
+            case 8:
+                defenderBonusStrength = 0.20f;
+                break;
+            case 10:
+                defenderBonusStrength = 0.25f;
+                break;
+            case 15:
+                defenderBonusStrength = 0.375f;
+                break;
+        }
+        defender.energyPoints -= energy;
         defenderModSet = true;
     }
 

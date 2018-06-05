@@ -19,7 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4095254882776720}
-  - component: {fileID: 114228028317262384}
+  - component: {fileID: 114337792189949072}
+  - component: {fileID: 114661917540379896}
   m_Layer: 0
   m_Name: UIManager
   m_TagString: Untagged
@@ -40,7 +41,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114228028317262384
+--- !u!114 &114337792189949072
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -48,32 +49,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 1949906533638438}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d4b4cc53c5afb041ab8a3e1dd53d874, type: 3}
+  m_Script: {fileID: 11500000, guid: ef475ee7534c55d4ca5b0df83628e17b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topLeftSection: {fileID: 0}
-  leftMediumSection: {fileID: 0}
+  playerUIs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!114 &114661917540379896
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1949906533638438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cb7d3ac043d9334b9236f17713f385b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   bigCentralSection: {fileID: 0}
-  cardButtons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   moveButton: {fileID: 0}
   buyCardButton: {fileID: 0}
-  sellCardButton: {fileID: 0}
   placeCardButton: {fileID: 0}
   rotateCardButton: {fileID: 0}
-  betButton: {fileID: 0}
-  bonusMoveButton: {fileID: 0}
-  undoMovesButton: {fileID: 0}
+  fightButton: {fileID: 0}
   endTurnButton: {fileID: 0}
-  confirmButton: {fileID: 0}
-  undoButton: {fileID: 0}
   winOverlay: {fileID: 0}
-  cardShop: {fileID: 0}
-  handDisplay: {fileID: 0}
-  sellCardDisplay: {fileID: 0}
-  BonusMoveCounter: {fileID: 0}
-  cardShopScript: {fileID: 0}
-  handDisplayScript: {fileID: 0}
-  sellCardDisplayScript: {fileID: 0}
+  pauseMenu: {fileID: 0}
+  actionIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  bigNewsAnimation: {fileID: 0}

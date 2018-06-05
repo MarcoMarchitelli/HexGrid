@@ -87,8 +87,7 @@ public class GameManager : MonoBehaviour
 
         //uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         print(currentActivePlayer.name + "'s Turn Start!");
         message = "Turn Start";
@@ -118,8 +117,7 @@ public class GameManager : MonoBehaviour
         currentPhase = Phase.gain;
         print("Gain Phase!");
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         message = "Gain Phase";
         hudManager.PrintBigNews(message);
@@ -130,6 +128,7 @@ public class GameManager : MonoBehaviour
         while (!gainPhaseEnded)
         {
             cardsManager.GainPhase(currentActivePlayer);
+            playersHUDcontroller.RefreshPlayerUIs();
             //VFX E ALTRE COSE
             yield return null;
         }
@@ -142,8 +141,7 @@ public class GameManager : MonoBehaviour
 
         print("Chose an action " + currentActivePlayer + "!");
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         message = "Main Phase";
         hudManager.PrintBigNews(message);
@@ -167,8 +165,7 @@ public class GameManager : MonoBehaviour
         print("Rotation Phase!");
 
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
 
         message = "Rotation Phase";
         hudManager.PrintBigNews(message);
@@ -237,15 +234,13 @@ public class GameManager : MonoBehaviour
         if (!flag)
         {
             ConfirmAction();
-            hudManager.ToggleActionButtons();
-            hudManager.ToggleEndTurnButton(currentActivePlayer);
+            hudManager.Refresh();
             currentActivePlayer.currentAction = PlayerController.Action.start;
         }
         else
         {
             ConfirmAction();
-            hudManager.ToggleActionButtons();
-            hudManager.ToggleEndTurnButton(currentActivePlayer);
+            hudManager.Refresh();
             currentActivePlayer.currentAction = PlayerController.Action.start;
         }
     }
@@ -264,8 +259,8 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.MoveToPoint(currentActivePlayer.moveStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.moveStartPoint;
         currentActivePlayer.currentAction = PlayerController.Action.moving;
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        currentActivePlayer.VFXobject.SetActive(false);
+        hudManager.Refresh();
     }
 
     public void ConfirmAction()
@@ -273,16 +268,15 @@ public class GameManager : MonoBehaviour
         switch (currentActivePlayer.currentAction)
         {
             case PlayerController.Action.moving:
-                //nothing to do
+                currentActivePlayer.VFXobject.SetActive(false);
                 break;
             case PlayerController.Action.buyCard:
                 break;
-            case PlayerController.Action.sellCard:
-                break;
             case PlayerController.Action.placeCard:
-                //nothing to do
+                ConfirmPlaceCard();
                 break;
             case PlayerController.Action.rotateCard:
+                ConfirmRotateCard();
                 break;
             case PlayerController.Action.fight:
                 break;
@@ -299,8 +293,8 @@ public class GameManager : MonoBehaviour
             currentActivePlayer.actions--;
         }
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
+        playersHUDcontroller.RefreshPlayerUIs();
     }
 
     public void UndoAction()
@@ -317,8 +311,6 @@ public class GameManager : MonoBehaviour
             case PlayerController.Action.buyCard:
                 UndoBuyCards();
                 break;
-            case PlayerController.Action.sellCard:
-                break;
             case PlayerController.Action.placeCard:
                 UndoPlaceCard();
                 break;
@@ -331,8 +323,8 @@ public class GameManager : MonoBehaviour
 
         currentActivePlayer.currentAction = PlayerController.Action.start;
 
-        hudManager.ToggleActionButtons();
-        hudManager.ToggleEndTurnButton(currentActivePlayer);
+        hudManager.Refresh();
+        playersHUDcontroller.RefreshPlayerUIs();
     }
 
     #endregion
@@ -394,26 +386,30 @@ public class GameManager : MonoBehaviour
     //    currentActivePlayer.SetNumberOfCardTypesInHand();
     //}
 
-    //void ConfirmPlaceCard()
-    //{
-    //    switch (currentActivePlayer.lastPlacedCard.type)
-    //    {
-    //        case CardController.Type.card1:
-    //            currentActivePlayer.numberOfCards1InHand++;
-    //            break;
-    //        case CardController.Type.card2:
-    //            currentActivePlayer.numberOfCards2InHand++;
-    //            break;
-    //        case CardController.Type.card3:
-    //            currentActivePlayer.numberOfCards3InHand++;
-    //            break;
-    //    }
-    //}
+    void ConfirmPlaceCard()
+    {
+        switch (currentActivePlayer.lastPlacedCard.type)
+        {
+            case CardController.Type.card1:
+                currentActivePlayer.numberOfCards1InHand--;
+                break;
+            case CardController.Type.card2:
+                currentActivePlayer.numberOfCards2InHand--;
+                break;
+            case CardController.Type.card3:
+                currentActivePlayer.numberOfCards3InHand--;
+                break;
+        }
 
-    //void ConfirmRotateCard()
-    //{
-    //    currentActivePlayer.selectedCard = null;
-    //}
+        mainCamera.SetHighView(false);
+    }
+
+    void ConfirmRotateCard()
+    {
+        currentActivePlayer.selectedCard = null;
+
+        mainCamera.SetHighView(false);
+    }
 
     #endregion
 

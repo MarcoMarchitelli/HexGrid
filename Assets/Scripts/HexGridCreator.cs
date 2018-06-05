@@ -238,7 +238,7 @@ public class HexGridCreator : MonoBehaviour
                     }
                     else
                     {
-                        Transform instantiatedBlueWaypoint = Instantiate(underwaterWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
+                        Transform instantiatedBlueWaypoint = Instantiate(underwaterWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
                         instantiatedBlueWaypoint.parent = mapContainer;
                     }
                     break;
@@ -255,7 +255,7 @@ public class HexGridCreator : MonoBehaviour
                     }
                     else
                     {
-                        Transform instantiatedRedWaypoint = Instantiate(undergroundWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
+                        Transform instantiatedRedWaypoint = Instantiate(undergroundWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
                         instantiatedRedWaypoint.parent = mapContainer;
                     }
                     break;
@@ -271,7 +271,7 @@ public class HexGridCreator : MonoBehaviour
                         InstantiatedHypogeumStartingPoint.parent = mapContainer;
                     }else
                     {
-                        Transform instantiatedYellowWaypoint = Instantiate(hypogeumWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
+                        Transform instantiatedYellowWaypoint = Instantiate(hypogeumWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
                         instantiatedYellowWaypoint.parent = mapContainer;
                     }
                     break;
@@ -288,7 +288,7 @@ public class HexGridCreator : MonoBehaviour
                     }
                     else
                     {
-                        Transform instantiatedGreenWaypoint = Instantiate(forestWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.Euler(Vector3.right * -90));
+                        Transform instantiatedGreenWaypoint = Instantiate(forestWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
                         instantiatedGreenWaypoint.parent = mapContainer;
                     }
                     break;

@@ -6,10 +6,11 @@ public class ButtonController : MonoBehaviour {
     public Sprite inactiveSprite;
     public Sprite activeSprite;
     public Sprite specialSprite;
+    public Sprite confirmSprite;
 
     public enum SpriteType
     {
-        inactive, active, special
+        inactive, active, special, confirm
     }
 
     [HideInInspector]
@@ -34,7 +35,17 @@ public class ButtonController : MonoBehaviour {
                 if (specialSprite != null)
                     image.sprite = specialSprite;
                 break;
+            case SpriteType.confirm:
+                if (confirmSprite != null)
+                    image.sprite = confirmSprite;
+                break;
         }
+    }
+
+    public void SetSpriteSpecial()
+    {
+        if (specialSprite != null)
+            image.sprite = specialSprite;
     }
 
     public void SetUsability(bool flag)
@@ -44,5 +55,4 @@ public class ButtonController : MonoBehaviour {
         else
             button.enabled = false;
     }
-
 }

@@ -22,8 +22,12 @@ public class HUDManager : MonoBehaviour
 
     [Header("Other UI Elements")]
     public GameObject winOverlay;
+    public GameObject pauseMenu;
+    public GameObject[] actionIcons;
 
     #endregion
+
+    bool paused = false;
 
     [HideInInspector]
     public Animation bigNewsAnimation;
@@ -31,6 +35,40 @@ public class HUDManager : MonoBehaviour
     void Start()
     {
         bigNewsAnimation = bigCentralSection.GetComponentInParent<Animation>();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (paused)
+                Pause(false);
+            else
+                Pause(true);
+        }
+    }
+
+    public void Pause(bool flag)
+    {
+        if (flag)
+        {
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0;
+            paused = true;
+        }
+        else
+        {
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1;
+            paused = false;
+        }
+    }
+
+    public void Refresh()
+    {
+        ToggleActionButtons();
+        ToggleEndTurnButton();
+        ToggleActionsNumberDisplay();
     }
 
     public void PrintBigNews(string msg)
@@ -63,152 +101,255 @@ public class HUDManager : MonoBehaviour
             return;
         }
 
-        if (player.currentAction == PlayerController.Action.start && player.actions > 0)
+        if (player.actions > 0)
         {
-            if (moveButton.gameObject.activeSelf)
+            //move
+            if(player.bonusMoveActions > 0)
             {
-                //move
+                moveButton.SetSprite(ButtonController.SpriteType.special);
+                moveButton.SetUsability(true);
+            }
+            else
+            {
                 moveButton.SetSprite(ButtonController.SpriteType.active);
+                moveButton.SetUsability(true);
+            }    
+            
+            //confirm move
+            if(player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
+            {
+                moveButton.SetSprite(ButtonController.SpriteType.confirm);
                 moveButton.SetUsability(true);
             }
 
-            if (buyCardButton.gameObject.activeSelf)
+            //buy
+            if (player.hasDiscount)
             {
-                //buy
-                if (player.hasDiscount)
-                {
-                    buyCardButton.SetSprite(ButtonController.SpriteType.special);
-                    buyCardButton.SetUsability(true);
-                }
-                else if (GameManager.instance.turnCount <= 3 && player.energyPoints >= 1)
-                {
-                    buyCardButton.SetSprite(ButtonController.SpriteType.active);
-                    buyCardButton.SetUsability(true);
-                }
-                else if (player.energyPoints >= 2)
-                {
-                    buyCardButton.SetSprite(ButtonController.SpriteType.active);
-                    buyCardButton.SetUsability(true);
-                }
-                else if (player.energyPoints <= 1)
-                {
-                    buyCardButton.SetSprite(ButtonController.SpriteType.inactive);
-                    buyCardButton.SetUsability(false);
-                }
+                buyCardButton.SetSprite(ButtonController.SpriteType.special);
+                buyCardButton.SetUsability(true);
             }
-
-            if (placeCardButton.gameObject.activeSelf)
+            else if (GameManager.instance.turnCount <= 3 && player.energyPoints >= 1)
             {
-                //place
-                if (player.cardsInHand.Count >= 1)
-                {
-                    placeCardButton.SetSprite(ButtonController.SpriteType.active);
-                    placeCardButton.SetUsability(true);
-                }
-                else if (player.cardsInHand.Count <= 0)
-                {
-                    placeCardButton.SetSprite(ButtonController.SpriteType.inactive);
-                    placeCardButton.SetUsability(false);
-                }
+                buyCardButton.SetSprite(ButtonController.SpriteType.active);
+                buyCardButton.SetUsability(true);
             }
-
-            if (rotateCardButton.gameObject.activeSelf)
+            else if (GameManager.instance.turnCount > 3 && player.energyPoints >= 2)
             {
-                //rotate
-                if (player.HasCardInNearHexagons())
-                {
-                    rotateCardButton.SetSprite(ButtonController.SpriteType.active);
-                    rotateCardButton.SetUsability(true);
-                }
-                else
-                {
-                    rotateCardButton.SetSprite(ButtonController.SpriteType.inactive);
-                    rotateCardButton.SetUsability(false);
-                }
+                buyCardButton.SetSprite(ButtonController.SpriteType.active);
+                buyCardButton.SetUsability(true);
             }
-
-            if (fightButton.gameObject.activeSelf)
-            {
-                //fight
-                if (player.playersToRob.Count > 0)
-                {
-                    fightButton.SetSprite(ButtonController.SpriteType.active);
-                    fightButton.SetUsability(true);
-                }
-                else
-                {
-                    fightButton.SetSprite(ButtonController.SpriteType.inactive);
-                    fightButton.SetUsability(false);
-                }
-            }
-        }
-        else
-        {
-            if (moveButton.gameObject.activeSelf)
-            {
-                moveButton.SetSprite(ButtonController.SpriteType.inactive);
-                moveButton.SetUsability(false);
-            }
-            if (buyCardButton.gameObject.activeSelf)
+            else if (player.energyPoints <= 1)
             {
                 buyCardButton.SetSprite(ButtonController.SpriteType.inactive);
                 buyCardButton.SetUsability(false);
             }
-            if (placeCardButton.gameObject.activeSelf)
+
+            //place
+            if (player.cardsInHand.Count >= 1)
+            {
+                placeCardButton.SetSprite(ButtonController.SpriteType.active);
+                placeCardButton.SetUsability(true);
+            }
+            else if (player.cardsInHand.Count <= 0)
             {
                 placeCardButton.SetSprite(ButtonController.SpriteType.inactive);
                 placeCardButton.SetUsability(false);
             }
-            if (rotateCardButton.gameObject.activeSelf)
+
+            //rotate
+            if (player.HasCardInNearHexagons())
+            {
+                rotateCardButton.SetSprite(ButtonController.SpriteType.active);
+                rotateCardButton.SetUsability(true);
+            }
+            else
             {
                 rotateCardButton.SetSprite(ButtonController.SpriteType.inactive);
                 rotateCardButton.SetUsability(false);
             }
-            if (fightButton.gameObject.activeSelf)
+
+            //fight
+            if (player.playersToRob.Count > 0)
+            {
+                fightButton.SetSprite(ButtonController.SpriteType.active);
+                fightButton.SetUsability(true);
+            }
+            else
             {
                 fightButton.SetSprite(ButtonController.SpriteType.inactive);
                 fightButton.SetUsability(false);
             }
         }
+        else
+        {
+            if(player.bonusMoveActions > 0)
+            {
+                moveButton.SetSprite(ButtonController.SpriteType.special);
+                moveButton.SetUsability(true);
+                if (player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
+                {
+                    moveButton.SetSprite(ButtonController.SpriteType.confirm);
+                    moveButton.SetUsability(true);
+                }
+            }
+            else
+            {
+                moveButton.SetSprite(ButtonController.SpriteType.inactive);
+                moveButton.SetUsability(false);
+            } 
+
+            buyCardButton.SetSprite(ButtonController.SpriteType.inactive);
+            buyCardButton.SetUsability(false);
+
+            placeCardButton.SetSprite(ButtonController.SpriteType.inactive);
+            placeCardButton.SetUsability(false);
+
+            rotateCardButton.SetSprite(ButtonController.SpriteType.inactive);
+            rotateCardButton.SetUsability(false);
+
+            fightButton.SetSprite(ButtonController.SpriteType.inactive);
+            fightButton.SetUsability(false);
+        }
     }
 
-    public void ToggleEndTurnButton(PlayerController player)
+    public void ToggleEndTurnButton()
     {
         if (GameManager.instance.currentPhase != GameManager.Phase.main)
         {
             endTurnButton.SetUsability(false);
             endTurnButton.SetSprite(ButtonController.SpriteType.inactive);
         }
-        else
+        else if (GameManager.instance.currentActivePlayer.currentAction == PlayerController.Action.start)
         {
-            endTurnButton.SetUsability(true);
-            endTurnButton.SetSprite(ButtonController.SpriteType.active);
+            if (GameManager.instance.currentActivePlayer.actions > 0 || GameManager.instance.currentActivePlayer.bonusMoveActions > 0)
+            {
+                endTurnButton.SetUsability(true);
+                endTurnButton.SetSprite(ButtonController.SpriteType.active);
+            }
+            else
+            {
+                endTurnButton.SetUsability(true);
+                endTurnButton.SetSprite(ButtonController.SpriteType.special);
+            }
+        }
+    }
+
+    public void ToggleActionsNumberDisplay()
+    {
+        int actionsNumber = GameManager.instance.currentActivePlayer.actions;
+
+        for (int i = 1; i <= actionIcons.Length; i++)
+        {
+            if (i <= actionsNumber)
+                actionIcons[i - 1].SetActive(true);
+            else
+                actionIcons[i - 1].SetActive(false);
         }
     }
 
     public void OnMoveButton()
     {
-        GameManager.instance.ChoseAction(0);
+        switch (GameManager.instance.currentActivePlayer.currentAction)
+        {
+            case PlayerController.Action.start:
+                GameManager.instance.ChoseAction(0);
+                break;
+            case PlayerController.Action.moving:
+                if(GameManager.instance.currentActivePlayer.possibleMoves == 3)
+                {
+                    GameManager.instance.UndoAction();
+                }
+                else
+                {
+                    GameManager.instance.ConfirmAction();
+                }
+                break;
+            case PlayerController.Action.buyCard:
+            case PlayerController.Action.placeCard:
+            case PlayerController.Action.rotateCard:
+            case PlayerController.Action.fight:
+                GameManager.instance.UndoAction();
+                GameManager.instance.ChoseAction(0);
+                break;
+            default:
+                break;
+        }
     }
 
     public void OnBuyButton()
     {
-        GameManager.instance.ChoseAction(1);
+        switch (GameManager.instance.currentActivePlayer.currentAction)
+        {
+            case PlayerController.Action.start:
+                GameManager.instance.ChoseAction(1);
+                break;         
+            case PlayerController.Action.moving:
+            case PlayerController.Action.placeCard:
+            case PlayerController.Action.rotateCard:
+            case PlayerController.Action.fight:
+                GameManager.instance.UndoAction();
+                GameManager.instance.ChoseAction(1);
+                break;
+            default:
+                break;
+        }
     }
 
     public void OnPlaceCardButton()
     {
-        GameManager.instance.ChoseAction(3);
+        switch (GameManager.instance.currentActivePlayer.currentAction)
+        {
+            case PlayerController.Action.start:
+                GameManager.instance.ChoseAction(3);
+                break;
+            case PlayerController.Action.moving:
+            case PlayerController.Action.buyCard:
+            case PlayerController.Action.rotateCard:
+            case PlayerController.Action.fight:
+                GameManager.instance.UndoAction();
+                GameManager.instance.ChoseAction(3);
+                break;
+            default:
+                break;
+        }
     }
 
     public void OnRotateCardButton()
     {
-        GameManager.instance.ChoseAction(4);
+        switch (GameManager.instance.currentActivePlayer.currentAction)
+        {
+            case PlayerController.Action.start:
+                GameManager.instance.ChoseAction(4);
+                break;
+            case PlayerController.Action.moving:
+            case PlayerController.Action.placeCard:
+            case PlayerController.Action.buyCard:
+            case PlayerController.Action.fight:
+                GameManager.instance.UndoAction();
+                GameManager.instance.ChoseAction(4);
+                break;
+            default:
+                break;
+        }
     }
 
     public void OnFightButton()
     {
-        GameManager.instance.ChoseAction(5);
+        switch (GameManager.instance.currentActivePlayer.currentAction)
+        {
+            case PlayerController.Action.start:
+                GameManager.instance.ChoseAction(5);
+                break;
+            case PlayerController.Action.moving:
+            case PlayerController.Action.placeCard:
+            case PlayerController.Action.rotateCard:
+            case PlayerController.Action.buyCard:
+                GameManager.instance.UndoAction();
+                GameManager.instance.ChoseAction(5);
+                break;
+            default:
+                break;
+        }
     }
 
     public void Win(PlayerController player)
