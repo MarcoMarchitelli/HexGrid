@@ -31,12 +31,27 @@ public class CardsManager : MonoBehaviour {
         {
             if (card.player == player)
             {
+                card.ResourcesPopUpAnimation();
                 player.energyPoints += card.extractableEnergy;
                 player.bonusMoveActions += card.moveHexTouched;
                 player.actions += card.abilityHexTouched;
             }   
         }
         GameManager.instance.gainPhaseEnded = true;
+    }
+
+    public void HighlightPlacedCards(bool flag)
+    {
+        if(flag)
+            foreach (var card in PlacedCards)
+            {
+                card.outlineController.EnableOutline(true);
+            }
+        else
+            foreach (var card in PlacedCards)
+            {
+                card.outlineController.EnableOutline(false);
+            }
     }
 
 }

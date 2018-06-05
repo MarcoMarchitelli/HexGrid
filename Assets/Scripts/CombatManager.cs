@@ -19,6 +19,7 @@ public class CombatManager : MonoBehaviour
 
     public UnityEvent OnFightFinish;
     public UnityEvent OnFightStart;
+    public UnityEvent OnModifiersSelected;
 
     [Header("UI Stuff")]
     public GameObject SelectionPanel;
@@ -66,7 +67,6 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator ModifiersSelection()
     {
-        SelectionPanel.SetActive(true);
 
         print("Attacker select your bonus!");
 
@@ -78,8 +78,6 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
 
-        attackerModController.SetModifierButtonsOff();
-
         print("Attacker added " + attackerBonusStrength + " bonus strength");
         print("Defender select your bonus!");       
 
@@ -88,16 +86,15 @@ public class CombatManager : MonoBehaviour
             yield return null;
         }
 
-        defenderModController.SetModifierButtonsOff();
-
         print("Defender added " + defenderBonusStrength + " bonus strength");
 
-        SelectionPanel.SetActive(false);
+        OnModifiersSelected.Invoke();
+
     }
 
     IEnumerator CountDown(int seconds)
     {
-        FightPanel.SetActive(true);
+
         for (int i = seconds; i >= 0; i--)
         {
             if (i == 0)
@@ -160,6 +157,7 @@ public class CombatManager : MonoBehaviour
 
     public void SetAttackerModifier(int energy)
     {
+        attackerModController.EnableModifierButtons(true);
         switch (energy)
         {
             case 0:
@@ -189,10 +187,12 @@ public class CombatManager : MonoBehaviour
         }
         attacker.energyPoints -= energy;
         attackerModSet = true;
+        attackerModController.EnableModifierButtons(false);
     }
 
     public void SetDefenderModifier(int energy)
     {
+        defenderModController.EnableModifierButtons(true);
         switch (energy)
         {
             case 0:
@@ -222,6 +222,7 @@ public class CombatManager : MonoBehaviour
         }
         defender.energyPoints -= energy;
         defenderModSet = true;
+        defenderModController.EnableModifierButtons(false);
     }
 
     public void ResetValues()

@@ -27,11 +27,15 @@ public class ModifierButtonsController : MonoBehaviour {
         }
     }
 
-    public void SetModifierButtonsOff()
+    public void EnableModifierButtons(bool flag)
     {
-        foreach (var button in buttons)
+        foreach (ModifierButton modifierButton in buttons)
         {
-            button.enabled = false;
+            if (!flag)
+                modifierButton.buttonController.SetUsability(false);
+            else
+                modifierButton.buttonController.SetUsability(true);
         }
     }
+
 }

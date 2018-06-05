@@ -21,12 +21,13 @@ GameObject:
   - component: {fileID: 4799513193106460}
   - component: {fileID: 114245364346528166}
   - component: {fileID: 135542766678717930}
+  - component: {fileID: 114135829405024194}
   m_Layer: 0
   m_Name: VictoryPoint_Underwater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1550365103047490
 GameObject:
@@ -38,12 +39,13 @@ GameObject:
   - component: {fileID: 4628324209396094}
   - component: {fileID: 33449504814169866}
   - component: {fileID: 23817496431495904}
+  - component: {fileID: 114742853174053752}
   m_Layer: 0
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1566703909701452
 GameObject:
@@ -70,12 +72,13 @@ GameObject:
   - component: {fileID: 4491858921984528}
   - component: {fileID: 33770863909236464}
   - component: {fileID: 23886712460509818}
+  - component: {fileID: 114087710982871192}
   m_Layer: 0
   m_Name: Pedestal 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4491858921984528
 Transform:
@@ -216,6 +219,34 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1786952817440274}
   m_Mesh: {fileID: 4300002, guid: 79e21d9e1153e75449a2698b3e2e2b5f, type: 3}
+--- !u!114 &114087710982871192
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786952817440274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114135829405024194
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1094540580574562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0a9044cdc59c04c812ff9607eb9b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MultipleOutlines: 1
+  OutlineInChildren: 1
 --- !u!114 &114245364346528166
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -229,6 +260,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetPosition: {fileID: 4946267389776210}
   speed: 2
+  OnAnimationFinish:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1550365103047490}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114742853174053752
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1550365103047490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!135 &135542766678717930
 SphereCollider:
   m_ObjectHideFlags: 1

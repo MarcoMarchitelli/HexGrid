@@ -58,8 +58,8 @@ public class HUDManager : MonoBehaviour
         }
         else
         {
-            pauseMenu.SetActive(false);
             Time.timeScale = 1;
+            pauseMenu.SetActive(false);          
             paused = false;
         }
     }
@@ -112,13 +112,6 @@ public class HUDManager : MonoBehaviour
             else
             {
                 moveButton.SetSprite(ButtonController.SpriteType.active);
-                moveButton.SetUsability(true);
-            }    
-            
-            //confirm move
-            if(player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
-            {
-                moveButton.SetSprite(ButtonController.SpriteType.confirm);
                 moveButton.SetUsability(true);
             }
 
@@ -186,11 +179,6 @@ public class HUDManager : MonoBehaviour
             {
                 moveButton.SetSprite(ButtonController.SpriteType.special);
                 moveButton.SetUsability(true);
-                if (player.currentAction == PlayerController.Action.moving && player.possibleMoves < 3)
-                {
-                    moveButton.SetSprite(ButtonController.SpriteType.confirm);
-                    moveButton.SetUsability(true);
-                }
             }
             else
             {
@@ -259,10 +247,6 @@ public class HUDManager : MonoBehaviour
                 {
                     GameManager.instance.UndoAction();
                 }
-                else
-                {
-                    GameManager.instance.ConfirmAction();
-                }
                 break;
             case PlayerController.Action.buyCard:
             case PlayerController.Action.placeCard:
@@ -328,6 +312,9 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.UndoAction();
                 GameManager.instance.ChoseAction(4);
                 break;
+            case PlayerController.Action.rotateCard:
+                GameManager.instance.UndoAction();
+                break;
             default:
                 break;
         }
@@ -346,6 +333,9 @@ public class HUDManager : MonoBehaviour
             case PlayerController.Action.buyCard:
                 GameManager.instance.UndoAction();
                 GameManager.instance.ChoseAction(5);
+                break;
+            case PlayerController.Action.fight:
+                GameManager.instance.UndoAction();
                 break;
             default:
                 break;

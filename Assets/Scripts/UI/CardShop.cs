@@ -19,13 +19,9 @@ public class CardShop : MonoBehaviour
     public TextMeshProUGUI card2PriceText;
     public TextMeshProUGUI card3PriceText;
 
-    private void OnEnable()
+    public void ToggleBuyButtons()
     {
-        ToggleBuyButtons(GameManager.instance.currentActivePlayer);
-    }
-
-    public void ToggleBuyButtons(PlayerController player)
-    {
+        PlayerController player = GameManager.instance.currentActivePlayer;
 
         if (GameManager.instance.turnCount <= 3)
         {
@@ -45,9 +41,9 @@ public class CardShop : MonoBehaviour
             card1Price = 0;
         }
 
-        card1PriceText.text = card1Price.ToString() + " PE";
-        card2PriceText.text = card2Price.ToString() + " PE";
-        card3PriceText.text = card3Price.ToString() + " PE";
+        card1PriceText.text = card1Price.ToString();
+        card2PriceText.text = card2Price.ToString();
+        card3PriceText.text = card3Price.ToString();
 
         playerEnergy = player.energyPoints;
 
@@ -152,7 +148,7 @@ public class CardShop : MonoBehaviour
 
         GameManager.instance.SetPlayerToStart(true);
 
-        ToggleBuyButtons(GameManager.instance.currentActivePlayer);
+        ToggleBuyButtons();
     }
 
 }

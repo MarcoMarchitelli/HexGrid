@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
+
     public Sprite icon;
     public float moveSpeed;
 
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     public Type type;
     public GameObject VFXobject;
+    public OutlineController outlineController;
     [HideInInspector]
     public Point startingWayPoint;
     [HideInInspector]
@@ -51,13 +53,12 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
-    Hexagon lastSelectedHex;
     [HideInInspector]
-    public bool isRunning = false;
-    string bottomLeftMsg;
+    public bool isRunning = false, hasMoved = false;
     int maxPE = 25;
 
     Animator animator;
+    List<AgentPosition> moveAgents = new List<AgentPosition>();
 
     private void Start()
     {
@@ -70,11 +71,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Time.timeScale = 0;
-        }
-
         if (energyPoints > maxPE)
             energyPoints = maxPE;
 
@@ -87,25 +83,25 @@ public class PlayerController : MonoBehaviour
                 RaycastHit hitInfo;
 
                 //moving ray
-                if (Input.GetMouseButtonDown(0) && !isRunning)
+                if (Input.GetMouseButtonDown(0) && !hasMoved)
                 {
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, pointLayer))
                     {
                         Point pointHit = GameManager.instance.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
 
-                        if(pointHit != null && currentWayPoint.possibleDestinations.Contains(pointHit.worldPosition) && CheckIfPointIsWalkable(pointHit) && possibleMoves > 0)
+                        if (pointHit != null)
                         {
-                            if (pointHit.isFinalWaypoint)
+                            foreach (var agent in moveAgents)
                             {
-                                if (IsMyColor(pointHit))
+                                if (agent.point == pointHit)
                                 {
-                                    StartCoroutine(RunAnimation(pointHit, hitInfo.collider.GetComponent<SmoothMoveAnimation>()));
-                                }                                    
-                                else
-                                    return;
+                                    StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit, moveAgents.Count)));
+                                    if(GameManager.instance.OnMoveSelected != null)
+                                        GameManager.instance.OnMoveSelected();
+                                    hasMoved = true;
+                                    break;
+                                }
                             }
-
-                            StartCoroutine(RunAnimation(pointHit));
                         }
                     }
                 }
@@ -230,7 +226,8 @@ public class PlayerController : MonoBehaviour
 
             case Action.fight:
 
-                #region Bet
+                #region Fight
+
                 if (!hasFought)
                 {
                     RaycastHit betHitInfo;
@@ -334,6 +331,16 @@ public class PlayerController : MonoBehaviour
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }
 
+    IEnumerator FollowPath(List<Point> path)
+    {
+        for (int i = 0; i < path.Count; i++)
+        {
+            yield return StartCoroutine(RunAnimation(path[i]));
+        }
+
+        GameManager.instance.ConfirmAction();
+    }
+
     IEnumerator RunAnimation(Point targetPoint)
     {
         Vector3 target = targetPoint.worldPosition + Vector3.up * .7f;
@@ -347,7 +354,7 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetBool("isRunning", false);
         isRunning = false;
-        DataStuffAfterMove(targetPoint); 
+        DataStuffAfterMove(targetPoint);
     }
 
     IEnumerator RunAnimation(Point targetPoint, SmoothMoveAnimation final)
@@ -386,22 +393,6 @@ public class PlayerController : MonoBehaviour
                     break;
             }
         }
-    }
-
-    bool CheckIfPointIsWalkable(Point point)
-    {
-        PlayerController[] players = GameManager.instance.players;
-
-        foreach (PlayerController player in players)
-        {
-            if (player.currentWayPoint == point)
-                return false;
-        }
-
-        if (point.type == Point.Type.win && victoryPoints < 5)
-            return false;
-
-        return true;
     }
 
     public bool IsMyColor(Point point)
@@ -443,9 +434,13 @@ public class PlayerController : MonoBehaviour
         {
             case 0:
                 currentAction = Action.moving;
+                hasMoved = false;
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
                 VFXobject.SetActive(true);
+                moveAgents = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
+                if (GameManager.instance.OnMoveEnter != null)
+                    GameManager.instance.OnMoveEnter(moveAgents);
                 break;
             case 1:
                 currentAction = Action.buyCard;
@@ -461,10 +456,16 @@ public class PlayerController : MonoBehaviour
                 currentAction = Action.rotateCard;
                 beforeActionEnergyPoints = energyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
+                GameManager.instance.cardsManager.HighlightPlacedCards(true);
                 GameManager.instance.mainCamera.SetHighView(true);
                 break;
             case 5:
                 currentAction = Action.fight;
+                foreach (var player in playersToRob)
+                {
+                    player.outlineController.SetColor(1);
+                    player.outlineController.EnableOutline(true);
+                }
                 break;
         }
 

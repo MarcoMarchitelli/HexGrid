@@ -8,6 +8,11 @@ public class FloatEvent : UnityEvent<float> { }
 
 public class GameManager : MonoBehaviour
 {
+    public delegate void AgentPositionListEvent(List<AgentPosition> points);
+    public delegate void VoidEvent();
+    public AgentPositionListEvent OnMoveEnter;
+    public VoidEvent OnMoveSelected;
+
     public PlayerController[] players;
     //public UIManager uiManager;
 
@@ -31,13 +36,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public CombatManager combatManager;
     [HideInInspector]
+    public Pathfinding pathfinding;
+    [HideInInspector]
     public int turnCount = 0;
     [HideInInspector]
     public float buttonMashFightResult = .5f;
 
     int energyBet;
     bool hasBet, fightResultAnnounced;
-    PlayerController winner;
     [HideInInspector]
     public bool isStaticEvent = false;
 
@@ -65,6 +71,7 @@ public class GameManager : MonoBehaviour
         playersHUDcontroller = FindObjectOfType<PlayersHUDController>();
         hudManager = FindObjectOfType<HUDManager>();
         combatManager = GetComponent<CombatManager>();
+        pathfinding = GetComponent<Pathfinding>();
         InstantiatePlayers();
     }
 
@@ -177,8 +184,6 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        //uiManager.UnsubscribeToPlayerUIRefreshEvent(currentActivePlayer);
-
         if (playerIndex != 3)
             playerIndex++;
         else
@@ -245,8 +250,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    #region Button Functions
-
     public void EndTurn()
     {
         turnEnded = true;
@@ -279,6 +282,10 @@ public class GameManager : MonoBehaviour
                 ConfirmRotateCard();
                 break;
             case PlayerController.Action.fight:
+                foreach (var player in currentActivePlayer.playersToRob)
+                {
+                    player.outlineController.EnableOutline(false);
+                }
                 break;
         }
 
@@ -307,6 +314,8 @@ public class GameManager : MonoBehaviour
                 break;
             case PlayerController.Action.moving:
                 UndoMoveCurrentPlayer();
+                if (OnMoveSelected != null)
+                    OnMoveSelected();
                 break;
             case PlayerController.Action.buyCard:
                 UndoBuyCards();
@@ -318,6 +327,10 @@ public class GameManager : MonoBehaviour
                 UndoRotateCard();
                 break;
             case PlayerController.Action.fight:
+                foreach (var player in currentActivePlayer.playersToRob)
+                {
+                    player.outlineController.EnableOutline(false);
+                }
                 break;
         }
 
@@ -326,8 +339,6 @@ public class GameManager : MonoBehaviour
         hudManager.Refresh();
         playersHUDcontroller.RefreshPlayerUIs();
     }
-
-    #endregion
 
     #region Specific Confirm Actions
 
@@ -408,6 +419,7 @@ public class GameManager : MonoBehaviour
     {
         currentActivePlayer.selectedCard = null;
 
+        cardsManager.HighlightPlacedCards(false);
         mainCamera.SetHighView(false);
     }
 
@@ -447,6 +459,7 @@ public class GameManager : MonoBehaviour
         {
             currentActivePlayer.UnselectCard();
         }
+        mainCamera.SetHighView(false);
     }
 
     void UndoRotateCard()
@@ -469,6 +482,8 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
         currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
+        cardsManager.HighlightPlacedCards(false);
+        mainCamera.SetHighView(false);
     }
 
     #endregion
@@ -478,7 +493,21 @@ public class GameManager : MonoBehaviour
         hudManager.Win(player);
     }
 
-    public List<AgentPosition> FindPointsInRange(int range, PlayerController player)
+    public bool CheckIfPointIsWalkable(Point point)
+    {
+        foreach (PlayerController player in players)
+        {
+            if (player != currentActivePlayer && player.currentWayPoint == point)
+                return false;
+        }
+
+        if (point.type == Point.Type.win && currentActivePlayer.victoryPoints < 5)
+            return false;
+
+        return true;
+    }
+
+    public List<AgentPosition> FindWalkablePointsInRange(int range, PlayerController player)
     {
         List<AgentPosition> pointsInRange = new List<AgentPosition>();
 
@@ -491,11 +520,44 @@ public class GameManager : MonoBehaviour
         {
             if (!pointsInRange[i].isChecked)
             {
-                if (pointsInRange[i].moves > 0)
+                if (pointsInRange[i].remainingMoves > 0)
                 {
-                    foreach (Vector3 destination in pointsInRange[i].point.possibleDestinations)
+                    if (pointsInRange[i].point.type == Point.Type.purple && player.currentWayPoint != pointsInRange[i].point)
+                        continue;
+                    foreach (Point point in pointsInRange[i].point.possibleDestinations)
                     {
-                        pointsInRange.Add(new AgentPosition(gridReference.GetPointFromWorldPosition(destination), pointsInRange[i].moves - 1));
+                        if (!CheckIfPointIsWalkable(point))
+                            continue;
+                        if (point.isFinalWaypoint && !player.IsMyColor(point))
+                            continue;
+                        pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
+                    }
+                }
+                pointsInRange[i].isChecked = true;
+            }
+        }
+
+        return pointsInRange;
+    }
+
+    public List<AgentPosition> ScanPointsInRange(int range, PlayerController player)
+    {
+        List<AgentPosition> pointsInRange = new List<AgentPosition>();
+
+        if (range > 0)
+        {
+            pointsInRange.Add(new AgentPosition(player.currentWayPoint, range));
+        }
+
+        for (int i = 0; i < pointsInRange.Count; i++)
+        {
+            if (!pointsInRange[i].isChecked)
+            {
+                if (pointsInRange[i].remainingMoves > 0)
+                {
+                    foreach (Point point in pointsInRange[i].point.possibleDestinations)
+                    {
+                        pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
                     }
                 }
                 pointsInRange[i].isChecked = true;
@@ -509,7 +571,7 @@ public class GameManager : MonoBehaviour
     {
         List<PlayerController> playersInRange = new List<PlayerController>();
 
-        List<AgentPosition> pointsInRange = FindPointsInRange(range, player);
+        List<AgentPosition> pointsInRange = ScanPointsInRange(range, player);
 
         foreach (AgentPosition agent in pointsInRange)
         {
@@ -524,6 +586,7 @@ public class GameManager : MonoBehaviour
 
         return playersInRange;
     }
+
 }
 
 public class AgentPosition
@@ -531,13 +594,13 @@ public class AgentPosition
 {
     public Point point;
     //mosse rimaste
-    public int moves;
+    public int remainingMoves;
     public bool isChecked;
 
     public AgentPosition(Point _point, int _moves)
     {
         point = _point;
-        moves = _moves;
+        remainingMoves = _moves;
         isChecked = false;
     }
 }

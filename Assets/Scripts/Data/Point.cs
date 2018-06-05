@@ -1,18 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 [System.Serializable]
-public class Point{
+public class Point : IHeapItem<Point>{
 
     public int x, y;
     public Vector3 worldPosition;
-    public List<Vector3> possibleDestinations;
+    public List<Point> possibleDestinations;
     public List<Hexagon> nearHexagons;
     public Type type;
     public bool isStartingPoint;
     public bool isFinalWaypoint;
+
+    public int gCost;
+    public int hCost;
+    int heapIndex;
+    public Point parent;
+
+    public int fCost
+    {
+        get
+        {
+            return gCost + hCost;
+        }
+    }
+
+    public int HeapIndex
+    {
+        get
+        {
+            return heapIndex;
+        }
+
+        set
+        {
+            heapIndex = value;
+        }
+    }
+
+    public int CompareTo(Point pointToCompare)
+    {
+        int compare = fCost.CompareTo(pointToCompare.fCost);
+        if(compare == 0)
+        {
+            compare = hCost.CompareTo(pointToCompare.hCost);
+        }
+        return -compare;
+    }
 
     public enum Type
     {
@@ -26,7 +60,7 @@ public class Point{
         worldPosition = _worldPosition;
         isStartingPoint = false;
         isFinalWaypoint = false;
-        possibleDestinations = new List<Vector3>();
+        possibleDestinations = new List<Point>();
         nearHexagons = new List<Hexagon>();
         SetTypeFromCoords();
     }
@@ -39,7 +73,7 @@ public class Point{
         type = _type;
         isStartingPoint = _isStartingPoint;
         isFinalWaypoint = false;
-        possibleDestinations = new List<Vector3>();
+        possibleDestinations = new List<Point>();
         nearHexagons = new List<Hexagon>();
     }
 

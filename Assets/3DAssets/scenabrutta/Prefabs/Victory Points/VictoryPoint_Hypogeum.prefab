@@ -36,12 +36,13 @@ GameObject:
   - component: {fileID: 4316126463144706}
   - component: {fileID: 33872369951095498}
   - component: {fileID: 23892482032880654}
+  - component: {fileID: 114238372568975882}
   m_Layer: 8
   m_Name: Pedestal 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1806448387587572
 GameObject:
@@ -53,12 +54,13 @@ GameObject:
   - component: {fileID: 4187153705351218}
   - component: {fileID: 33451760659207802}
   - component: {fileID: 23440849694564488}
+  - component: {fileID: 114575664427952784}
   m_Layer: 8
   m_Name: Ball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!1 &1824663811069622
 GameObject:
@@ -70,12 +72,13 @@ GameObject:
   - component: {fileID: 4124675804356136}
   - component: {fileID: 114392260623550236}
   - component: {fileID: 135834825334568910}
+  - component: {fileID: 114751419642865554}
   m_Layer: 8
   m_Name: VictoryPoint_Hypogeum
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &4124675804356136
 Transform:
@@ -216,6 +219,21 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1786559420518872}
   m_Mesh: {fileID: 4300002, guid: 79e21d9e1153e75449a2698b3e2e2b5f, type: 3}
+--- !u!114 &114238372568975882
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1786559420518872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114392260623550236
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -229,6 +247,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TargetPosition: {fileID: 4137168512207972}
   speed: 2
+  OnAnimationFinish:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1806448387587572}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114575664427952784
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1806448387587572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114751419642865554
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1824663811069622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0a9044cdc59c04c812ff9607eb9b04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MultipleOutlines: 1
+  OutlineInChildren: 1
 --- !u!135 &135834825334568910
 SphereCollider:
   m_ObjectHideFlags: 1
