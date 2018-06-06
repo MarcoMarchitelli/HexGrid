@@ -18,4 +18,9 @@ public class ResourcePopUp : MonoBehaviour {
         resourcePopUpText.text = msg;
     }
 
+    public void ResetString()
+    {
+        resourcePopUpText.text = null;
+    }
+
 }
