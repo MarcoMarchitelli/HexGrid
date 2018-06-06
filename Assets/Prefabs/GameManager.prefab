@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 114631903122071188}
   - component: {fileID: 114253196353093120}
   - component: {fileID: 114357993659059922}
+  - component: {fileID: 114487794038041994}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -205,6 +206,8 @@ MonoBehaviour:
   SelectionPanel: {fileID: 0}
   FightPanel: {fileID: 0}
   slider: {fileID: 0}
+  CountdownAnimator: {fileID: 0}
+  CountdownText: {fileID: 0}
   attackerModController: {fileID: 0}
   defenderModController: {fileID: 0}
 --- !u!114 &114357993659059922
@@ -218,6 +221,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dd6227474bc1834e9d3c9fd9338e92e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114487794038041994
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1570569160473684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0c748b8cb54ec49864a31411a3d957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CursorIcon: {fileID: 2800000, guid: a53e358dcd754f6479abe56e605fb8f3, type: 3}
 --- !u!114 &114631903122071188
 MonoBehaviour:
   m_ObjectHideFlags: 1
