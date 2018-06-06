@@ -441,6 +441,8 @@ public class PlayerController : MonoBehaviour
                 moveAgents = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)
                     GameManager.instance.OnMoveEnter(moveAgents);
+                if (bonusMoveActions > 0)
+                    isBonusMove = true;
                 break;
             case 1:
                 currentAction = Action.buyCard;

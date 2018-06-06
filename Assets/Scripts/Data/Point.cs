@@ -6,7 +6,21 @@ public class Point : IHeapItem<Point>{
 
     public int x, y;
     public Vector3 worldPosition;
-    public List<Point> possibleDestinations;
+    [System.NonSerialized]
+    public List<Point> _possibleDestinations;
+
+    public List<Point> possibleDestinations
+    {
+        get
+        {
+            return _possibleDestinations;
+        }
+        set
+        {
+            _possibleDestinations = value;
+        }
+    }
+
     public List<Hexagon> nearHexagons;
     public Type type;
     public bool isStartingPoint;
