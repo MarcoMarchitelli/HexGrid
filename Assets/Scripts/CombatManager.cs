@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 public class CombatManager : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class CombatManager : MonoBehaviour
     public GameObject SelectionPanel;
     public GameObject FightPanel;
     public Slider slider;
+    public Animator CountdownAnimator;
+    public TextMeshProUGUI CountdownText;
 
     [Header("Scripts")]
     public ModifierButtonsController attackerModController;
@@ -98,9 +101,10 @@ public class CombatManager : MonoBehaviour
         for (int i = seconds; i >= 0; i--)
         {
             if (i == 0)
-                print("GO!");
+                CountdownText.text = "GO!";
             else
-                print(i);
+                CountdownText.text = i.ToString();
+            CountdownAnimator.SetTrigger("Show");
             yield return new WaitForSeconds(1f);
         }
     }
