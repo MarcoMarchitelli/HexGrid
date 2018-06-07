@@ -6,8 +6,9 @@ public class HexGridCreator : MonoBehaviour
     #region PUBLIC VARIABLES
 
     public bool instantiateLights = false;
+    public bool instantiateEnvironment = false;
+    public bool instantiateStartingPoints = false;
 
-    [HideInInspector]
     public Transform center;
 
     [Header("Graphics Prefabs")]
@@ -179,8 +180,11 @@ public class HexGridCreator : MonoBehaviour
         {
             if (hex.type == Hexagon.Type.win)
             {
-                Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
-                center = instantiatedMap;
+                if (instantiateEnvironment)
+                {
+                    Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                    center = instantiatedMap;
+                }
                 if (instantiateLights)
                     Instantiate(lightPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
             }
@@ -234,7 +238,7 @@ public class HexGridCreator : MonoBehaviour
                         Transform InstantiatedUnderwaterFinalPoint = Instantiate(UnderwaterFinalPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedUnderwaterFinalPoint.parent = mapContainer;
                     }
-                    else if (point.isStartingPoint)
+                    else if (point.isStartingPoint && instantiateStartingPoints)
                     {
                         Transform InstantiatedUnderwaterStartingPoint = Instantiate(UnderwaterStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedUnderwaterStartingPoint.parent = mapContainer;
@@ -251,7 +255,7 @@ public class HexGridCreator : MonoBehaviour
                         Transform InstantiatedUndergroundFinalPoint = Instantiate(UndergroundFinalPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedUndergroundFinalPoint.parent = mapContainer;
                     }
-                    else if (point.isStartingPoint)
+                    else if (point.isStartingPoint && instantiateStartingPoints)
                     {
                         Transform InstantiatedUndergroundStartingPoint = Instantiate(UndergroundStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedUndergroundStartingPoint.parent = mapContainer;
@@ -268,7 +272,7 @@ public class HexGridCreator : MonoBehaviour
                         Transform InstantiatedHypogeumFinalPoint = Instantiate(HypogeumFinalPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedHypogeumFinalPoint.parent = mapContainer;
                     }
-                    else if (point.isStartingPoint)
+                    else if (point.isStartingPoint && instantiateStartingPoints)
                     {
                         Transform InstantiatedHypogeumStartingPoint = Instantiate(HypogeumStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedHypogeumStartingPoint.parent = mapContainer;
@@ -285,7 +289,7 @@ public class HexGridCreator : MonoBehaviour
                         Transform InstantiatedForestFinalPoint = Instantiate(ForestFinalPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedForestFinalPoint.parent = mapContainer;
                     }
-                    else if (point.isStartingPoint)
+                    else if (point.isStartingPoint && instantiateStartingPoints)
                     {
                         Transform InstantiatedForestStartingPoint = Instantiate(ForestStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedForestStartingPoint.parent = mapContainer;
@@ -458,8 +462,6 @@ public class HexGridCreator : MonoBehaviour
             }
         }
     }
-
-
 
     #endregion
 
