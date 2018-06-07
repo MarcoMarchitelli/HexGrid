@@ -54,12 +54,12 @@ LightmapSettings:
     m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 1
     m_EnableBakedLightmaps: 1
-    m_EnableRealtimeLightmaps: 0
+    m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
     serializedVersion: 10
-    m_Resolution: 40
-    m_BakeResolution: 2
-    m_AtlasSize: 1024
+    m_Resolution: 1
+    m_BakeResolution: 1
+    m_AtlasSize: 512
     m_AO: 1
     m_AOMaxDistance: 1
     m_CompAOExponent: 1
@@ -73,7 +73,7 @@ LightmapSettings:
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
     m_MixedBakeMode: 2
-    m_BakeBackend: 1
+    m_BakeBackend: 0
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 10
     m_PVRSampleCount: 10
@@ -471,7 +471,7 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 83329a80d0eebc04cb22476adab86bac, type: 2}
   m_IsPrefabParent: 0
---- !u!1001 &431122546
+--- !u!1001 &329503360
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -509,6 +509,11 @@ Prefab:
     - target: {fileID: 4996262105184498, guid: d65a08abac33c614d952534053930fba, type: 2}
       propertyPath: m_RootOrder
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 108391603056877756, guid: d65a08abac33c614d952534053930fba,
+        type: 2}
+      propertyPath: m_Lightmapping
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d65a08abac33c614d952534053930fba, type: 2}
@@ -640,7 +645,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: 01b3e169808553d4e8961046126491b5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -11.85
+      value: -1.93
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 01b3e169808553d4e8961046126491b5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -648,7 +653,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 01b3e169808553d4e8961046126491b5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.61
+      value: -1.64
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 01b3e169808553d4e8961046126491b5, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1432,7 +1437,7 @@ Transform:
 Light:
   m_PrefabParentObject: {fileID: 108686929509721114, guid: d65a08abac33c614d952534053930fba,
     type: 2}
-  m_PrefabInternal: {fileID: 431122546}
+  m_PrefabInternal: {fileID: 329503360}
 --- !u!1 &1400592768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,7 +1625,7 @@ Prefab:
 Transform:
   m_PrefabParentObject: {fileID: 4996262105184498, guid: d65a08abac33c614d952534053930fba,
     type: 2}
-  m_PrefabInternal: {fileID: 431122546}
+  m_PrefabInternal: {fileID: 329503360}
 --- !u!1001 &1879587891
 Prefab:
   m_ObjectHideFlags: 0
