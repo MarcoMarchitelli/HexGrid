@@ -564,7 +564,7 @@ Transform:
   m_GameObject: {fileID: 1479003585685408}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4133990831029686}
   - {fileID: 4884352547605054}
@@ -1114,7 +1114,6 @@ MonoBehaviour:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
-    possibleDestinations: []
     nearHexagons: []
     type: 0
     isStartingPoint: 0
@@ -1125,7 +1124,6 @@ MonoBehaviour:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
-    possibleDestinations: []
     nearHexagons: []
     type: 0
     isStartingPoint: 0
@@ -1136,7 +1134,6 @@ MonoBehaviour:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
-    possibleDestinations: []
     nearHexagons: []
     type: 0
     isStartingPoint: 0
@@ -1254,9 +1251,9 @@ CapsuleCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.5
+  m_Height: 2.4
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 1.3, z: 0}
 --- !u!137 &137506664092783018
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
