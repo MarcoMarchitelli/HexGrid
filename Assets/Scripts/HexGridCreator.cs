@@ -5,6 +5,8 @@ public class HexGridCreator : MonoBehaviour
 {
     #region PUBLIC VARIABLES
 
+    public bool instantiateLights = false;
+
     [HideInInspector]
     public Transform center;
 
@@ -179,7 +181,8 @@ public class HexGridCreator : MonoBehaviour
             {
                 Transform instantiatedMap = Instantiate(mapPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
                 center = instantiatedMap;
-                Instantiate(lightPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
+                if (instantiateLights)
+                    Instantiate(lightPrefab, hex.worldPosition, Quaternion.Euler(Vector3.up * 90));
             }
         }
     }
@@ -865,7 +868,7 @@ public class HexGridCreator : MonoBehaviour
                     Gizmos.DrawCube(point.worldPosition, Vector3.one);
                 }
             }
-        }      
+        }
     }
 
     #endregion

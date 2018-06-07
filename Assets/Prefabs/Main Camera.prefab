@@ -11,14 +11,30 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1984254246049882}
   m_IsPrefabParent: 1
---- !u!1 &1054145399446152
+--- !u!1 &1197102959299558
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4456045430528694}
+  - component: {fileID: 4380626541605944}
+  - component: {fileID: 20787234190344182}
+  m_Layer: 0
+  m_Name: Outline Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1311829151109698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4828383013263560}
   m_Layer: 0
   m_Name: HighViewCameraPosition
   m_TagString: Untagged
@@ -42,22 +58,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!1 &1855897797070432
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4812947338950220}
-  - component: {fileID: 20675198393360790}
-  m_Layer: 0
-  m_Name: Outline Camera
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!1 &1984254246049882
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,7 +70,8 @@ GameObject:
   - component: {fileID: 124921478906540246}
   - component: {fileID: 81693265441750008}
   - component: {fileID: 114861943476154004}
-  - component: {fileID: 114069782535389542}
+  - component: {fileID: 114894025088654632}
+  - component: {fileID: 114276312538564060}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -84,13 +85,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1984254246049882}
-  m_LocalRotation: {x: 0.42720023, y: 0.0006126689, z: -0.00028947668, w: 0.9041568}
+  m_LocalRotation: {x: 0.35550207, y: 0.009424831, z: -0.002589511, w: 0.93462443}
   m_LocalPosition: {x: 4.3, y: 20, z: -15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4314767620638514}
-  - {fileID: 4812947338950220}
-  - {fileID: 4456045430528694}
+  - {fileID: 4380626541605944}
+  - {fileID: 4828383013263560}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 41.649002, y: 1.21, z: 0.143}
@@ -107,31 +108,31 @@ Transform:
   m_Father: {fileID: 4100489163654298}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4456045430528694
+--- !u!4 &4380626541605944
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1054145399446152}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 20.6, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4100489163654298}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4812947338950220
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1855897797070432}
+  m_GameObject: {fileID: 1197102959299558}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4100489163654298}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4828383013263560
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311829151109698}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 20.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4100489163654298}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &20304061047224988
 Camera:
@@ -205,12 +206,12 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!20 &20675198393360790
+--- !u!20 &20787234190344182
 Camera:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1855897797070432}
+  m_GameObject: {fileID: 1197102959299558}
   m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 2
@@ -248,7 +249,7 @@ AudioListener:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1984254246049882}
   m_Enabled: 1
---- !u!114 &114069782535389542
+--- !u!114 &114276312538564060
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -256,12 +257,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1984254246049882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dbeb37911e6fd7644bdcefc70c42477a, type: 3}
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HighView: {fileID: 4456045430528694}
-  transitionTime: 30
-  isMoving: 0
+  profile: {fileID: 11400000, guid: e51dd16eaaeff2d4da1f932ec8514aee, type: 2}
 --- !u!114 &114861943476154004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -287,10 +286,24 @@ MonoBehaviour:
   alphaCutoff: 0.5
   flipY: 0
   sourceCamera: {fileID: 20304061047224988}
-  outlineCamera: {fileID: 20675198393360790}
+  outlineCamera: {fileID: 20787234190344182}
   outlineShaderMaterial: {fileID: 0}
   renderTexture: {fileID: 0}
   extraRenderTexture: {fileID: 0}
+--- !u!114 &114894025088654632
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1984254246049882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbeb37911e6fd7644bdcefc70c42477a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HighView: {fileID: 4828383013263560}
+  transitionTime: 30
+  isMoving: 0
 --- !u!124 &124921478906540246
 Behaviour:
   m_ObjectHideFlags: 1
