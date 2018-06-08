@@ -66,6 +66,7 @@ public class CombatManager : MonoBehaviour
         yield return StartCoroutine(ButtonMashFight());
 
         OnFightFinish.Invoke();
+        attacker.hasFought = false;
     }
 
     IEnumerator ModifiersSelection()

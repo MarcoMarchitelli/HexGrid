@@ -27,13 +27,13 @@ public class CardShop : MonoBehaviour
         {
             card1Price = 1;
             card2Price = 2;
-            card3Price = 3;
+            card3Price = 0;
         }
         else
         {
             card1Price = 2;
             card2Price = 4;
-            card3Price = 6;
+            card3Price = 0;
         }
 
         if (player.hasDiscount)
@@ -132,7 +132,7 @@ public class CardShop : MonoBehaviour
                 GameManager.instance.currentActivePlayer.energyPoints -= card2Price;
                 break;
             case 3:
-                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard1, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
+                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard3, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
                 CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
                 if (card3Controller)
                 {
