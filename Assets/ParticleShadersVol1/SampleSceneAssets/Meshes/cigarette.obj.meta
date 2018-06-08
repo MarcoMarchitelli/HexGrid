@@ -1,57 +1,27 @@
 fileFormatVersion: 2
-guid: b9f46ee5c9ee4b24ba0ee0878d7ff24f
+guid: e166172caf60f784daf8f3edbf7f76f7
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: Base
-    100002: Elevator
-    100004: Group1
-    100006: Group2
-    100008: Group3
-    100010: //RootNode
-    400000: Base
-    400002: Elevator
-    400004: Group1
-    400006: Group2
-    400008: Group3
-    400010: //RootNode
-    2100000: M_Underwater_Base
-    2100002: M_Underwater_StartingPoint
-    2300000: Base
-    2300002: Elevator
-    2300004: Group1
-    2300006: Group2
-    2300008: Group3
-    2300010: //RootNode
-    3300000: Base
-    3300002: Elevator
-    3300004: Group1
-    3300006: Group2
-    3300008: Group3
-    3300010: //RootNode
-    4300000: Base
-    4300002: Elevator
-    4300004: Group3
-    4300006: Group2
-    4300008: Group1
-    4300010: Underwater_Startingpoint
-    2186277476908879412: ImportLogs
+    100000: //RootNode
+    100002: sig
+    400000: //RootNode
+    400002: sig
+    2300000: sig
+    3300000: sig
+    4300000: sig
+    9500000: //RootNode
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: M_Underwater_Base
-    second: {instanceID: 0}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: M_Underwater_StartingPoint
-    second: {fileID: 2100000, guid: de4c4a4426d2c7944af26414c7b00baf, type: 2}
+      name: sigMat
+    second: {fileID: 2100000, guid: e4cdce61705488e4584582cf28f9e302, type: 2}
   materials:
     importMaterials: 1
-    materialName: 1
+    materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -80,7 +50,7 @@ ModelImporter:
     globalScale: 1
     meshCompression: 0
     addColliders: 0
-    importVisibility: 1
+    importVisibility: 0
     importBlendShapes: 1
     importCameras: 0
     importLights: 0
@@ -91,17 +61,17 @@ ModelImporter:
     keepQuads: 0
     weldVertices: 1
     preserveHierarchy: 0
-    indexFormat: 0
+    indexFormat: 1
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 3
-    normalCalculationMode: 4
+    tangentImportMode: 4
+    normalCalculationMode: 0
   importAnimation: 0
   copyAvatar: 0
   humanDescription:
@@ -119,7 +89,7 @@ ModelImporter:
     rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
     hasTranslationDoF: 0
     hasExtraRoot: 0
-    skeletonHasParents: 1
+    skeletonHasParents: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   animationType: 0
   humanoidOversampling: 1
