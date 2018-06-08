@@ -27,13 +27,13 @@ public class CardShop : MonoBehaviour
         {
             card1Price = 1;
             card2Price = 2;
-            card3Price = 0;
+            card3Price = 3;
         }
         else
         {
             card1Price = 2;
             card2Price = 4;
-            card3Price = 0;
+            card3Price = 6;
         }
 
         if (player.hasDiscount)

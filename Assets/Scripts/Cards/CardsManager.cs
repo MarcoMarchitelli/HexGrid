@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class CardsManager : MonoBehaviour {
+public class CardsManager : MonoBehaviour
+{
 
     public List<CardController> PlacedCards = new List<CardController>();
 
@@ -36,21 +37,24 @@ public class CardsManager : MonoBehaviour {
                 player.bonusMoveActions += card.moveHexTouched;
                 player.actions += card.abilityHexTouched;
                 GameManager.instance.hudManager.Refresh();
-            }   
+            }
         }
+        GameManager.instance.gainPhaseEnded = true;
     }
 
-    public void HighlightPlacedCards(bool flag)
+    public void HighlightPlacedCards(List<Hexagon> nearHexagons, bool flag)
     {
-        if(flag)
-            foreach (var card in PlacedCards)
+        if (flag)
+            foreach (var hexagon in nearHexagons)
             {
-                card.outlineController.EnableOutline(true);
+                if (PlacedCards.Contains(hexagon.card))
+                    hexagon.card.outlineController.EnableOutline(true);
             }
         else
-            foreach (var card in PlacedCards)
+            foreach (var hexagon in nearHexagons)
             {
-                card.outlineController.EnableOutline(false);
+                if (PlacedCards.Contains(hexagon.card))
+                    hexagon.card.outlineController.EnableOutline(false);
             }
     }
 

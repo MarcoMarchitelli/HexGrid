@@ -69,7 +69,6 @@ public class CardController : MonoBehaviour
 
         if (state == State.selectedFromMap)
         {
-            transform.position = new Vector3(transform.position.x, 3f, transform.position.z);
             if (Input.GetKeyDown(KeyCode.A))
             {
                 transform.Rotate(Vector3.up * -60);
@@ -98,11 +97,12 @@ public class CardController : MonoBehaviour
             hexImOn.card = this;
             ResetTouchValues();
             SetTouchvalues(hexImOn);
-            player.cardsInHand.Remove(this);
+            if(player.cardsInHand.Contains(this))
+                player.cardsInHand.Remove(this);
             GameManager.instance.cardsManager.PlacedCards.Add(this);
 
             //ANIMATION
-            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 7f));
+            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 7f, true));
         }
     }
 
@@ -1623,16 +1623,25 @@ public class CardController : MonoBehaviour
         }  
     }
 
+    public void SelectFromMap()
+    {
+        state = State.selectedFromMap;
+        this.FreePaths(this.hexImOn);
+        GameManager.instance.cardsManager.PlacedCards.Remove(this);
+        StartCoroutine(AnimateToDestination(new Vector3(transform.position.x, 3f, transform.position.z), 8f, false));
+    }
+
     #region animations
 
-    IEnumerator AnimateToDestination(Vector3 Destination, float speed)
+    IEnumerator AnimateToDestination(Vector3 Destination, float speed, bool playPopUpAnim)
     {
         while (transform.position != Destination)
         {
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
-        ResourcesPopUpAnimation();
+        if(playPopUpAnim)
+            ResourcesPopUpAnimation();
     }
 
     IEnumerator AnimateToRotation(Vector3 TargetEulerAngle, float durationInSeconds)
