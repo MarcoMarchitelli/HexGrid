@@ -1519,6 +1519,7 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
+    isFinalWaypointUsed: 0
     gCost: 0
     hCost: 0
   currentWayPoint:
@@ -1529,6 +1530,7 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
+    isFinalWaypointUsed: 0
     gCost: 0
     hCost: 0
   moveStartPoint:
@@ -1539,6 +1541,7 @@ MonoBehaviour:
     type: 0
     isStartingPoint: 0
     isFinalWaypoint: 0
+    isFinalWaypointUsed: 0
     gCost: 0
     hCost: 0
   currentAction: 0

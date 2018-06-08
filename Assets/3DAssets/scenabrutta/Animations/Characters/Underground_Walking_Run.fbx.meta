@@ -90,7 +90,12 @@ ModelImporter:
     4300010: polySurface93
     7400000: Run
     9500000: //RootNode
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_Underground_Character
+    second: {fileID: 2100000, guid: e67bc843141650a46b63558d995109d0, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

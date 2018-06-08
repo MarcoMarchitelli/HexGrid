@@ -361,7 +361,12 @@ ModelImporter:
     13700144: Rig_Animation:polySurface350
     13700146: Rig_Animation:polySurface351
     13700148: Rig_Animation:polySurface352
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Rig_Animation_lambert4
+    second: {fileID: 2100000, guid: 79dbbb0ae5045754da00438ea7434628, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

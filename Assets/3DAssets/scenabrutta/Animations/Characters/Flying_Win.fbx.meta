@@ -74,7 +74,12 @@ ModelImporter:
     13700004: L_Hand
     13700006: Mask1
     13700008: R_Hand
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_HypogeumCharacter
+    second: {fileID: 2100000, guid: 5311fa86395ee7e4aa08b66cb60eb798, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
