@@ -6,6 +6,8 @@ public class HexGridCreator : MonoBehaviour
 {
     public UnityEvent OnInitEnd;
 
+    public LayerMask TriangleMask;
+
     #region PUBLIC VARIABLES
 
     public bool instantiateLights = false;
@@ -234,6 +236,19 @@ public class HexGridCreator : MonoBehaviour
     {
         foreach (Point point in WaypointGrid)
         {
+            Collider[] collidersHit = (Physics.OverlapSphere(point.worldPosition, 1.5f, TriangleMask));
+            if(collidersHit != null)
+            {
+                foreach (var collider in collidersHit)
+                {
+                    MaterialChange triangle = collider.GetComponent<MaterialChange>();
+                    if (triangle)
+                    {
+                        point.worldPosition = triangle.transform.position;
+                        break;
+                    }
+                }
+            }
             switch (point.type)
             {
                 case Point.Type.underwater:
