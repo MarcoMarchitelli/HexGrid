@@ -23,8 +23,6 @@ public class CombatManager : MonoBehaviour
     public UnityEvent OnModifiersSelected;
 
     [Header("UI Stuff")]
-    public GameObject SelectionPanel;
-    public GameObject FightPanel;
     public Slider slider;
     public Animator CountdownAnimator;
     public TextMeshProUGUI InfoText;
@@ -155,8 +153,6 @@ public class CombatManager : MonoBehaviour
             if(defender.victoryPoints > 0)
                 defender.victoryPoints--;
         }
-
-        FightPanel.SetActive(false);
 
         GameManager.instance.ConfirmAction();
     }
