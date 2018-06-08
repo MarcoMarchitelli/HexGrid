@@ -203,22 +203,22 @@ public class GameManager : MonoBehaviour
         {
             switch (players[i].type)
             {
-                case PlayerController.Type.underground:
+                case PlayerController.Type.underwater:
                     Point redStart = gridReference.GetPointFromCoords((int)MyData.startingRedPoint.x, (int)MyData.startingRedPoint.y);
                     players[i].transform.position = redStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = redStart;
                     break;
-                case PlayerController.Type.hypogeum:
+                case PlayerController.Type.forest:
                     Point yellowStart = gridReference.GetPointFromCoords((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y);
                     players[i].transform.position = yellowStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = yellowStart;
                     break;
-                case PlayerController.Type.underwater:
+                case PlayerController.Type.hypogeum:
                     Point blueStart = gridReference.GetPointFromCoords((int)MyData.startingBluePoint.x, (int)MyData.startingBluePoint.y);
                     players[i].transform.position = blueStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = blueStart;
                     break;
-                case PlayerController.Type.forest:
+                case PlayerController.Type.underground:
                     Point greenStart = gridReference.GetPointFromCoords((int)MyData.startingGreenPoint.x, (int)MyData.startingGreenPoint.y);
                     players[i].transform.position = greenStart.worldPosition + Vector3.up * .5f;
                     players[i].startingWayPoint = greenStart;
