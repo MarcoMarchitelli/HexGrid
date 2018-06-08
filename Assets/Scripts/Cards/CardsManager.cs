@@ -38,7 +38,6 @@ public class CardsManager : MonoBehaviour {
                 GameManager.instance.hudManager.Refresh();
             }   
         }
-        GameManager.instance.gainPhaseEnded = true;
     }
 
     public void HighlightPlacedCards(bool flag)
