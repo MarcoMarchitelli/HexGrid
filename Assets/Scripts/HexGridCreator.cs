@@ -247,11 +247,6 @@ public class HexGridCreator : MonoBehaviour
                         Transform InstantiatedUnderwaterStartingPoint = Instantiate(UnderwaterStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedUnderwaterStartingPoint.parent = mapContainer;
                     }
-                    else
-                    {
-                        Transform instantiatedBlueWaypoint = Instantiate(underwaterWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
-                        instantiatedBlueWaypoint.parent = mapContainer;
-                    }
                     break;
                 case Point.Type.underground:
                     if (point.isFinalWaypoint)
@@ -263,11 +258,6 @@ public class HexGridCreator : MonoBehaviour
                     {
                         Transform InstantiatedUndergroundStartingPoint = Instantiate(UndergroundStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedUndergroundStartingPoint.parent = mapContainer;
-                    }
-                    else
-                    {
-                        Transform instantiatedRedWaypoint = Instantiate(undergroundWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
-                        instantiatedRedWaypoint.parent = mapContainer;
                     }
                     break;
                 case Point.Type.hypogeum:
@@ -281,11 +271,6 @@ public class HexGridCreator : MonoBehaviour
                         Transform InstantiatedHypogeumStartingPoint = Instantiate(HypogeumStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedHypogeumStartingPoint.parent = mapContainer;
                     }
-                    else
-                    {
-                        Transform instantiatedYellowWaypoint = Instantiate(hypogeumWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
-                        instantiatedYellowWaypoint.parent = mapContainer;
-                    }
                     break;
                 case Point.Type.forest:
                     if (point.isFinalWaypoint)
@@ -297,11 +282,6 @@ public class HexGridCreator : MonoBehaviour
                     {
                         Transform InstantiatedForestStartingPoint = Instantiate(ForestStartingPoint, point.worldPosition, Quaternion.identity);
                         InstantiatedForestStartingPoint.parent = mapContainer;
-                    }
-                    else
-                    {
-                        Transform instantiatedGreenWaypoint = Instantiate(forestWaypointPrefab, point.worldPosition + waypointSpawnOffset, Quaternion.identity);
-                        instantiatedGreenWaypoint.parent = mapContainer;
                     }
                     break;
                 case Point.Type.win:
@@ -367,13 +347,13 @@ public class HexGridCreator : MonoBehaviour
             }
         }
 
-        Point yellowStartingPoint = new Point((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y, new Vector3(yellowStartingPointX, 0f, yellowStartingPointY), Point.Type.hypogeum, true);
+        Point yellowStartingPoint = new Point((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y, new Vector3(yellowStartingPointX, 0f, yellowStartingPointY), Point.Type.underground, true);
         WaypointGrid.Add(yellowStartingPoint);
 
         Point blueStartingPoint = new Point((int)MyData.startingBluePoint.x, (int)MyData.startingBluePoint.y, new Vector3(blueStartingPointX, 0f, blueStartingPointY), Point.Type.underwater, true);
         WaypointGrid.Add(blueStartingPoint);
 
-        Point redStartingPoint = new Point((int)MyData.startingRedPoint.x, (int)MyData.startingRedPoint.y, new Vector3(redStartingPointX, 0f, redStartingPointY), Point.Type.underground, true);
+        Point redStartingPoint = new Point((int)MyData.startingRedPoint.x, (int)MyData.startingRedPoint.y, new Vector3(redStartingPointX, 0f, redStartingPointY), Point.Type.hypogeum, true);
         WaypointGrid.Add(redStartingPoint);
 
         Point greenStartingPoint = new Point((int)MyData.startingGreenPoint.x, (int)MyData.startingGreenPoint.y, new Vector3(greenStartingPointX, 0f, greenStartingPointY), Point.Type.forest, true);
@@ -395,7 +375,7 @@ public class HexGridCreator : MonoBehaviour
         //final waypoints
         foreach (Point point in WaypointGrid)
         {
-            if (point.x == (int)MyData.specialYellowPoint.x && point.y == (int)MyData.specialYellowPoint.y && point.type == Point.Type.hypogeum)
+            if (point.x == (int)MyData.specialYellowPoint.x && point.y == (int)MyData.specialYellowPoint.y && point.type == Point.Type.underground)
             {
                 point.isFinalWaypoint = true;
             }
@@ -407,7 +387,7 @@ public class HexGridCreator : MonoBehaviour
             {
                 point.isFinalWaypoint = true;
             }
-            if (point.x == (int)MyData.specialRedPoint.x && point.y == (int)MyData.specialRedPoint.y && point.type == Point.Type.underground)
+            if (point.x == (int)MyData.specialRedPoint.x && point.y == (int)MyData.specialRedPoint.y && point.type == Point.Type.hypogeum)
             {
                 point.isFinalWaypoint = true;
             }
@@ -767,27 +747,17 @@ public class HexGridCreator : MonoBehaviour
         for (int i = 0; i < WaypointGrid.Count; i++)
         {
             //starting point yellow
-            if (point.type == Point.Type.hypogeum && point.isStartingPoint)
+            if (point.type == Point.Type.underground && point.isStartingPoint)
             {
-                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
+                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 4)
                     destinations.Add(WaypointGrid[i]);
-                if (WaypointGrid[i].x == point.x + 2 && WaypointGrid[i].y == point.y)
+                if (WaypointGrid[i].x == point.x - 2 && WaypointGrid[i].y == point.y)
                     destinations.Add(WaypointGrid[i]);
-                if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y + 2)
+                if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y - 2)
                     destinations.Add(WaypointGrid[i]);
             }
             //starting point blue
             if (point.type == Point.Type.underwater && point.isStartingPoint)
-            {
-                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
-                    destinations.Add(WaypointGrid[i]);
-                if (WaypointGrid[i].x == point.x - 2 && WaypointGrid[i].y == point.y)
-                    destinations.Add(WaypointGrid[i]);
-                if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y + 2)
-                    destinations.Add(WaypointGrid[i]);
-            }
-            //starting point red
-            if (point.type == Point.Type.underground && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 4)
                     destinations.Add(WaypointGrid[i]);
@@ -796,14 +766,24 @@ public class HexGridCreator : MonoBehaviour
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y - 2)
                     destinations.Add(WaypointGrid[i]);
             }
-            //starting point green
-            if (point.type == Point.Type.forest && point.isStartingPoint)
+            //starting point red
+            if (point.type == Point.Type.hypogeum && point.isStartingPoint)
             {
-                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 4)
+                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
                     destinations.Add(WaypointGrid[i]);
                 if (WaypointGrid[i].x == point.x - 2 && WaypointGrid[i].y == point.y)
                     destinations.Add(WaypointGrid[i]);
-                if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y - 2)
+                if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y + 2)
+                    destinations.Add(WaypointGrid[i]);
+            }
+            //starting point green
+            if (point.type == Point.Type.forest && point.isStartingPoint)
+            {
+                if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
+                    destinations.Add(WaypointGrid[i]);
+                if (WaypointGrid[i].x == point.x + 2 && WaypointGrid[i].y == point.y)
+                    destinations.Add(WaypointGrid[i]);
+                if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y + 2)
                     destinations.Add(WaypointGrid[i]);
             }
 
