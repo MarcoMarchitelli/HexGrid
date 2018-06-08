@@ -3,6 +3,7 @@ using TMPro;
 
 public class CardShop : MonoBehaviour
 {
+    int cardSpawnCounter = 0;
 
     [Header("Buy Buttons")]
     public ButtonController buyCard1;
@@ -47,16 +48,6 @@ public class CardShop : MonoBehaviour
 
         playerEnergy = player.energyPoints;
 
-        if (player.hasBought)
-        {
-            buyCard3.SetUsability(false);
-            buyCard3.SetSprite(ButtonController.SpriteType.inactive);
-            buyCard2.SetUsability(false);
-            buyCard2.SetSprite(ButtonController.SpriteType.inactive);
-            buyCard1.SetUsability(false);
-            buyCard1.SetSprite(ButtonController.SpriteType.inactive);
-        }
-        else
         if (playerEnergy >= card3Price)
         {
             buyCard3.SetUsability(true);
@@ -106,7 +97,8 @@ public class CardShop : MonoBehaviour
         switch (cardType)
         {
             case 1:
-                Transform instantiatedCard1 = Instantiate(GameManager.instance.prefabCard1, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
+                cardSpawnCounter++;
+                Transform instantiatedCard1 = Instantiate(GameManager.instance.prefabCard1, MyData.prefabsPosition + Vector3.one * cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
                 CardController card1Controller = instantiatedCard1.GetComponent<CardController>();
                 if (card1Controller)
                 {
@@ -121,7 +113,8 @@ public class CardShop : MonoBehaviour
                 }
                 break;
             case 2:
-                Transform instantiatedCard2 = Instantiate(GameManager.instance.prefabCard2, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
+                cardSpawnCounter++;
+                Transform instantiatedCard2 = Instantiate(GameManager.instance.prefabCard2, MyData.prefabsPosition + Vector3.one * cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
                 CardController card2Controller = instantiatedCard2.GetComponent<CardController>();
                 if (card2Controller)
                 {
@@ -132,7 +125,8 @@ public class CardShop : MonoBehaviour
                 GameManager.instance.currentActivePlayer.energyPoints -= card2Price;
                 break;
             case 3:
-                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard3, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
+                cardSpawnCounter++;
+                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard3, MyData.prefabsPosition + Vector3.one * cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
                 CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
                 if (card3Controller)
                 {

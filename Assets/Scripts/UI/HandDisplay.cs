@@ -27,7 +27,7 @@ public class HandDisplay : MonoBehaviour
         card2QuantityText.text = card2Number.ToString();
         card3QuantityText.text = card3Number.ToString();
 
-        if (card1Number <= 0 || player.selectedCard || player.hasPlacedCard)
+        if (card1Number <= 0)
         {
             card1Button.SetUsability(false);
             card1Button.SetSprite(ButtonController.SpriteType.inactive);
@@ -38,7 +38,7 @@ public class HandDisplay : MonoBehaviour
             card1Button.SetSprite(ButtonController.SpriteType.active);
         }
 
-        if (card2Number <= 0 || player.selectedCard || player.hasPlacedCard)
+        if (card2Number <= 0 || player.selectedCard)
         {
             card2Button.SetUsability(false);
             card2Button.SetSprite(ButtonController.SpriteType.inactive);
@@ -49,7 +49,7 @@ public class HandDisplay : MonoBehaviour
             card2Button.SetSprite(ButtonController.SpriteType.active);
         }
 
-        if (card3Number <= 0 || player.selectedCard || player.hasPlacedCard)
+        if (card3Number <= 0 || player.selectedCard)
         {
             card3Button.SetUsability(false);
             card3Button.SetSprite(ButtonController.SpriteType.inactive);
