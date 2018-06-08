@@ -85,6 +85,7 @@ public class GameManager : MonoBehaviour
         #endregion
 
         currentActivePlayer = players[playerIndex];
+        currentActivePlayer.VFXobject.SetActive(true);
 
         //uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
@@ -251,6 +252,7 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         turnEnded = true;
+        currentActivePlayer.VFXobject.SetActive(false);
         turnCount++;
     }
 
@@ -260,7 +262,6 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.MoveToPoint(currentActivePlayer.moveStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.moveStartPoint;
         currentActivePlayer.currentAction = PlayerController.Action.moving;
-        currentActivePlayer.VFXobject.SetActive(false);
         hudManager.Refresh();
     }
 
@@ -269,7 +270,6 @@ public class GameManager : MonoBehaviour
         switch (currentActivePlayer.currentAction)
         {
             case PlayerController.Action.moving:
-                currentActivePlayer.VFXobject.SetActive(false);
                 break;
             case PlayerController.Action.buyCard:
                 break;
@@ -417,7 +417,7 @@ public class GameManager : MonoBehaviour
     {
         currentActivePlayer.selectedCard = null;
 
-        cardsManager.HighlightPlacedCards(false);
+        cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons ,false);
         mainCamera.SetHighView(false);
     }
 
@@ -480,7 +480,7 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
         currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
-        cardsManager.HighlightPlacedCards(false);
+        cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons ,false);
         mainCamera.SetHighView(false);
     }
 

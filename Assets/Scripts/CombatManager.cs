@@ -27,6 +27,7 @@ public class CombatManager : MonoBehaviour
     public GameObject FightPanel;
     public Slider slider;
     public Animator CountdownAnimator;
+    public TextMeshProUGUI InfoText;
     public TextMeshProUGUI CountdownText;
 
     [Header("Scripts")]

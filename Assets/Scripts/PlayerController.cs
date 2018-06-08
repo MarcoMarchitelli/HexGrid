@@ -160,6 +160,7 @@ public class PlayerController : MonoBehaviour
                     if (Input.GetMouseButtonDown(1) && !hasPlacedCard && selectedCard.state == CardController.State.selectedFromHand)
                     {
                         UnselectCard();
+                        GameManager.instance.UndoAction();
                     }
                 }
 
@@ -185,13 +186,12 @@ public class PlayerController : MonoBehaviour
 
                             if (selectedCard && selectedCard.state == CardController.State.placed && currentWayPoint.nearHexagons.Contains(selectedCard.hexImOn))
                             {
-                                selectedCard.state = CardController.State.selectedFromMap;
-                                selectedCard.FreePaths(selectedCard.hexImOn);
-                                GameManager.instance.cardsManager.PlacedCards.Remove(selectedCard);
+                                selectedCard.SelectFromMap();                 
                                 beforeRotateActionCardEulerAngle = selectedCard.placedEulerAngle;
                                 GameManager.instance.hudManager.Refresh();
                                 return;
                             }
+                            selectedCard = null;
                         }
                     }
                 }
@@ -208,30 +208,9 @@ public class PlayerController : MonoBehaviour
                         lastPlacedCard = selectedCard;
                         selectedCard = null;
                         energyPoints += lastPlacedCard.extractableEnergy;
+                        bonusMoveActions += lastPlacedCard.moveHexTouched;
                         GameManager.instance.ConfirmAction();
                     }
-
-                    //(UNDO)
-                    if (Input.GetMouseButtonDown(1))
-                    {
-                        selectedCard.SetRotationBackToPlaced();
-                        selectedCard.Place(selectedCard.hexImOn);
-                        lastPlacedCard = selectedCard;
-                        selectedCard = null;
-                        GameManager.instance.hudManager.Refresh();
-                    }
-
-                    //(RETURN TO OWNER'S HAND)
-                    //if (Input.GetKeyDown(KeyCode.Space))
-                    //{
-                    //    UnselectCard();
-                    //    hasPlacedCard = true;
-                    //    if (UIrefresh != null)
-                    //    {
-                    //        UIrefresh(this);
-                    //    }
-                    //}
-
                 }
 
                 #endregion
@@ -455,7 +434,6 @@ public class PlayerController : MonoBehaviour
                 hasMoved = false;
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
-                VFXobject.SetActive(true);
                 moveAgents = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)
                     GameManager.instance.OnMoveEnter(moveAgents);
@@ -476,7 +454,7 @@ public class PlayerController : MonoBehaviour
                 currentAction = Action.rotateCard;
                 beforeActionEnergyPoints = energyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
-                GameManager.instance.cardsManager.HighlightPlacedCards(true);
+                GameManager.instance.cardsManager.HighlightPlacedCards(currentWayPoint.nearHexagons, true);
                 GameManager.instance.mainCamera.SetHighView(true);
                 break;
             case 5:
