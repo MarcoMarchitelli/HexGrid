@@ -96,10 +96,15 @@ public class PlayerController : MonoBehaviour
                             {
                                 if (agent.point == pointHit)
                                 {
+                                    if (agent.point == currentWayPoint || (agent.point.isFinalWaypoint && agent.point.isFinalWaypointUsed))
+                                    {
+                                        return;
+                                    }
+
                                     if (finalPointHit != null)
                                     {
                                         if (Mathf.Approximately(pointHit.worldPosition.x, finalPointHit.transform.position.x) && Mathf.Approximately(pointHit.worldPosition.y, finalPointHit.transform.position.y))
-                                            StartCoroutine(RunAnimation(pointHit, finalPointHit));     
+                                            StartCoroutine(RunAnimation(pointHit, finalPointHit));
                                     }
                                     else
                                     {
@@ -319,6 +324,7 @@ public class PlayerController : MonoBehaviour
         if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
         {
             victoryPoints++;
+            currentWayPoint.isFinalWaypointUsed = true;
             GameManager.instance.ConfirmAction();
         }
 

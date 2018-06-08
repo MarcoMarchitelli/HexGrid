@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using cakeslice;
 
-public class MaterialChange : MonoBehaviour {
+public class MaterialChange : MonoBehaviour
+{
 
     public bool MultipleOutlines;
     public bool OutlineInChildren;
@@ -27,10 +28,10 @@ public class MaterialChange : MonoBehaviour {
             else
                 outline = GetComponent<Outline>();
         }
-        
-        if(outline != null)
+
+        if (outline != null)
             outline.enabled = false;
-        if(outlines != null)
+        if (outlines != null)
             foreach (var _outline in outlines)
             {
                 _outline.enabled = false;
@@ -47,7 +48,23 @@ public class MaterialChange : MonoBehaviour {
     {
         foreach (var point in points)
         {
-            if (Mathf.Approximately(point.point.worldPosition.x, transform.position.x) && Mathf.Approximately(point.point.worldPosition.z, transform.position.z))
+            if (point.point == GameManager.instance.currentActivePlayer.currentWayPoint || (point.point.isFinalWaypoint && point.point.isFinalWaypointUsed))
+            {
+                if (!MultipleOutlines)
+                {
+                    outline.enabled = false;
+                    isOutlined = false;
+                }
+                else
+                {
+                    foreach (var _outline in outlines)
+                    {
+                        _outline.enabled = false;
+                    }
+                    isOutlined = false;
+                }
+            }
+            else if (Mathf.Approximately(point.point.worldPosition.x, transform.position.x) && Mathf.Approximately(point.point.worldPosition.z, transform.position.z))
             {
                 if (!MultipleOutlines)
                 {
@@ -65,22 +82,6 @@ public class MaterialChange : MonoBehaviour {
                     }
                     isOutlined = true;
                     return;
-                }                
-            }
-            else
-            {
-                if (!MultipleOutlines)
-                {
-                    outline.enabled = false;
-                    isOutlined = false;
-                }
-                else
-                {
-                    foreach (var _outline in outlines)
-                    {
-                        _outline.enabled = false;
-                    }
-                    isOutlined = false;
                 }
             }
         }
@@ -112,15 +113,15 @@ public class MaterialChange : MonoBehaviour {
     {
         if (isOutlined)
         {
-            if(outline != null)
+            if (outline != null)
                 outline.color = 2;
-            else if(outlines != null)
+            else if (outlines != null)
                 foreach (var _outline in outlines)
                 {
                     _outline.color = 2;
                 }
         }
-            
+
     }
 
     private void OnMouseExit()

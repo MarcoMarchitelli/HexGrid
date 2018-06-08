@@ -25,6 +25,7 @@ public class Point : IHeapItem<Point>{
     public Type type;
     public bool isStartingPoint;
     public bool isFinalWaypoint;
+    public bool isFinalWaypointUsed;
 
     public int gCost;
     public int hCost;
@@ -74,6 +75,7 @@ public class Point : IHeapItem<Point>{
         worldPosition = _worldPosition;
         isStartingPoint = false;
         isFinalWaypoint = false;
+        isFinalWaypointUsed = false;
         possibleDestinations = new List<Point>();
         nearHexagons = new List<Hexagon>();
         SetTypeFromCoords();
@@ -87,6 +89,7 @@ public class Point : IHeapItem<Point>{
         type = _type;
         isStartingPoint = _isStartingPoint;
         isFinalWaypoint = false;
+        isFinalWaypointUsed = false;
         possibleDestinations = new List<Point>();
         nearHexagons = new List<Hexagon>();
     }
