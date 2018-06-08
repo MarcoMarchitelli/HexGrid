@@ -9,6 +9,7 @@ public class HUDManager : MonoBehaviour
 
     [Header("Print Sections")]
     public TextMeshProUGUI bigCentralSection;
+    public Animation bigNewsAnimation;
 
     [Header("Action Buttons")]
     public ButtonController moveButton;
@@ -28,14 +29,6 @@ public class HUDManager : MonoBehaviour
     #endregion
 
     bool paused = false;
-
-    [HideInInspector]
-    public Animation bigNewsAnimation;
-
-    void Start()
-    {
-        bigNewsAnimation = bigCentralSection.GetComponentInParent<Animation>();
-    }
 
     private void Update()
     {

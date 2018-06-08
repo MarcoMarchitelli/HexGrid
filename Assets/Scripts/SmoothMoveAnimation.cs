@@ -8,7 +8,7 @@ public class SmoothMoveAnimation : MonoBehaviour {
     public float speed;
     public UnityEvent OnAnimationFinish;
 
-	public IEnumerator Animation()
+    public IEnumerator Animation()
     {            
         Vector3 target = TargetPosition.position;
         while (transform.position != target)

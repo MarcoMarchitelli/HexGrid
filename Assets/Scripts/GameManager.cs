@@ -42,8 +42,6 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public float buttonMashFightResult = .5f;
 
-    int energyBet;
-    bool hasBet, fightResultAnnounced;
     [HideInInspector]
     public bool isStaticEvent = false;
 
@@ -62,7 +60,7 @@ public class GameManager : MonoBehaviour
 
     public Phase currentPhase;
 
-    void Awake()
+    public void Init()
     {
         instance = this;
         gridReference = FindObjectOfType<HexGridCreator>();
@@ -73,10 +71,6 @@ public class GameManager : MonoBehaviour
         combatManager = GetComponent<CombatManager>();
         pathfinding = GetComponent<Pathfinding>();
         InstantiatePlayers();
-    }
-
-    private void Start()
-    {
         StartCoroutine(TurnStart(playerIndex));
     }
 
@@ -117,20 +111,22 @@ public class GameManager : MonoBehaviour
         yield return StartCoroutine(PlayPhase());
 
         yield return StartCoroutine(RotationPhase());
+
+        StartCoroutine(TurnStart(playerIndex));
     }
 
     IEnumerator GainPhase()
     {
         currentPhase = Phase.gain;
-        print("Gain Phase!");
-
-        hudManager.Refresh();
+        print("Gain Phase!"); 
 
         message = "Gain Phase";
         hudManager.PrintBigNews(message);
 
         while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;
+
+        currentActivePlayer.ResetValues();
 
         while (!gainPhaseEnded)
         {
@@ -139,22 +135,24 @@ public class GameManager : MonoBehaviour
             //VFX E ALTRE COSE
             yield return null;
         }
+
+        hudManager.Refresh();
     }
 
     IEnumerator PlayPhase()
     {
-        currentPhase = Phase.main;
+        currentPhase = Phase.main;       
         currentActivePlayer.TurnStart();
 
         print("Chose an action " + currentActivePlayer + "!");
-
-        hudManager.Refresh();
 
         message = "Main Phase";
         hudManager.PrintBigNews(message);
 
         while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;
+
+        hudManager.Refresh();
 
         while (!turnEnded)
         {
@@ -178,7 +176,7 @@ public class GameManager : MonoBehaviour
         hudManager.PrintBigNews(message);
         cardsManager.StartRotationAnimations();
 
-        while (!rotationPhaseEnded && hudManager.bigNewsAnimation.isPlaying)
+        while (!rotationPhaseEnded || hudManager.bigNewsAnimation.isPlaying)
         {
             rotationPhaseEnded = cardsManager.AllRotationAnimationsFinished();
             yield return null;
@@ -189,7 +187,7 @@ public class GameManager : MonoBehaviour
         else
             playerIndex = 0;
 
-        StartCoroutine(TurnStart(playerIndex));
+
 
         playersHUDcontroller.CyclePlayersHUDs(turnCount);
     }

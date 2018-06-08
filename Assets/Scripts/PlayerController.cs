@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, pointLayer))
                     {
                         Point pointHit = GameManager.instance.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
+                        SmoothMoveAnimation finalPointHit = hitInfo.collider.GetComponent<SmoothMoveAnimation>();
 
                         if (pointHit != null)
                         {
@@ -95,8 +96,16 @@ public class PlayerController : MonoBehaviour
                             {
                                 if (agent.point == pointHit)
                                 {
-                                    StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit, moveAgents.Count)));
-                                    if(GameManager.instance.OnMoveSelected != null)
+                                    if (finalPointHit != null)
+                                    {
+                                        if (Mathf.Approximately(pointHit.worldPosition.x, finalPointHit.transform.position.x) && Mathf.Approximately(pointHit.worldPosition.y, finalPointHit.transform.position.y))
+                                            StartCoroutine(RunAnimation(pointHit, finalPointHit));     
+                                    }
+                                    else
+                                    {
+                                        StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit, moveAgents.Count)));
+                                    }
+                                    if (GameManager.instance.OnMoveSelected != null)
                                         GameManager.instance.OnMoveSelected();
                                     hasMoved = true;
                                     break;
@@ -308,7 +317,10 @@ public class PlayerController : MonoBehaviour
         playersToRob = GameManager.instance.FindPlayersInRange(2, this);
 
         if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
+        {
             victoryPoints++;
+            GameManager.instance.ConfirmAction();
+        }
 
         if (currentWayPoint.type == Point.Type.purple)
         {
@@ -475,6 +487,13 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public void ResetValues()
+    {
+        actions = 2;
+        bonusMoveActions = 0;
+        hasDiscount = DiscountCheck();
+    }
+
     public void TurnStart()
     {
         currentAction = Action.start;
@@ -482,9 +501,6 @@ public class PlayerController : MonoBehaviour
         selectedCard = null;
         lastPlacedCard = null;
         hasFought = false;
-        actions = 2;
-        bonusMoveActions = 0;
-        hasDiscount = DiscountCheck();
         playersToRob = GameManager.instance.FindPlayersInRange(2, this);
         GameManager.instance.hudManager.ToggleActionButtons();
     }

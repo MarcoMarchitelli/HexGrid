@@ -418,6 +418,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1990916060}
   m_Script: {fileID: 11500000, guid: c408481324e329c428c3679bbf45c7f6, type: 3}
+--- !u!111 &262610393 stripped
+Animation:
+  m_PrefabParentObject: {fileID: 111470883571074080, guid: 10c12d5b9ed842c44856d5c6faa9401b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1663144803}
 --- !u!1001 &273782790
 Prefab:
   m_ObjectHideFlags: 0
@@ -481,41 +486,10 @@ Prefab:
         type: 2}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1030966571}
+      objectReference: {fileID: 712499874}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e60b2be1259a5804086e8792fa830006, type: 2}
   m_IsPrefabParent: 0
---- !u!84 &336785220
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 1255
-  m_Height: 648
-  m_AntiAliasing: 1
-  m_DepthFormat: 1
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!4 &343165486 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4151267817996594, guid: 5c659fb8aa2ef7d4989d71ef34b95f7f,
@@ -759,14 +733,40 @@ Prefab:
       propertyPath: players.Array.data[3]
       value: 
       objectReference: {fileID: 1271903228}
-    - target: {fileID: 114253196353093120, guid: 7acc807da7a16af4999bf3a33090e673,
-        type: 2}
-      propertyPath: OnModifiersSelected.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: SetTrigger
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7acc807da7a16af4999bf3a33090e673, type: 2}
   m_IsPrefabParent: 0
+--- !u!84 &712499874
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 1255
+  m_Height: 648
+  m_AntiAliasing: 1
+  m_DepthFormat: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 0
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!114 &722367624 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114967797907786868, guid: 10c12d5b9ed842c44856d5c6faa9401b,
@@ -842,6 +842,11 @@ Prefab:
       propertyPath: bigCentralSection
       value: 
       objectReference: {fileID: 722367624}
+    - target: {fileID: 114661917540379896, guid: 28d570db160faf0428f898b8828dc1e6,
+        type: 2}
+      propertyPath: bigNewsAnimation
+      value: 
+      objectReference: {fileID: 262610393}
     - target: {fileID: 114661917540379896, guid: 28d570db160faf0428f898b8828dc1e6,
         type: 2}
       propertyPath: moveButton
@@ -1054,37 +1059,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 952962222}
   m_Script: {fileID: 11500000, guid: 62714e1b6f7f46f4e812f9d192ef8463, type: 3}
---- !u!84 &1030966571
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 1255
-  m_Height: 648
-  m_AntiAliasing: 1
-  m_DepthFormat: 1
-  m_ColorFormat: 0
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 0
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!114 &1064824142 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114149320092511340, guid: 7acc807da7a16af4999bf3a33090e673,
@@ -1137,6 +1111,37 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1990916060}
   m_Script: {fileID: 11500000, guid: c408481324e329c428c3679bbf45c7f6, type: 3}
+--- !u!84 &1249022356
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 1255
+  m_Height: 648
+  m_AntiAliasing: 1
+  m_DepthFormat: 1
+  m_ColorFormat: 0
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &1266807948
 Prefab:
   m_ObjectHideFlags: 0
@@ -1891,19 +1896,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114011828333430160, guid: 75ad66d9914293e4cabc108fce3a60a9,
         type: 2}
+      propertyPath: OnInitEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1064824142}
+    - target: {fileID: 114011828333430160, guid: 75ad66d9914293e4cabc108fce3a60a9,
+        type: 2}
+      propertyPath: OnInitEnd.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 731288850}
+    - target: {fileID: 114011828333430160, guid: 75ad66d9914293e4cabc108fce3a60a9,
+        type: 2}
       propertyPath: center
       value: 
       objectReference: {fileID: 1309678152}
-    - target: {fileID: 114011828333430160, guid: 75ad66d9914293e4cabc108fce3a60a9,
-        type: 2}
-      propertyPath: instantiateLights
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114011828333430160, guid: 75ad66d9914293e4cabc108fce3a60a9,
-        type: 2}
-      propertyPath: instantiateEnvironment
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 75ad66d9914293e4cabc108fce3a60a9, type: 2}
   m_IsPrefabParent: 0

@@ -11,7 +11,6 @@ public class CardController : MonoBehaviour
     public OutlineController outlineController;
 
     int eulerAngle = 0;
-    [HideInInspector]
     public int placedEulerAngle;
     [HideInInspector]
     public int extractableEnergy = 0, moveHexTouched = 0, abilityHexTouched = 0;
@@ -536,6 +535,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         break;
                     case 60:
@@ -559,6 +562,10 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
+                                    break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
                                     break;
                             }
                         break;
@@ -584,6 +591,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         break;
                     case 180:
@@ -607,6 +618,10 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
+                                    break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
                                     break;
                             }
                         break;
@@ -632,6 +647,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         break;
                     case 300:
@@ -655,6 +674,10 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
+                                    break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
                                     break;
                             }
                         break;
@@ -684,6 +707,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         if (topLeft != null && !topLeft.card)
                             switch (topLeft.type)
@@ -704,6 +731,9 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp2 != null)
                                         popUp2.SetString("+1 Move", Color.white);
+                                    break;
+                                    if (popUp2 != null)
+                                        popUp2.ResetString();
                                     break;
                             }
                         break;
@@ -729,6 +759,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         if (topRight != null && !topRight.card)
                             switch (topRight.type)
@@ -749,6 +783,9 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp2 != null)
                                         popUp2.SetString("+1 Move", Color.white);
+                                    break;
+                                    if (popUp2 != null)
+                                        popUp2.ResetString();
                                     break;
                             }
                         break;
@@ -774,6 +811,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         if (right != null && !right.card)
                             switch (right.type)
@@ -794,6 +835,9 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp2 != null)
                                         popUp2.SetString("+1 Move", Color.white);
+                                    break;
+                                    if (popUp2 != null)
+                                        popUp2.ResetString();
                                     break;
                             }
                         break;
@@ -819,6 +863,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         if (botRight != null && !botRight.card)
                             switch (botRight.type)
@@ -839,6 +887,9 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp2 != null)
                                         popUp2.SetString("+1 Move", Color.white);
+                                    break;
+                                    if (popUp2 != null)
+                                        popUp2.ResetString();
                                     break;
                             }
                         break;
@@ -864,6 +915,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         if (botLeft != null && !botLeft.card)
                             switch (botLeft.type)
@@ -884,6 +939,9 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp2 != null)
                                         popUp2.SetString("+1 Move", Color.white);
+                                    break;
+                                    if (popUp2 != null)
+                                        popUp2.ResetString();
                                     break;
                             }
                         break;
@@ -909,6 +967,10 @@ public class CardController : MonoBehaviour
                                     if (popUp1 != null)
                                         popUp1.SetString("+1 Move", Color.white);
                                     break;
+                                case Hexagon.Type.empty:
+                                    if (popUp1 != null)
+                                        popUp1.ResetString();
+                                    break;
                             }
                         if (left != null && !left.card)
                             switch (left.type)
@@ -929,6 +991,10 @@ public class CardController : MonoBehaviour
                                     moveHexTouched++;
                                     if (popUp2 != null)
                                         popUp2.SetString("+1 Move", Color.white);
+                                    break;
+                                case Hexagon.Type.empty:
+                                    if (popUp2 != null)
+                                        popUp2.ResetString();
                                     break;
                             }
                         break;
@@ -943,6 +1009,8 @@ public class CardController : MonoBehaviour
                             {
                                 case Hexagon.Type.energy:
                                     extractableEnergy++;
+                                    if (popUp1 != null)
+                                        popUp1.SetString("+1 PE", Color.green);
                                     break;
                                 case Hexagon.Type.ability:
                                     abilityHexTouched++;
@@ -985,6 +1053,8 @@ public class CardController : MonoBehaviour
                             {
                                 case Hexagon.Type.energy:
                                     extractableEnergy++;
+                                    if (popUp1 != null)
+                                        popUp1.SetString("+1 PE", Color.green);
                                     break;
                                 case Hexagon.Type.ability:
                                     abilityHexTouched++;
@@ -1027,6 +1097,8 @@ public class CardController : MonoBehaviour
                             {
                                 case Hexagon.Type.energy:
                                     extractableEnergy++;
+                                    if (popUp1 != null)
+                                        popUp1.SetString("+1 PE", Color.green);
                                     break;
                                 case Hexagon.Type.ability:
                                     abilityHexTouched++;
@@ -1069,6 +1141,8 @@ public class CardController : MonoBehaviour
                             {
                                 case Hexagon.Type.energy:
                                     extractableEnergy++;
+                                    if (popUp1 != null)
+                                        popUp1.SetString("+1 PE", Color.green);
                                     break;
                                 case Hexagon.Type.ability:
                                     abilityHexTouched++;
@@ -1111,6 +1185,8 @@ public class CardController : MonoBehaviour
                             {
                                 case Hexagon.Type.energy:
                                     extractableEnergy++;
+                                    if (popUp1 != null)
+                                        popUp1.SetString("+1 PE", Color.green);
                                     break;
                                 case Hexagon.Type.ability:
                                     abilityHexTouched++;
@@ -1153,6 +1229,8 @@ public class CardController : MonoBehaviour
                             {
                                 case Hexagon.Type.energy:
                                     extractableEnergy++;
+                                    if (popUp1 != null)
+                                        popUp1.SetString("+1 PE", Color.green);
                                     break;
                                 case Hexagon.Type.ability:
                                     abilityHexTouched++;

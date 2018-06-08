@@ -35,6 +35,7 @@ public class CardsManager : MonoBehaviour {
                 player.energyPoints += card.extractableEnergy;
                 player.bonusMoveActions += card.moveHexTouched;
                 player.actions += card.abilityHexTouched;
+                GameManager.instance.hudManager.Refresh();
             }   
         }
         GameManager.instance.gainPhaseEnded = true;

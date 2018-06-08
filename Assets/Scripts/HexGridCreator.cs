@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using UnityEngine.Events;
 using UnityEngine;
 
 public class HexGridCreator : MonoBehaviour
 {
+    public UnityEvent OnInitEnd;
+
     #region PUBLIC VARIABLES
 
     public bool instantiateLights = false;
@@ -69,6 +72,7 @@ public class HexGridCreator : MonoBehaviour
         InstantiateWaypoints();
         InstantiateHexagons();
         InstantiateMap();
+        OnInitEnd.Invoke();
         //transform.position = transform.position + Vector3.left * 0.12f;
     }
 

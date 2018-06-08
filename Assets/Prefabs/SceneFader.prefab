@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 4148734741178118}
   - component: {fileID: 95268106991048398}
   - component: {fileID: 114010350587010762}
+  - component: {fileID: 114466519818552774}
   m_Layer: 0
   m_Name: SceneFader
   m_TagString: Untagged
@@ -150,6 +151,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114466519818552774
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1058464894713784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e0c748b8cb54ec49864a31411a3d957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CursorIcon: {fileID: 2800000, guid: a53e358dcd754f6479abe56e605fb8f3, type: 3}
 --- !u!114 &114564357274595518
 MonoBehaviour:
   m_ObjectHideFlags: 1
