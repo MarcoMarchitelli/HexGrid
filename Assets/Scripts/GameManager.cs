@@ -128,10 +128,10 @@ public class GameManager : MonoBehaviour
             yield return null;
 
         currentActivePlayer.ResetValues();
+        StartCoroutine(cardsManager.GainPhase(currentActivePlayer));
 
         while (!gainPhaseEnded)
         {
-            cardsManager.GainPhase(currentActivePlayer);
             playersHUDcontroller.RefreshPlayerUIs();
             //VFX E ALTRE COSE
             yield return null;

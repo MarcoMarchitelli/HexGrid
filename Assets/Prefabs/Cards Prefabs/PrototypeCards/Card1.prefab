@@ -118,6 +118,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -152,6 +153,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
   m_Materials:
   - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
@@ -225,6 +227,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1751b6029cb4d5d479336d772d0e719a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  popUp1: {fileID: 0}
+  popUp2: {fileID: 0}
+  popUp3: {fileID: 0}
+  cardImage: {fileID: 0}
+  outlineController: {fileID: 0}
   placedEulerAngle: 0
   extractableEnergy: 0
   moveHexTouched: 0
@@ -237,7 +244,11 @@ MonoBehaviour:
     type: 0
   state: 0
   type: 0
-  player: {fileID: 0}
+  _player: {fileID: 0}
+  animator: {fileID: 0}
+  closeAnimFinished: 0
+  openAnimFinished: 0
+  rotateRightFlowFinished: 0
 --- !u!135 &135630341431364660
 SphereCollider:
   m_ObjectHideFlags: 1

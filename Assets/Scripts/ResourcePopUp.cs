@@ -6,6 +6,9 @@ public class ResourcePopUp : MonoBehaviour {
     public TextMeshProUGUI resourcePopUpText;
     public Animator animator;
 
+    [HideInInspector]
+    public bool animFinished = false;
+
     private void LateUpdate()
     {
         transform.LookAt(GameManager.instance.mainCamera.transform);
@@ -21,6 +24,11 @@ public class ResourcePopUp : MonoBehaviour {
     public void ResetString()
     {
         resourcePopUpText.text = null;
+    }
+
+    public void SetAnimationFinished()
+    {
+        animFinished = true;
     }
 
 }

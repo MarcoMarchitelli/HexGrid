@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class CardsManager : MonoBehaviour
@@ -26,7 +27,7 @@ public class CardsManager : MonoBehaviour
 
     }
 
-    public void GainPhase(PlayerController player)
+    public IEnumerator GainPhase(PlayerController player)
     {
         foreach (CardController card in PlacedCards)
         {
@@ -37,6 +38,7 @@ public class CardsManager : MonoBehaviour
                 player.bonusMoveActions += card.moveHexTouched;
                 player.actions += card.abilityHexTouched;
                 GameManager.instance.hudManager.Refresh();
+                yield return StartCoroutine(card.WaitForResourcePopUp());
             }
         }
         GameManager.instance.gainPhaseEnded = true;

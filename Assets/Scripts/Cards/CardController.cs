@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CardController : MonoBehaviour
@@ -7,6 +8,7 @@ public class CardController : MonoBehaviour
     public ResourcePopUp popUp1;
     public ResourcePopUp popUp2;
     public ResourcePopUp popUp3;
+    public Image cardImage;
 
     public OutlineController outlineController;
 
@@ -32,11 +34,25 @@ public class CardController : MonoBehaviour
     public State state = State.inHand;
     public Type type;
     [HideInInspector]
-    public PlayerController player;
+    public PlayerController _player;
     [HideInInspector]
     public Animator animator;
     [HideInInspector]
     public bool closeAnimFinished = false, openAnimFinished = false, rotateRightFlowFinished = false;
+
+
+    public PlayerController player
+    {
+        set
+        {
+            _player = value;
+            cardImage.sprite = _player.icon;
+        }
+        get
+        {
+            return _player;
+        } 
+    }
 
     private void Start()
     {
@@ -377,7 +393,7 @@ public class CardController : MonoBehaviour
             point.possibleDestinations = GameManager.instance.gridReference.GetPossibleDestinationsFromPoint(point);
         }
 
-        extractableEnergy = 0;
+        ResetTouchValues();
     }
 
     public IEnumerator RotateRight()
@@ -405,6 +421,44 @@ public class CardController : MonoBehaviour
         ResetTouchValues();
         SetTouchvalues(hexImOn);
         rotateRightFlowFinished = true;
+    }
+
+    public IEnumerator WaitForResourcePopUp()
+    {
+        int popUpCounter = 0;
+        switch (type)
+        {
+            case Type.card1:
+                while (true)
+                {
+                    if (popUp1 && popUp1.animFinished)
+                        break;
+                    yield return null;
+                }
+                break;
+            case Type.card2:
+                while(popUpCounter < 2)
+                {
+                    if (popUp1 && popUp1.animFinished)
+                        popUpCounter++;
+                    if (popUp2 && popUp2.animFinished)
+                        popUpCounter++;
+                    yield return null;
+                }
+                break;
+            case Type.card3:
+                while (popUpCounter < 3)
+                {
+                    if (popUp1 && popUp1.animFinished)
+                        popUpCounter++;
+                    if (popUp2 && popUp2.animFinished)
+                        popUpCounter++;
+                    if (popUp3 && popUp3.animFinished)
+                        popUpCounter++;
+                    yield return null;
+                }
+                break;
+        }
     }
 
     public void CloseAnimationEnd()
@@ -1661,14 +1715,17 @@ public class CardController : MonoBehaviour
     {
         if(popUp1 != null)
         {
+            popUp1.animFinished = false;
             popUp1.animator.SetTrigger("PopUp");
         }
         if (popUp2 != null)
         {
+            popUp2.animFinished = false;
             popUp2.animator.SetTrigger("PopUp");
         }
         if (popUp3 != null)
         {
+            popUp3.animFinished = false;
             popUp3.animator.SetTrigger("PopUp");
         }
     }
