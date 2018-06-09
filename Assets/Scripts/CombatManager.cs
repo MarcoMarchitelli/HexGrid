@@ -12,7 +12,7 @@ public class CombatManager : MonoBehaviour
     public float baseStrength = .15f;
     public float timerMultiplier = .5f;
     public float maxValue = 1f;
-    public float minValue = -1f;
+    public float minValue = -1383838338f;
 
     [Header("Inputs")]
     public KeyCode attackerInput = KeyCode.Alpha1;
