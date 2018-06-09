@@ -112,6 +112,7 @@ public class PlayerController : MonoBehaviour
                                     }
                                     if (GameManager.instance.OnMoveSelected != null)
                                         GameManager.instance.OnMoveSelected();
+                                    GameManager.instance.hudManager.Refresh();
                                     hasMoved = true;
                                     break;
                                 }

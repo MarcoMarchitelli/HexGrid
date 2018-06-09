@@ -94,6 +94,26 @@ public class HUDManager : MonoBehaviour
             return;
         }
 
+        if (player.isRunning)
+        {
+            moveButton.SetSprite(ButtonController.SpriteType.inactive);
+            moveButton.SetUsability(false);
+
+            buyCardButton.SetSprite(ButtonController.SpriteType.inactive);
+            buyCardButton.SetUsability(false);
+
+            placeCardButton.SetSprite(ButtonController.SpriteType.inactive);
+            placeCardButton.SetUsability(false);
+
+            rotateCardButton.SetSprite(ButtonController.SpriteType.inactive);
+            rotateCardButton.SetUsability(false);
+
+            fightButton.SetSprite(ButtonController.SpriteType.inactive);
+            fightButton.SetUsability(false);
+
+            return;
+        }
+
         if (player.actions > 0)
         {
             //move
@@ -236,7 +256,7 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.ChoseAction(0);
                 break;
             case PlayerController.Action.moving:
-                if(GameManager.instance.currentActivePlayer.possibleMoves == 3)
+                if(GameManager.instance.currentActivePlayer.isRunning == false)
                 {
                     GameManager.instance.UndoAction();
                 }
@@ -261,6 +281,11 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.ChoseAction(1);
                 break;         
             case PlayerController.Action.moving:
+                if (GameManager.instance.currentActivePlayer.isRunning == false)
+                {
+                    GameManager.instance.UndoAction();
+                }
+                break;
             case PlayerController.Action.placeCard:
             case PlayerController.Action.rotateCard:
             case PlayerController.Action.fight:
@@ -280,6 +305,11 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.ChoseAction(3);
                 break;
             case PlayerController.Action.moving:
+                if (GameManager.instance.currentActivePlayer.isRunning == false)
+                {
+                    GameManager.instance.UndoAction();
+                }
+                break;
             case PlayerController.Action.buyCard:
             case PlayerController.Action.rotateCard:
             case PlayerController.Action.fight:
@@ -299,6 +329,11 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.ChoseAction(4);
                 break;
             case PlayerController.Action.moving:
+                if (GameManager.instance.currentActivePlayer.isRunning == false)
+                {
+                    GameManager.instance.UndoAction();
+                }
+                break;
             case PlayerController.Action.placeCard:
             case PlayerController.Action.buyCard:
             case PlayerController.Action.fight:
@@ -321,6 +356,11 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.ChoseAction(5);
                 break;
             case PlayerController.Action.moving:
+                if (GameManager.instance.currentActivePlayer.isRunning == false)
+                {
+                    GameManager.instance.UndoAction();
+                }
+                break;
             case PlayerController.Action.placeCard:
             case PlayerController.Action.rotateCard:
             case PlayerController.Action.buyCard:
