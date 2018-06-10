@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 public class CardShop : MonoBehaviour
 {
-    int cardSpawnCounter = 0;
-
     [Header("Buy Buttons")]
     public ButtonController buyCard1;
     public ButtonController buyCard2;
@@ -20,22 +19,16 @@ public class CardShop : MonoBehaviour
     public TextMeshProUGUI card2PriceText;
     public TextMeshProUGUI card3PriceText;
 
+    public UnityEvent OnCloseAnimFinished;
+
     public void ToggleBuyButtons()
     {
         PlayerController player = GameManager.instance.currentActivePlayer;
 
-        if (GameManager.instance.turnCount <= 3)
-        {
-            card1Price = 1;
-            card2Price = 2;
-            card3Price = 3;
-        }
-        else
-        {
-            card1Price = 2;
-            card2Price = 4;
-            card3Price = 6;
-        }
+        card1Price = 1;
+        card2Price = 2;
+        card3Price = 3;
+
 
         if (player.hasDiscount)
         {
@@ -97,8 +90,8 @@ public class CardShop : MonoBehaviour
         switch (cardType)
         {
             case 1:
-                cardSpawnCounter++;
-                Transform instantiatedCard1 = Instantiate(GameManager.instance.prefabCard1, MyData.prefabsPosition + Vector3.one * cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
+                GameManager.instance.cardSpawnCounter++;
+                Transform instantiatedCard1 = Instantiate(GameManager.instance.prefabCard1, MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
                 CardController card1Controller = instantiatedCard1.GetComponent<CardController>();
                 if (card1Controller)
                 {
@@ -113,8 +106,8 @@ public class CardShop : MonoBehaviour
                 }
                 break;
             case 2:
-                cardSpawnCounter++;
-                Transform instantiatedCard2 = Instantiate(GameManager.instance.prefabCard2, MyData.prefabsPosition + Vector3.one * cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
+                GameManager.instance.cardSpawnCounter++;
+                Transform instantiatedCard2 = Instantiate(GameManager.instance.prefabCard2, MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
                 CardController card2Controller = instantiatedCard2.GetComponent<CardController>();
                 if (card2Controller)
                 {
@@ -125,8 +118,8 @@ public class CardShop : MonoBehaviour
                 GameManager.instance.currentActivePlayer.energyPoints -= card2Price;
                 break;
             case 3:
-                cardSpawnCounter++;
-                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard3, MyData.prefabsPosition + Vector3.one * cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
+                GameManager.instance.cardSpawnCounter++;
+                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard3, MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
                 CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
                 if (card3Controller)
                 {
@@ -143,6 +136,11 @@ public class CardShop : MonoBehaviour
         GameManager.instance.SetPlayerToStart(true);
 
         ToggleBuyButtons();
+    }
+
+    public void InvokeOnCloseAnimFinished()
+    {
+        OnCloseAnimFinished.Invoke();
     }
 
 }

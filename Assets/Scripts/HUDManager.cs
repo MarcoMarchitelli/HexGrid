@@ -9,7 +9,9 @@ public class HUDManager : MonoBehaviour
 
     [Header("Print Sections")]
     public TextMeshProUGUI bigCentralSection;
+    public TextMeshProUGUI MediumCentralSection;
     public Animation bigNewsAnimation;
+    public Animation mediumNewsAnimation;
 
     [Header("Action Buttons")]
     public ButtonController moveButton;
@@ -32,7 +34,7 @@ public class HUDManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && GameManager.instance.currentActivePlayer.currentAction != PlayerController.Action.fight)
         {
             if (paused)
                 Pause(false);
@@ -68,6 +70,12 @@ public class HUDManager : MonoBehaviour
     {
         bigCentralSection.text = msg;
         bigNewsAnimation.Play();
+    }
+
+    public void PrintMediumNews(string msg)
+    {
+        MediumCentralSection.text = msg;
+        mediumNewsAnimation.Play();
     }
 
     public void ToggleActionButtons()
@@ -220,7 +228,12 @@ public class HUDManager : MonoBehaviour
             endTurnButton.SetUsability(false);
             endTurnButton.SetSprite(ButtonController.SpriteType.inactive);
         }
-        else if (GameManager.instance.currentActivePlayer.currentAction == PlayerController.Action.start)
+        else if (GameManager.instance.currentActivePlayer.currentAction != PlayerController.Action.start)
+        {
+            endTurnButton.SetUsability(false);
+            endTurnButton.SetSprite(ButtonController.SpriteType.inactive);       
+        }
+        else
         {
             if (GameManager.instance.currentActivePlayer.actions > 0 || GameManager.instance.currentActivePlayer.bonusMoveActions > 0)
             {
@@ -268,9 +281,8 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.UndoAction();
                 GameManager.instance.ChoseAction(0);
                 break;
-            default:
-                break;
         }
+        Refresh();
     }
 
     public void OnBuyButton()
@@ -285,6 +297,7 @@ public class HUDManager : MonoBehaviour
                 {
                     GameManager.instance.UndoAction();
                 }
+                GameManager.instance.ChoseAction(1);
                 break;
             case PlayerController.Action.placeCard:
             case PlayerController.Action.rotateCard:
@@ -292,9 +305,8 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.UndoAction();
                 GameManager.instance.ChoseAction(1);
                 break;
-            default:
-                break;
         }
+        Refresh();
     }
 
     public void OnPlaceCardButton()
@@ -309,6 +321,7 @@ public class HUDManager : MonoBehaviour
                 {
                     GameManager.instance.UndoAction();
                 }
+                GameManager.instance.ChoseAction(3);
                 break;
             case PlayerController.Action.buyCard:
             case PlayerController.Action.rotateCard:
@@ -316,9 +329,8 @@ public class HUDManager : MonoBehaviour
                 GameManager.instance.UndoAction();
                 GameManager.instance.ChoseAction(3);
                 break;
-            default:
-                break;
         }
+        Refresh();
     }
 
     public void OnRotateCardButton()
@@ -333,6 +345,7 @@ public class HUDManager : MonoBehaviour
                 {
                     GameManager.instance.UndoAction();
                 }
+                GameManager.instance.ChoseAction(4);
                 break;
             case PlayerController.Action.placeCard:
             case PlayerController.Action.buyCard:
@@ -343,9 +356,8 @@ public class HUDManager : MonoBehaviour
             case PlayerController.Action.rotateCard:
                 GameManager.instance.UndoAction();
                 break;
-            default:
-                break;
         }
+        Refresh();
     }
 
     public void OnFightButton()
@@ -370,9 +382,8 @@ public class HUDManager : MonoBehaviour
             case PlayerController.Action.fight:
                 GameManager.instance.UndoAction();
                 break;
-            default:
-                break;
         }
+        Refresh();
     }
 
     public void Win(PlayerController player)

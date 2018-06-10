@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public int turnCount = 0;
     [HideInInspector]
+    public int cardSpawnCounter = 0;
+    [HideInInspector]
     public float buttonMashFightResult = .5f;
 
     [HideInInspector]
@@ -411,6 +413,7 @@ public class GameManager : MonoBehaviour
         }
 
         mainCamera.SetHighView(false);
+        mainCamera.canChangeView = true;
     }
 
     void ConfirmRotateCard()
@@ -419,6 +422,7 @@ public class GameManager : MonoBehaviour
 
         cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons ,false);
         mainCamera.SetHighView(false);
+        mainCamera.canChangeView = true;
     }
 
     #endregion
@@ -458,6 +462,7 @@ public class GameManager : MonoBehaviour
             currentActivePlayer.UnselectCard();
         }
         mainCamera.SetHighView(false);
+        mainCamera.canChangeView = true;
     }
 
     void UndoRotateCard()
@@ -482,6 +487,7 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.selectedCard = null;
         cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons ,false);
         mainCamera.SetHighView(false);
+        mainCamera.canChangeView = true;
     }
 
     #endregion

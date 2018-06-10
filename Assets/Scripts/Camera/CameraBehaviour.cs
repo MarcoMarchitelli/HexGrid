@@ -6,8 +6,8 @@ public class CameraBehaviour : MonoBehaviour
     Vector3 StandardView;
     public Transform HighView;
     public float transitionTime = 1f;
-    public bool isMoving = false;
-    bool isHighView = false, canChangeView = true;
+    public bool isMoving = false, canChangeView = true;
+    bool isHighView = false;
     IEnumerator cameraAnimation;
 
     private void Start()
@@ -75,4 +75,5 @@ public class CameraBehaviour : MonoBehaviour
         }
         isMoving = false;
     }
+
 }

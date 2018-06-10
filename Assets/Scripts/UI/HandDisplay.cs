@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 public class HandDisplay : MonoBehaviour
@@ -13,6 +14,8 @@ public class HandDisplay : MonoBehaviour
     public TextMeshProUGUI card1QuantityText;
     public TextMeshProUGUI card2QuantityText;
     public TextMeshProUGUI card3QuantityText;
+
+    public UnityEvent OnHandDisplayAnimCloseFinished;
 
     public void RefreshHandDisplay()
     {
@@ -94,6 +97,11 @@ public class HandDisplay : MonoBehaviour
             }
         }
 
+    }
+
+    public void InvokeOnHandDisplayAnimCloseFinished()
+    {
+        OnHandDisplayAnimCloseFinished.Invoke();
     }
 
 }

@@ -73,6 +73,7 @@ public class CardController : MonoBehaviour
                 eulerAngle -= 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                return;
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
@@ -80,31 +81,35 @@ public class CardController : MonoBehaviour
                 eulerAngle += 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                return;
             }
         }
 
         if (state == State.selectedFromMap)
         {
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 transform.Rotate(Vector3.up * -60);
                 eulerAngle -= 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                print("card rotated!");
+                return;
             }
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
                 transform.Rotate(Vector3.up * 60);
                 eulerAngle += 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                return;
             }
         }
     }
 
-    public void Place(Hexagon hex)
+    public bool Place(Hexagon hex)
     {
-        if (state == State.selectedFromHand || state == State.selectedFromMap)
+        if (state == State.selectedFromHand)
         {
             BlockPaths(hex);
             state = State.placed;
@@ -119,7 +124,34 @@ public class CardController : MonoBehaviour
 
             //ANIMATION
             StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 7f, true));
+            return true;
         }
+        else if(state == State.selectedFromMap)
+        {
+            if(eulerAngle != placedEulerAngle)
+            {
+                BlockPaths(hex);
+                state = State.placed;
+                placedEulerAngle = eulerAngle;
+                hexImOn = hex;
+                hexImOn.card = this;
+                ResetTouchValues();
+                SetTouchvalues(hexImOn);
+                if (player.cardsInHand.Contains(this))
+                    player.cardsInHand.Remove(this);
+                GameManager.instance.cardsManager.PlacedCards.Add(this);
+
+                //ANIMATION
+                StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 7f, true));
+                return true;
+            }
+            else
+            {
+                GameManager.instance.hudManager.PrintMediumNews("Change rotation first!");
+                return false;
+            }
+        }
+        return false;
     }
 
     public void BlockPaths(Hexagon hex)
@@ -426,6 +458,11 @@ public class CardController : MonoBehaviour
     public IEnumerator WaitForResourcePopUp()
     {
         int popUpCounter = 0;
+
+        bool popUp1Counted = false;
+        bool popUp2Counted = false;
+        bool popUp3Counted = false;
+
         switch (type)
         {
             case Type.card1:
@@ -437,24 +474,44 @@ public class CardController : MonoBehaviour
                 }
                 break;
             case Type.card2:
-                while(popUpCounter < 2)
+                popUp1Counted = false;
+                popUp2Counted = false;
+                while (popUpCounter < 2)
                 {
-                    if (popUp1 && popUp1.animFinished)
+                    if (popUp1 && popUp1.animFinished && !popUp1Counted)
+                    {
                         popUpCounter++;
-                    if (popUp2 && popUp2.animFinished)
+                        popUp1Counted = true;
+                    }
+                    if (popUp2 && popUp2.animFinished && !popUp2Counted)
+                    {
                         popUpCounter++;
+                        popUp2Counted = true;
+                    }
                     yield return null;
                 }
                 break;
             case Type.card3:
+                popUp1Counted = false;
+                popUp2Counted = false;
+                popUp3Counted = false;
                 while (popUpCounter < 3)
                 {
-                    if (popUp1 && popUp1.animFinished)
+                    if (popUp1 && popUp1.animFinished && !popUp1Counted)
+                    {
                         popUpCounter++;
-                    if (popUp2 && popUp2.animFinished)
+                        popUp1Counted = true;
+                    }
+                    if (popUp2 && popUp2.animFinished && !popUp2Counted)
+                    {
                         popUpCounter++;
-                    if (popUp3 && popUp3.animFinished)
+                        popUp2Counted = true;
+                    }
+                    if (popUp3 && popUp3.animFinished && !popUp3Counted)
+                    {
                         popUpCounter++;
+                        popUp3Counted = true;
+                    }
                     yield return null;
                 }
                 break;
@@ -480,6 +537,7 @@ public class CardController : MonoBehaviour
 
     public void SetTouchvalues(Hexagon myHex)
     {
+        ResetResourcePopUpStrings();
         List<Hexagon> aroundHexes = GameManager.instance.gridReference.GetHexagonsAroundHexagon(myHex);
 
         Hexagon topLeft = new Hexagon();
@@ -1685,6 +1743,16 @@ public class CardController : MonoBehaviour
         StartCoroutine(AnimateToDestination(new Vector3(transform.position.x, 3f, transform.position.z), 8f, false));
     }
 
+    public void ResetResourcePopUpStrings()
+    {
+        if (popUp1 != null)
+            popUp1.ResetString();
+        if (popUp2 != null)
+            popUp2.ResetString();
+        if (popUp3 != null)
+            popUp3.ResetString();
+    }
+
     #region animations
 
     IEnumerator AnimateToDestination(Vector3 Destination, float speed, bool playPopUpAnim)
@@ -1696,6 +1764,7 @@ public class CardController : MonoBehaviour
         }
         if(playPopUpAnim)
             ResourcesPopUpAnimation();
+        GameManager.instance.hudManager.Refresh();
     }
 
     IEnumerator AnimateToRotation(Vector3 TargetEulerAngle, float durationInSeconds)
@@ -1715,18 +1784,33 @@ public class CardController : MonoBehaviour
     {
         if(popUp1 != null)
         {
-            popUp1.animFinished = false;
-            popUp1.animator.SetTrigger("PopUp");
+            if (popUp1.resourcePopUpText.text == "" || popUp1.resourcePopUpText.text == null)
+                popUp1.animFinished = true;
+            else
+            {
+                popUp1.animFinished = false;
+                popUp1.animator.SetTrigger("PopUp");
+            }
         }
         if (popUp2 != null)
         {
-            popUp2.animFinished = false;
-            popUp2.animator.SetTrigger("PopUp");
+            if (popUp2.resourcePopUpText.text == "" || popUp2.resourcePopUpText.text == null)
+                popUp2.animFinished = true;
+            else
+            {
+                popUp2.animFinished = false;
+                popUp2.animator.SetTrigger("PopUp");
+            }
         }
         if (popUp3 != null)
         {
-            popUp3.animFinished = false;
-            popUp3.animator.SetTrigger("PopUp");
+            if (popUp3.resourcePopUpText.text == "" || popUp3.resourcePopUpText.text == null)
+                popUp3.animFinished = true;
+            else
+            {
+                popUp3.animFinished = false;
+                popUp3.animator.SetTrigger("PopUp");
+            }
         }
     }
 

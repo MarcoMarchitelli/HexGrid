@@ -202,9 +202,8 @@ public class PlayerController : MonoBehaviour
                 {
 
                     //(PLACE)
-                    if (Input.GetMouseButtonDown(0))
+                    if (Input.GetMouseButtonDown(0) && selectedCard.Place(selectedCard.hexImOn))
                     {
-                        selectedCard.Place(selectedCard.hexImOn);
                         hasPlacedCard = true;
                         lastPlacedCard = selectedCard;
                         selectedCard = null;
@@ -263,7 +262,7 @@ public class PlayerController : MonoBehaviour
     public void UnselectCard()
     {
         selectedCard.state = CardController.State.inHand;
-        selectedCard.transform.position = MyData.prefabsPosition;
+        selectedCard.transform.position = MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2;
         selectedCard = null;
 
         GameManager.instance.hudManager.Refresh();
@@ -450,6 +449,7 @@ public class PlayerController : MonoBehaviour
                 beforeActionEnergyPoints = energyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
                 GameManager.instance.mainCamera.SetHighView(true);
+                GameManager.instance.mainCamera.canChangeView = false;
                 break;
             case 4:
                 currentAction = Action.rotateCard;
@@ -457,9 +457,11 @@ public class PlayerController : MonoBehaviour
                 beforeActionBonusMoveActions = bonusMoveActions;
                 GameManager.instance.cardsManager.HighlightPlacedCards(currentWayPoint.nearHexagons, true);
                 GameManager.instance.mainCamera.SetHighView(true);
+                GameManager.instance.mainCamera.canChangeView = false;
                 break;
             case 5:
                 currentAction = Action.fight;
+                GameManager.instance.mainCamera.canChangeView = false;
                 foreach (var player in playersToRob)
                 {
                     player.outlineController.SetColor(1);
