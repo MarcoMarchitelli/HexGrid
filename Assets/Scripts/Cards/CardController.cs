@@ -67,7 +67,7 @@ public class CardController : MonoBehaviour
             Vector3 myMousePos = Input.mousePosition;
             myMousePos.z = 28f;
             transform.position = Camera.main.ScreenToWorldPoint(myMousePos);
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.A))
             {
                 transform.Rotate(Vector3.up * -60);
                 eulerAngle -= 60;
@@ -75,7 +75,7 @@ public class CardController : MonoBehaviour
                     eulerAngle = 0;
                 return;
             }
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 || Input.GetKeyDown(KeyCode.D))
             {
                 transform.Rotate(Vector3.up * 60);
                 eulerAngle += 60;
@@ -87,7 +87,7 @@ public class CardController : MonoBehaviour
 
         if (state == State.selectedFromMap)
         {
-            if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            if (Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.A))
             {
                 transform.Rotate(Vector3.up * -60);
                 eulerAngle -= 60;
@@ -96,7 +96,7 @@ public class CardController : MonoBehaviour
                 print("card rotated!");
                 return;
             }
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            if (Input.GetAxis("Mouse ScrollWheel") < 0 || Input.GetKeyDown(KeyCode.D))
             {
                 transform.Rotate(Vector3.up * 60);
                 eulerAngle += 60;

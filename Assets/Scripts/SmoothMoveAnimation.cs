@@ -7,9 +7,11 @@ public class SmoothMoveAnimation : MonoBehaviour {
     public Transform TargetPosition;
     public float speed;
     public UnityEvent OnAnimationFinish;
+    public UnityEvent OnAnimationStart;
 
     public IEnumerator Animation()
-    {            
+    {
+        OnAnimationStart.Invoke();
         Vector3 target = TargetPosition.position;
         while (transform.position != target)
         {

@@ -356,9 +356,13 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator RunAnimation(Point targetPoint, SmoothMoveAnimation final)
     {
-        StartCoroutine(final.Animation());
         Vector3 target = targetPoint.worldPosition + Vector3.up * .7f;
         transform.DOLookAt(target, .2f);
+
+        yield return StartCoroutine(final.Animation());
+
+        yield return new WaitForSeconds(.7f);
+
         animator.SetBool("isRunning", true);
         isRunning = true;
         while (transform.position != target)
