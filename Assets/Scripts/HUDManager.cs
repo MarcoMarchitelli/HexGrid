@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class HUDManager : MonoBehaviour
@@ -27,6 +28,7 @@ public class HUDManager : MonoBehaviour
     public GameObject winOverlay;
     public GameObject pauseMenu;
     public GameObject[] actionIcons;
+    public Image WinningPlayerIcon;
 
     #endregion
 
@@ -388,8 +390,8 @@ public class HUDManager : MonoBehaviour
 
     public void Win(PlayerController player)
     {
+        WinningPlayerIcon.sprite = player.winIcon;
         winOverlay.SetActive(true);
-        winOverlay.GetComponentInChildren<TextMeshProUGUI>().text = player.type.ToString() + " Wins !";
     }
 
     public void Restart()

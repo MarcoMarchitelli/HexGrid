@@ -1106,6 +1106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 5df52d220aa7e354b80baa05f7488fe6, type: 3}
+  winIcon: {fileID: 21300000, guid: cebf315cfa9fbc74aad7a6330afd760d, type: 3}
   moveSpeed: 4
   type: 0
   VFXobject: {fileID: 1071589212451466}
@@ -11804,7 +11805,7 @@ ParticleSystem:
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
-        key1: {r: 1, g: 0.37103438, b: 0, a: 0}
+        key1: {r: 1, g: 0.37103438, b: 0, a: 1}
         key2: {r: 1, g: 0, b: 0, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}

@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
 
     public Sprite icon;
+    public Sprite winIcon;
     public float moveSpeed;
 
     public enum Type
@@ -67,6 +68,7 @@ public class PlayerController : MonoBehaviour
         cardsInHand = new List<CardController>();
         animator = GetComponentInChildren<Animator>();
         animator.SetBool("isRunning", false);
+        victoryPoints = 10;
     }
 
     void Update()
