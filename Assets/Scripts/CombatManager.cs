@@ -8,7 +8,9 @@ public class CombatManager : MonoBehaviour
 {
     #region public things
 
-    [Header("Values")]
+    [Header("Test Values")]
+    public bool Timer = false;
+    public float TimerDuration;
     public float baseStrength = .15f;
     public float timerMultiplier = .5f;
     public float maxValue = 1f;
@@ -27,6 +29,7 @@ public class CombatManager : MonoBehaviour
     public Animator CountdownAnimator;
     public TextMeshProUGUI InfoText;
     public TextMeshProUGUI CountdownText;
+    public TextMeshProUGUI TimerText;
 
     [Header("Scripts")]
     public ModifierButtonsController attackerModController;
@@ -66,6 +69,7 @@ public class CombatManager : MonoBehaviour
 
         OnFightFinish.Invoke();
         attacker.hasFought = false;
+        GameManager.instance.ConfirmAction();
     }
 
     IEnumerator ModifiersSelection()
@@ -82,7 +86,7 @@ public class CombatManager : MonoBehaviour
         }
 
         print("Attacker added " + attackerBonusStrength + " bonus strength");
-        print("Defender select your bonus!");       
+        print("Defender select your bonus!");
 
         while (!defenderModSet)
         {
@@ -104,7 +108,8 @@ public class CombatManager : MonoBehaviour
                 CountdownText.text = "GO!";
             else
                 CountdownText.text = i.ToString();
-            CountdownAnimator.SetTrigger("Show");
+            if (CountdownAnimator)
+                CountdownAnimator.SetTrigger("Show");
             yield return new WaitForSeconds(1f);
         }
     }
@@ -116,29 +121,58 @@ public class CombatManager : MonoBehaviour
 
         float currentAttStr = 0f, currentDefStr = 0f;
 
-        float timer = 0f;
+        float timerForMultiplier = 0f;
+        float timerForFightEnd = 0f;
 
-        while (fightSliderValue > minValue && fightSliderValue < maxValue)
+        if (Timer)
         {
-            timer += Time.deltaTime;
-
-            currentAttStr = startAttStr * (timer * timerMultiplier);
-            currentDefStr = startDefStr * (timer * timerMultiplier);
-
-            if (Input.GetKeyDown(attackerInput))
+            timerForFightEnd = TimerDuration;
+            while (fightSliderValue > minValue && fightSliderValue < maxValue && timerForFightEnd > 0)
             {
-                fightSliderValue += currentAttStr;
+                timerForMultiplier += Time.deltaTime;
+                timerForFightEnd -= Time.deltaTime;
+                TimerText.text = Mathf.RoundToInt(timerForFightEnd).ToString();
+
+                currentAttStr = startAttStr * (timerForMultiplier * timerMultiplier);
+                currentDefStr = startDefStr * (timerForMultiplier * timerMultiplier);
+
+                if (Input.GetKeyDown(attackerInput))
+                {
+                    fightSliderValue += currentAttStr;
+                }
+
+                if (Input.GetKeyDown(defenderInput))
+                {
+                    fightSliderValue -= currentDefStr;
+                }
+
+                slider.value = fightSliderValue;
+
+                yield return null;
             }
-
-            if (Input.GetKeyDown(defenderInput))
-            {
-                fightSliderValue -= currentDefStr;
-            }
-
-            slider.value = fightSliderValue;
-
-            yield return null;
         }
+        else
+            while (fightSliderValue > minValue && fightSliderValue < maxValue)
+            {
+                timerForMultiplier += Time.deltaTime;
+
+                currentAttStr = startAttStr * (timerForMultiplier * timerMultiplier);
+                currentDefStr = startDefStr * (timerForMultiplier * timerMultiplier);
+
+                if (Input.GetKeyDown(attackerInput))
+                {
+                    fightSliderValue += currentAttStr;
+                }
+
+                if (Input.GetKeyDown(defenderInput))
+                {
+                    fightSliderValue -= currentDefStr;
+                }
+
+                slider.value = fightSliderValue;
+
+                yield return null;
+            }
 
         if (fightSliderValue <= minValue)
         {
@@ -150,11 +184,24 @@ public class CombatManager : MonoBehaviour
             //attacker won.
             print("ATTACKER WON!");
             attacker.victoryPoints++;
-            if(defender.victoryPoints > 0)
+            if (defender.victoryPoints > 0)
                 defender.victoryPoints--;
         }
+        else if (timerForFightEnd <= 0 && fightSliderValue > 0f)
+        {
+            //attacker won.
+            print("TIME'S OVER! ATTACKER WON!");
+            attacker.victoryPoints++;
+            if (defender.victoryPoints > 0)
+                defender.victoryPoints--;
+        }
+        else if (timerForFightEnd <= 0 && fightSliderValue <= 0f)
+        {
+            //defender won.
+            print("TIME'S OVER! DEFENDER WON!");
+        }
 
-        GameManager.instance.ConfirmAction();
+        
     }
 
     public void SetAttackerModifier(int energy)
@@ -185,9 +232,9 @@ public class CombatManager : MonoBehaviour
                 break;
             case 15:
                 attackerBonusStrength = 0.375f;
-                break;        
+                break;
         }
-        attacker.energyPoints -= energy;
+        attacker.EnergyPoints -= energy;
         attackerModSet = true;
         attackerModController.EnableModifierButtons(false);
     }
@@ -222,7 +269,7 @@ public class CombatManager : MonoBehaviour
                 defenderBonusStrength = 0.375f;
                 break;
         }
-        defender.energyPoints -= energy;
+        defender.EnergyPoints -= energy;
         defenderModSet = true;
         defenderModController.EnableModifierButtons(false);
     }

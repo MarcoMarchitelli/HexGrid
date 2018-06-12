@@ -39,7 +39,7 @@ public class CardShop : MonoBehaviour
         card2PriceText.text = card2Price.ToString();
         card3PriceText.text = card3Price.ToString();
 
-        playerEnergy = player.energyPoints;
+        playerEnergy = player.EnergyPoints;
 
         if (playerEnergy >= card3Price)
         {
@@ -99,7 +99,7 @@ public class CardShop : MonoBehaviour
                     card1Controller.player = GameManager.instance.currentActivePlayer;
                     GameManager.instance.currentActivePlayer.numberOfCards1InHand++;
                 }
-                GameManager.instance.currentActivePlayer.energyPoints -= card1Price;
+                GameManager.instance.currentActivePlayer.EnergyPoints -= card1Price;
                 if (GameManager.instance.currentActivePlayer.hasDiscount)
                 {
                     GameManager.instance.currentActivePlayer.hasDiscount = false;
@@ -115,7 +115,7 @@ public class CardShop : MonoBehaviour
                     card2Controller.player = GameManager.instance.currentActivePlayer;
                     GameManager.instance.currentActivePlayer.numberOfCards1InHand++;
                 }
-                GameManager.instance.currentActivePlayer.energyPoints -= card2Price;
+                GameManager.instance.currentActivePlayer.EnergyPoints -= card2Price;
                 break;
             case 3:
                 GameManager.instance.cardSpawnCounter++;
@@ -127,7 +127,7 @@ public class CardShop : MonoBehaviour
                     card3Controller.player = GameManager.instance.currentActivePlayer;
                     GameManager.instance.currentActivePlayer.numberOfCards1InHand++;
                 }
-                GameManager.instance.currentActivePlayer.energyPoints -= card3Price;
+                GameManager.instance.currentActivePlayer.EnergyPoints -= card3Price;
                 break;
         }
 

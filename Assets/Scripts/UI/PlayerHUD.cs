@@ -13,7 +13,7 @@ public class PlayerHUD : MonoBehaviour {
     private void Update()
     {
         PVvalue.text = player.victoryPoints.ToString();
-        PEvalue.text = player.energyPoints.ToString();
+        PEvalue.text = player.EnergyPoints.ToString();
     }
 
 }

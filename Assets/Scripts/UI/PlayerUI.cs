@@ -21,7 +21,7 @@ public class PlayerUI : MonoBehaviour {
         if (PVtext != null)
             PVtext.text = player.victoryPoints.ToString();
         if (PEtext != null)
-            PEtext.text = player.energyPoints.ToString();
+            PEtext.text = player.EnergyPoints.ToString();
         if (bonusMoveActionText != null)
         {
             if (player.bonusMoveActions > 0)
@@ -39,7 +39,7 @@ public class PlayerUI : MonoBehaviour {
         if (PVtext != null)
             PVtext.text = player.victoryPoints.ToString();
         if (PEtext != null)
-            PEtext.text = player.energyPoints.ToString();
+            PEtext.text = player.EnergyPoints.ToString();
         if (bonusMoveActionText != null)
         {
             if (player.bonusMoveActions > 0)

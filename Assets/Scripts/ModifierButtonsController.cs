@@ -12,7 +12,7 @@ public class ModifierButtonsController : MonoBehaviour {
             playerIcon.sprite = player.icon;
         foreach (ModifierButton button in buttons)
         {
-            if(player.energyPoints >= button.value)
+            if(player.EnergyPoints >= button.value)
             {
                 button.buttonController.SetSprite(ButtonController.SpriteType.active);
                 button.buttonController.SetUsability(true);

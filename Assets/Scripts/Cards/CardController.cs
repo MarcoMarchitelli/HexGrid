@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -9,8 +10,11 @@ public class CardController : MonoBehaviour
     public ResourcePopUp popUp2;
     public ResourcePopUp popUp3;
     public Image cardImage;
+    public GameObject DestroyParticle;
 
     public OutlineController outlineController;
+
+    public UnityEvent OnCardDestroy;
 
     int eulerAngle = 0;
     public int placedEulerAngle;
@@ -1731,6 +1735,7 @@ public class CardController : MonoBehaviour
         if (cardHit != null)
         {
             GameManager.instance.cardsManager.PlacedCards.Remove(this);
+            Instantiate(DestroyParticle, transform.position, Quaternion.Euler(Vector3.up * Random.Range(0f, 360f)));
             Destroy(this.gameObject);
         }  
     }

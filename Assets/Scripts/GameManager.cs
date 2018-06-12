@@ -151,6 +151,7 @@ public class GameManager : MonoBehaviour
 
         message = "Main Phase";
         hudManager.PrintBigNews(message);
+        playersHUDcontroller.RefreshPlayerUIs();
 
         while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;
@@ -433,7 +434,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentActivePlayer.hasBought)
         {
-            currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
+            currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
 
             currentActivePlayer.hasBought = false;
         }
@@ -454,7 +455,7 @@ public class GameManager : MonoBehaviour
             cardsManager.PlacedCards.Remove(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.SendCardInHand(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.hasPlacedCard = false;
-            currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
+            currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
             currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         }
         if (currentActivePlayer.selectedCard)
@@ -482,7 +483,7 @@ public class GameManager : MonoBehaviour
             card.SetRotationBackToPlaced();
             card.Place(card.hexImOn);
         }
-        currentActivePlayer.energyPoints = currentActivePlayer.beforeActionEnergyPoints;
+        currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
         currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
         cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons ,false);

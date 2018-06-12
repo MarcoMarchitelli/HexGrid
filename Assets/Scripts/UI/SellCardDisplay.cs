@@ -51,7 +51,7 @@ public class SellCardDisplay : MonoBehaviour {
                         if (card.type == CardController.Type.card1)
                         {
                             player.cardToSell = card;
-                            player.energyPoints += card1Value;
+                            player.EnergyPoints += card1Value;
                             player.numberOfCards1InHand--;
                             player.hasSold = true;
                             RefreshSellDisplay(player);
@@ -61,7 +61,7 @@ public class SellCardDisplay : MonoBehaviour {
                         if (card.type == CardController.Type.card2)
                         {
                             player.cardToSell = card;
-                            player.energyPoints += card2Value;
+                            player.EnergyPoints += card2Value;
                             player.numberOfCards2InHand--;
                             player.hasSold = true;
                             RefreshSellDisplay(player);
@@ -71,7 +71,7 @@ public class SellCardDisplay : MonoBehaviour {
                         if (card.type == CardController.Type.card3)
                         {
                             player.cardToSell = card;
-                            player.energyPoints += card3Value;
+                            player.EnergyPoints += card3Value;
                             player.numberOfCards3InHand--;
                             player.hasSold = true;
                             RefreshSellDisplay(player);

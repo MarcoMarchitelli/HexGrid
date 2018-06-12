@@ -6,7 +6,6 @@ using DG.Tweening;
 
 public class PlayerController : MonoBehaviour
 {
-
     public Sprite icon;
     public Sprite winIcon;
     public float moveSpeed;
@@ -54,6 +53,20 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public int EnergyPoints
+    {
+        get
+        {
+            return energyPoints;
+        }
+        set
+        {
+            energyPoints = value;
+            if (energyPoints >= 25)
+                energyPoints = 25;
+        }
+    }
+
     [HideInInspector]
     public bool isRunning = false, hasMoved = false;
     int maxPE = 25;
@@ -67,14 +80,12 @@ public class PlayerController : MonoBehaviour
         currentWayPoint = startingWayPoint;
         cardsInHand = new List<CardController>();
         animator = GetComponentInChildren<Animator>();
-        animator.SetBool("isRunning", false);
-        victoryPoints = 10;
+        if (animator)
+            animator.SetBool("isRunning", false);
     }
 
     void Update()
     {
-        if (energyPoints > maxPE)
-            energyPoints = maxPE;
 
         switch (currentAction)
         {
@@ -151,7 +162,7 @@ public class PlayerController : MonoBehaviour
                                     lastPlacedCard = selectedCard;
                                     selectedCard = null;
                                     hasPlacedCard = true;
-                                    energyPoints += lastPlacedCard.extractableEnergy;
+                                    EnergyPoints += lastPlacedCard.extractableEnergy;
                                     bonusMoveActions += lastPlacedCard.moveHexTouched;
                                     GameManager.instance.ConfirmAction();
                                 }
@@ -189,7 +200,7 @@ public class PlayerController : MonoBehaviour
 
                             if (selectedCard && selectedCard.state == CardController.State.placed && currentWayPoint.nearHexagons.Contains(selectedCard.hexImOn))
                             {
-                                selectedCard.SelectFromMap();                 
+                                selectedCard.SelectFromMap();
                                 beforeRotateActionCardEulerAngle = selectedCard.placedEulerAngle;
                                 GameManager.instance.hudManager.Refresh();
                                 return;
@@ -209,7 +220,7 @@ public class PlayerController : MonoBehaviour
                         hasPlacedCard = true;
                         lastPlacedCard = selectedCard;
                         selectedCard = null;
-                        energyPoints += lastPlacedCard.extractableEnergy;
+                        EnergyPoints += lastPlacedCard.extractableEnergy;
                         bonusMoveActions += lastPlacedCard.moveHexTouched;
                         GameManager.instance.ConfirmAction();
                     }
@@ -374,6 +385,7 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetBool("isRunning", false);
         isRunning = false;
+        final.DestroySphere();
         DataStuffAfterMove(targetPoint);
     }
 
@@ -448,18 +460,18 @@ public class PlayerController : MonoBehaviour
                 break;
             case 1:
                 currentAction = Action.buyCard;
-                beforeActionEnergyPoints = energyPoints;
+                beforeActionEnergyPoints = EnergyPoints;
                 break;
             case 3:
                 currentAction = Action.placeCard;
-                beforeActionEnergyPoints = energyPoints;
+                beforeActionEnergyPoints = EnergyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
                 GameManager.instance.mainCamera.SetHighView(true);
                 GameManager.instance.mainCamera.canChangeView = false;
                 break;
             case 4:
                 currentAction = Action.rotateCard;
-                beforeActionEnergyPoints = energyPoints;
+                beforeActionEnergyPoints = EnergyPoints;
                 beforeActionBonusMoveActions = bonusMoveActions;
                 GameManager.instance.cardsManager.HighlightPlacedCards(currentWayPoint.nearHexagons, true);
                 GameManager.instance.mainCamera.SetHighView(true);
@@ -508,7 +520,7 @@ public class PlayerController : MonoBehaviour
                 haveCardsPlaced = true;
         }
 
-        if (energyPoints <= 1 && !haveCardsPlaced)
+        if (EnergyPoints <= 0 && !haveCardsPlaced && cardsInHand.Count <= 0)
             return true;
         else
             return false;
