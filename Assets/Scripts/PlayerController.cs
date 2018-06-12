@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     public CardController selectedCard, lastPlacedCard, cardToSell;
     [HideInInspector]
     public List<PlayerController> playersToRob = new List<PlayerController>();
-    public LayerMask pointLayer, hexLayer, cardLayer, playerLayer;
+    public LayerMask pointLayer, hexLayer, cardLayer, playerLayer, UIlayer;
     [HideInInspector]
     public int beforeActionEnergyPoints, beforeRotateActionCardEulerAngle, beforeMoveActionMoves, beforeActionBonusMoveActions;
 
@@ -215,14 +215,22 @@ public class PlayerController : MonoBehaviour
                 {
 
                     //(PLACE)
-                    if (Input.GetMouseButtonDown(0) && selectedCard.Place(selectedCard.hexImOn))
+                    if (Input.GetMouseButtonDown(0))
                     {
-                        hasPlacedCard = true;
-                        lastPlacedCard = selectedCard;
-                        selectedCard = null;
-                        EnergyPoints += lastPlacedCard.extractableEnergy;
-                        bonusMoveActions += lastPlacedCard.moveHexTouched;
-                        GameManager.instance.ConfirmAction();
+                        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out selectingHitInfo, 100, UIlayer))
+                        {
+                            return;
+                        }
+                        else
+                        if (selectedCard.Place(selectedCard.hexImOn))
+                        {
+                            hasPlacedCard = true;
+                            lastPlacedCard = selectedCard;
+                            selectedCard = null;
+                            EnergyPoints += lastPlacedCard.extractableEnergy;
+                            bonusMoveActions += lastPlacedCard.moveHexTouched;
+                            GameManager.instance.ConfirmAction();
+                        }
                     }
                 }
 

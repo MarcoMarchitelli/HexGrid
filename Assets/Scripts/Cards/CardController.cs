@@ -151,7 +151,7 @@ public class CardController : MonoBehaviour
             }
             else
             {
-                GameManager.instance.hudManager.PrintMediumNews("Change rotation first!");
+                GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
                 return false;
             }
         }
