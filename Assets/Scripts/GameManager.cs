@@ -8,9 +8,9 @@ public class FloatEvent : UnityEvent<float> { }
 
 public class GameManager : MonoBehaviour
 {
-    public delegate void AgentPositionListEvent(List<AgentPosition> points);
+    public delegate void PointListVoidEvent(List<Point> points);
     public delegate void VoidEvent();
-    public AgentPositionListEvent OnMoveEnter;
+    public PointListVoidEvent OnMoveEnter;
     public VoidEvent OnMoveSelected;
 
     public PlayerController[] players;
@@ -512,37 +512,59 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public List<AgentPosition> FindWalkablePointsInRange(int range, PlayerController player)
+    public List<Point> FindWalkablePointsInRange(int range, PlayerController player)
     {
-        List<AgentPosition> pointsInRange = new List<AgentPosition>();
+        List<AgentPosition> walkableAgentMap = new List<AgentPosition>();
 
         if (range > 0)
         {
-            pointsInRange.Add(new AgentPosition(player.currentWayPoint, range));
+            walkableAgentMap.Add(new AgentPosition(player.currentWayPoint, range));
         }
 
-        for (int i = 0; i < pointsInRange.Count; i++)
+        for (int i = 0; i < walkableAgentMap.Count; i++)
         {
-            if (!pointsInRange[i].isChecked)
+            if (!walkableAgentMap[i].isChecked)
             {
-                if (pointsInRange[i].remainingMoves > 0)
+                if (walkableAgentMap[i].remainingMoves > 0)
                 {
-                    if (pointsInRange[i].point.type == Point.Type.purple && player.currentWayPoint != pointsInRange[i].point)
+                    if (walkableAgentMap[i].point.type == Point.Type.purple && player.currentWayPoint != walkableAgentMap[i].point)
                         continue;
-                    foreach (Point point in pointsInRange[i].point.possibleDestinations)
+                    foreach (Point point in walkableAgentMap[i].point.possibleDestinations)
                     {
                         if (!CheckIfPointIsWalkable(point))
                             continue;
                         if (point.isFinalWaypoint && !player.IsMyColor(point))
                             continue;
-                        pointsInRange.Add(new AgentPosition(point, pointsInRange[i].remainingMoves - 1));
+                        walkableAgentMap.Add(new AgentPosition(point, walkableAgentMap[i].remainingMoves - 1));
                     }
                 }
-                pointsInRange[i].isChecked = true;
+                walkableAgentMap[i].isChecked = true;
             }
         }
 
-        return pointsInRange;
+        return GetPointMapFromAgentMap(walkableAgentMap);
+    }
+
+    public List<Point> GetPointMapFromAgentMap(List<AgentPosition> agents)
+    {
+        List<Point> pointMap = new List<Point>();
+
+        foreach (var agent in agents)
+        {
+            pointMap.Add(agent.point);
+        }
+
+        //Assegno ai punti le destinazioni di QUESTO path, non di tutta la WaypointGrid
+        foreach (var point in pointMap)
+        {
+            foreach (var destination in point.possibleDestinations)
+            {
+                if (pointMap.Contains(destination))
+                    point.currentPathDestinations.Add(destination);
+            }
+        }
+
+        return pointMap;
     }
 
     public List<AgentPosition> ScanPointsInRange(int range, PlayerController player)

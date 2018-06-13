@@ -44,11 +44,11 @@ public class MaterialChange : MonoBehaviour
         GameManager.instance.OnMoveSelected += TurnOutlineOff;
     }
 
-    void TurnOutlineOn(List<AgentPosition> points)
+    void TurnOutlineOn(List<Point> points)
     {
         foreach (var point in points)
         {
-            if (point.point == GameManager.instance.currentActivePlayer.currentWayPoint || (point.point.isFinalWaypoint && point.point.isFinalWaypointUsed))
+            if (point == GameManager.instance.currentActivePlayer.currentWayPoint || (point.isFinalWaypoint && point.isFinalWaypointUsed))
             {
                 if (!MultipleOutlines)
                 {
@@ -64,7 +64,7 @@ public class MaterialChange : MonoBehaviour
                     isOutlined = false;
                 }
             }
-            else if (Mathf.Approximately(point.point.worldPosition.x, transform.position.x) && Mathf.Approximately(point.point.worldPosition.z, transform.position.z))
+            else if (Mathf.Approximately(point.worldPosition.x, transform.position.x) && Mathf.Approximately(point.worldPosition.z, transform.position.z))
             {
                 if (!MultipleOutlines)
                 {

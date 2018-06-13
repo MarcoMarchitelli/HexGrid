@@ -27,7 +27,7 @@ public class Pathfinding : MonoBehaviour {
                 return RetracePath(start, target);
             }
 
-            foreach (var neighbour in currentPoint.possibleDestinations)
+            foreach (var neighbour in currentPoint.currentPathDestinations)
             {
                 if (closedSet.Contains(neighbour))
                     continue;

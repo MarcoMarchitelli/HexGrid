@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
     int maxPE = 25;
 
     Animator animator;
-    List<AgentPosition> moveAgents = new List<AgentPosition>();
+    List<Point> walkablePointMap = new List<Point>();
 
     private void Start()
     {
@@ -105,11 +105,11 @@ public class PlayerController : MonoBehaviour
 
                         if (pointHit != null)
                         {
-                            foreach (var agent in moveAgents)
+                            foreach (var point in walkablePointMap)
                             {
-                                if (agent.point == pointHit)
+                                if (point == pointHit)
                                 {
-                                    if (agent.point == currentWayPoint || (agent.point.isFinalWaypoint && agent.point.isFinalWaypointUsed))
+                                    if (point == currentWayPoint || (point.isFinalWaypoint && point.isFinalWaypointUsed))
                                     {
                                         return;
                                     }
@@ -121,7 +121,7 @@ public class PlayerController : MonoBehaviour
                                     }
                                     else
                                     {
-                                        StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit, moveAgents.Count)));
+                                        StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit, walkablePointMap.Count)));
                                     }
                                     if (GameManager.instance.OnMoveSelected != null)
                                         GameManager.instance.OnMoveSelected();
@@ -460,9 +460,9 @@ public class PlayerController : MonoBehaviour
                 hasMoved = false;
                 possibleMoves = beforeMoveActionMoves = 3;
                 moveStartPoint = currentWayPoint;
-                moveAgents = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
+                walkablePointMap = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)
-                    GameManager.instance.OnMoveEnter(moveAgents);
+                    GameManager.instance.OnMoveEnter(walkablePointMap);
                 if (bonusMoveActions > 0)
                     isBonusMove = true;
                 break;

@@ -8,6 +8,8 @@ public class Point : IHeapItem<Point>{
     public Vector3 worldPosition;
     [System.NonSerialized]
     public List<Point> _possibleDestinations;
+    [System.NonSerialized]
+    public List<Point> _currentPathDestinations = new List<Point>();
 
     public List<Point> possibleDestinations
     {
@@ -18,6 +20,18 @@ public class Point : IHeapItem<Point>{
         set
         {
             _possibleDestinations = value;
+        }
+    }
+
+    public List<Point> currentPathDestinations
+    {
+        get
+        {
+            return _currentPathDestinations;
+        }
+        set
+        {
+            _currentPathDestinations = value;
         }
     }
 
