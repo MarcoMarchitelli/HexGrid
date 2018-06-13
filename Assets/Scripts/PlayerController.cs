@@ -99,7 +99,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-
         switch (currentAction)
         {
             case Action.moving:
