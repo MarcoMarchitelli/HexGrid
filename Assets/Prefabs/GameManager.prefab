@@ -66,6 +66,8 @@ MonoBehaviour:
     type: 2}
   prefabCard3: {fileID: 4308383567039682, guid: 44c9e8e8555407c438038b9564f78de4,
     type: 2}
+  EndPointVFXprefab: {fileID: 1567745343840254, guid: 1051dd08768a58f4f969ee69ac567da2,
+    type: 2}
   gridReference: {fileID: 0}
   currentActivePlayer: {fileID: 0}
   mainCamera: {fileID: 0}
@@ -75,8 +77,10 @@ MonoBehaviour:
   combatManager: {fileID: 0}
   pathfinding: {fileID: 0}
   turnCount: 0
+  cardSpawnCounter: 0
   buttonMashFightResult: 0.5
   isStaticEvent: 0
+  endPointVfxInstantiated: 0
   rotationPhaseEnded: 0
   gainPhaseEnded: 0
   discountChecked: 0
@@ -94,10 +98,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4507562b591bc244b93acb3573b27e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Timer: 0
+  TimerDuration: 0
   baseStrength: 0.15
   timerMultiplier: 0.1
-  maxValue: 4
-  minValue: -4
+  maxValue: 3
+  minValue: -3
   attackerInput: 49
   defenderInput: 48
   OnFightFinish:
@@ -236,12 +242,11 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
-  SelectionPanel: {fileID: 0}
-  FightPanel: {fileID: 0}
   slider: {fileID: 0}
   CountdownAnimator: {fileID: 0}
   InfoText: {fileID: 0}
   CountdownText: {fileID: 0}
+  TimerText: {fileID: 0}
   attackerModController: {fileID: 0}
   defenderModController: {fileID: 0}
 --- !u!114 &114357993659059922

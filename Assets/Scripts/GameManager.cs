@@ -21,6 +21,8 @@ public class GameManager : MonoBehaviour
     public Transform prefabCard2;
     public Transform prefabCard3;
 
+    public GameObject EndPointVFXprefab;
+
     [HideInInspector]
     public HexGridCreator gridReference;
     [HideInInspector]
@@ -45,7 +47,7 @@ public class GameManager : MonoBehaviour
     public float buttonMashFightResult = .5f;
 
     [HideInInspector]
-    public bool isStaticEvent = false;
+    public bool isStaticEvent = false, endPointVfxInstantiated = false;
 
     public static GameManager instance;
     [HideInInspector]
@@ -54,6 +56,8 @@ public class GameManager : MonoBehaviour
     public int playerIndex = 0;
 
     string message = null;
+
+    GameObject InstEndPointVFX;
 
     public enum Phase
     {
@@ -121,7 +125,7 @@ public class GameManager : MonoBehaviour
     IEnumerator GainPhase()
     {
         currentPhase = Phase.gain;
-        print("Gain Phase!"); 
+        print("Gain Phase!");
 
         message = "Gain Phase";
         hudManager.PrintBigNews(message);
@@ -144,7 +148,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator PlayPhase()
     {
-        currentPhase = Phase.main;       
+        currentPhase = Phase.main;
         currentActivePlayer.TurnStart();
 
         print("Chose an action " + currentActivePlayer + "!");
@@ -421,7 +425,7 @@ public class GameManager : MonoBehaviour
     {
         currentActivePlayer.selectedCard = null;
 
-        cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons ,false);
+        cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons, false);
         mainCamera.SetHighView(false);
         mainCamera.canChangeView = true;
     }
@@ -486,12 +490,26 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
         currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
-        cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons ,false);
+        cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons, false);
         mainCamera.SetHighView(false);
         mainCamera.canChangeView = true;
     }
 
     #endregion
+
+    public void ToggleEndPoint(bool flag)
+    {
+        if (flag && !endPointVfxInstantiated)
+        {
+            InstEndPointVFX = Instantiate(EndPointVFXprefab, gridReference.center.position + Vector3.up * .6f, Quaternion.Euler(Vector3.left * 90));
+            endPointVfxInstantiated = true;
+        }
+        else if (!flag && endPointVfxInstantiated)
+        {
+            Destroy(InstEndPointVFX);
+            endPointVfxInstantiated = false;
+        }
+    }
 
     public void Win(PlayerController player)
     {
@@ -506,10 +524,23 @@ public class GameManager : MonoBehaviour
                 return false;
         }
 
-        if (point.type == Point.Type.win && currentActivePlayer.victoryPoints < 5)
+        if (point.type == Point.Type.win && currentActivePlayer.VictoryPoints < 5)
             return false;
 
         return true;
+    }
+
+    public void CheckPlayersPV()
+    {
+        foreach (var player in players)
+        {
+            if (player.VictoryPoints >= 5)
+            {
+                ToggleEndPoint(true);
+                return;
+            }
+        }
+        ToggleEndPoint(false);
     }
 
     public List<Point> FindWalkablePointsInRange(int range, PlayerController player)

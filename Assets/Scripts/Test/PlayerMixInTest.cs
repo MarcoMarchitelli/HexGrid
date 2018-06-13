@@ -18,7 +18,7 @@ public class PlayerMixInTest : MonoBehaviour {
     {
         if (player)
         {
-            player.victoryPoints = VP;
+            player.VictoryPoints = VP;
             player.EnergyPoints = EP;
         }
     }

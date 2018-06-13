@@ -9,6 +9,8 @@ public class ButtonController : MonoBehaviour {
     public Sprite specialSprite;
     public Sprite confirmSprite;
 
+    public Animator infoAnimator;
+
     public UnityEvent OnSpriteInactive;
     public UnityEvent OnSpriteActive;
     public UnityEvent OnSpriteSpecial;
@@ -66,4 +68,9 @@ public class ButtonController : MonoBehaviour {
         else
             button.enabled = false;
     }
+
+    private void OnMouseEnter()
+    {
+    }
+
 }

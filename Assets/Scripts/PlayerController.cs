@@ -53,6 +53,19 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    public int VictoryPoints
+    {
+        get
+        {
+            return victoryPoints;
+        }
+        set
+        {
+            victoryPoints = value;
+            GameManager.instance.CheckPlayersPV();
+        }
+    }
+
     public int EnergyPoints
     {
         get
@@ -323,7 +336,7 @@ public class PlayerController : MonoBehaviour
 
         if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
         {
-            victoryPoints++;
+            VictoryPoints++;
             currentWayPoint.isFinalWaypointUsed = true;
             GameManager.instance.ConfirmAction();
         }
@@ -336,7 +349,7 @@ public class PlayerController : MonoBehaviour
         if (currentWayPoint.type == Point.Type.win)
         {
             possibleMoves = 0;
-            if (victoryPoints >= 5)
+            if (VictoryPoints >= 5)
             {
                 GameManager.instance.Win(this);
             }

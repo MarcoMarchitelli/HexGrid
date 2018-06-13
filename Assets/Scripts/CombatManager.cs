@@ -183,17 +183,17 @@ public class CombatManager : MonoBehaviour
         {
             //attacker won.
             print("ATTACKER WON!");
-            attacker.victoryPoints++;
-            if (defender.victoryPoints > 0)
-                defender.victoryPoints--;
+            attacker.VictoryPoints++;
+            if (defender.VictoryPoints > 0)
+                defender.VictoryPoints--;
         }
         else if (timerForFightEnd <= 0 && fightSliderValue > 0f)
         {
             //attacker won.
             print("TIME'S OVER! ATTACKER WON!");
-            attacker.victoryPoints++;
-            if (defender.victoryPoints > 0)
-                defender.victoryPoints--;
+            attacker.VictoryPoints++;
+            if (defender.VictoryPoints > 0)
+                defender.VictoryPoints--;
         }
         else if (timerForFightEnd <= 0 && fightSliderValue <= 0f)
         {

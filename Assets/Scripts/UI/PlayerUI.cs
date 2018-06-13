@@ -19,7 +19,7 @@ public class PlayerUI : MonoBehaviour {
         if (icon != null)
             icon.sprite = player.icon;
         if (PVtext != null)
-            PVtext.text = player.victoryPoints.ToString();
+            PVtext.text = player.VictoryPoints.ToString();
         if (PEtext != null)
             PEtext.text = player.EnergyPoints.ToString();
         if (bonusMoveActionText != null)
@@ -37,7 +37,7 @@ public class PlayerUI : MonoBehaviour {
         if (icon != null)
             icon.sprite = player.icon;
         if (PVtext != null)
-            PVtext.text = player.victoryPoints.ToString();
+            PVtext.text = player.VictoryPoints.ToString();
         if (PEtext != null)
             PEtext.text = player.EnergyPoints.ToString();
         if (bonusMoveActionText != null)
