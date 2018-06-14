@@ -69,6 +69,7 @@ public class CombatManager : MonoBehaviour
     IEnumerator FightFlow()
     {
         OnFightStart.Invoke();
+        AudioManager.instance.Play("FightStart");
 
         yield return StartCoroutine(ModifiersSelection());
 
@@ -104,7 +105,7 @@ public class CombatManager : MonoBehaviour
         }
         print("Attacker added " + attackerBonusStrength + " bonus strength");
 
-        yield return new WaitForSeconds(.7f);
+        yield return new WaitForSeconds(.3f);
 
         //defender selection
         if (InfoTextDefender)
@@ -204,15 +205,14 @@ public class CombatManager : MonoBehaviour
         {
             //defender won.
             print("DEFENDER WON!");
-            if (AttackerLoss != null)
-                AttackerLoss.Play();
+            AudioManager.instance.Play("AttackerLoss");
         }
         else if (fightSliderValue >= maxValue)
         {
             //attacker won.
             print("ATTACKER WON!");
-            if (AttackerWin)
-                AttackerWin.Play();
+            AudioManager.instance.Play("AttackerWin");
+
             attacker.VictoryPoints++;
             if (defender.VictoryPoints > 0)
                 defender.VictoryPoints--;

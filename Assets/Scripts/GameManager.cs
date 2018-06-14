@@ -66,6 +66,11 @@ public class GameManager : MonoBehaviour
 
     public Phase currentPhase;
 
+    private void Start()
+    {
+        AudioManager.instance.Play("Background");
+    }
+
     public void Init()
     {
         instance = this;

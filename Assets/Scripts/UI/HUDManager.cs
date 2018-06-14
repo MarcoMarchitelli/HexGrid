@@ -473,11 +473,14 @@ public class HUDManager : MonoBehaviour
     {
         WinningPlayerIcon.sprite = player.winIcon;
         winOverlay.SetActive(true);
+        AudioManager.instance.Stop("Background");
+        AudioManager.instance.Play("Victory");
     }
 
     public void Restart()
     {
         SceneManager.LoadScene(0);
+        AudioManager.instance.StopAll();
     }
 
     public void Quit()
