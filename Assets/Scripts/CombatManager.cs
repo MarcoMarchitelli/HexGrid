@@ -40,6 +40,10 @@ public class CombatManager : MonoBehaviour
     public ModifierButtonsController attackerModController;
     public ModifierButtonsController defenderModController;
 
+    [Header("Audio Sources")]
+    public AudioSource AttackerWin;
+    public AudioSource AttackerLoss;
+
     #endregion
 
     PlayerController attacker, defender;
@@ -200,11 +204,15 @@ public class CombatManager : MonoBehaviour
         {
             //defender won.
             print("DEFENDER WON!");
+            if (AttackerLoss != null)
+                AttackerLoss.Play();
         }
         else if (fightSliderValue >= maxValue)
         {
             //attacker won.
             print("ATTACKER WON!");
+            if (AttackerWin)
+                AttackerWin.Play();
             attacker.VictoryPoints++;
             if (defender.VictoryPoints > 0)
                 defender.VictoryPoints--;
