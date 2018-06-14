@@ -20,19 +20,25 @@ public class InfoVisualizer : MonoBehaviour {
 
     public void OnMouseEnter()
     {
-        if (infoAnimator != null)
+        if (GameManager.instance.hudManager.helpEnabled)
         {
-            infoAnimator.ResetTrigger("Hide");
-            infoAnimator.SetTrigger("Show");
+            if (infoAnimator != null)
+            {
+                infoAnimator.ResetTrigger("Hide");
+                infoAnimator.SetTrigger("Show");
+            }
         }
     }
 
     public void OnMouseExit()
     {
-        if (infoAnimator != null)
+        if (GameManager.instance.hudManager.helpEnabled)
         {
-            infoAnimator.ResetTrigger("Show");
-            infoAnimator.SetTrigger("Hide");
+            if (infoAnimator != null)
+            {
+                infoAnimator.ResetTrigger("Show");
+                infoAnimator.SetTrigger("Hide");
+            }
         }
     }
 }

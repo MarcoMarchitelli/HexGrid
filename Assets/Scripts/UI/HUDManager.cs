@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class HUDManager : MonoBehaviour
 {
 
+    public bool helpEnabled = false;
+
     #region Public Variables
 
     [Header("Print Sections")]
@@ -31,7 +33,7 @@ public class HUDManager : MonoBehaviour
     public Image WinningPlayerIcon;
 
     #endregion
-
+    
     bool paused = false;
     string[] CannotUndoRotateMessages = { "Place that card first!", "Too late to go back now!", "You've got to finish your action!" };
     string[] CannotUndoMovingMessages = { "C'mon you're still running...", "Wait, you're still moving!", "You cannot interrupt your move now." };

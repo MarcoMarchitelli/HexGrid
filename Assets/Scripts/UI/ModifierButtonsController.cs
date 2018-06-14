@@ -5,11 +5,14 @@ public class ModifierButtonsController : MonoBehaviour {
 
     public ModifierButton[] buttons;
     public Image playerIcon;
+    public PlayerUI playerUI;
 
     public void ToggleModifierButtons(PlayerController player)
     {
         if (playerIcon != null)
             playerIcon.sprite = player.icon;
+        if (playerUI != null)
+            playerUI.SetPlayerReference(player);
         foreach (ModifierButton button in buttons)
         {
             if(player.EnergyPoints >= button.value)

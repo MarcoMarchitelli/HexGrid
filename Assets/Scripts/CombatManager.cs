@@ -22,12 +22,17 @@ public class CombatManager : MonoBehaviour
 
     public UnityEvent OnFightFinish;
     public UnityEvent OnFightStart;
+    public UnityEvent OnAttackerSelectStart;
+    public UnityEvent OnDefenderSelectStart;
+    public UnityEvent OnAttackerSelectEnd;
+    public UnityEvent OnDefenderSelectEnd;
     public UnityEvent OnModifiersSelected;
 
     [Header("UI Stuff")]
     public Slider slider;
     public Animator CountdownAnimator;
-    public TextMeshProUGUI InfoText;
+    public TextMeshProUGUI InfoTextAttacker;
+    public TextMeshProUGUI InfoTextDefender;
     public TextMeshProUGUI CountdownText;
     public TextMeshProUGUI TimerText;
 
@@ -74,29 +79,46 @@ public class CombatManager : MonoBehaviour
 
     IEnumerator ModifiersSelection()
     {
-
-        print("Attacker select your bonus!");
-
+        //setup
         attackerModController.ToggleModifierButtons(attacker);
         defenderModController.ToggleModifierButtons(defender);
+        attackerModController.EnableModifierButtons(false);
+        defenderModController.EnableModifierButtons(false);
+
+        yield return new WaitForSeconds(1f);
+
+        //attacker selection
+        if (InfoTextAttacker)
+            InfoTextAttacker.text = "Choose your bonus!";
+
+        attackerModController.ToggleModifierButtons(attacker);
+        OnAttackerSelectStart.Invoke();
 
         while (!attackerModSet)
         {
             yield return null;
         }
-
         print("Attacker added " + attackerBonusStrength + " bonus strength");
-        print("Defender select your bonus!");
+
+        yield return new WaitForSeconds(.7f);
+
+        //defender selection
+        if (InfoTextDefender)
+            InfoTextDefender.text = "Choose your bonus!";
+
+        defenderModController.ToggleModifierButtons(defender);
+        OnDefenderSelectStart.Invoke();
 
         while (!defenderModSet)
         {
             yield return null;
         }
-
         print("Defender added " + defenderBonusStrength + " bonus strength");
 
-        OnModifiersSelected.Invoke();
+        yield return new WaitForSeconds(1f);
 
+        //selection end
+        OnModifiersSelected.Invoke();
     }
 
     IEnumerator CountDown(int seconds)
@@ -205,8 +227,7 @@ public class CombatManager : MonoBehaviour
     }
 
     public void SetAttackerModifier(int energy)
-    {
-        attackerModController.EnableModifierButtons(true);
+    {        
         switch (energy)
         {
             case 0:
@@ -235,8 +256,8 @@ public class CombatManager : MonoBehaviour
                 break;
         }
         attacker.EnergyPoints -= energy;
-        attackerModSet = true;
         attackerModController.EnableModifierButtons(false);
+        OnAttackerSelectEnd.Invoke();
     }
 
     public void SetDefenderModifier(int energy)
@@ -272,6 +293,7 @@ public class CombatManager : MonoBehaviour
         defender.EnergyPoints -= energy;
         defenderModSet = true;
         defenderModController.EnableModifierButtons(false);
+        OnDefenderSelectEnd.Invoke();
     }
 
     public void ResetValues()
@@ -282,6 +304,16 @@ public class CombatManager : MonoBehaviour
         attackerModSet = false;
         defenderModSet = false;
         slider.value = fightSliderValue;
+    }
+
+    public void AttackerModSelected()
+    {
+        attackerModSet = true;
+    }
+
+    public void DefenderModSelected()
+    {
+        defenderModSet = true;
     }
 
 }

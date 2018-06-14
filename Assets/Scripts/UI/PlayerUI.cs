@@ -11,6 +11,9 @@ public class PlayerUI : MonoBehaviour {
     public TextMeshProUGUI PVtext;
     public TextMeshProUGUI PEtext;
     public TextMeshProUGUI bonusMoveActionText;
+    public Animator PVanimator;
+    public Animator PEanimator;
+    public Animator BonusMoveAnimator;
 
     public void SetPlayerReference(PlayerController _player)
     {
@@ -29,7 +32,6 @@ public class PlayerUI : MonoBehaviour {
             else
                 bonusMoveActionText.text = null;
         }
-
     }
 
     public void Refresh()
