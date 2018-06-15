@@ -109,7 +109,7 @@ public class MaterialChange : MonoBehaviour
         }
     }
 
-    private void OnMouseEnter()
+    public void HighlightOn()
     {
         if (isOutlined)
         {
@@ -124,7 +124,7 @@ public class MaterialChange : MonoBehaviour
 
     }
 
-    private void OnMouseExit()
+    public void HighlightOff()
     {
         if (isOutlined)
         {
@@ -143,4 +143,5 @@ public class MaterialChange : MonoBehaviour
         GameManager.instance.OnMoveEnter -= TurnOutlineOn;
         GameManager.instance.OnMoveSelected -= TurnOutlineOff;
     }
+
 }

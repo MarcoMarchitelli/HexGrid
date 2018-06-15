@@ -245,6 +245,7 @@ public class HexGridCreator : MonoBehaviour
                     if (triangle)
                     {
                         point.worldPosition = triangle.transform.position;
+                        point.triangle = triangle;
                         break;
                     }
                 }

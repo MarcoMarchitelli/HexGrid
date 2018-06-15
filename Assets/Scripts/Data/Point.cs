@@ -35,6 +35,8 @@ public class Point : IHeapItem<Point>{
         }
     }
 
+    public MaterialChange triangle;
+
     public List<Hexagon> nearHexagons;
     public Type type;
     public bool isStartingPoint;
