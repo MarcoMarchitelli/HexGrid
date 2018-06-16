@@ -596,7 +596,11 @@ public class GameManager : MonoBehaviour
             foreach (var destination in point.possibleDestinations)
             {
                 if (pointMap.Contains(destination))
+                {
+                    if (point.type == Point.Type.purple && destination.type == Point.Type.purple && currentActivePlayer.currentWayPoint != point)
+                        continue;
                     point.currentPathDestinations.Add(destination);
+                }         
             }
         }
 

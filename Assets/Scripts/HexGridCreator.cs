@@ -46,6 +46,7 @@ public class HexGridCreator : MonoBehaviour
     public Transform forestWaypointPrefab;
     public Transform greyWaypointPrefab;
     public Transform purpleWaypointPrefab;
+    public Transform finalWaypointPrefab;
 
     #endregion
 
@@ -301,7 +302,7 @@ public class HexGridCreator : MonoBehaviour
                     }
                     break;
                 case Point.Type.win:
-                    Transform instantiatedWinWaypoint = Instantiate(purpleWaypointPrefab, point.worldPosition + Vector3.up * .5f, Quaternion.identity);
+                    Transform instantiatedWinWaypoint = Instantiate(finalWaypointPrefab, point.worldPosition + Vector3.up * .5f, Quaternion.identity);
                     instantiatedWinWaypoint.parent = mapContainer;
                     break;
                 case Point.Type.purple:

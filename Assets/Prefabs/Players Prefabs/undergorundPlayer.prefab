@@ -67,6 +67,7 @@ GameObject:
   - component: {fileID: 4547121805449906}
   - component: {fileID: 33989683768947736}
   - component: {fileID: 23220226470110334}
+  - component: {fileID: 114714087196620622}
   m_Layer: 0
   m_Name: polySurface68
   m_TagString: Untagged
@@ -236,6 +237,7 @@ GameObject:
   - component: {fileID: 4668232398397086}
   - component: {fileID: 33510846765070474}
   - component: {fileID: 23224296269239916}
+  - component: {fileID: 114415983915321978}
   m_Layer: 0
   m_Name: polySurface97
   m_TagString: Untagged
@@ -313,6 +315,7 @@ GameObject:
   - component: {fileID: 4275283683137522}
   - component: {fileID: 33385698025984240}
   - component: {fileID: 23640985538255554}
+  - component: {fileID: 114717144441289382}
   m_Layer: 0
   m_Name: polySurface93
   m_TagString: Untagged
@@ -407,6 +410,7 @@ GameObject:
   - component: {fileID: 4427156595339562}
   - component: {fileID: 33841413277722908}
   - component: {fileID: 23663996984523750}
+  - component: {fileID: 114898157492895606}
   m_Layer: 0
   m_Name: polySurface87
   m_TagString: Untagged
@@ -424,6 +428,7 @@ GameObject:
   - component: {fileID: 4826272479348738}
   - component: {fileID: 33623888037669304}
   - component: {fileID: 23231809854356442}
+  - component: {fileID: 114440545771634086}
   m_Layer: 0
   m_Name: polySurface67
   m_TagString: Untagged
@@ -566,6 +571,7 @@ GameObject:
   - component: {fileID: 4776167662934562}
   - component: {fileID: 33555272227083298}
   - component: {fileID: 23939946509708924}
+  - component: {fileID: 114915174092154234}
   m_Layer: 0
   m_Name: polySurface86
   m_TagString: Untagged
@@ -1404,6 +1410,51 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114415983915321978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1353412016088106}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114440545771634086
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1766183715126042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114714087196620622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1158779890820790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114716524704427748
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1417,7 +1468,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MultipleOutlines: 1
   OutlineInChildren: 1
-  OutlinesParent: {fileID: 4858295832397620}
+  OutlinesParent: {fileID: 4512241644774378}
   OnMouseEnterEvent:
     m_PersistentCalls:
       m_Calls:
@@ -1450,6 +1501,51 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114717144441289382
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1575637067435282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114898157492895606
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1747771947696622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
+--- !u!114 &114915174092154234
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1985056785086328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbf3575480402db40813e763382412fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: 0
+  eraseRenderer: 0
+  originalLayer: 0
+  originalMaterials: []
 --- !u!114 &114936040168531598
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1471,6 +1567,7 @@ MonoBehaviour:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
+    triangle: {fileID: 0}
     nearHexagons: []
     type: 0
     isStartingPoint: 0
@@ -1482,6 +1579,7 @@ MonoBehaviour:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
+    triangle: {fileID: 0}
     nearHexagons: []
     type: 0
     isStartingPoint: 0
@@ -1493,6 +1591,7 @@ MonoBehaviour:
     x: 0
     y: 0
     worldPosition: {x: 0, y: 0, z: 0}
+    triangle: {fileID: 0}
     nearHexagons: []
     type: 0
     isStartingPoint: 0
@@ -1536,7 +1635,7 @@ MonoBehaviour:
     m_Bits: 2048
   UIlayer:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 0
   beforeActionEnergyPoints: 0
   beforeRotateActionCardEulerAngle: 0
   beforeMoveActionMoves: 0

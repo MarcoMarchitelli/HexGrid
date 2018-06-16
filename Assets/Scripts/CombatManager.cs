@@ -324,4 +324,12 @@ public class CombatManager : MonoBehaviour
         defenderModSet = true;
     }
 
+    public void ResetPlayersAfterFight()
+    {
+        foreach (var player in GameManager.instance.players)
+        {
+            player.GetComponent<CapsuleCollider>().enabled = false;
+        }
+    }
+
 }

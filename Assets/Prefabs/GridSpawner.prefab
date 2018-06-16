@@ -65,19 +65,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: Init
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
+  TriangleMask:
+    serializedVersion: 2
+    m_Bits: 4096
   instantiateLights: 0
   instantiateEnvironment: 0
   instantiateStartingPoints: 0
@@ -111,7 +103,7 @@ MonoBehaviour:
     type: 2}
   winHexagonPrefab: {fileID: 4252391888528906, guid: 38eee6d263357fd4894e03ebf148d272,
     type: 2}
-  underwaterWaypointPrefab: {fileID: 4808231869849446, guid: df9a3d63a1191304fa721194e9c63253,
+  underwaterWaypointPrefab: {fileID: 4808231869849446, guid: 13d934c0f8b448f4596b360565f1020e,
     type: 2}
   hypogeumWaypointPrefab: {fileID: 4808231869849446, guid: df9a3d63a1191304fa721194e9c63253,
     type: 2}
@@ -119,9 +111,11 @@ MonoBehaviour:
     type: 2}
   forestWaypointPrefab: {fileID: 4808231869849446, guid: df9a3d63a1191304fa721194e9c63253,
     type: 2}
-  greyWaypointPrefab: {fileID: 4808231869849446, guid: df9a3d63a1191304fa721194e9c63253,
+  greyWaypointPrefab: {fileID: 4808231869849446, guid: 13d934c0f8b448f4596b360565f1020e,
     type: 2}
-  purpleWaypointPrefab: {fileID: 4808231869849446, guid: c597c9de66574c24e84c076bbc475b38,
+  purpleWaypointPrefab: {fileID: 4808231869849446, guid: cc0168dfaed3deb4ba66fef6069e2ac7,
+    type: 2}
+  finalWaypointPrefab: {fileID: 4808231869849446, guid: e5b170c7d95d3c34497495013c14edca,
     type: 2}
   HexGrid: []
   WaypointGrid: []

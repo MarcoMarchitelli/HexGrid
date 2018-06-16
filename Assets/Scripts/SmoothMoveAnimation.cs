@@ -14,6 +14,12 @@ public class SmoothMoveAnimation : MonoBehaviour {
 
     GameObject instSmoke;
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+            StartCoroutine(Animation());
+    }
+
     public IEnumerator Animation()
     {
         
@@ -21,7 +27,7 @@ public class SmoothMoveAnimation : MonoBehaviour {
         CameraShaker.Instance.StartShake(.3f, 5, 0, Vector3.up * .3f, Vector3.zero);
         if (SmokeParticle)
         {
-            instSmoke = Instantiate(SmokeParticle, transform.position, Quaternion.Euler(Vector3.left * 90f));
+            instSmoke = Instantiate(SmokeParticle, transform.position + Vector3.up * .5f, Quaternion.Euler(Vector3.left * 90f));
         }
         Vector3 target = TargetPosition.position;
         while (transform.position != target)

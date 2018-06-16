@@ -86,7 +86,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1824663811069622}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.9, y: 0.06, z: 5.93}
+  m_LocalPosition: {x: -3.9, y: 1.513, z: 5.93}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 4187153705351218}
@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TargetPosition: {fileID: 4137168512207972}
-  speed: 1
+  speed: 0.7
   PVSphere: {fileID: 1806448387587572}
   SmokeParticle: {fileID: 1630354734122792, guid: 270c7809636e70346b871d4ffb556167,
     type: 2}

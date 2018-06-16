@@ -502,6 +502,7 @@ public class PlayerController : MonoBehaviour
                 GameManager.instance.mainCamera.canChangeView = false;
                 foreach (var player in playersToRob)
                 {
+                    player.GetComponent<CapsuleCollider>().enabled = true;
                     player.outlineController.SetColor(1);
                     player.outlineController.EnableOutline(true);
                 }
@@ -532,15 +533,18 @@ public class PlayerController : MonoBehaviour
 
     public bool DiscountCheck()
     {
-        bool haveCardsPlaced = false;
+        bool hasCards = false;
 
         foreach (CardController card in GameManager.instance.cardsManager.PlacedCards)
         {
             if (card.player == this)
-                haveCardsPlaced = true;
+                hasCards = true;
         }
 
-        if (EnergyPoints <= 0 && !haveCardsPlaced && cardsInHand.Count <= 0)
+        if (cardsInHand.Count > 0)
+            hasCards = true;
+
+        if (EnergyPoints <= 0 && !hasCards && cardsInHand.Count <= 0)
             return true;
         else
             return false;
