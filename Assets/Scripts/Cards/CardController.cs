@@ -1771,7 +1771,8 @@ public class CardController : MonoBehaviour
         }
         if(playPopUpAnim)
             ResourcesPopUpAnimation();
-        CameraShaker.Instance.ShakeOnce(2, 3, 0, 1f, Vector3.up * .5f, Vector3.one * .5f);
+        if(playPopUpAnim)
+            CameraShaker.Instance.ShakeOnce(2, 3, 0, 1f, Vector3.up * .5f, Vector3.one * .5f);
         GameManager.instance.hudManager.Refresh();
     }
 
