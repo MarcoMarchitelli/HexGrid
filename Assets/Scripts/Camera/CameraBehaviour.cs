@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using UnityEngine;
 
 public class CameraBehaviour : MonoBehaviour
@@ -74,6 +75,14 @@ public class CameraBehaviour : MonoBehaviour
             yield return null;
         }
         isMoving = false;
+    }
+
+    public void CanChangeView(bool flag)
+    {
+        if (flag)
+            canChangeView = true;
+        else
+            canChangeView = false;
     }
 
 }
