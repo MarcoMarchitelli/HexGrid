@@ -164,6 +164,7 @@ public class MaterialChange : MonoBehaviour
                     _outline.color = 1;
                 }
         }
+
     }
 
     private void OnDisable()

@@ -13,12 +13,14 @@ public class ProxyMaterialChange : MonoBehaviour {
 
     private void OnMouseEnter()
     {
-        myPoint.triangle.HighlightOn();
+        if(myPoint.triangle)
+            myPoint.triangle.HighlightOn();
     }
 
     private void OnMouseExit()
     {
-        myPoint.triangle.HighlightOff();
+        if (myPoint.triangle)
+            myPoint.triangle.HighlightOff();
     }
 
 }
