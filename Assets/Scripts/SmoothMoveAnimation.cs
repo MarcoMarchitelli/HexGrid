@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using EZCameraShake;
 
 public class SmoothMoveAnimation : MonoBehaviour {
 
@@ -17,6 +18,7 @@ public class SmoothMoveAnimation : MonoBehaviour {
     {
         
         OnAnimationStart.Invoke();
+        CameraShaker.Instance.StartShake(.3f, 5, 0, Vector3.up * .3f, Vector3.zero);
         if (SmokeParticle)
         {
             instSmoke = Instantiate(SmokeParticle, transform.position, Quaternion.Euler(Vector3.left * 90f));
@@ -30,6 +32,10 @@ public class SmoothMoveAnimation : MonoBehaviour {
         if(instSmoke != null)
         {
             Destroy(instSmoke);
+        }
+        foreach (var shake in CameraShaker.Instance.ShakeInstances)
+        {
+            shake.StartFadeOut(0);
         }
         OnAnimationFinish.Invoke();
     }

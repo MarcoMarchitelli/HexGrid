@@ -138,6 +138,34 @@ public class MaterialChange : MonoBehaviour
         }
     }
 
+    private void OnMouseEnter()
+    {
+        if (isOutlined)
+        {
+            if (outline != null)
+                outline.color = 2;
+            else if (outlines != null)
+                foreach (var _outline in outlines)
+                {
+                    _outline.color = 2;
+                }
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (isOutlined)
+        {
+            if (outline != null)
+                outline.color = 1;
+            else if (outlines != null)
+                foreach (var _outline in outlines)
+                {
+                    _outline.color = 1;
+                }
+        }
+    }
+
     private void OnDisable()
     {
         GameManager.instance.OnMoveEnter -= TurnOutlineOn;
