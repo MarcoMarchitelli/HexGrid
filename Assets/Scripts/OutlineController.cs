@@ -68,7 +68,7 @@ public class OutlineController : MonoBehaviour
 
     public void SetColor(int colorId)
     {
-        if(colorId <0 || colorId > 2)
+        if(colorId < 0 || colorId > 2)
         {
             print("Invalid color ID.");
             return;

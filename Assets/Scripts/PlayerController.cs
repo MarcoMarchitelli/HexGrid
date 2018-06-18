@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 
 using DG.Tweening;
+using cakeslice;
 
 public class PlayerController : MonoBehaviour
 {
@@ -28,6 +29,8 @@ public class PlayerController : MonoBehaviour
     public int stepPerMove;
     [HideInInspector]
     public Point startingWayPoint;
+    [HideInInspector]
+    public CapsuleCollider myCollider;
     [HideInInspector]
     public Point currentWayPoint, moveStartPoint;
     [HideInInspector]
@@ -88,12 +91,17 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     List<Point> walkablePointMap = new List<Point>();
 
+    private void Awake()
+    {
+        myCollider = GetComponent<CapsuleCollider>();
+        animator = GetComponentInChildren<Animator>();
+    }
+
     private void Start()
     {
         currentAction = Action.idle;
         currentWayPoint = startingWayPoint;
         cardsInHand = new List<CardController>();
-        animator = GetComponentInChildren<Animator>();
         if (animator)
             animator.SetBool("isRunning", false);
     }
@@ -501,9 +509,13 @@ public class PlayerController : MonoBehaviour
             case 5:
                 currentAction = Action.fight;
                 GameManager.instance.mainCamera.canChangeView = false;
+                OutlineEffectController.instance.ChangeLineAlphaCutoff(.7f);
+                OutlineEffectController.instance.ChangeLineThickness(2.5f);
+                OutlineEffectController.instance.ChangeLineColor(2, Color.white);
+                OutlineEffectController.instance.ChangeLineColor(1, new Color(.95f,.95f,.95f,1));
                 foreach (var player in playersToRob)
                 {
-                    player.GetComponent<CapsuleCollider>().enabled = true;
+                    player.myCollider.enabled = true;
                     player.outlineController.SetColor(1);
                     player.outlineController.EnableOutline(true);
                 }
