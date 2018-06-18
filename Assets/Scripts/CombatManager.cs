@@ -40,10 +40,6 @@ public class CombatManager : MonoBehaviour
     public ModifierButtonsController attackerModController;
     public ModifierButtonsController defenderModController;
 
-    [Header("Audio Sources")]
-    public AudioSource AttackerWin;
-    public AudioSource AttackerLoss;
-
     #endregion
 
     PlayerController attacker, defender;
@@ -51,6 +47,16 @@ public class CombatManager : MonoBehaviour
     float fightSliderValue = 0f;
     float attackerBonusStrength = 0f, defenderBonusStrength = 0f;
     bool attackerModSet = false, defenderModSet = false;
+
+    public static CombatManager instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else
+            Destroy(gameObject);
+    }
 
     private void Start()
     {
@@ -306,7 +312,7 @@ public class CombatManager : MonoBehaviour
 
     public void ResetValues()
     {
-        fightSliderValue = 0f;
+        fightSliderValue = maxValue*.5f;
         attackerBonusStrength = 0f;
         defenderBonusStrength = 0f;
         attackerModSet = false;

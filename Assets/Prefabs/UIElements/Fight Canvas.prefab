@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 224901749357143726}
   - component: {fileID: 222878913142751484}
   - component: {fileID: 114435094645214906}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: InfoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ GameObject:
   - component: {fileID: 224476556467698980}
   - component: {fileID: 222874172042570762}
   - component: {fileID: 114435909750097446}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: PlayerIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 224728127768962142}
   - component: {fileID: 222970928148322000}
   - component: {fileID: 114973369010921762}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: InfoText (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,6 +383,7 @@ GameObject:
   - component: {fileID: 114872130005081912}
   - component: {fileID: 114348242366952634}
   - component: {fileID: 95105863576373144}
+  - component: {fileID: 114665535304306046}
   m_Layer: 5
   m_Name: Player2 Selection
   m_TagString: Untagged
@@ -474,6 +475,7 @@ GameObject:
   - component: {fileID: 224583838595991728}
   - component: {fileID: 114512441842873232}
   - component: {fileID: 95604183439832772}
+  - component: {fileID: 114354102851225190}
   m_Layer: 2
   m_Name: Slider
   m_TagString: Untagged
@@ -670,6 +672,7 @@ GameObject:
   - component: {fileID: 114690431038851742}
   - component: {fileID: 114362750066392066}
   - component: {fileID: 95923813567341656}
+  - component: {fileID: 114573163894913234}
   m_Layer: 5
   m_Name: Player1 Selection
   m_TagString: Untagged
@@ -937,7 +940,7 @@ GameObject:
   - component: {fileID: 224026569285934458}
   - component: {fileID: 222830044137979824}
   - component: {fileID: 114262524679061664}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: PlayerIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2516,6 +2519,9 @@ MonoBehaviour:
   PVtext: {fileID: 114295058541290820}
   PEtext: {fileID: 114828745171628184}
   bonusMoveActionText: {fileID: 0}
+  PVanimator: {fileID: 0}
+  PEanimator: {fileID: 0}
+  BonusMoveAnimator: {fileID: 0}
 --- !u!114 &114310177234224156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2741,6 +2747,18 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &114354102851225190
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415985052931278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81b8aaed402758348bc4fa44d2671290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blueRayImage: {fileID: 114797410076440924}
 --- !u!114 &114362750066392066
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3240,7 +3258,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Choose your Bonus!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f0ccec0988d9a0f48bea6528ab5fa23c, type: 2}
   m_sharedMaterial: {fileID: 21295174520208082, guid: f0ccec0988d9a0f48bea6528ab5fa23c,
@@ -3268,7 +3286,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 134.25
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3309,13 +3327,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 114435094645214906}
-    characterCount: 18
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
@@ -3734,7 +3752,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 114640146750586538}
   m_FillRect: {fileID: 224548064954548402}
   m_HandleRect: {fileID: 224849139700551214}
@@ -3742,10 +3760,21 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.503
+  m_Value: 0.493
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 114354102851225190}
+        m_MethodName: SetBlueRayFill
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114524128435131148
@@ -3958,6 +3987,33 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114332825745595660}
   button: {fileID: 114099393880226814}
+--- !u!114 &114573163894913234
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1539025706257296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618dcbb04b8b26a48bf05ec3f8e6d3bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnModifierSelectionTextDisappear:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: AttackerModSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114574276951271268
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4144,7 +4200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4464,6 +4520,33 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &114665535304306046
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1311500915270308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618dcbb04b8b26a48bf05ec3f8e6d3bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnModifierSelectionTextDisappear:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_MethodName: DefenderModSelected
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &114675069845196958
 MonoBehaviour:
@@ -5203,6 +5286,9 @@ MonoBehaviour:
   PVtext: {fileID: 114574276951271268}
   PEtext: {fileID: 114851070741526030}
   bonusMoveActionText: {fileID: 0}
+  PVanimator: {fileID: 0}
+  PEanimator: {fileID: 0}
+  BonusMoveAnimator: {fileID: 0}
 --- !u!114 &114781970307409026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5360,13 +5446,13 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: b9902d81f1c4651438407c103ffebb03, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
+  m_FillMethod: 0
+  m_FillAmount: 0.32
   m_FillClockwise: 1
-  m_FillOrigin: 0
+  m_FillOrigin: 1
 --- !u!114 &114808603358328798
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5901,7 +5987,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -6606,7 +6692,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Choose your action!
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f0ccec0988d9a0f48bea6528ab5fa23c, type: 2}
   m_sharedMaterial: {fileID: 21295174520208082, guid: f0ccec0988d9a0f48bea6528ab5fa23c,
@@ -6634,7 +6720,7 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 135.85
+  m_fontSize: 36
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6675,13 +6761,13 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 114973369010921762}
-    characterCount: 19
+    characterCount: 0
     spriteCount: 0
-    spaceCount: 2
-    wordCount: 3
+    spaceCount: 0
+    wordCount: 0
     linkCount: 0
-    lineCount: 1
-    pageCount: 1
+    lineCount: 0
+    pageCount: 0
     materialCount: 1
   m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
@@ -7936,7 +8022,7 @@ RectTransform:
   m_GameObject: {fileID: 1231604145735830}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 224130834639561684}
   m_RootOrder: 0
@@ -8065,7 +8151,7 @@ RectTransform:
   m_GameObject: {fileID: 1205330202186258}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 224955501076077332}
   m_RootOrder: 0
