@@ -8,11 +8,11 @@ public class SmoothMoveAnimation : MonoBehaviour {
     public Transform TargetPosition;
     public float speed;
     public GameObject PVSphere;
-    public GameObject SmokeParticle;
+    public ParticleSystem SmokeParticle;
     public UnityEvent OnAnimationFinish;
     public UnityEvent OnAnimationStart;
 
-    GameObject instSmoke;
+    ParticleSystem instSmoke;
 
     private void Update()
     {
@@ -27,7 +27,7 @@ public class SmoothMoveAnimation : MonoBehaviour {
         CameraShaker.Instance.StartShake(.3f, 5, 0, Vector3.up * .3f, Vector3.zero);
         if (SmokeParticle)
         {
-            instSmoke = Instantiate(SmokeParticle, transform.position + Vector3.up * .5f, Quaternion.Euler(Vector3.left * 90f));
+            instSmoke = Instantiate(SmokeParticle.gameObject, transform.position + Vector3.up * .5f, Quaternion.Euler(Vector3.left * 90f)).GetComponent<ParticleSystem>();
         }
         Vector3 target = TargetPosition.position;
         while (transform.position != target)
@@ -35,9 +35,9 @@ public class SmoothMoveAnimation : MonoBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
             yield return null;
         }
-        if(instSmoke != null)
+        if(instSmoke)
         {
-            Destroy(instSmoke);
+            instSmoke.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }
         foreach (var shake in CameraShaker.Instance.ShakeInstances)
         {

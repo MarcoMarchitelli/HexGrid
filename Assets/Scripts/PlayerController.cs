@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public Type type;
     public GameObject VFXobject;
     public OutlineController outlineController;
+    public int stepPerMove;
     [HideInInspector]
     public Point startingWayPoint;
     [HideInInspector]
@@ -82,7 +83,7 @@ public class PlayerController : MonoBehaviour
 
     [HideInInspector]
     public bool isRunning = false, hasMoved = false;
-    int maxPE = 25;
+
 
     Animator animator;
     List<Point> walkablePointMap = new List<Point>();
@@ -470,7 +471,7 @@ public class PlayerController : MonoBehaviour
             case 0:
                 currentAction = Action.moving;
                 hasMoved = false;
-                possibleMoves = beforeMoveActionMoves = 3;
+                possibleMoves = beforeMoveActionMoves = stepPerMove;
                 moveStartPoint = currentWayPoint;
                 walkablePointMap = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)

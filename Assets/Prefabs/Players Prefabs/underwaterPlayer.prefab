@@ -4164,6 +4164,7 @@ MonoBehaviour:
   type: 1
   VFXobject: {fileID: 1590134156293998}
   outlineController: {fileID: 114166589231837972}
+  stepPerMove: 3
   startingWayPoint:
     x: 0
     y: 0
@@ -4566,7 +4567,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1424601499660546}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5
   m_Height: 2.4
   m_Direction: 1
