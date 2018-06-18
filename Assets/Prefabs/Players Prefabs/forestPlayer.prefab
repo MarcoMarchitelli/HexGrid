@@ -661,7 +661,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1886102904052932
 GameObject:
   m_ObjectHideFlags: 1
@@ -1540,7 +1540,10 @@ MonoBehaviour:
   winIcon: {fileID: 21300000, guid: b3b2bcd7c09d4964998cd36c7a6213cc, type: 3}
   moveSpeed: 4
   type: 2
-  VFXobject: {fileID: 1866073587494040}
+  particles:
+  - {fileID: 198203884946194504}
+  - {fileID: 198095952304572910}
+  - {fileID: 198174144087939576}
   outlineController: {fileID: 114857002166214876}
   stepPerMove: 3
   startingWayPoint:
@@ -1555,6 +1558,7 @@ MonoBehaviour:
     isFinalWaypointUsed: 0
     gCost: 0
     hCost: 0
+  myCollider: {fileID: 0}
   currentWayPoint:
     x: 0
     y: 0

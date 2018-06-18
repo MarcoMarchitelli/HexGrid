@@ -13,11 +13,25 @@ public class PlayersHUDController : MonoBehaviour
         }
     }
 
-    public void CyclePlayersHUDs(int _turnCount)
+    public void CyclePlayersHUDs(bool isFirstTurn)
     {
-        for (int i = 0; i < GameManager.instance.players.Length; i++)
+        if (isFirstTurn)
         {
-                playerUIs[i].SetPlayerReference(GameManager.instance.players[(i + GameManager.instance.turnCount) % 4]);
+            playerUIs[0].Expand(true);
+            return;
+        }
+        for (int i = 0; i < GameManager.instance.players.Length; i++)
+        {  
+            if (playerUIs[i].player == GameManager.instance.currentActivePlayer)
+            {
+                if (i != 0)
+                    playerUIs[i - 1].Expand(false);
+                else
+                    playerUIs[3].Expand(false);
+
+                playerUIs[i].Expand(true);
+                return;
+            }
         }
     }
 

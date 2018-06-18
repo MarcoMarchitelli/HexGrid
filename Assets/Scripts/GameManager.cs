@@ -82,6 +82,10 @@ public class GameManager : MonoBehaviour
         combatManager = GetComponent<CombatManager>();
         pathfinding = GetComponent<Pathfinding>();
         InstantiatePlayers();
+        foreach (var player in players)
+        {
+            player.TurnOnParticles(false);
+        }
         StartCoroutine(TurnStart(playerIndex));
     }
 
@@ -96,7 +100,7 @@ public class GameManager : MonoBehaviour
         #endregion
 
         currentActivePlayer = players[playerIndex];
-        currentActivePlayer.VFXobject.SetActive(true);
+        currentActivePlayer.TurnOnParticles(true);
 
         //uiManager.SubscribeToPlayerUIRefreshEvent(currentActivePlayer);
 
@@ -105,6 +109,11 @@ public class GameManager : MonoBehaviour
         print(currentActivePlayer.name + "'s Turn Start!");
         message = "Turn Start";
         hudManager.PrintBigNews(message);
+
+        if (turnCount == 0)
+            playersHUDcontroller.CyclePlayersHUDs(true);
+        else
+            playersHUDcontroller.CyclePlayersHUDs(false);
 
         while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;
@@ -199,10 +208,6 @@ public class GameManager : MonoBehaviour
             playerIndex++;
         else
             playerIndex = 0;
-
-
-
-        playersHUDcontroller.CyclePlayersHUDs(turnCount);
     }
 
     public void StartFight(PlayerController attacker, PlayerController defender)
@@ -264,7 +269,7 @@ public class GameManager : MonoBehaviour
     public void EndTurn()
     {
         turnEnded = true;
-        currentActivePlayer.VFXobject.SetActive(false);
+        currentActivePlayer.TurnOnParticles(false);
         turnCount++;
     }
 

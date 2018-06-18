@@ -102,7 +102,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1084448866056462
 GameObject:
   m_ObjectHideFlags: 1
@@ -1109,7 +1109,10 @@ MonoBehaviour:
   winIcon: {fileID: 21300000, guid: cebf315cfa9fbc74aad7a6330afd760d, type: 3}
   moveSpeed: 4
   type: 0
-  VFXobject: {fileID: 1071589212451466}
+  particles:
+  - {fileID: 198163227937318686}
+  - {fileID: 198375100854606806}
+  - {fileID: 198614698832532336}
   outlineController: {fileID: 114722341182330924}
   stepPerMove: 3
   startingWayPoint:

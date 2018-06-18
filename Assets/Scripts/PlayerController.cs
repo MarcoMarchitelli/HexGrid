@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     #region Public Variables
 
     public Type type;
-    public GameObject VFXobject;
+    public ParticleSystem[] particles;
     public OutlineController outlineController;
     public int stepPerMove;
     [HideInInspector]
@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
         cardsInHand = new List<CardController>();
         if (animator)
             animator.SetBool("isRunning", false);
+        
     }
 
     void Update()
@@ -472,6 +473,17 @@ public class PlayerController : MonoBehaviour
         transform.position = point.worldPosition + Vector3.up * .7f;
     }
 
+    public void TurnOnParticles(bool flag)
+    {
+        if (flag)
+            foreach (var particle in particles)
+                particle.Play();
+        else
+            foreach (var particle in particles)
+                particle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+    }
+
     public void ChoseAction(int actionIndex)
     {
         switch (actionIndex)
@@ -512,7 +524,7 @@ public class PlayerController : MonoBehaviour
                 OutlineEffectController.instance.ChangeLineAlphaCutoff(.7f);
                 OutlineEffectController.instance.ChangeLineThickness(2.5f);
                 OutlineEffectController.instance.ChangeLineColor(2, Color.white);
-                OutlineEffectController.instance.ChangeLineColor(1, new Color(.95f,.95f,.95f,1));
+                OutlineEffectController.instance.ChangeLineColor(1, new Color(.95f, .95f, .95f, 1));
                 foreach (var player in playersToRob)
                 {
                     player.myCollider.enabled = true;

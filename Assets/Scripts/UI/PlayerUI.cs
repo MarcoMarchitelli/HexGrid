@@ -11,6 +11,7 @@ public class PlayerUI : MonoBehaviour {
     public TextMeshProUGUI PVtext;
     public TextMeshProUGUI PEtext;
     public TextMeshProUGUI bonusMoveActionText;
+    public Animator ExpandAnimator;
     public Animator PVanimator;
     public Animator PEanimator;
     public Animator BonusMoveAnimator;
@@ -49,6 +50,25 @@ public class PlayerUI : MonoBehaviour {
             else
                 bonusMoveActionText.text = null;
         }
+    }
+
+    public void Expand(bool flag)
+    {
+        if (ExpandAnimator)
+        {
+            if (flag)
+            {
+                ExpandAnimator.ResetTrigger("Shrink");
+                ExpandAnimator.SetTrigger("Expand");
+                print("MI sto espandendooo");
+            }
+            else
+            {
+                ExpandAnimator.ResetTrigger("Expand");
+                ExpandAnimator.SetTrigger("Shrink");
+            }
+        }
+            
     }
 
 }
