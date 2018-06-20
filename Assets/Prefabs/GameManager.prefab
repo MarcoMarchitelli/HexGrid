@@ -98,12 +98,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4507562b591bc244b93acb3573b27e8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Timer: 0
-  TimerDuration: 0
-  baseStrength: 0.15
-  timerMultiplier: 0.1
-  maxValue: 3
-  minValue: -3
+  Timer: 1
+  TimerDuration: 7
+  baseStrength: 0.35
+  timerMultiplier: 0.75
+  maxValue: 20
+  minValue: 0
+  Mod0: 0
+  Mod1: 0.025
+  Mod2: 0.05
+  Mod4: 0.1
+  Mod6: 0.15
+  Mod8: 0.2
+  Mod10: 0.25
+  Mod15: 0.375
   attackerInput: 49
   defenderInput: 48
   OnFightFinish:
@@ -167,6 +175,61 @@ MonoBehaviour:
       - m_Target: {fileID: 0}
         m_MethodName: CanChangeView
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 114253196353093120}
+        m_MethodName: ResetPlayersAfterFight
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: ChangeLineColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: ChangeLineAlphaCutoff
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: ChangeLineColor
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: ChangeLineThickness
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -347,8 +410,6 @@ MonoBehaviour:
   TimerText: {fileID: 0}
   attackerModController: {fileID: 0}
   defenderModController: {fileID: 0}
-  AttackerWin: {fileID: 0}
-  AttackerLoss: {fileID: 0}
 --- !u!114 &114357993659059922
 MonoBehaviour:
   m_ObjectHideFlags: 1

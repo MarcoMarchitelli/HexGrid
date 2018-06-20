@@ -16,9 +16,22 @@ public class CombatManager : MonoBehaviour
     public float maxValue = 1f;
     public float minValue = -1383838338f;
 
+    [Header("Str Modifiers")]
+    public float Mod0 = 0f;
+    public float Mod1 = 0.025f;
+    public float Mod2 = 0.05f;
+    public float Mod4 = 0.1f;
+    public float Mod6 = 0.15f;
+    public float Mod8 = 0.20f;
+    public float Mod10 = 0.25f;
+    public float Mod15 = 0.375f;
+
+
     [Header("Inputs")]
     public KeyCode attackerInput = KeyCode.Alpha1;
     public KeyCode defenderInput = KeyCode.Alpha0;
+    public KeyCode attackerInput2 = KeyCode.Keypad1;
+    public KeyCode defenderInput2 = KeyCode.Keypad0;
 
     public UnityEvent OnFightFinish;
     public UnityEvent OnFightStart;
@@ -241,36 +254,37 @@ public class CombatManager : MonoBehaviour
     }
 
     public void SetAttackerModifier(int energy)
-    {        
+    {
         switch (energy)
         {
             case 0:
-                attackerBonusStrength = 0;
+                attackerBonusStrength = Mod0;
                 break;
             case 1:
-                attackerBonusStrength = 0.025f;
+                attackerBonusStrength = Mod1;
                 break;
             case 2:
-                attackerBonusStrength = 0.05f;
+                attackerBonusStrength = Mod2;
                 break;
             case 4:
-                attackerBonusStrength = 0.1f;
+                attackerBonusStrength = Mod4;
                 break;
             case 6:
-                attackerBonusStrength = 0.15f;
+                attackerBonusStrength = Mod6;
                 break;
             case 8:
-                attackerBonusStrength = 0.20f;
+                attackerBonusStrength = Mod8;
                 break;
             case 10:
-                attackerBonusStrength = 0.25f;
+                attackerBonusStrength = Mod10;
                 break;
             case 15:
-                attackerBonusStrength = 0.375f;
+                attackerBonusStrength = Mod15;
                 break;
         }
         attacker.EnergyPoints -= energy;
         attackerModController.EnableModifierButtons(false);
+        attackerModSet = true;
         OnAttackerSelectEnd.Invoke();
     }
 
@@ -280,28 +294,28 @@ public class CombatManager : MonoBehaviour
         switch (energy)
         {
             case 0:
-                defenderBonusStrength = 0;
+                defenderBonusStrength = Mod0;
                 break;
             case 1:
-                defenderBonusStrength = 0.025f;
+                defenderBonusStrength = Mod1;
                 break;
             case 2:
-                defenderBonusStrength = 0.05f;
+                defenderBonusStrength = Mod2;
                 break;
             case 4:
-                defenderBonusStrength = 0.1f;
+                defenderBonusStrength = Mod4;
                 break;
             case 6:
-                defenderBonusStrength = 0.15f;
+                defenderBonusStrength = Mod6;
                 break;
             case 8:
-                defenderBonusStrength = 0.20f;
+                defenderBonusStrength = Mod8;
                 break;
             case 10:
-                defenderBonusStrength = 0.25f;
+                defenderBonusStrength = Mod10;
                 break;
             case 15:
-                defenderBonusStrength = 0.375f;
+                defenderBonusStrength = Mod15;
                 break;
         }
         defender.EnergyPoints -= energy;

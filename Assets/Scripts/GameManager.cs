@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
         cardsManager = GetComponent<CardsManager>();
         playersHUDcontroller = FindObjectOfType<PlayersHUDController>();
         hudManager = FindObjectOfType<HUDManager>();
-        combatManager = GetComponent<CombatManager>();
+        combatManager = FindObjectOfType<CombatManager>();
         pathfinding = GetComponent<Pathfinding>();
         InstantiatePlayers();
         foreach (var player in players)
