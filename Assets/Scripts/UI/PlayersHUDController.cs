@@ -4,6 +4,7 @@ public class PlayersHUDController : MonoBehaviour
 {
 
     public PlayerUI[] playerUIs;
+    public PlayerUI ActivePlayerUI;
 
     private void Start()
     {
@@ -15,6 +16,9 @@ public class PlayersHUDController : MonoBehaviour
 
     public void CyclePlayersHUDs(bool isFirstTurn)
     {
+        ActivePlayerUI.SetPlayerReference(GameManager.instance.currentActivePlayer);
+        ActivePlayerUI.Refresh();
+
         if (isFirstTurn)
         {
             playerUIs[0].Expand(true);

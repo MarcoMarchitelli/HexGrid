@@ -128,7 +128,7 @@ public class CardController : MonoBehaviour
             GameManager.instance.cardsManager.PlacedCards.Add(this);
 
             //ANIMATION
-            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 7f, true));
+            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true));
             return true;
         }
         else if(state == State.selectedFromMap)
@@ -147,7 +147,7 @@ public class CardController : MonoBehaviour
                 GameManager.instance.cardsManager.PlacedCards.Add(this);
 
                 //ANIMATION
-                StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 7f, true));
+                StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true));
                 return true;
             }
             else
@@ -442,7 +442,7 @@ public class CardController : MonoBehaviour
         while (!closeAnimFinished)
             yield return null;
         
-        yield return StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), 1f));
+        yield return StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), .6f));
 
         eulerAngle += 60;
         if (eulerAngle == 360 || eulerAngle == -360)
