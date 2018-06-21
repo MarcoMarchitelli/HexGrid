@@ -1773,7 +1773,10 @@ public class CardController : MonoBehaviour
             ResourcesPopUpAnimation();
         if(playPopUpAnim)
             CameraShaker.Instance.ShakeOnce(2, 3, 0, 1f, Vector3.up * .5f, Vector3.one * .5f);
+        player.EnergyPoints += extractableEnergy;
+        player.BonusMoveActions += moveHexTouched;
         GameManager.instance.hudManager.Refresh();
+        GameManager.instance.playersHUDcontroller.RefreshPlayerUIs();
     }
 
     IEnumerator AnimateToRotation(Vector3 TargetEulerAngle, float durationInSeconds)

@@ -36,13 +36,15 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Action currentAction = Action.idle;
     [HideInInspector]
-    public int energyPoints = 2, victoryPoints = 3, actions = 2;
+    public int PE = 2, PV = 3, actions = 2;
+    [HideInInspector]
+    public int PEdifference, PVdiffenece, BMdifference;
     [HideInInspector]
     public int possibleMoves = 3;
     [HideInInspector]
     public int numberOfCards1InHand = 0, numberOfCards2InHand = 0, numberOfCards3InHand = 0;
     [HideInInspector]
-    public int bonusMoveActions = 0, bonusAbilityActions = 0;
+    public int BM = 0, bonusAbilityActions = 0;
     [HideInInspector]
     public bool hasPlacedCard, hasFought, canBet, hasBought, isBonusMove, hasSold, hasDiscount;
     [HideInInspector]
@@ -61,11 +63,13 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            return victoryPoints;
+            return PV;
         }
         set
         {
-            victoryPoints = value;
+            //positive if gain
+            PVdiffenece = value - PV;
+            PV = value;
             GameManager.instance.CheckPlayersPV();
         }
     }
@@ -74,13 +78,29 @@ public class PlayerController : MonoBehaviour
     {
         get
         {
-            return energyPoints;
+            return PE;
         }
         set
         {
-            energyPoints = value;
-            if (energyPoints >= 25)
-                energyPoints = 25;
+            //positive if gain
+            PEdifference = value - PE;
+            PE = value;
+            if (PE >= 25)
+                PE = 25;
+        }
+    }
+
+    public int BonusMoveActions
+    {
+        get
+        {
+            return BM;
+        }
+        set
+        {
+            //positive if gain
+            BMdifference = value - BM;
+            BM = value;
         }
     }
 
@@ -184,8 +204,6 @@ public class PlayerController : MonoBehaviour
                                     lastPlacedCard = selectedCard;
                                     selectedCard = null;
                                     hasPlacedCard = true;
-                                    EnergyPoints += lastPlacedCard.extractableEnergy;
-                                    bonusMoveActions += lastPlacedCard.moveHexTouched;
                                     GameManager.instance.ConfirmAction();
                                 }
                             }
@@ -250,7 +268,7 @@ public class PlayerController : MonoBehaviour
                             lastPlacedCard = selectedCard;
                             selectedCard = null;
                             EnergyPoints += lastPlacedCard.extractableEnergy;
-                            bonusMoveActions += lastPlacedCard.moveHexTouched;
+                            BonusMoveActions += lastPlacedCard.moveHexTouched;
                             GameManager.instance.ConfirmAction();
                         }
                     }
@@ -496,7 +514,7 @@ public class PlayerController : MonoBehaviour
                 walkablePointMap = GameManager.instance.FindWalkablePointsInRange(possibleMoves, this);
                 if (GameManager.instance.OnMoveEnter != null)
                     GameManager.instance.OnMoveEnter(walkablePointMap);
-                if (bonusMoveActions > 0)
+                if (BonusMoveActions > 0)
                     isBonusMove = true;
                 break;
             case 1:
@@ -506,14 +524,14 @@ public class PlayerController : MonoBehaviour
             case 3:
                 currentAction = Action.placeCard;
                 beforeActionEnergyPoints = EnergyPoints;
-                beforeActionBonusMoveActions = bonusMoveActions;
+                beforeActionBonusMoveActions = BonusMoveActions;
                 GameManager.instance.mainCamera.SetHighView(true);
                 GameManager.instance.mainCamera.canChangeView = false;
                 break;
             case 4:
                 currentAction = Action.rotateCard;
                 beforeActionEnergyPoints = EnergyPoints;
-                beforeActionBonusMoveActions = bonusMoveActions;
+                beforeActionBonusMoveActions = BonusMoveActions;
                 GameManager.instance.cardsManager.HighlightPlacedCards(currentWayPoint.nearHexagons, true);
                 GameManager.instance.mainCamera.SetHighView(true);
                 GameManager.instance.mainCamera.canChangeView = false;
@@ -541,7 +559,7 @@ public class PlayerController : MonoBehaviour
     public void ResetValues()
     {
         actions = 2;
-        bonusMoveActions = 0;
+        BonusMoveActions = 0;
         hasDiscount = DiscountCheck();
     }
 

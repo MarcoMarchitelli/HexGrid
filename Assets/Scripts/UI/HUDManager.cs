@@ -160,7 +160,7 @@ public class HUDManager : MonoBehaviour
         if (player.actions > 0)
         {
             //move
-            if (player.bonusMoveActions > 0)
+            if (player.BonusMoveActions > 0)
             {
                 moveButton.SetSprite(ButtonController.SpriteType.special);
                 moveButton.SetUsability(true);
@@ -231,7 +231,7 @@ public class HUDManager : MonoBehaviour
         }
         else
         {
-            if (player.bonusMoveActions > 0)
+            if (player.BonusMoveActions > 0)
             {
                 moveButton.SetSprite(ButtonController.SpriteType.special);
                 moveButton.SetUsability(true);
@@ -270,7 +270,7 @@ public class HUDManager : MonoBehaviour
         }
         else
         {
-            if (GameManager.instance.currentActivePlayer.actions > 0 || GameManager.instance.currentActivePlayer.bonusMoveActions > 0)
+            if (GameManager.instance.currentActivePlayer.actions > 0 || GameManager.instance.currentActivePlayer.BonusMoveActions > 0)
             {
                 endTurnButton.SetUsability(true);
                 endTurnButton.SetSprite(ButtonController.SpriteType.active);

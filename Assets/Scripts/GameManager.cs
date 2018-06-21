@@ -307,7 +307,7 @@ public class GameManager : MonoBehaviour
         currentActivePlayer.currentAction = PlayerController.Action.start;
         if (currentActivePlayer.isBonusMove)
         {
-            currentActivePlayer.bonusMoveActions--;
+            currentActivePlayer.BonusMoveActions--;
             currentActivePlayer.isBonusMove = false;
         }
         else
@@ -470,7 +470,7 @@ public class GameManager : MonoBehaviour
             currentActivePlayer.SendCardInHand(currentActivePlayer.lastPlacedCard);
             currentActivePlayer.hasPlacedCard = false;
             currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
-            currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
+            currentActivePlayer.BonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         }
         if (currentActivePlayer.selectedCard)
         {
@@ -498,7 +498,7 @@ public class GameManager : MonoBehaviour
             card.Place(card.hexImOn);
         }
         currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
-        currentActivePlayer.bonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
+        currentActivePlayer.BonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
         currentActivePlayer.selectedCard = null;
         cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons, false);
         mainCamera.SetHighView(false);

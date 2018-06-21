@@ -35,7 +35,7 @@ public class CardsManager : MonoBehaviour
             {
                 card.ResourcesPopUpAnimation();
                 player.EnergyPoints += card.extractableEnergy;
-                player.bonusMoveActions += card.moveHexTouched;
+                player.BonusMoveActions += card.moveHexTouched;
                 player.actions += card.abilityHexTouched;
                 GameManager.instance.hudManager.Refresh();
                 yield return StartCoroutine(card.WaitForResourcePopUp());
