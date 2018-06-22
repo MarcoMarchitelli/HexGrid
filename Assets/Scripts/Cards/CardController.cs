@@ -128,7 +128,7 @@ public class CardController : MonoBehaviour
             GameManager.instance.cardsManager.PlacedCards.Add(this);
 
             //ANIMATION
-            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true));
+            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true, false));
             return true;
         }
         else if(state == State.selectedFromMap)
@@ -147,7 +147,7 @@ public class CardController : MonoBehaviour
                 GameManager.instance.cardsManager.PlacedCards.Add(this);
 
                 //ANIMATION
-                StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true));
+                StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true, true));
                 return true;
             }
             else
@@ -1762,7 +1762,7 @@ public class CardController : MonoBehaviour
 
     #region animations
 
-    IEnumerator AnimateToDestination(Vector3 Destination, float speed, bool playPopUpAnim)
+    IEnumerator AnimateToDestination(Vector3 Destination, float speed, bool playPopUpAnim, bool stealFromPlayer)
     {
         while (transform.position != Destination)
         {
@@ -1773,8 +1773,32 @@ public class CardController : MonoBehaviour
             ResourcesPopUpAnimation();
         if(playPopUpAnim)
             CameraShaker.Instance.ShakeOnce(2, 3, 0, 1f, Vector3.up * .5f, Vector3.one * .5f);
-        player.EnergyPoints += extractableEnergy;
-        player.BonusMoveActions += moveHexTouched;
+        if (!stealFromPlayer)
+        {
+            player.EnergyPoints += extractableEnergy;
+            player.BonusMoveActions += moveHexTouched;
+        }
+        else
+        {
+            GameManager.instance.currentActivePlayer.EnergyPoints += extractableEnergy;
+            GameManager.instance.currentActivePlayer.BonusMoveActions += moveHexTouched;
+        }
+        GameManager.instance.hudManager.Refresh();
+        GameManager.instance.playersHUDcontroller.RefreshPlayerUIs();
+    }
+
+    IEnumerator AnimateToDestination(Vector3 Destination, float speed, bool playPopUpAnim)
+    {
+        while (transform.position != Destination)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
+            yield return null;
+        }
+        if (playPopUpAnim)
+            ResourcesPopUpAnimation();
+        if (playPopUpAnim)
+            CameraShaker.Instance.ShakeOnce(2, 3, 0, 1f, Vector3.up * .5f, Vector3.one * .5f);
+
         GameManager.instance.hudManager.Refresh();
         GameManager.instance.playersHUDcontroller.RefreshPlayerUIs();
     }

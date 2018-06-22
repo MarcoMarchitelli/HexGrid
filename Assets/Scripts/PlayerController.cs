@@ -267,8 +267,6 @@ public class PlayerController : MonoBehaviour
                             hasPlacedCard = true;
                             lastPlacedCard = selectedCard;
                             selectedCard = null;
-                            EnergyPoints += lastPlacedCard.extractableEnergy;
-                            BonusMoveActions += lastPlacedCard.moveHexTouched;
                             GameManager.instance.ConfirmAction();
                         }
                     }
@@ -383,8 +381,6 @@ public class PlayerController : MonoBehaviour
         }
         else
             possibleMoves--;
-
-        GameManager.instance.hudManager.Refresh();
 
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }

@@ -42,7 +42,8 @@ public class CombatManager : MonoBehaviour
     public UnityEvent OnModifiersSelected;
 
     [Header("UI Stuff")]
-    public Slider slider;
+    public Slider FightSlider;
+    public Slider SelectionSlider;
     public Animator CountdownAnimator;
     public TextMeshProUGUI InfoTextAttacker;
     public TextMeshProUGUI InfoTextDefender;
@@ -59,7 +60,9 @@ public class CombatManager : MonoBehaviour
 
     float fightSliderValue = 0f;
     float attackerBonusStrength = 0f, defenderBonusStrength = 0f;
+    int attackerModIndex = 0, defenderModIndex = 0;
     bool attackerModSet = false, defenderModSet = false;
+    float Vbase = 5f / 7f;
 
     public static CombatManager instance;
 
@@ -73,8 +76,10 @@ public class CombatManager : MonoBehaviour
 
     private void Start()
     {
-        slider.maxValue = maxValue;
-        slider.minValue = minValue;
+        FightSlider.maxValue = maxValue;
+        FightSlider.minValue = minValue;
+        SelectionSlider.maxValue = maxValue;
+        SelectionSlider.minValue = minValue;
     }
 
     public void StartFightFlow(PlayerController _attacker, PlayerController _defender)
@@ -124,7 +129,11 @@ public class CombatManager : MonoBehaviour
         }
         print("Attacker added " + attackerBonusStrength + " bonus strength");
 
-        yield return new WaitForSeconds(.3f);
+        if (attackerModIndex != 0)
+            yield return StartCoroutine(SelectionSliderAnim(fightSliderValue, 0.01f, true));
+        else
+            yield return new WaitForSeconds(.7f);
+
 
         //defender selection
         if (InfoTextDefender)
@@ -139,7 +148,10 @@ public class CombatManager : MonoBehaviour
         }
         print("Defender added " + defenderBonusStrength + " bonus strength");
 
-        yield return new WaitForSeconds(1f);
+        if (defenderModIndex != 0)
+            yield return StartCoroutine(SelectionSliderAnim(fightSliderValue, 0.01f, false));
+        else
+            yield return new WaitForSeconds(.7f);
 
         //selection end
         OnModifiersSelected.Invoke();
@@ -192,7 +204,7 @@ public class CombatManager : MonoBehaviour
                     fightSliderValue -= currentDefStr;
                 }
 
-                slider.value = fightSliderValue;
+                FightSlider.value = fightSliderValue;
 
                 yield return null;
             }
@@ -215,7 +227,7 @@ public class CombatManager : MonoBehaviour
                     fightSliderValue -= currentDefStr;
                 }
 
-                slider.value = fightSliderValue;
+                FightSlider.value = fightSliderValue;
 
                 yield return null;
             }
@@ -250,7 +262,7 @@ public class CombatManager : MonoBehaviour
             print("TIME'S OVER! DEFENDER WON!");
         }
 
-        
+
     }
 
     public void SetAttackerModifier(int energy)
@@ -259,32 +271,44 @@ public class CombatManager : MonoBehaviour
         {
             case 0:
                 attackerBonusStrength = Mod0;
+                attackerModIndex = 0;
                 break;
             case 1:
                 attackerBonusStrength = Mod1;
+                attackerModIndex = 1;
                 break;
             case 2:
                 attackerBonusStrength = Mod2;
+                attackerModIndex = 2;
                 break;
             case 4:
                 attackerBonusStrength = Mod4;
+                attackerModIndex = 3;
                 break;
             case 6:
                 attackerBonusStrength = Mod6;
+                attackerModIndex = 4;
                 break;
             case 8:
                 attackerBonusStrength = Mod8;
+                attackerModIndex = 5;
                 break;
             case 10:
                 attackerBonusStrength = Mod10;
+                attackerModIndex = 6;
                 break;
             case 15:
                 attackerBonusStrength = Mod15;
+                attackerModIndex = 7;
                 break;
         }
+
         attacker.EnergyPoints -= energy;
         attackerModController.EnableModifierButtons(false);
         attackerModSet = true;
+
+        fightSliderValue = maxValue*.5f + Vbase * (attackerModIndex - defenderModIndex);
+
         OnAttackerSelectEnd.Invoke();
     }
 
@@ -295,43 +319,56 @@ public class CombatManager : MonoBehaviour
         {
             case 0:
                 defenderBonusStrength = Mod0;
+                defenderModIndex = 0;
                 break;
             case 1:
                 defenderBonusStrength = Mod1;
+                defenderModIndex = 1;
                 break;
             case 2:
                 defenderBonusStrength = Mod2;
+                defenderModIndex = 2;
                 break;
             case 4:
                 defenderBonusStrength = Mod4;
+                defenderModIndex = 3;
                 break;
             case 6:
                 defenderBonusStrength = Mod6;
+                defenderModIndex = 4;
                 break;
             case 8:
                 defenderBonusStrength = Mod8;
+                defenderModIndex = 5;
                 break;
             case 10:
                 defenderBonusStrength = Mod10;
+                defenderModIndex = 6;
                 break;
             case 15:
                 defenderBonusStrength = Mod15;
+                defenderModIndex = 7;
                 break;
         }
+
         defender.EnergyPoints -= energy;
         defenderModSet = true;
         defenderModController.EnableModifierButtons(false);
+
+        fightSliderValue = maxValue * .5f + Vbase * (attackerModIndex - defenderModIndex);
+
         OnDefenderSelectEnd.Invoke();
     }
 
     public void ResetValues()
     {
-        fightSliderValue = maxValue*.5f;
+        fightSliderValue = maxValue * .5f;
         attackerBonusStrength = 0f;
         defenderBonusStrength = 0f;
         attackerModSet = false;
         defenderModSet = false;
-        slider.value = fightSliderValue;
+        FightSlider.value = fightSliderValue;
+        SelectionSlider.value = fightSliderValue;
     }
 
     public void AttackerModSelected()
@@ -350,6 +387,25 @@ public class CombatManager : MonoBehaviour
         {
             player.GetComponent<CapsuleCollider>().enabled = false;
         }
+    }
+
+    public IEnumerator SelectionSliderAnim(float targetValue, float speed, /*true right, false left*/bool direction)
+    {
+        print(targetValue);
+        if (direction)
+            while (SelectionSlider.value < targetValue)
+            {
+                SelectionSlider.value += speed;
+                print(SelectionSlider.value);
+                yield return null;
+            }
+        else
+            while (SelectionSlider.value > targetValue)
+            {
+                SelectionSlider.value -= speed;
+                print(SelectionSlider.value);
+                yield return null;
+            }
     }
 
 }
