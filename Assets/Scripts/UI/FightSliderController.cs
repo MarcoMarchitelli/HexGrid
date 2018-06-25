@@ -6,12 +6,14 @@ using System.Collections;
 public class FightSliderController : MonoBehaviour {
 
     public Slider FightSlider;
+
+    [Header("Rays Images")]
     public Image defRayImage;
-    public Animator defRayAnimator;
     public Image atkRayImage;
+
+    [Header("Animators")]
+    public Animator defRayAnimator;
     public Animator atkRayAnimator;
-    public Image Handle;
-    public Sprite[] HandleCombinations;
 
     public UnityEvent OnRaysAnimationEnd;
 
@@ -49,20 +51,21 @@ public class FightSliderController : MonoBehaviour {
         float timer = 0;
         float atkRayTarget = GetSliderValuePercent(FightSlider.value);
         float defRayTarget = 1 - GetSliderValuePercent(FightSlider.value);
-        float atkRayStart = atkRayImage.fillAmount;
-        float defRayStart = defRayImage.fillAmount;
+        float atkRayStart = 0.06f;
+        float defRayStart = 0.06f;
 
         atkRayAnimator.SetTrigger("Start");
         defRayAnimator.SetTrigger("Start");
 
         while(timer <= duration)
         {
-            timer += Time.deltaTime;
+            timer += Time.deltaTime/duration;
             atkRayImage.fillAmount = Mathf.Lerp(atkRayStart, atkRayTarget, timer);
             defRayImage.fillAmount = Mathf.Lerp(defRayStart, defRayTarget, timer);
             yield return null;
         }
 
+        atkRayImage.fillAmount = 1;
         InFight(true);
         OnRaysAnimationEnd.Invoke();
     }

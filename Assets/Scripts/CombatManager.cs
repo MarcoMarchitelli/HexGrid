@@ -47,6 +47,8 @@ public class CombatManager : MonoBehaviour
     public Slider FightSlider;
     public Slider SelectionSlider;
     public Animator CountdownAnimator;
+    public Animator atkHandle;
+    public Animator defHandle;
     public TextMeshProUGUI InfoTextAttacker;
     public TextMeshProUGUI InfoTextDefender;
     public TextMeshProUGUI CountdownText;
@@ -69,6 +71,9 @@ public class CombatManager : MonoBehaviour
     bool resultsShown = false;
     float Vbase = 5f / 7f;
 
+    [HideInInspector]
+    public FightSliderController fightSliderController;   
+
     public static CombatManager instance;
 
     private void Awake()
@@ -77,6 +82,7 @@ public class CombatManager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+        fightSliderController = GetComponentInChildren<FightSliderController>();
     }
 
     private void Start()
@@ -110,6 +116,8 @@ public class CombatManager : MonoBehaviour
 
         yield return StartCoroutine(ShowResults());
 
+        yield return StartCoroutine(ShowResultsEnd());
+
         attacker.hasFought = false;
         GameManager.instance.ConfirmAction();
     }
@@ -128,7 +136,7 @@ public class CombatManager : MonoBehaviour
         if (InfoTextAttacker)
             InfoTextAttacker.text = "Choose your bonus!";
 
-        attackerModController.ToggleModifierButtons(attacker);
+        attackerModController.EnableModifierButtons(true);
         OnAttackerSelectStart.Invoke();
 
         while (!attackerModSet)
@@ -178,7 +186,10 @@ public class CombatManager : MonoBehaviour
         for (int i = seconds; i >= 0; i--)
         {
             if (i == 0)
-                CountdownText.text = "GO!";
+            {
+                CountdownText.text = "FIGHT!";
+                fightSliderController.StartRaysAnimation(.5f);
+            }
             else
                 CountdownText.text = i.ToString();
             if (CountdownAnimator)
@@ -265,7 +276,7 @@ public class CombatManager : MonoBehaviour
             if (defender.VictoryPoints > 0)
                 defender.VictoryPoints--;
         }
-        else if (timerForFightEnd <= 0 && fightSliderValue > 0f)
+        else if (timerForFightEnd <= 0 && fightSliderValue > maxValue *.5f)
         {
             //attacker won.
             print("TIME'S OVER! ATTACKER WON!");
@@ -275,15 +286,13 @@ public class CombatManager : MonoBehaviour
             if (defender.VictoryPoints > 0)
                 defender.VictoryPoints--;
         }
-        else if (timerForFightEnd <= 0 && fightSliderValue <= 0f)
+        else if (timerForFightEnd <= 0 && fightSliderValue <= maxValue * .5f)
         {
             //defender won.
             print("TIME'S OVER! DEFENDER WON!");
             winner = defender;
             AudioManager.instance.Play("AttackerLoss");
         }
-
-
     }
 
     IEnumerator ShowResults()
@@ -322,6 +331,8 @@ public class CombatManager : MonoBehaviour
         GameManager.instance.currentActivePlayer.TurnOnParticles(true);
         attacker.animator.SetTrigger("Idle");
         defender.animator.SetTrigger("Idle");
+        atkHandle.SetTrigger("Stop");
+        defHandle.SetTrigger("Stop");
     }
 
     public void StartShowResultsEnd()
@@ -438,6 +449,49 @@ public class CombatManager : MonoBehaviour
         SelectionSlider.value = fightSliderValue;
         attackerResults.SetPlayerReference(attacker);
         defenderResults.SetPlayerReference(defender);
+
+        fightSliderController.atkRayImage.fillAmount = 0.06f;
+        fightSliderController.defRayImage.fillAmount = 0.06f;
+
+        switch (attacker.type)
+        {
+            case PlayerController.Type.hypogeum:
+                fightSliderController.atkRayAnimator.SetTrigger("SetHypo");
+                atkHandle.SetTrigger("SetHypo");
+                break;
+            case PlayerController.Type.underwater:
+                fightSliderController.atkRayAnimator.SetTrigger("SetWater");
+                atkHandle.SetTrigger("SetWater");
+                break;
+            case PlayerController.Type.forest:
+                fightSliderController.atkRayAnimator.SetTrigger("SetForest");
+                atkHandle.SetTrigger("SetForest");
+                break;
+            case PlayerController.Type.underground:
+                fightSliderController.atkRayAnimator.SetTrigger("SetGround");
+                atkHandle.SetTrigger("SetGround");
+                break;
+        }
+
+        switch (defender.type)
+        {
+            case PlayerController.Type.hypogeum:
+                fightSliderController.defRayAnimator.SetTrigger("SetHypo");
+                defHandle.SetTrigger("SetHypo");
+                break;
+            case PlayerController.Type.underwater:
+                fightSliderController.defRayAnimator.SetTrigger("SetWater");
+                defHandle.SetTrigger("SetWater");
+                break;
+            case PlayerController.Type.forest:
+                fightSliderController.defRayAnimator.SetTrigger("SetForest");
+                defHandle.SetTrigger("SetForest");
+                break;
+            case PlayerController.Type.underground:
+                fightSliderController.defRayAnimator.SetTrigger("SetGround");
+                defHandle.SetTrigger("SetGround");
+                break;
+        }
     }
 
     public void ResultsShown()
