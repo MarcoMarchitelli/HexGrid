@@ -3,7 +3,8 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using System.Collections;
 
-public class FightSliderController : MonoBehaviour {
+public class FightSliderController : MonoBehaviour
+{
 
     public Slider FightSlider;
 
@@ -38,7 +39,7 @@ public class FightSliderController : MonoBehaviour {
         float sliderLenght = CombatManager.instance.maxValue + Mathf.Abs(CombatManager.instance.minValue);
         float percent = Mathf.Abs(_sliderValue) * 100 / sliderLenght;
 
-        return percent/100; 
+        return percent / 100;
     }
 
     public void StartRaysAnimation(float duration)
@@ -50,16 +51,16 @@ public class FightSliderController : MonoBehaviour {
     {
         float timer = 0;
         float atkRayTarget = GetSliderValuePercent(FightSlider.value);
-        float defRayTarget = 1 - GetSliderValuePercent(FightSlider.value);
+        float defRayTarget = GetSliderValuePercent(FightSlider.value);
         float atkRayStart = 0.06f;
         float defRayStart = 0.06f;
 
         atkRayAnimator.SetTrigger("Start");
         defRayAnimator.SetTrigger("Start");
 
-        while(timer <= duration)
+        while (timer <= duration)
         {
-            timer += Time.deltaTime/duration;
+            timer += Time.deltaTime / duration;
             atkRayImage.fillAmount = Mathf.Lerp(atkRayStart, atkRayTarget, timer);
             defRayImage.fillAmount = Mathf.Lerp(defRayStart, defRayTarget, timer);
             yield return null;
