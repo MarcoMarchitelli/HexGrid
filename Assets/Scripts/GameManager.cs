@@ -524,6 +524,7 @@ public class GameManager : MonoBehaviour
         {
             InstEndPointVFX = Instantiate(EndPointVFXprefab, gridReference.center.position + Vector3.up * .6f, Quaternion.Euler(Vector3.left * 90));
             endPointVfxInstantiated = true;
+            AudioManager.instance.Play("FinalPointActivation");
         }
         else if (!flag && endPointVfxInstantiated)
         {

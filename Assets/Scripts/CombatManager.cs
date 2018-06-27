@@ -176,7 +176,13 @@ public class CombatManager : MonoBehaviour
 
         attackerResults.Refresh();
         defenderResults.Refresh();
+
         //selection end
+        if (attackerModIndex > defenderModIndex)
+            attackerBonusStrength += .05f;
+        else if (attackerModIndex < defenderModIndex)
+            defenderBonusStrength += .05f;
+
         OnModifiersSelected.Invoke();
     }
 
@@ -188,6 +194,7 @@ public class CombatManager : MonoBehaviour
             if (i == 0)
             {
                 CountdownText.text = "FIGHT!";
+                AudioManager.instance.Play("FightAnnouncer");
                 fightSliderController.StartRaysAnimation(.5f);
             }
             else
@@ -305,7 +312,7 @@ public class CombatManager : MonoBehaviour
             defender.animator.SetTrigger("Win");
             attacker.animator.SetTrigger("Lose");
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
         }
         else
         {
@@ -333,11 +340,6 @@ public class CombatManager : MonoBehaviour
         defender.animator.SetTrigger("Idle");
         atkHandle.SetTrigger("Stop");
         defHandle.SetTrigger("Stop");
-    }
-
-    public void StartShowResultsEnd()
-    {
-        StartCoroutine(ShowResultsEnd());
     }
 
     public void SetAttackerModifier(int energy)

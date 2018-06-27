@@ -12,6 +12,7 @@ public class CardController : MonoBehaviour
     public ResourcePopUp popUp3;
     public Image cardImage;
     public GameObject DestroyParticle;
+    public AudioSource Rotate;
 
     public OutlineController outlineController;
 
@@ -105,6 +106,7 @@ public class CardController : MonoBehaviour
                 eulerAngle -= 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                Rotate.Play();
                 return;
             }
             if (Input.GetAxis("Mouse ScrollWheel") < 0 || Input.GetKeyDown(KeyCode.D))
@@ -113,6 +115,7 @@ public class CardController : MonoBehaviour
                 eulerAngle += 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                Rotate.Play();
                 return;
             }
         }
@@ -125,6 +128,7 @@ public class CardController : MonoBehaviour
                 eulerAngle -= 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                Rotate.Play();
                 print("card rotated!");
                 return;
             }
@@ -134,6 +138,7 @@ public class CardController : MonoBehaviour
                 eulerAngle += 60;
                 if (eulerAngle == 360 || eulerAngle == -360)
                     eulerAngle = 0;
+                Rotate.Play();
                 return;
             }
         }

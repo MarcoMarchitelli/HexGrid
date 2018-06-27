@@ -49,20 +49,21 @@ public class FightSliderController : MonoBehaviour
 
     IEnumerator RaysAnimation(float duration)
     {
-        float timer = 0;
+        float timer = 0, durationPercent = 0;
         float atkRayTarget = GetSliderValuePercent(FightSlider.value);
-        float defRayTarget = GetSliderValuePercent(FightSlider.value);
+        float defRayTarget = 1-GetSliderValuePercent(FightSlider.value);
         float atkRayStart = 0.06f;
         float defRayStart = 0.06f;
 
         atkRayAnimator.SetTrigger("Start");
         defRayAnimator.SetTrigger("Start");
 
-        while (timer <= duration)
+        while (durationPercent <= 1)
         {
-            timer += Time.deltaTime / duration;
-            atkRayImage.fillAmount = Mathf.Lerp(atkRayStart, atkRayTarget, timer);
-            defRayImage.fillAmount = Mathf.Lerp(defRayStart, defRayTarget, timer);
+            timer += Time.deltaTime;
+            durationPercent = duration/ timer;
+            atkRayImage.fillAmount = Mathf.Lerp(atkRayStart, atkRayTarget, durationPercent);
+            defRayImage.fillAmount = Mathf.Lerp(defRayStart, defRayTarget, durationPercent);
             yield return null;
         }
 
