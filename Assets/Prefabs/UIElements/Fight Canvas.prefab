@@ -857,7 +857,6 @@ GameObject:
   - component: {fileID: 114702226364406030}
   - component: {fileID: 114151353355091666}
   - component: {fileID: 95234526914768912}
-  - component: {fileID: 114147676967196362}
   m_Layer: 5
   m_Name: Fight Canvas
   m_TagString: Untagged
@@ -2920,7 +2919,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2989,33 +2988,6 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
---- !u!114 &114147676967196362
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1418604621812128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eebd32a9055c5a4080eeb52b0ecf91b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnAnimationEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 114151353355091666}
-        m_MethodName: StartShowResultsEnd
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine.CoreModule, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
 --- !u!114 &114151353355091666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3486,6 +3458,7 @@ MonoBehaviour:
   TimerText: {fileID: 114527849925798938}
   attackerResults: {fileID: 114711127393897776}
   defenderResults: {fileID: 114865815641490582}
+  HandleParticle: {fileID: 198416193505187766}
   attackerModController: {fileID: 114362750066392066}
   defenderModController: {fileID: 114348242366952634}
   fightSliderController: {fileID: 0}
@@ -4166,7 +4139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -16251,7 +16224,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.87000084, y: -2.6000004}
+  m_AnchoredPosition: {x: 1.3, y: -2.6000004}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224335055895331278
@@ -16548,7 +16521,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.87000084, y: -2.6000004}
+  m_AnchoredPosition: {x: -1.7, y: -2.6}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224489115723914174
@@ -17018,7 +16991,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 46.74, y: -54.17}
+  m_SizeDelta: {x: 63.44, y: -39.76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224845296063546806
 RectTransform:

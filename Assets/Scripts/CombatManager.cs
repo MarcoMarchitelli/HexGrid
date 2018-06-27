@@ -56,6 +56,9 @@ public class CombatManager : MonoBehaviour
     public PlayerUI attackerResults;
     public PlayerUI defenderResults;
 
+    [Header("Particles")]
+    public ParticleSystem HandleParticle;
+
     [Header("Scripts")]
     public ModifierButtonsController attackerModController;
     public ModifierButtonsController defenderModController;
@@ -182,6 +185,9 @@ public class CombatManager : MonoBehaviour
             attackerBonusStrength += .05f;
         else if (attackerModIndex < defenderModIndex)
             defenderBonusStrength += .05f;
+
+        var main = HandleParticle.main;
+        main.simulationSpace = ParticleSystemSimulationSpace.Local;
 
         OnModifiersSelected.Invoke();
     }
@@ -454,6 +460,9 @@ public class CombatManager : MonoBehaviour
 
         fightSliderController.atkRayImage.fillAmount = 0.06f;
         fightSliderController.defRayImage.fillAmount = 0.06f;
+
+        var main = HandleParticle.main;
+        main.simulationSpace = ParticleSystemSimulationSpace.World;
 
         switch (attacker.type)
         {
