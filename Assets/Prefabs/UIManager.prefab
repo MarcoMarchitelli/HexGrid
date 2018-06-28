@@ -57,6 +57,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  ActivePlayerUI: {fileID: 0}
 --- !u!114 &114661917540379896
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,6 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cb7d3ac043d9334b9236f17713f385b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  helpEnabled: 0
   bigCentralSection: {fileID: 0}
   MediumCentralSection: {fileID: 0}
   bigNewsAnimation: {fileID: 0}
@@ -81,6 +83,10 @@ MonoBehaviour:
   winOverlay: {fileID: 0}
   pauseMenu: {fileID: 0}
   actionIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
