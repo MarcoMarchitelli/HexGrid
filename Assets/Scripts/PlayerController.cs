@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     public enum Type
     {
-        hypogeum, underwater, forest, underground
+        Hypogeum, Underwater, Undergrowth, Underground
     }
 
     public enum Action
@@ -459,13 +459,13 @@ public class PlayerController : MonoBehaviour
     public bool IsMyColor(Point point)
     {
 
-        if (type == Type.hypogeum && point.type == Point.Type.hypogeum)
+        if (type == Type.Hypogeum && point.type == Point.Type.hypogeum)
             return true;
-        if (type == Type.forest && point.type == Point.Type.forest)
+        if (type == Type.Undergrowth && point.type == Point.Type.forest)
             return true;
-        if (type == Type.underwater && point.type == Point.Type.underwater)
+        if (type == Type.Underwater && point.type == Point.Type.underwater)
             return true;
-        if (type == Type.underground && point.type == Point.Type.underground)
+        if (type == Type.Underground && point.type == Point.Type.underground)
             return true;
 
         return false;

@@ -634,6 +634,23 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1333713328553110
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224457141234785664}
+  - component: {fileID: 222647818169281176}
+  - component: {fileID: 114176589857993330}
+  m_Layer: 2
+  m_Name: TextMeshPro Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1336014360555970
 GameObject:
   m_ObjectHideFlags: 1
@@ -646,6 +663,24 @@ GameObject:
   - component: {fileID: 114418498086542886}
   m_Layer: 5
   m_Name: PVvalue
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1337325970176816
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 224945367414514216}
+  - component: {fileID: 222513238078473104}
+  - component: {fileID: 114520665978417450}
+  - component: {fileID: 95697499649665178}
+  m_Layer: 5
+  m_Name: Fight_Result_Announcer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1926,6 +1961,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!95 &95697499649665178
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1337325970176816}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2e546bf8ddd164f4d9af741e1c3b37e4, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!95 &95704374718819388
 Animator:
   serializedVersion: 3
@@ -2243,6 +2296,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114417250342651102}
   button: {fileID: 114848847411467112}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114063855694140050
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2966,6 +3022,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114248881409115364}
   button: {fileID: 114860291523546874}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114143076447341666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3456,6 +3515,7 @@ MonoBehaviour:
   InfoTextDefender: {fileID: 114973369010921762}
   CountdownText: {fileID: 114903190524397230}
   TimerText: {fileID: 114527849925798938}
+  Fight_Results_Announcer: {fileID: 1337325970176816}
   attackerResults: {fileID: 114711127393897776}
   defenderResults: {fileID: 114865815641490582}
   HandleParticle: {fileID: 198416193505187766}
@@ -3770,6 +3830,120 @@ MonoBehaviour:
   buttonController: {fileID: 114390416667959402}
   valueText: {fileID: 114633806331100512}
   value: 10
+--- !u!114 &114176589857993330
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333713328553110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1453722849, guid: 89f0137620f6af44b9ba852b4190e64e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: f0ccec0988d9a0f48bea6528ab5fa23c, type: 2}
+  m_sharedMaterial: {fileID: 21295174520208082, guid: f0ccec0988d9a0f48bea6528ab5fa23c,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
+  m_enableVertexGradient: 0
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_outlineColor:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0
+  m_fontSizeMax: 228.04
+  m_fontStyle: 0
+  m_textAlignment: 514
+  m_isAlignmentEnumConverted: 1
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_firstOverflowCharacterIndex: -1
+  m_linkedTextComponent: {fileID: 0}
+  m_isLinkedTextComponent: 0
+  m_isTextTruncated: 0
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_ignoreRectMaskCulling: 0
+  m_ignoreCulling: 1
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_firstVisibleCharacter: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_textInfo:
+    textComponent: {fileID: 114176589857993330}
+    characterCount: 0
+    spriteCount: 0
+    spaceCount: 0
+    wordCount: 0
+    linkCount: 0
+    lineCount: 0
+    pageCount: 0
+    materialCount: 1
+  m_havePropertiesChanged: 0
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_spriteAnimator: {fileID: 0}
+  m_isInputParsingRequired: 0
+  m_inputSource: 0
+  m_hasFontAssetChanged: 0
+  m_subTextObjects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!114 &114197942752469788
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3803,6 +3977,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114238285945669248}
   button: {fileID: 114160861451683524}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114201672145683138
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3950,6 +4127,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114459604663811390}
   button: {fileID: 114170853159416684}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114223254625131154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5154,6 +5334,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114387932405236666}
   button: {fileID: 114650461561451930}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114387932405236666
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5214,6 +5397,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114782339432074078}
   button: {fileID: 114808603358328798}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114391557994438438
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5247,6 +5433,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114169617351933522}
   button: {fileID: 114434616851559212}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114405485369466426
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6089,6 +6278,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114925368379337360}
   button: {fileID: 114481791366307038}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114479405176777442
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6201,6 +6393,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114701892047402000}
   button: {fileID: 114524128435131148}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114488643158843962
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6374,6 +6569,33 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114520665978417450
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1337325970176816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114524128435131148
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6726,6 +6948,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114332825745595660}
   button: {fileID: 114099393880226814}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114560581348993590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6870,6 +7095,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114829462071697132}
   button: {fileID: 114816138075609784}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114581122284417556
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7340,6 +7568,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114823183157094552}
   button: {fileID: 114867676945422982}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114650461561451930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7463,6 +7694,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114909997037923930}
   button: {fileID: 114781970307409026}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114677598957890802
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8173,6 +8407,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114164398229529452}
   button: {fileID: 114698919570269336}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114743171176642238
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8628,6 +8865,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114766856282462380}
   button: {fileID: 114706312290606312}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114796652556869022
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10241,6 +10481,9 @@ MonoBehaviour:
   spriteType: 0
   image: {fileID: 114310177234224156}
   button: {fileID: 114743171176642238}
+  MouseEnterParticle: {fileID: 0}
+  MouseDownParticle: {fileID: 0}
+  SpecialMouseDownParticle: {fileID: 0}
 --- !u!114 &114973369010921762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -15212,6 +15455,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1052111929319612}
+--- !u!222 &222513238078473104
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1337325970176816}
 --- !u!222 &222513992302080484
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -15314,6 +15563,12 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1538858772398954}
+--- !u!222 &222647818169281176
+CanvasRenderer:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333713328553110}
 --- !u!222 &222648629177574174
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -15526,6 +15781,7 @@ RectTransform:
   - {fileID: 224130834639561684}
   - {fileID: 224912846286670644}
   - {fileID: 224114383555989350}
+  - {fileID: 224945367414514216}
   m_Father: {fileID: 224078366729185908}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -16450,6 +16706,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224457141234785664
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1333713328553110}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 224945367414514216}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224466742377374624
 RectTransform:
   m_ObjectHideFlags: 1
@@ -17164,6 +17438,25 @@ RectTransform:
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!224 &224945367414514216
+RectTransform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1337325970176816}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 224457141234785664}
+  m_Father: {fileID: 224020727656582356}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -53.6}
+  m_SizeDelta: {x: 0, y: 107.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224955501076077332
 RectTransform:

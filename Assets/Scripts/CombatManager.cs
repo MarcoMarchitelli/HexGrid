@@ -53,6 +53,7 @@ public class CombatManager : MonoBehaviour
     public TextMeshProUGUI InfoTextDefender;
     public TextMeshProUGUI CountdownText;
     public TextMeshProUGUI TimerText;
+    public GameObject Fight_Results_Announcer;
     public PlayerUI attackerResults;
     public PlayerUI defenderResults;
 
@@ -74,6 +75,9 @@ public class CombatManager : MonoBehaviour
     bool resultsShown = false;
     float Vbase = 5f / 7f;
 
+    TextMeshProUGUI fight_result_text;
+    Animator fight_result_animator;
+
     [HideInInspector]
     public FightSliderController fightSliderController;   
 
@@ -86,6 +90,8 @@ public class CombatManager : MonoBehaviour
         else
             Destroy(gameObject);
         fightSliderController = GetComponentInChildren<FightSliderController>();
+        fight_result_text = Fight_Results_Announcer.GetComponentInChildren<TextMeshProUGUI>();
+        fight_result_animator = Fight_Results_Announcer.GetComponent<Animator>();
     }
 
     private void Start()
@@ -119,7 +125,7 @@ public class CombatManager : MonoBehaviour
 
         yield return StartCoroutine(ShowResults());
 
-        yield return StartCoroutine(ShowResultsEnd());
+        
 
         attacker.hasFought = false;
         GameManager.instance.ConfirmAction();
@@ -139,7 +145,7 @@ public class CombatManager : MonoBehaviour
         if (InfoTextAttacker)
             InfoTextAttacker.text = "Choose your bonus!";
 
-        attackerModController.EnableModifierButtons(true);
+        attackerModController.ToggleModifierButtons(attacker);
         OnAttackerSelectStart.Invoke();
 
         while (!attackerModSet)
@@ -233,12 +239,12 @@ public class CombatManager : MonoBehaviour
                 currentAttStr = startAttStr * (timerForMultiplier * timerMultiplier);
                 currentDefStr = startDefStr * (timerForMultiplier * timerMultiplier);
 
-                if (Input.GetKeyDown(attackerInput))
+                if (Input.GetKeyDown(attackerInput) || Input.GetKeyDown(attackerInput2))
                 {
                     fightSliderValue += currentAttStr;
                 }
 
-                if (Input.GetKeyDown(defenderInput))
+                if (Input.GetKeyDown(defenderInput) || Input.GetKeyDown(defenderInput2))
                 {
                     fightSliderValue -= currentDefStr;
                 }
@@ -256,12 +262,12 @@ public class CombatManager : MonoBehaviour
                 currentAttStr = startAttStr * (timerForMultiplier * timerMultiplier);
                 currentDefStr = startDefStr * (timerForMultiplier * timerMultiplier);
 
-                if (Input.GetKeyDown(attackerInput))
+                if (Input.GetKeyDown(attackerInput) || Input.GetKeyDown(attackerInput2))
                 {
                     fightSliderValue += currentAttStr;
                 }
 
-                if (Input.GetKeyDown(defenderInput))
+                if (Input.GetKeyDown(defenderInput) || Input.GetKeyDown(defenderInput2))
                 {
                     fightSliderValue -= currentDefStr;
                 }
@@ -318,20 +324,30 @@ public class CombatManager : MonoBehaviour
             defender.animator.SetTrigger("Win");
             attacker.animator.SetTrigger("Lose");
 
-            yield return new WaitForSeconds(1.5f);
+            fight_result_text.text = defender.type.ToString() + " defended himself from " + attacker.type.ToString();
+
+            OnResultsShowStart.Invoke();
         }
         else
         {
             attacker.animator.SetTrigger("Win");
             defender.animator.SetTrigger("Lose");
 
+            fight_result_text.text = attacker.type.ToString() + " stole from " + defender.type.ToString();
+
             OnResultsShowStart.Invoke();
         }
+
+        yield return StartCoroutine(ShowResultsEnd());
 
     }
 
     IEnumerator ShowResultsEnd()
     {
+        
+        fight_result_animator.ResetTrigger("Hide");
+        fight_result_animator.SetTrigger("Show");
+
         yield return new WaitForSeconds(1.5f);
 
         attackerResults.Refresh();
@@ -346,6 +362,8 @@ public class CombatManager : MonoBehaviour
         defender.animator.SetTrigger("Idle");
         atkHandle.SetTrigger("Stop");
         defHandle.SetTrigger("Stop");
+        fight_result_animator.ResetTrigger("Show");
+        fight_result_animator.SetTrigger("Hide");
     }
 
     public void SetAttackerModifier(int energy)
@@ -466,19 +484,19 @@ public class CombatManager : MonoBehaviour
 
         switch (attacker.type)
         {
-            case PlayerController.Type.hypogeum:
+            case PlayerController.Type.Hypogeum:
                 fightSliderController.atkRayAnimator.SetTrigger("SetHypo");
                 atkHandle.SetTrigger("SetHypo");
                 break;
-            case PlayerController.Type.underwater:
+            case PlayerController.Type.Underwater:
                 fightSliderController.atkRayAnimator.SetTrigger("SetWater");
                 atkHandle.SetTrigger("SetWater");
                 break;
-            case PlayerController.Type.forest:
+            case PlayerController.Type.Undergrowth:
                 fightSliderController.atkRayAnimator.SetTrigger("SetForest");
                 atkHandle.SetTrigger("SetForest");
                 break;
-            case PlayerController.Type.underground:
+            case PlayerController.Type.Underground:
                 fightSliderController.atkRayAnimator.SetTrigger("SetGround");
                 atkHandle.SetTrigger("SetGround");
                 break;
@@ -486,19 +504,19 @@ public class CombatManager : MonoBehaviour
 
         switch (defender.type)
         {
-            case PlayerController.Type.hypogeum:
+            case PlayerController.Type.Hypogeum:
                 fightSliderController.defRayAnimator.SetTrigger("SetHypo");
                 defHandle.SetTrigger("SetHypo");
                 break;
-            case PlayerController.Type.underwater:
+            case PlayerController.Type.Underwater:
                 fightSliderController.defRayAnimator.SetTrigger("SetWater");
                 defHandle.SetTrigger("SetWater");
                 break;
-            case PlayerController.Type.forest:
+            case PlayerController.Type.Undergrowth:
                 fightSliderController.defRayAnimator.SetTrigger("SetForest");
                 defHandle.SetTrigger("SetForest");
                 break;
-            case PlayerController.Type.underground:
+            case PlayerController.Type.Underground:
                 fightSliderController.defRayAnimator.SetTrigger("SetGround");
                 defHandle.SetTrigger("SetGround");
                 break;
