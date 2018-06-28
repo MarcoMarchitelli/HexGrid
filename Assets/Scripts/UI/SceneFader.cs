@@ -15,6 +15,8 @@ public class SceneFader : MonoBehaviour {
 
     public void LoadScene()
     {
+        if (sceneIndex != 1)
+            AudioManager.instance.Stop("Background");
         SceneManager.LoadScene(sceneIndex);
     }
 
