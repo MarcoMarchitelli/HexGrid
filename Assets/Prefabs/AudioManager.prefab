@@ -54,7 +54,7 @@ MonoBehaviour:
   sounds:
   - clip: {fileID: 8300000, guid: bb6efa2b067ed22438ac931e743cfab2, type: 3}
     name: Background
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243063178018158520, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 1
@@ -62,7 +62,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: 65b3a5933e12a2849b9ea1bdb7620cd6, type: 3}
     name: Victory
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243063178018158520, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 1
@@ -70,7 +70,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: 4153bbba8bd4ee4419288b96a20dfa96, type: 3}
     name: GenerickClick
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243939510533006832, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: 88200871a24a3494c8fdf63866d2e4c3, type: 3}
     name: AttackerWin
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243939510533006832, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: cfd6ffbaa4d84d840aff0c5600e4dba3, type: 3}
     name: AttackerLoss
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243939510533006832, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: ece5a53b7539786449cfb688743f2d0f, type: 3}
     name: FightStart
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243939510533006832, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 0
@@ -102,7 +102,7 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: d8edef0673a8f0a4997aa5088480941c, type: 3}
     name: FinalPointActivation
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243063178018158520, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 0
@@ -110,9 +110,17 @@ MonoBehaviour:
     source: {fileID: 0}
   - clip: {fileID: 8300000, guid: 244a37822a97ec947891347fc921b774, type: 3}
     name: FightAnnouncer
-    output: {fileID: 24300002, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    output: {fileID: 243939510533006832, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
     volume: 0.1
     pitch: 1
     loop: 0
+    stereoPan: 0
+    source: {fileID: 0}
+  - clip: {fileID: 8300000, guid: b4b336c54ee52da4cb25d2a3600e6d61, type: 3}
+    name: MainMenu
+    output: {fileID: 243063178018158520, guid: b60876735536e8c468f157fda8a92cc2, type: 2}
+    volume: 0.1
+    pitch: 1
+    loop: 1
     stereoPan: 0
     source: {fileID: 0}

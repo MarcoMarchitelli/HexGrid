@@ -40,7 +40,7 @@ public class HUDManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && GameManager.instance.currentActivePlayer.currentAction != PlayerController.Action.fight)
+        if (Input.GetKeyDown(KeyCode.Escape) && GameManager.instance.currentActivePlayer.currentAction != PlayerController.Action.fight && !GameManager.instance.helpOpened)
         {
             if (paused)
                 Pause(false);

@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
     public bool rotationPhaseEnded = false, gainPhaseEnded = false, discountChecked = false, turnEnded = false;
     [HideInInspector]
     public int playerIndex = 0;
+    [HideInInspector]
+    public bool helpOpened = false;
 
     string message = null;
 

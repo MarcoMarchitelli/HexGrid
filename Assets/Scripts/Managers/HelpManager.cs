@@ -16,6 +16,9 @@ public class HelpManager : MonoBehaviour {
     public TextMeshProUGUI CurrentSlideNumber;
     public TextMeshProUGUI MaxSlideNumber;
 
+    [Header("Canvases")]
+    public GraphicRaycaster[] OtherCanvases;
+
     int slideIndex = 0;
 
     public void Refresh()
@@ -42,9 +45,23 @@ public class HelpManager : MonoBehaviour {
     public void HelpToggle()
     {
         if (HelpPanel.activeSelf)
+        {
             HelpPanel.SetActive(false);
+            GameManager.instance.helpOpened = false;
+            foreach (var canvas in OtherCanvases)
+            {
+                canvas.enabled = true;
+            }
+        }
         else
+        {
             HelpPanel.SetActive(true);
+            GameManager.instance.helpOpened = true;
+            foreach (var canvas in OtherCanvases)
+            {
+                canvas.enabled = false;
+            }
+        }
 
         slideIndex = 0;
 

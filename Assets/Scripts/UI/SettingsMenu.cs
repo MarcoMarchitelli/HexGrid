@@ -20,6 +20,7 @@ public class SettingsMenu : MonoBehaviour {
         List<string> options = new List<string>();
 
         int currentResolutionIndex = 0;
+
         for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " x " + resolutions[i].height;
@@ -42,9 +43,19 @@ public class SettingsMenu : MonoBehaviour {
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    public void SetVolume(float volume)
+    public void SetMasterVolume(float volume)
     {
         audioMixer.SetFloat("MasterVolume", volume);
+    }
+
+    public void SetFXVolume(float volume)
+    {
+        audioMixer.SetFloat("EffectsVolume", volume);
+    }
+
+    public void SetMusicVolume(float volume)
+    {
+        audioMixer.SetFloat("MusicVolume", volume);
     }
 
     public void SetQuality(int index)
@@ -54,6 +65,9 @@ public class SettingsMenu : MonoBehaviour {
 
     public void SetFullscreen(bool flag)
     {
-        Screen.fullScreen = flag;
+        if(flag)
+            Screen.fullScreen = true;
+        else
+            Screen.fullScreen = false;
     }
 }
