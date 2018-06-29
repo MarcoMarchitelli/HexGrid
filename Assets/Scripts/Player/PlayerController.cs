@@ -161,10 +161,12 @@ public class PlayerController : MonoBehaviour
                                     {
                                         if (Mathf.Approximately(pointHit.worldPosition.x, finalPointHit.transform.position.x) && Mathf.Approximately(pointHit.worldPosition.y, finalPointHit.transform.position.y))
                                             StartCoroutine(RunAnimation(pointHit, finalPointHit));
+                                        AudioManager.instance.Play("GenericClick");
                                     }
                                     else
                                     {
                                         StartCoroutine(FollowPath(GameManager.instance.pathfinding.FindPath(currentWayPoint, pointHit, walkablePointMap.Count)));
+                                        AudioManager.instance.Play("GenericClick");
                                     }
                                     if (GameManager.instance.OnMoveSelected != null)
                                         GameManager.instance.OnMoveSelected();
@@ -244,6 +246,7 @@ public class PlayerController : MonoBehaviour
                                 selectedCard.SelectFromMap();
                                 beforeRotateActionCardEulerAngle = selectedCard.placedEulerAngle;
                                 GameManager.instance.hudManager.Refresh();
+                                AudioManager.instance.Play("GenericClick");
                                 return;
                             }
                             selectedCard = null;

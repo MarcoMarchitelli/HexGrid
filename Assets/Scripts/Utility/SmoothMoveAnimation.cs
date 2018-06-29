@@ -24,12 +24,14 @@ public class SmoothMoveAnimation : MonoBehaviour {
             instSmoke = Instantiate(SmokeParticle.gameObject, transform.position + Vector3.up * .5f, Quaternion.Euler(Vector3.left * 90f)).GetComponent<ParticleSystem>();
         }
         Vector3 target = TargetPosition.position;
+        AudioManager.instance.Play("PVPointAnim");
         while (transform.position != target)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
             yield return null;
         }
-        if(instSmoke)
+        AudioManager.instance.Stop("PVPointAnim");
+        if (instSmoke)
         {
             instSmoke.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         }

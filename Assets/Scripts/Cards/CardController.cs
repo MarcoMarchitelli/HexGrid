@@ -12,9 +12,14 @@ public class CardController : MonoBehaviour
     public ResourcePopUp popUp3;
     public Image cardImage;
     public GameObject DestroyParticle;
-    public AudioSource Rotate;
+    
 
     public OutlineController outlineController;
+
+    [Header("Sounds")]
+    public AudioSource PlaceSound;
+    public AudioSource RotationPhaseSound;
+    public AudioSource Rotate;
 
     public UnityEvent OnCardDestroy;
 
@@ -474,7 +479,7 @@ public class CardController : MonoBehaviour
         while (!closeAnimFinished)
             yield return null;
         
-        yield return StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), .6f));
+        yield return StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), 1.3f));
 
         eulerAngle += 60;
         if (eulerAngle == 360 || eulerAngle == -360)
@@ -1801,6 +1806,7 @@ public class CardController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
+        PlaceSound.Play();
         if(playPopUpAnim)
             ResourcesPopUpAnimation();
         if(playPopUpAnim)
@@ -1827,6 +1833,7 @@ public class CardController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
+        PlaceSound.Play();
         if (playPopUpAnim)
             ResourcesPopUpAnimation();
         if (playPopUpAnim)
@@ -1842,12 +1849,14 @@ public class CardController : MonoBehaviour
         float counter = 0f;
         Quaternion startingRotation = transform.rotation;
         Quaternion targetRotation = Quaternion.Euler(TargetEulerAngle);
+        RotationPhaseSound.Play();
         while (counter < durationInSeconds)
         {
             counter += Time.deltaTime;
             transform.rotation = Quaternion.Slerp(startingRotation, targetRotation, counter / durationInSeconds);
            yield return null;
         }
+        RotationPhaseSound.Stop();
     }
 
     public void ResourcesPopUpAnimation()

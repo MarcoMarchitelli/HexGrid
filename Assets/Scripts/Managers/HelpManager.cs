@@ -19,6 +19,9 @@ public class HelpManager : MonoBehaviour {
     [Header("Canvases")]
     public GraphicRaycaster[] OtherCanvases;
 
+    [Header("Particles")]
+    public GameObject HelpButtonParticle1;
+
     int slideIndex = 0;
 
     public void Refresh()
@@ -48,6 +51,8 @@ public class HelpManager : MonoBehaviour {
         {
             HelpPanel.SetActive(false);
             GameManager.instance.helpOpened = false;
+            HelpButtonParticle1.SetActive(false);
+            Time.timeScale = 1;
             foreach (var canvas in OtherCanvases)
             {
                 canvas.enabled = true;
@@ -57,6 +62,8 @@ public class HelpManager : MonoBehaviour {
         {
             HelpPanel.SetActive(true);
             GameManager.instance.helpOpened = true;
+            HelpButtonParticle1.SetActive(true);
+            Time.timeScale = 0;
             foreach (var canvas in OtherCanvases)
             {
                 canvas.enabled = false;
