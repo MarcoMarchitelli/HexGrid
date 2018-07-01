@@ -1882,7 +1882,6 @@ GameObject:
   - component: {fileID: 222485792618975766}
   - component: {fileID: 114546636719647264}
   - component: {fileID: 114616004176870140}
-  - component: {fileID: 114671109117122306}
   m_Layer: 5
   m_Name: PV indicator
   m_TagString: Untagged
@@ -2053,7 +2052,6 @@ GameObject:
   - component: {fileID: 222388397165936682}
   - component: {fileID: 114730134737995234}
   - component: {fileID: 114937013837446696}
-  - component: {fileID: 114599296357432912}
   m_Layer: 5
   m_Name: PE indicator
   m_TagString: Untagged
@@ -3983,9 +3981,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1428561476307874}
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 198151865567436844}
+          m_MethodName: Stop
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -8702,20 +8700,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114599296357432912
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1976734219231136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24ca7027179fc346a6921feb0b63603, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Info: Energy Points
-  infoAnimator: {fileID: 95431898480755692}
-  TextField: {fileID: 114856619428141064}
 --- !u!114 &114604843747815428
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8796,7 +8780,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114671109117122306}
+        - m_Target: {fileID: 0}
           m_MethodName: OnMouseEnter
           m_Mode: 1
           m_Arguments:
@@ -8813,7 +8797,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114671109117122306}
+        - m_Target: {fileID: 0}
           m_MethodName: OnMouseExit
           m_Mode: 1
           m_Arguments:
@@ -8930,7 +8914,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_fontColorGradient:
@@ -9015,20 +8999,6 @@ MonoBehaviour:
   - {fileID: 0}
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &114671109117122306
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1911864776357830}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24ca7027179fc346a6921feb0b63603, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Info: Victory Points
-  infoAnimator: {fileID: 95764764255760946}
-  TextField: {fileID: 114722247896276612}
 --- !u!114 &114675644796178904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -11185,7 +11155,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114599296357432912}
+        - m_Target: {fileID: 0}
           m_MethodName: OnMouseEnter
           m_Mode: 1
           m_Arguments:
@@ -11202,7 +11172,7 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 114599296357432912}
+        - m_Target: {fileID: 0}
           m_MethodName: OnMouseExit
           m_Mode: 1
           m_Arguments:
@@ -21434,7 +21404,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 21.822515
+      value: 19.52
       mode: 0
       spread: 0
       speed:
@@ -29912,7 +29882,7 @@ ParticleSystem:
   simulationSpeed: 1
   stopAction: 0
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -86327,7 +86297,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224693051839333546}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -86441,12 +86411,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224693051839333546}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -95.200066, y: -15.2999935}
-  m_SizeDelta: {x: 25.29, y: 41.71}
+  m_SizeDelta: {x: 30.3, y: 41.71}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224146479069792934
 RectTransform:
@@ -86495,7 +86465,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224693051839333546}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -87528,7 +87498,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224693051839333546}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -87824,12 +87794,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 224129576513197158}
   - {fileID: 224148729753076656}
-  - {fileID: 224900774775116158}
+  - {fileID: 224129576513197158}
   - {fileID: 224097819087166744}
-  - {fileID: 224545402925373668}
+  - {fileID: 224900774775116158}
   - {fileID: 224705599694200092}
+  - {fileID: 224545402925373668}
   - {fileID: 224591239636923402}
   m_Father: {fileID: 224430901697115032}
   m_RootOrder: 1
@@ -87850,7 +87820,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224693051839333546}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -88265,7 +88235,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 224693051839333546}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
