@@ -1807,11 +1807,13 @@ public class CardController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
-        PlaceSound.Play();
-        if(playPopUpAnim)
+        
+        if (playPopUpAnim)
+        {
+            PlaceSound.Play();
             ResourcesPopUpAnimation();
-        if(playPopUpAnim)
             CameraShaker.Instance.ShakeOnce(2, 3, 0, 1f, Vector3.up * .5f, Vector3.one * .5f);
+        }
         if (!stealFromPlayer)
         {
             player.EnergyPoints += extractableEnergy;
@@ -1834,11 +1836,13 @@ public class CardController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
-        PlaceSound.Play();
+        
         if (playPopUpAnim)
+        {
             ResourcesPopUpAnimation();
-        if (playPopUpAnim)
+            PlaceSound.Play();
             CameraShaker.Instance.ShakeOnce(2, 3, 0, 1f, Vector3.up * .5f, Vector3.one * .5f);
+        }
 
         GameManager.instance.hudManager.Refresh();
         GameManager.instance.playersHUDcontroller.RefreshPlayerUIs();
