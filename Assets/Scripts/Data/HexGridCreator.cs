@@ -64,7 +64,7 @@ public class HexGridCreator : MonoBehaviour
     public List<Point> WaypointGrid = new List<Point>();
 
     Transform mapContainer;
-    Vector3 waypointSpawnOffset = new Vector3(0f, 0.1f, 0f);
+    //Vector3 waypointSpawnOffset = new Vector3(0f, 0.1f, 0f);
 
     private void Awake()
     {

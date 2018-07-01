@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 public class HUDManager : MonoBehaviour
 {
 
-    public bool helpEnabled = false;
-
     #region Public Variables
 
     [Header("Print Sections")]
@@ -29,12 +27,13 @@ public class HUDManager : MonoBehaviour
     [Header("Other UI Elements")]
     public GameObject winOverlay;
     public GameObject pauseMenu;
+    public GameObject Options;
     public GameObject[] actionIcons;
     public Image WinningPlayerIcon;
 
     #endregion
-    
-    bool paused = false;
+
+    bool paused = false, inSettings = false;
     string[] CannotUndoRotateMessages = { "Place that card first!", "Too late to go back now!", "You've got to finish your action!" };
     string[] CannotUndoMovingMessages = { "C'mon you're still running...", "Wait, you're still moving!", "You cannot interrupt your move now." };
 
@@ -43,9 +42,19 @@ public class HUDManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape) && GameManager.instance.currentActivePlayer.currentAction != PlayerController.Action.fight && !GameManager.instance.helpOpened)
         {
             if (paused)
-                Pause(false);
+            {
+                if (inSettings)
+                {
+                    Options.SetActive(false);
+                    inSettings = false;
+                }
+                else
+                    Pause(false);
+            }
             else
+            {
                 Pause(true);
+            }
         }
     }
 
@@ -137,7 +146,7 @@ public class HUDManager : MonoBehaviour
             return;
         }
 
-        if(player.currentAction == PlayerController.Action.rotateCard && player.selectedCard != null)
+        if (player.currentAction == PlayerController.Action.rotateCard && player.selectedCard != null)
         {
             moveButton.SetSprite(ButtonController.SpriteType.inactive);
             moveButton.SetUsability(false);
@@ -481,5 +490,10 @@ public class HUDManager : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void InSettings(bool flag)
+    {
+        inSettings = flag;
     }
 }

@@ -72,7 +72,7 @@ public class CombatManager : MonoBehaviour
     float attackerBonusStrength = 0f, defenderBonusStrength = 0f;
     int attackerModIndex = 0, defenderModIndex = 0;
     bool attackerModSet = false, defenderModSet = false;
-    bool resultsShown = false;
+    //bool resultsShown = false;
     float Vbase = 5f / 7f;
 
     TextMeshProUGUI fight_result_text;
@@ -468,7 +468,7 @@ public class CombatManager : MonoBehaviour
         defenderBonusStrength = 0f;
         attackerModSet = false;
         defenderModSet = false;
-        resultsShown = false;
+        //resultsShown = false;
         FightSlider.value = fightSliderValue;
         SelectionSlider.GetComponentsInChildren<Image>()[0].color = defender.color;
         SelectionSlider.GetComponentsInChildren<Image>()[1].color = attacker.color;
@@ -523,10 +523,10 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void ResultsShown()
-    {
-        resultsShown = true;
-    }
+    //public void ResultsShown()
+    //{
+    //    //resultsShown = true;
+    //}
 
     public void AttackerModSelected()
     {

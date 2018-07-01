@@ -14,7 +14,7 @@ public class OutlineController : MonoBehaviour
 
     Outline outline;
     Outline[] outlines;
-    bool isOutlined = false;
+    //bool isOutlined = false;
 
     private void Start()
     {

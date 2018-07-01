@@ -12,7 +12,7 @@ public class CardController : MonoBehaviour
     public ResourcePopUp popUp3;
     public Image cardImage;
     public GameObject DestroyParticle;
-    
+
 
     public OutlineController outlineController;
 
@@ -23,7 +23,7 @@ public class CardController : MonoBehaviour
 
     public UnityEvent OnCardDestroy;
 
-    int eulerAngle = 0;
+    public int eulerAngle = 0;
     public int placedEulerAngle;
     [HideInInspector]
     public int extractableEnergy = 0, moveHexTouched = 0, abilityHexTouched = 0;
@@ -57,7 +57,7 @@ public class CardController : MonoBehaviour
         set
         {
             _state = value;
-            if(_state == State.inHand)
+            if (_state == State.inHand)
             {
                 foreach (var col in armsColliders)
                 {
@@ -88,7 +88,7 @@ public class CardController : MonoBehaviour
         get
         {
             return _player;
-        } 
+        }
     }
 
     private void Start()
@@ -160,7 +160,7 @@ public class CardController : MonoBehaviour
             hexImOn.card = this;
             ResetTouchValues();
             SetTouchvalues(hexImOn);
-            if(player.cardsInHand.Contains(this))
+            if (player.cardsInHand.Contains(this))
                 player.cardsInHand.Remove(this);
             GameManager.instance.cardsManager.PlacedCards.Add(this);
 
@@ -168,30 +168,80 @@ public class CardController : MonoBehaviour
             StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true, false));
             return true;
         }
-        else if(state == State.selectedFromMap)
+        else if (state == State.selectedFromMap)
         {
-            if(eulerAngle != placedEulerAngle)
+            switch (eulerAngle)
             {
-                BlockPaths(hex);
-                state = State.placed;
-                placedEulerAngle = eulerAngle;
-                hexImOn = hex;
-                hexImOn.card = this;
-                ResetTouchValues();
-                SetTouchvalues(hexImOn);
-                if (player.cardsInHand.Contains(this))
-                    player.cardsInHand.Remove(this);
-                GameManager.instance.cardsManager.PlacedCards.Add(this);
+                case 0:
+                    if (placedEulerAngle == eulerAngle)
+                    {
+                        GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
 
-                //ANIMATION
-                StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true, true));
-                return true;
+                        return false;
+                    }
+                    break;
+                case 60:
+                case -300:
+                    if (placedEulerAngle == 60 || placedEulerAngle == -300)
+                    {
+                        GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
+
+                        return false;
+                    }
+                    break;
+                case 120:
+                case -240:
+                    if (placedEulerAngle == 120 || placedEulerAngle == -240)
+                    {
+                        GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
+
+                        return false;
+                    }
+                    break;
+                case 180:
+                case -180:
+                    if (placedEulerAngle == 180 || placedEulerAngle == -180)
+                    {
+                        GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
+
+                        return false;
+                    }
+                    break;
+                case 240:
+                case -120:
+                    if (placedEulerAngle == 240 || placedEulerAngle == -120)
+                    {
+                        GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
+
+                        return false;
+                    }
+                    break;
+                case 300:
+                case -60:
+                    if (placedEulerAngle == 300 || placedEulerAngle == -60)
+                    {
+                        GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
+
+                        return false;
+                    }
+                    break;
             }
-            else
-            {
-                GameManager.instance.hudManager.PrintMediumNews("Change rotation before placing!");
-                return false;
-            }
+
+            BlockPaths(hex);
+            state = State.placed;
+            placedEulerAngle = eulerAngle;
+            hexImOn = hex;
+            hexImOn.card = this;
+            ResetTouchValues();
+            SetTouchvalues(hexImOn);
+            if (player.cardsInHand.Contains(this))
+                player.cardsInHand.Remove(this);
+            GameManager.instance.cardsManager.PlacedCards.Add(this);
+
+            //ANIMATION
+            StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true, true));
+            return true;
+
         }
         return false;
     }
@@ -478,7 +528,7 @@ public class CardController : MonoBehaviour
 
         while (!closeAnimFinished)
             yield return null;
-        
+
         yield return StartCoroutine(AnimateToRotation((transform.rotation.eulerAngles + Vector3.up * 60), 1.3f));
 
         eulerAngle += 60;
@@ -706,7 +756,7 @@ public class CardController : MonoBehaviour
                                 case Hexagon.Type.energy:
                                     extractableEnergy++;
                                     if (popUp1 != null)
-                                        popUp1.SetString("+1 PE",Color.green);
+                                        popUp1.SetString("+1 PE", Color.green);
                                     break;
                                 case Hexagon.Type.ability:
                                     abilityHexTouched++;
@@ -1777,7 +1827,7 @@ public class CardController : MonoBehaviour
             CameraShaker.Instance.ShakeOnce(2f, 10f, .5f, .5f);
             FreePaths(hexImOn);
             Destroy(this.gameObject);
-        }  
+        }
     }
 
     public void SelectFromMap()
@@ -1807,7 +1857,7 @@ public class CardController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
-        
+
         if (playPopUpAnim)
         {
             PlaceSound.Play();
@@ -1836,7 +1886,7 @@ public class CardController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
-        
+
         if (playPopUpAnim)
         {
             ResourcesPopUpAnimation();
@@ -1859,14 +1909,14 @@ public class CardController : MonoBehaviour
         {
             counter += Time.deltaTime;
             transform.rotation = Quaternion.Slerp(startingRotation, targetRotation, counter / durationInSeconds);
-           yield return null;
+            yield return null;
         }
         RotationPhaseSound.Stop();
     }
 
     public void ResourcesPopUpAnimation()
     {
-        if(popUp1 != null)
+        if (popUp1 != null)
         {
             if (popUp1.resourcePopUpText.text == "" || popUp1.resourcePopUpText.text == null)
                 popUp1.animFinished = true;
