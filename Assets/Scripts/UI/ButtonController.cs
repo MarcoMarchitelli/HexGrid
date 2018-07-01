@@ -36,8 +36,10 @@ public class ButtonController : MonoBehaviour
 
     private void Awake()
     {
-        mouseDownSystem = MouseDownParticle.GetComponent<ParticleSystem>();
-        specialMouseDownSystem = SpecialMouseDownParticle.GetComponent<ParticleSystem>();
+        if(MouseDownParticle)
+            mouseDownSystem = MouseDownParticle.GetComponent<ParticleSystem>();
+        if(SpecialMouseDownParticle)
+            specialMouseDownSystem = SpecialMouseDownParticle.GetComponent<ParticleSystem>();
     }
 
     public void SetSprite(SpriteType type)
@@ -99,14 +101,14 @@ public class ButtonController : MonoBehaviour
     {
         if (spriteType == SpriteType.active)
         {
-            if (MouseEnterParticle)
+            if (MouseEnterParticle != null)
                 MouseEnterParticle.SetActive(true);
         }
     }
 
     public void OnMouseExit()
     {
-        if (MouseEnterParticle)
+        if (MouseEnterParticle != null)
             MouseEnterParticle.SetActive(false);
     }
 
@@ -114,7 +116,7 @@ public class ButtonController : MonoBehaviour
     {
         if (spriteType == SpriteType.active)
         {
-            if (mouseDownSystem)
+            if (mouseDownSystem != null)
             {
                 mouseDownSystem.Stop();
                 mouseDownSystem.Play();
@@ -122,14 +124,14 @@ public class ButtonController : MonoBehaviour
         }
         else if (spriteType == SpriteType.special)
         {
-            if (specialMouseDownSystem)
+            if (specialMouseDownSystem != null)
             {
                 specialMouseDownSystem.Stop();
                 specialMouseDownSystem.Play();
             }
         }
 
-        if (MouseEnterParticle)
+        if (MouseEnterParticle != null)
             MouseEnterParticle.SetActive(false);
     }
 }

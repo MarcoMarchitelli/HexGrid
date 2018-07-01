@@ -496,24 +496,24 @@ public class GameManager : MonoBehaviour
 
     void UndoRotateCard()
     {
-        CardController card = currentActivePlayer.selectedCard;
-        if (card && !currentActivePlayer.hasPlacedCard)
-        {
-            card.SetRotationBackToPlaced();
-            card.Place(currentActivePlayer.selectedCard.hexImOn);
-            card = null;
-        }
-        else if (currentActivePlayer.hasPlacedCard)
-        {
-            card = currentActivePlayer.lastPlacedCard;
-            card.FreePaths(card.hexImOn);
-            card.placedEulerAngle = currentActivePlayer.beforeRotateActionCardEulerAngle;
-            card.SetRotationBackToPlaced();
-            card.Place(card.hexImOn);
-        }
-        currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
-        currentActivePlayer.BonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
-        currentActivePlayer.selectedCard = null;
+        //CardController card = currentActivePlayer.selectedCard;
+        //if (card && !currentActivePlayer.hasPlacedCard)
+        //{
+        //    card.SetRotationBackToPlaced();
+        //    card.Place(currentActivePlayer.selectedCard.hexImOn);
+        //    card = null;
+        //}
+        //else if (currentActivePlayer.hasPlacedCard)
+        //{
+        //    card = currentActivePlayer.lastPlacedCard;
+        //    card.FreePaths(card.hexImOn);
+        //    card.placedEulerAngle = currentActivePlayer.beforeRotateActionCardEulerAngle;
+        //    card.SetRotationBackToPlaced();
+        //    card.Place(card.hexImOn);
+        //}
+        //currentActivePlayer.EnergyPoints = currentActivePlayer.beforeActionEnergyPoints;
+        //currentActivePlayer.BonusMoveActions = currentActivePlayer.beforeActionBonusMoveActions;
+        //currentActivePlayer.selectedCard = null;
         cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons, false);
         mainCamera.SetHighView(false);
         mainCamera.canChangeView = true;
@@ -612,6 +612,12 @@ public class GameManager : MonoBehaviour
             pointMap.Add(agent.point);
         }
 
+        //Resetto le destinazioni di QUESTO path ad ogni punto.
+        foreach (var point in pointMap)
+        {
+            point.currentPathDestinations.Clear();
+        }
+
         //Assegno ai punti le destinazioni di QUESTO path, non di tutta la WaypointGrid
         foreach (var point in pointMap)
         {
@@ -619,10 +625,12 @@ public class GameManager : MonoBehaviour
             {
                 if (pointMap.Contains(destination))
                 {
-                    if (point.type == Point.Type.purple && (destination.type == Point.Type.purple || destination.type == Point.Type.win) /*&& currentActivePlayer.currentWayPoint != point*/)
+                    if (point.type == Point.Type.purple && point != currentActivePlayer.currentWayPoint)
+                    {
                         continue;
+                    }
                     point.currentPathDestinations.Add(destination);
-                }         
+                }
             }
         }
 

@@ -7,8 +7,6 @@ public class Pathfinding : MonoBehaviour {
 
     public List<Point> FindPath(Point start, Point target, int mapMaxSize)
     {
-        Stopwatch sw = new Stopwatch();
-        sw.Start();
 
         Heap<Point> openSet = new Heap<Point>(mapMaxSize);
         HashSet<Point> closedSet = new HashSet<Point>();
@@ -22,8 +20,6 @@ public class Pathfinding : MonoBehaviour {
 
             if(currentPoint == target)
             {
-                sw.Stop();
-                print("Path found after " + sw.ElapsedMilliseconds + " ms.");
                 return RetracePath(start, target);
             }
 
