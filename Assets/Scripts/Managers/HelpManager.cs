@@ -29,6 +29,7 @@ public class HelpManager : MonoBehaviour {
         if(HelpPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
         {
             HelpToggle();
+            AudioManager.instance.Play("HelpButton");
         }
     }
 
