@@ -24,6 +24,14 @@ public class HelpManager : MonoBehaviour {
 
     int slideIndex = 0;
 
+    private void Update()
+    {
+        if(HelpPanel.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            HelpToggle();
+        }
+    }
+
     public void Refresh()
     {
         //refresh slide
@@ -31,9 +39,15 @@ public class HelpManager : MonoBehaviour {
 
         //refresh nav buttons
         if (slideIndex == 0)
+        {
             PrevButton.SetActive(false);
+            NextButton.SetActive(true);
+        }
         else if (slideIndex == HelpSlides.Length - 1)
+        {
             NextButton.SetActive(false);
+            PrevButton.SetActive(true);
+        }
         else
         {
             PrevButton.SetActive(true);
