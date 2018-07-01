@@ -146,7 +146,7 @@ public class PlayerController : MonoBehaviour
                         Point pointHit = GameManager.instance.gridReference.GetPointFromWorldPosition(hitInfo.collider.transform.position);
                         SmoothMoveAnimation finalPointHit = hitInfo.collider.GetComponent<SmoothMoveAnimation>();
 
-                        if (pointHit != null)
+                        if (pointHit != null && walkablePointMap.Contains(pointHit))
                         {
                             foreach (var point in walkablePointMap)
                             {
@@ -382,8 +382,6 @@ public class PlayerController : MonoBehaviour
                 GameManager.instance.Win(this);
             }
         }
-        else
-            possibleMoves--;
 
         CustomLogger.Log("Mi trovo sul punto {0} , {1} di tipo {2}", currentWayPoint.x, currentWayPoint.y, currentWayPoint.type);
     }
@@ -395,6 +393,7 @@ public class PlayerController : MonoBehaviour
             yield return StartCoroutine(RunAnimation(path[i]));
         }
 
+        DataStuffAfterMove(currentWayPoint);
         playersToRob = GameManager.instance.FindPlayersInRange(2, this);
         GameManager.instance.ConfirmAction();
     }
@@ -416,7 +415,8 @@ public class PlayerController : MonoBehaviour
         }
         animator.SetTrigger("Idle");
         isRunning = false;
-        DataStuffAfterMove(targetPoint);
+        currentWayPoint = targetPoint;
+        //DataStuffAfterMove(targetPoint);
     }
 
     IEnumerator RunAnimation(Point targetPoint, SmoothMoveAnimation final)

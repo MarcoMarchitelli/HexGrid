@@ -283,9 +283,7 @@ public class GameManager : MonoBehaviour
     public void UndoMoveCurrentPlayer()
     {
         currentActivePlayer.possibleMoves = currentActivePlayer.beforeMoveActionMoves;
-        currentActivePlayer.MoveToPoint(currentActivePlayer.moveStartPoint);
         currentActivePlayer.currentWayPoint = currentActivePlayer.moveStartPoint;
-        currentActivePlayer.currentAction = PlayerController.Action.moving;
         hudManager.Refresh();
     }
 
