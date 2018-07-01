@@ -1775,6 +1775,7 @@ public class CardController : MonoBehaviour
             GameManager.instance.cardsManager.PlacedCards.Remove(this);
             Instantiate(DestroyParticle, transform.position, Quaternion.Euler(Vector3.up * Random.Range(0f, 360f)));
             CameraShaker.Instance.ShakeOnce(2f, 10f, .5f, .5f);
+            FreePaths(hexImOn);
             Destroy(this.gameObject);
         }  
     }

@@ -177,17 +177,12 @@ public class HUDManager : MonoBehaviour
                 buyCardButton.SetSprite(ButtonController.SpriteType.special);
                 buyCardButton.SetUsability(true);
             }
-            else if (GameManager.instance.turnCount <= 3 && player.EnergyPoints >= 1)
+            else if (player.EnergyPoints >= 1)
             {
                 buyCardButton.SetSprite(ButtonController.SpriteType.active);
                 buyCardButton.SetUsability(true);
             }
-            else if (GameManager.instance.turnCount > 3 && player.EnergyPoints >= 2)
-            {
-                buyCardButton.SetSprite(ButtonController.SpriteType.active);
-                buyCardButton.SetUsability(true);
-            }
-            else if (player.EnergyPoints <= 1)
+            else if (player.EnergyPoints < 1)
             {
                 buyCardButton.SetSprite(ButtonController.SpriteType.inactive);
                 buyCardButton.SetUsability(false);
