@@ -585,6 +585,8 @@ public class GameManager : MonoBehaviour
                 {
                     if (walkableAgentMap[i].point.type == Point.Type.purple && player.currentWayPoint != walkableAgentMap[i].point)
                         continue;
+                    if (walkableAgentMap[i].point.type == Point.Type.win && player.currentWayPoint != walkableAgentMap[i].point)
+                        continue;
                     foreach (Point point in walkableAgentMap[i].point.possibleDestinations)
                     {
                         if (!CheckIfPointIsWalkable(point))
@@ -617,7 +619,7 @@ public class GameManager : MonoBehaviour
             {
                 if (pointMap.Contains(destination))
                 {
-                    if (point.type == Point.Type.purple && destination.type == Point.Type.purple && currentActivePlayer.currentWayPoint != point)
+                    if (point.type == Point.Type.purple && (destination.type == Point.Type.purple || destination.type == Point.Type.win) /*&& currentActivePlayer.currentWayPoint != point*/)
                         continue;
                     point.currentPathDestinations.Add(destination);
                 }         

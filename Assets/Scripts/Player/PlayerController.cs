@@ -359,9 +359,7 @@ public class PlayerController : MonoBehaviour
 
     void DataStuffAfterMove(Point _pointHit)
     {
-        currentWayPoint = _pointHit;
-
-        playersToRob = GameManager.instance.FindPlayersInRange(2, this);
+        currentWayPoint = _pointHit; 
 
         if (currentWayPoint.isFinalWaypoint && IsMyColor(currentWayPoint))
         {
@@ -397,6 +395,7 @@ public class PlayerController : MonoBehaviour
             yield return StartCoroutine(RunAnimation(path[i]));
         }
 
+        playersToRob = GameManager.instance.FindPlayersInRange(2, this);
         GameManager.instance.ConfirmAction();
     }
 
