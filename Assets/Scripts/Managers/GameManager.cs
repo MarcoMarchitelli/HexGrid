@@ -235,12 +235,12 @@ public class GameManager : MonoBehaviour
                     break;
                 case PlayerController.Type.Underground:
                     Point yellowStart = gridReference.GetPointFromCoords((int)MyData.startingYellowPoint.x, (int)MyData.startingYellowPoint.y);
-                    players[i].transform.position = yellowStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.position = yellowStart.worldPosition + Vector3.up * .1f;
                     players[i].startingWayPoint = yellowStart;
                     break;
                 case PlayerController.Type.Underwater:
                     Point blueStart = gridReference.GetPointFromCoords((int)MyData.startingBluePoint.x, (int)MyData.startingBluePoint.y);
-                    players[i].transform.position = blueStart.worldPosition + Vector3.up * .5f;
+                    players[i].transform.position = blueStart.worldPosition + Vector3.up * .1f;
                     players[i].startingWayPoint = blueStart;
                     break;
                 case PlayerController.Type.Undergrowth:

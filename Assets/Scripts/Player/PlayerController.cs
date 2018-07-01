@@ -402,7 +402,11 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator RunAnimation(Point targetPoint)
     {
-        Vector3 target = targetPoint.worldPosition + Vector3.up * .7f;
+        Vector3 target;
+        if(type == Type.Hypogeum || type == Type.Undergrowth)
+            target = targetPoint.worldPosition + Vector3.up * .7f;
+        else
+            target = targetPoint.worldPosition + Vector3.up * .1f;
         transform.DOLookAt(target, .2f);
         animator.SetTrigger("Run");
         isRunning = true;
