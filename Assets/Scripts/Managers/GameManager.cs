@@ -440,6 +440,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
 
+        currentActivePlayer.hasPlacedCard = false;
         mainCamera.SetHighView(false);
         mainCamera.canChangeView = true;
     }
