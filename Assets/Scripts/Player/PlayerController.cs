@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 
 using DG.Tweening;
-using cakeslice;
 
 public class PlayerController : MonoBehaviour
 {
@@ -59,6 +58,20 @@ public class PlayerController : MonoBehaviour
     public int beforeActionEnergyPoints, beforeRotateActionCardEulerAngle, beforeMoveActionMoves, beforeActionBonusMoveActions;
 
     #endregion
+
+    public int Actions
+    {
+        set
+        {
+            actions = value;
+            if (actions > 4)
+                actions = 4;
+        }
+        get
+        {
+            return actions;
+        }
+    }
 
     public int VictoryPoints
     {
@@ -562,7 +575,7 @@ public class PlayerController : MonoBehaviour
 
     public void ResetValues()
     {
-        actions = 2;
+        Actions = 2;
         BonusMoveActions = 0;
         hasDiscount = DiscountCheck();
     }

@@ -166,7 +166,7 @@ public class HUDManager : MonoBehaviour
             return;
         }
 
-        if (player.actions > 0)
+        if (player.Actions > 0)
         {
             //move
             if (player.BonusMoveActions > 0)
@@ -274,7 +274,7 @@ public class HUDManager : MonoBehaviour
         }
         else
         {
-            if (GameManager.instance.currentActivePlayer.actions > 0 || GameManager.instance.currentActivePlayer.BonusMoveActions > 0)
+            if (GameManager.instance.currentActivePlayer.Actions > 0 || GameManager.instance.currentActivePlayer.BonusMoveActions > 0)
             {
                 endTurnButton.SetUsability(true);
                 endTurnButton.SetSprite(ButtonController.SpriteType.active);
@@ -289,7 +289,7 @@ public class HUDManager : MonoBehaviour
 
     public void ToggleActionsNumberDisplay()
     {
-        int actionsNumber = GameManager.instance.currentActivePlayer.actions;
+        int actionsNumber = GameManager.instance.currentActivePlayer.Actions;
 
         for (int i = 1; i <= actionIcons.Length; i++)
         {

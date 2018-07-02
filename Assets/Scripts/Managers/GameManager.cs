@@ -317,7 +317,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            currentActivePlayer.actions--;
+            currentActivePlayer.Actions--;
         }
 
         hudManager.Refresh();
