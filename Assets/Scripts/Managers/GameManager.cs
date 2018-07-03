@@ -627,6 +627,10 @@ public class GameManager : MonoBehaviour
                     {
                         continue;
                     }
+                    if (point.type == Point.Type.win && point != currentActivePlayer.currentWayPoint)
+                    {
+                        continue;
+                    }
                     point.currentPathDestinations.Add(destination);
                 }
             }

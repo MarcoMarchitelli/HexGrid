@@ -575,7 +575,7 @@ public class PlayerController : MonoBehaviour
 
     public void ResetValues()
     {
-        Actions = 2;
+        Actions = 10;
         BonusMoveActions = 0;
         hasDiscount = DiscountCheck();
     }

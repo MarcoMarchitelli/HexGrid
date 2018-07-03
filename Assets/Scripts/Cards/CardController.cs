@@ -13,7 +13,6 @@ public class CardController : MonoBehaviour
     public Image cardImage;
     public GameObject DestroyParticle;
 
-
     public OutlineController outlineController;
 
     [Header("Sounds")]

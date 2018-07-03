@@ -63,6 +63,12 @@ public class HexGridCreator : MonoBehaviour
     [HideInInspector]
     public List<Point> WaypointGrid = new List<Point>();
 
+    Point WaterStartPoint = new Point();
+    Point HypoStartPoint = new Point();
+    Point GroundStartPoint = new Point();
+    Point ForestStartPoint = new Point();
+    Point win = new Point();
+
     Transform mapContainer;
     //Vector3 waypointSpawnOffset = new Vector3(0f, 0.1f, 0f);
 
@@ -70,6 +76,7 @@ public class HexGridCreator : MonoBehaviour
     {
         CreateGrid();
         CreateSpecialWaypoints();
+        SetSpecialPointsReferences();
         SetDestinationsForEachPoint();
         SetNearHexagonsForEachPoint();
         InstantiateWaypoints();
@@ -177,6 +184,7 @@ public class HexGridCreator : MonoBehaviour
                 {
                     WaypointGrid.Remove(highRightVertex);
                 }
+
             }
         }
     }
@@ -411,46 +419,43 @@ public class HexGridCreator : MonoBehaviour
         }
     }
 
-    void SetDestinationsForEachPoint()
+    void SetSpecialPointsReferences()
     {
-        Point blue = new Point();
-        Point yellow = new Point();
-        Point red = new Point();
-        Point green = new Point();
-        Point win = new Point();
-
-        foreach (Point point in WaypointGrid)
-        {
-            point.possibleDestinations = GetPossibleDestinationsFromPoint(point);
-        }
-
         foreach (Point point in WaypointGrid)
         {
             if (point.type == Point.Type.hypogeum && point.isStartingPoint)
-                yellow = point;
+                HypoStartPoint = point;
             if (point.type == Point.Type.underground && point.isStartingPoint)
-                red = point;
+                GroundStartPoint = point;
             if (point.type == Point.Type.underwater && point.isStartingPoint)
-                blue = point;
+                WaterStartPoint = point;
             if (point.type == Point.Type.forest && point.isStartingPoint)
-                green = point;
+                ForestStartPoint = point;
             if (point.type == Point.Type.win)
                 win = point;
         }
+    }
 
+    void SetDestinationsForEachPoint()
+    {
         foreach (Point point in WaypointGrid)
         {
-            if (yellow.possibleDestinations.Contains(point))
-                point.possibleDestinations.Add(yellow);
-            if (blue.possibleDestinations.Contains(point))
-                point.possibleDestinations.Add(blue);
-            if (green.possibleDestinations.Contains(point))
-                point.possibleDestinations.Add(green);
-            if (red.possibleDestinations.Contains(point))
-                point.possibleDestinations.Add(red);
-            if (win.possibleDestinations.Contains(point))
-                point.possibleDestinations.Add(win);
-        }
+            point.possibleDestinations = GetPossibleDestinationsFromPoint(point);
+        } 
+
+        //foreach (Point point in WaypointGrid)
+        //{
+        //    if (HypoStartPoint.possibleDestinations.Contains(point))
+        //        point.possibleDestinations.Add(HypoStartPoint);
+        //    if (WaterStartPoint.possibleDestinations.Contains(point))
+        //        point.possibleDestinations.Add(WaterStartPoint);
+        //    if (ForestStartPoint.possibleDestinations.Contains(point))
+        //        point.possibleDestinations.Add(ForestStartPoint);
+        //    if (GroundStartPoint.possibleDestinations.Contains(point))
+        //        point.possibleDestinations.Add(GroundStartPoint);
+        //    if (win.possibleDestinations.Contains(point))
+        //        point.possibleDestinations.Add(win);
+        //}
     }
 
     void SetNearHexagonsForEachPoint()
@@ -759,11 +764,11 @@ public class HexGridCreator : MonoBehaviour
 
     public List<Point> GetPossibleDestinationsFromPoint(Point point)
     {
-        List<Point> destinations = new List<Point>();
+        List<Point> destinations = new List<Point>(); 
 
         for (int i = 0; i < WaypointGrid.Count; i++)
         {
-            //starting point yellow
+            //starting point Ground
             if (point.type == Point.Type.underground && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 4)
@@ -773,7 +778,8 @@ public class HexGridCreator : MonoBehaviour
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y - 2)
                     destinations.Add(WaypointGrid[i]);
             }
-            //starting point blue
+
+            //starting point Water
             if (point.type == Point.Type.underwater && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y - 4)
@@ -783,7 +789,8 @@ public class HexGridCreator : MonoBehaviour
                 if (WaypointGrid[i].x == point.x + 1 && WaypointGrid[i].y == point.y - 2)
                     destinations.Add(WaypointGrid[i]);
             }
-            //starting point red
+
+            //starting point Hypo
             if (point.type == Point.Type.hypogeum && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
@@ -793,7 +800,8 @@ public class HexGridCreator : MonoBehaviour
                 if (WaypointGrid[i].x == point.x - 1 && WaypointGrid[i].y == point.y + 2)
                     destinations.Add(WaypointGrid[i]);
             }
-            //starting point green
+
+            //starting point Forest
             if (point.type == Point.Type.forest && point.isStartingPoint)
             {
                 if (WaypointGrid[i].x == point.x && WaypointGrid[i].y == point.y + 4)
@@ -843,6 +851,36 @@ public class HexGridCreator : MonoBehaviour
                     destinations.Add(WaypointGrid[i]);
             }
         }
+
+        //the six points around winPoint
+        if ((point.x == 7 && point.y == 6) || (point.x == 8 && point.y == 7) || (point.x == 8 && point.y == 8)
+            || (point.x == 7 && point.y == 9) || (point.x == 6 && point.y == 8) || (point.x == 6 && point.y == 7))
+            destinations.Add(win);
+
+        //the three points around ForestStartPoint
+        if ((point.x == ForestStartPoint.x && point.y == ForestStartPoint.y + 4)
+            || (point.x == ForestStartPoint.x + 2 && point.y == ForestStartPoint.y)
+            || (point.x == ForestStartPoint.x + 1 && point.y == ForestStartPoint.y + 2))
+            destinations.Add(ForestStartPoint);
+
+        //the three points around HypoStartPoint
+        if ((point.x == HypoStartPoint.x && point.y == HypoStartPoint.y + 4)
+            || (point.x == HypoStartPoint.x - 2 && point.y == HypoStartPoint.y)
+            || (point.x == HypoStartPoint.x - 1 && point.y == HypoStartPoint.y + 2))
+            destinations.Add(HypoStartPoint);
+
+        //the three points around WaterStartPoint
+        if ((point.x == WaterStartPoint.x && point.y == WaterStartPoint.y - 4)
+            || (point.x == WaterStartPoint.x + 2 && point.y == WaterStartPoint.y)
+            || (point.x == WaterStartPoint.x + 1 && point.y == WaterStartPoint.y - 2))
+            destinations.Add(WaterStartPoint);
+
+        //the three points around GroundStartPoint
+        if ((point.x == GroundStartPoint.x && point.y == GroundStartPoint.y - 4)
+            || (point.x == GroundStartPoint.x - 2 && point.y == GroundStartPoint.y)
+            || (point.x == GroundStartPoint.x - 1 && point.y == GroundStartPoint.y - 2))
+            destinations.Add(GroundStartPoint);
+
 
         return destinations;
     }
