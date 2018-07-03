@@ -857,29 +857,29 @@ public class HexGridCreator : MonoBehaviour
             || (point.x == 7 && point.y == 9) || (point.x == 6 && point.y == 8) || (point.x == 6 && point.y == 7))
             destinations.Add(win);
 
-        //the three points around ForestStartPoint
-        if ((point.x == ForestStartPoint.x && point.y == ForestStartPoint.y + 4)
-            || (point.x == ForestStartPoint.x + 2 && point.y == ForestStartPoint.y)
-            || (point.x == ForestStartPoint.x + 1 && point.y == ForestStartPoint.y + 2))
-            destinations.Add(ForestStartPoint);
+        ////the three points around ForestStartPoint
+        //if ((point.x == ForestStartPoint.x && point.y == ForestStartPoint.y + 4)
+        //    || (point.x == ForestStartPoint.x + 2 && point.y == ForestStartPoint.y)
+        //    || (point.x == ForestStartPoint.x + 1 && point.y == ForestStartPoint.y + 2))
+        //    destinations.Add(ForestStartPoint);
 
-        //the three points around HypoStartPoint
-        if ((point.x == HypoStartPoint.x && point.y == HypoStartPoint.y + 4)
-            || (point.x == HypoStartPoint.x - 2 && point.y == HypoStartPoint.y)
-            || (point.x == HypoStartPoint.x - 1 && point.y == HypoStartPoint.y + 2))
-            destinations.Add(HypoStartPoint);
+        ////the three points around HypoStartPoint
+        //if ((point.x == HypoStartPoint.x && point.y == HypoStartPoint.y + 4)
+        //    || (point.x == HypoStartPoint.x - 2 && point.y == HypoStartPoint.y)
+        //    || (point.x == HypoStartPoint.x - 1 && point.y == HypoStartPoint.y + 2))
+        //    destinations.Add(HypoStartPoint);
 
-        //the three points around WaterStartPoint
-        if ((point.x == WaterStartPoint.x && point.y == WaterStartPoint.y - 4)
-            || (point.x == WaterStartPoint.x + 2 && point.y == WaterStartPoint.y)
-            || (point.x == WaterStartPoint.x + 1 && point.y == WaterStartPoint.y - 2))
-            destinations.Add(WaterStartPoint);
+        ////the three points around WaterStartPoint
+        //if ((point.x == WaterStartPoint.x && point.y == WaterStartPoint.y - 4)
+        //    || (point.x == WaterStartPoint.x + 2 && point.y == WaterStartPoint.y)
+        //    || (point.x == WaterStartPoint.x + 1 && point.y == WaterStartPoint.y - 2))
+        //    destinations.Add(WaterStartPoint);
 
-        //the three points around GroundStartPoint
-        if ((point.x == GroundStartPoint.x && point.y == GroundStartPoint.y - 4)
-            || (point.x == GroundStartPoint.x - 2 && point.y == GroundStartPoint.y)
-            || (point.x == GroundStartPoint.x - 1 && point.y == GroundStartPoint.y - 2))
-            destinations.Add(GroundStartPoint);
+        ////the three points around GroundStartPoint
+        //if ((point.x == GroundStartPoint.x && point.y == GroundStartPoint.y - 4)
+        //    || (point.x == GroundStartPoint.x - 2 && point.y == GroundStartPoint.y)
+        //    || (point.x == GroundStartPoint.x - 1 && point.y == GroundStartPoint.y - 2))
+        //    destinations.Add(GroundStartPoint);
 
 
         return destinations;
