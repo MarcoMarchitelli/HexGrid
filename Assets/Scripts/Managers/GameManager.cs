@@ -174,8 +174,8 @@ public class GameManager : MonoBehaviour
 
         message = "Main Phase";
         hudManager.PrintBigNews(message);
-        playersHUDcontroller.RefreshPlayerUIs();
-        playersHUDcontroller.ActivePlayerUI.Refresh();
+        //playersHUDcontroller.RefreshPlayerUIs();
+        //playersHUDcontroller.ActivePlayerUI.Refresh();
 
         while (hudManager.bigNewsAnimation.isPlaying)
             yield return null;

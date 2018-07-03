@@ -16,10 +16,9 @@ public class SceneFader : MonoBehaviour
 
     public void LoadScene()
     {
-        if (sceneIndex != 2)
-            AudioManager.instance.Stop("Background");
-        if (sceneIndex != 1)
-            AudioManager.instance.Stop("MainMenu");
+        AudioManager.instance.Stop("Background");
+        AudioManager.instance.Stop("MainMenu");
+        AudioManager.instance.Stop("Victory");
 
         SceneManager.LoadScene(sceneIndex);
     }

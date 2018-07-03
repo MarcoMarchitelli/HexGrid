@@ -7,6 +7,10 @@ public class CardsManager : MonoBehaviour
 
     public List<CardController> PlacedCards = new List<CardController>();
 
+    int energyPointsContainer;
+    int actionsContainer;
+    int bonusMoveActionsContainer;
+
     public void StartRotationAnimations()
     {
         foreach (CardController card in PlacedCards)
@@ -29,18 +33,25 @@ public class CardsManager : MonoBehaviour
 
     public IEnumerator GainPhase(PlayerController player)
     {
+        energyPointsContainer = 0;
+        actionsContainer = 0;
+        bonusMoveActionsContainer = 0;
+
         foreach (CardController card in PlacedCards)
         {
             if (card.player == player)
             {
                 card.ResourcesPopUpAnimation();
-                player.EnergyPoints += card.extractableEnergy;
-                player.BonusMoveActions += card.moveHexTouched;
-                player.Actions += card.abilityHexTouched;
+                energyPointsContainer += card.extractableEnergy;
+                bonusMoveActionsContainer += card.moveHexTouched;
+                actionsContainer += card.abilityHexTouched;
                 GameManager.instance.hudManager.Refresh();
                 yield return StartCoroutine(card.WaitForResourcePopUp());
             }
         }
+        player.EnergyPoints += energyPointsContainer;
+        player.BonusMoveActions += bonusMoveActionsContainer;
+        player.Actions += actionsContainer;
         GameManager.instance.gainPhaseEnded = true;
     }
 
