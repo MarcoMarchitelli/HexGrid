@@ -1400,7 +1400,7 @@ Animator:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1035496503207942}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 04d12da4fd37e25449cd81037afdbf0c, type: 3}
+  m_Avatar: {fileID: 9000000, guid: f95494f62edff8c478ec7921e1465b0d, type: 3}
   m_Controller: {fileID: 9100000, guid: 17444094435943b448eafca541953e29, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -1734,7 +1734,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -6265,7 +6265,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 1
+  moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0

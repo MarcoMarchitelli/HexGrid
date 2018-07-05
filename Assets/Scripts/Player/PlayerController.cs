@@ -146,6 +146,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
             animator.SetTrigger("Win");
 
+        if (Input.GetKeyDown(KeyCode.A))
+            animator.SetTrigger("Lose");
+
         switch (currentAction)
         {
             case Action.moving:
