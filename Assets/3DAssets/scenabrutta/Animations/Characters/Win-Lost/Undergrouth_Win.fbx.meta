@@ -1,0 +1,206 @@
+fileFormatVersion: 2
+guid: a6f5944ea7509b243a6be43cf9eb5650
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: arm_left
+    100002: arm_right
+    100004: band
+    100006: body
+    100008: Character_Undergrowth
+    100010: Chest
+    100012: Chest 1
+    100014: Elbow
+    100016: Elbow 1
+    100018: General_Ctrl
+    100020: hand_left
+    100022: hand_right
+    100024: Head
+    100026: head
+    100028: Head1
+    100030: hood
+    100032: horn_left
+    100034: horn_right
+    100036: L_Arm
+    100038: L_ArmCtrl
+    100040: L_Shoulder
+    100042: L_Tip_1
+    100044: L_Tip_2
+    100046: mask
+    100048: Neck
+    100050: Pelvis
+    100052: Pelvis 1
+    100054: R_Arm
+    100056: R_ArmCtrl
+    100058: R_Shoulder
+    100060: R_Tip_1
+    100062: R_Tip_2
+    100064: scarf1
+    100066: scarf2
+    100068: shoulder_left
+    100070: shoulder_right
+    100072: tail
+    100074: //RootNode
+    100076: Wrist
+    100078: Wrist 1
+    400000: arm_left
+    400002: arm_right
+    400004: band
+    400006: body
+    400008: Character_Undergrowth
+    400010: Chest
+    400012: Chest 1
+    400014: Elbow
+    400016: Elbow 1
+    400018: General_Ctrl
+    400020: hand_left
+    400022: hand_right
+    400024: Head
+    400026: head
+    400028: Head1
+    400030: hood
+    400032: horn_left
+    400034: horn_right
+    400036: L_Arm
+    400038: L_ArmCtrl
+    400040: L_Shoulder
+    400042: L_Tip_1
+    400044: L_Tip_2
+    400046: mask
+    400048: Neck
+    400050: Pelvis
+    400052: Pelvis 1
+    400054: R_Arm
+    400056: R_ArmCtrl
+    400058: R_Shoulder
+    400060: R_Tip_1
+    400062: R_Tip_2
+    400064: scarf1
+    400066: scarf2
+    400068: shoulder_left
+    400070: shoulder_right
+    400072: tail
+    400074: //RootNode
+    400076: Wrist
+    400078: Wrist 1
+    2100000: M_undergrowth_character
+    4300000: scarf2
+    4300002: hood
+    4300004: mask
+    4300006: scarf1
+    4300008: tail
+    4300010: head
+    4300012: band
+    4300014: arm_right
+    4300016: shoulder_right
+    4300018: arm_left
+    4300020: shoulder_left
+    4300022: body
+    4300024: hand_right
+    4300026: hand_left
+    4300028: horn_right
+    4300030: horn_left
+    7400000: Win
+    9500000: //RootNode
+    13700000: arm_left
+    13700002: arm_right
+    13700004: band
+    13700006: body
+    13700008: hand_left
+    13700010: hand_right
+    13700012: head
+    13700014: hood
+    13700016: horn_left
+    13700018: horn_right
+    13700020: mask
+    13700022: scarf1
+    13700024: scarf2
+    13700026: shoulder_left
+    13700028: shoulder_right
+    13700030: tail
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: M_undergrowth_character
+    second: {fileID: 2100000, guid: c8759551040f356419fbcc33df2e0244, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
