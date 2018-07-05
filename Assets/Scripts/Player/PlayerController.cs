@@ -143,6 +143,9 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Space))
+            animator.SetTrigger("Win");
+
         switch (currentAction)
         {
             case Action.moving:
@@ -574,7 +577,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public void ResetValues()
-    {
+    { 
         Actions = 2;
         BonusMoveActions = 0;
         hasDiscount = DiscountCheck();

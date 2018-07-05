@@ -446,6 +446,7 @@ public class GameManager : MonoBehaviour
     void ConfirmRotateCard()
     {
         currentActivePlayer.selectedCard = null;
+        currentActivePlayer.hasPlacedCard = false;
 
         cardsManager.HighlightPlacedCards(currentActivePlayer.currentWayPoint.nearHexagons, false);
         mainCamera.SetHighView(false);

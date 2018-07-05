@@ -152,7 +152,6 @@ public class CardController : MonoBehaviour
     {
         if (state == State.selectedFromHand)
         {
-            BlockPaths(hex);
             state = State.placed;
             placedEulerAngle = eulerAngle;
             hexImOn = hex;
@@ -162,6 +161,7 @@ public class CardController : MonoBehaviour
             if (player.cardsInHand.Contains(this))
                 player.cardsInHand.Remove(this);
             GameManager.instance.cardsManager.PlacedCards.Add(this);
+            GameManager.instance.cardsManager.BlockAllPaths();
 
             //ANIMATION
             StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true, false));
@@ -226,7 +226,6 @@ public class CardController : MonoBehaviour
                     break;
             }
 
-            BlockPaths(hex);
             state = State.placed;
             placedEulerAngle = eulerAngle;
             hexImOn = hex;
@@ -236,6 +235,7 @@ public class CardController : MonoBehaviour
             if (player.cardsInHand.Contains(this))
                 player.cardsInHand.Remove(this);
             GameManager.instance.cardsManager.PlacedCards.Add(this);
+            GameManager.instance.cardsManager.BlockAllPaths();
 
             //ANIMATION
             StartCoroutine(AnimateToDestination(hexImOn.worldPosition /*+ Vector3.up * .5f*/, 12f, true, true));
@@ -1826,6 +1826,7 @@ public class CardController : MonoBehaviour
             CameraShaker.Instance.ShakeOnce(2f, 10f, .5f, .5f);
             FreePaths(hexImOn);
             Destroy(this.gameObject);
+            GameManager.instance.cardsManager.BlockAllPaths();
         }
     }
 
@@ -1833,7 +1834,7 @@ public class CardController : MonoBehaviour
     {
         state = State.selectedFromMap;
         this.FreePaths(this.hexImOn);
-        GameManager.instance.cardsManager.PlacedCards.Remove(this);
+        //GameManager.instance.cardsManager.PlacedCards.Remove(this);
         StartCoroutine(AnimateToDestination(new Vector3(transform.position.x, 3f, transform.position.z), 8f, false));
     }
 

@@ -71,4 +71,12 @@ public class CardsManager : MonoBehaviour
             }
     }
 
+    public void BlockAllPaths()
+    {
+        foreach (var placedCard in PlacedCards)
+        {
+            placedCard.BlockPaths(placedCard.hexImOn);
+        }
+    }
+
 }
