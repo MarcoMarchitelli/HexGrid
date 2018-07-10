@@ -101,7 +101,7 @@ public class CardController : MonoBehaviour
 
     void Update()
     {
-        if (state == State.selectedFromHand && !GameManager.instance.hudManager.paused)
+        if (state == State.selectedFromHand && !GameManager.instance.hudManager.paused && !GameManager.instance.helpOpened)
         {
             Vector3 myMousePos = Input.mousePosition;
             myMousePos.z = 28f;
@@ -126,7 +126,7 @@ public class CardController : MonoBehaviour
             }
         }
 
-        if (state == State.selectedFromMap && !GameManager.instance.hudManager.paused)
+        if (state == State.selectedFromMap && !GameManager.instance.hudManager.paused && !GameManager.instance.helpOpened)
         {
             if (Input.GetAxis("Mouse ScrollWheel") > 0 || Input.GetKeyDown(KeyCode.A))
             {

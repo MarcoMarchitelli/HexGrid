@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit placingHitInfo;
 
                 //Se ho carta selezionata. E se l'ho selezionata da mano -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasPlacedCard && !GameManager.instance.hudManager.paused)
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasPlacedCard && !GameManager.instance.hudManager.paused && !GameManager.instance.helpOpened)
                 {
                     //(PLACE)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, hexLayer))
@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour
                     }
 
                     //(UNDO)
-                    if (Input.GetMouseButtonDown(1) && !hasPlacedCard && selectedCard.state == CardController.State.selectedFromHand && !GameManager.instance.hudManager.paused)
+                    if (Input.GetMouseButtonDown(1) && !hasPlacedCard && selectedCard.state == CardController.State.selectedFromHand && !GameManager.instance.hudManager.paused && !GameManager.instance.helpOpened)
                     {
                         UnselectCard();
                         GameManager.instance.UndoAction();
@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit selectingHitInfo;
 
                 //Se non ho carta selezionata. Quindi la seleziono dalla mappa -->
-                if (!selectedCard && !GameManager.instance.hudManager.paused)
+                if (!selectedCard && !GameManager.instance.hudManager.paused && !GameManager.instance.helpOpened)
                 {
                     //(SELECT)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out selectingHitInfo, 100, cardLayer))
@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !GameManager.instance.hudManager.paused && selectedCard.SelectedFromMapAnimFinished)
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !GameManager.instance.hudManager.paused && selectedCard.SelectedFromMapAnimFinished && !GameManager.instance.helpOpened)
                 {
 
                     //(PLACE)
