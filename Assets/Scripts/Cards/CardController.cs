@@ -28,6 +28,8 @@ public class CardController : MonoBehaviour
     public int extractableEnergy = 0, moveHexTouched = 0, abilityHexTouched = 0;
     [HideInInspector]
     public Hexagon hexImOn;
+    [HideInInspector]
+    public bool SelectedFromMapAnimFinished = false;
 
     BoxCollider[] armsColliders;
 
@@ -1825,6 +1827,13 @@ public class CardController : MonoBehaviour
             Instantiate(DestroyParticle, transform.position, Quaternion.Euler(Vector3.up * Random.Range(0f, 360f)));
             CameraShaker.Instance.ShakeOnce(2f, 10f, .5f, .5f);
             FreePaths(hexImOn);
+            if (popUp1)
+                popUp1.animFinished = true;
+            if (popUp2)
+                popUp2.animFinished = true;
+            if (popUp3)
+                popUp3.animFinished = true;
+            rotateRightFlowFinished = true;
             Destroy(this.gameObject);
             GameManager.instance.cardsManager.BlockAllPaths();
         }
@@ -1858,6 +1867,8 @@ public class CardController : MonoBehaviour
             yield return null;
         }
 
+        SelectedFromMapAnimFinished = false;
+
         if (playPopUpAnim)
         {
             PlaceSound.Play();
@@ -1886,6 +1897,8 @@ public class CardController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, Destination, speed * Time.deltaTime);
             yield return null;
         }
+
+        SelectedFromMapAnimFinished = true;
 
         if (playPopUpAnim)
         {

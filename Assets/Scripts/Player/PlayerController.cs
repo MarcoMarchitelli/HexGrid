@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !GameManager.instance.hudManager.paused)
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !GameManager.instance.hudManager.paused && selectedCard.SelectedFromMapAnimFinished)
                 {
 
                     //(PLACE)
