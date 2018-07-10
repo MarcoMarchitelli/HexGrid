@@ -541,7 +541,6 @@ public class CardController : MonoBehaviour
         while (!openAnimFinished)
             yield return null;
 
-        BlockPaths(hexImOn);
         placedEulerAngle = eulerAngle;
         ResetTouchValues();
         SetTouchvalues(hexImOn);

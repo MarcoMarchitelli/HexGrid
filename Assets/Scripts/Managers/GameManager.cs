@@ -211,6 +211,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        cardsManager.BlockAllPaths();
+
         if (playerIndex != 3)
             playerIndex++;
         else
@@ -360,6 +362,9 @@ public class GameManager : MonoBehaviour
         }
 
         currentActivePlayer.currentAction = PlayerController.Action.start;
+
+        if (currentActivePlayer.isBonusMove)
+            currentActivePlayer.isBonusMove = false;
 
         hudManager.Refresh();
         playersHUDcontroller.RefreshPlayerUIs();
