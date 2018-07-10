@@ -33,7 +33,7 @@ public class HUDManager : MonoBehaviour
 
     #endregion
 
-    bool paused = false, inSettings = false;
+    public bool paused = false, inSettings = false;
     string[] CannotUndoRotateMessages = { "Place that card first!", "Too late to go back now!", "You've got to finish your action!" };
     string[] CannotUndoMovingMessages = { "C'mon you're still running...", "Wait, you're still moving!", "You cannot interrupt your move now." };
 

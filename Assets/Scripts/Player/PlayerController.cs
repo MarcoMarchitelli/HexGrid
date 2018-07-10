@@ -152,7 +152,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit hitInfo;
 
                 //moving ray
-                if (Input.GetMouseButtonDown(0) && !hasMoved)
+                if (Input.GetMouseButtonDown(0) && !hasMoved && !GameManager.instance.hudManager.paused)
                 {
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, 100, pointLayer))
                     {
@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit placingHitInfo;
 
                 //Se ho carta selezionata. E se l'ho selezionata da mano -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasPlacedCard)
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromHand && !hasPlacedCard && !GameManager.instance.hudManager.paused)
                 {
                     //(PLACE)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out placingHitInfo, 100, hexLayer))
@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour
                     }
 
                     //(UNDO)
-                    if (Input.GetMouseButtonDown(1) && !hasPlacedCard && selectedCard.state == CardController.State.selectedFromHand)
+                    if (Input.GetMouseButtonDown(1) && !hasPlacedCard && selectedCard.state == CardController.State.selectedFromHand && !GameManager.instance.hudManager.paused)
                     {
                         UnselectCard();
                         GameManager.instance.UndoAction();
@@ -245,7 +245,7 @@ public class PlayerController : MonoBehaviour
                 RaycastHit selectingHitInfo;
 
                 //Se non ho carta selezionata. Quindi la seleziono dalla mappa -->
-                if (!selectedCard)
+                if (!selectedCard && !GameManager.instance.hudManager.paused)
                 {
                     //(SELECT)
                     if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out selectingHitInfo, 100, cardLayer))
@@ -268,7 +268,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 //Se ho carta selezionata. E se l'ho selezionata dalla mappa -->
-                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap)
+                if (selectedCard && selectedCard.state == CardController.State.selectedFromMap && !GameManager.instance.hudManager.paused)
                 {
 
                     //(PLACE)
@@ -297,7 +297,7 @@ public class PlayerController : MonoBehaviour
 
                 #region Fight
 
-                if (!hasFought)
+                if (!hasFought && !GameManager.instance.hudManager.paused)
                 {
                     RaycastHit betHitInfo;
 
