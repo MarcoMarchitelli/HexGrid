@@ -236,7 +236,6 @@ public class CardController : MonoBehaviour
             SetTouchvalues(hexImOn);
             if (player.cardsInHand.Contains(this))
                 player.cardsInHand.Remove(this);
-            GameManager.instance.cardsManager.PlacedCards.Add(this);
             GameManager.instance.cardsManager.BlockAllPaths();
 
             //ANIMATION
@@ -1833,7 +1832,7 @@ public class CardController : MonoBehaviour
     public void SelectFromMap()
     {
         state = State.selectedFromMap;
-        this.FreePaths(this.hexImOn);
+        FreePaths(hexImOn);
         //GameManager.instance.cardsManager.PlacedCards.Remove(this);
         StartCoroutine(AnimateToDestination(new Vector3(transform.position.x, 3f, transform.position.z), 8f, false));
     }
