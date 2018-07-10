@@ -338,7 +338,7 @@ public class PlayerController : MonoBehaviour
     public void UnselectCard()
     {
         selectedCard.state = CardController.State.inHand;
-        selectedCard.transform.position = MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2;
+        selectedCard.transform.position = MyData.prefabsPosition;
         selectedCard = null;
 
         GameManager.instance.hudManager.Refresh();

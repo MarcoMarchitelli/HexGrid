@@ -91,7 +91,7 @@ public class CardShop : MonoBehaviour
         {
             case 1:
                 GameManager.instance.cardSpawnCounter++;
-                Transform instantiatedCard1 = Instantiate(GameManager.instance.prefabCard1, MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
+                Transform instantiatedCard1 = Instantiate(GameManager.instance.prefabCard1, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
                 CardController card1Controller = instantiatedCard1.GetComponent<CardController>();
                 if (card1Controller)
                 {
@@ -107,7 +107,7 @@ public class CardShop : MonoBehaviour
                 break;
             case 2:
                 GameManager.instance.cardSpawnCounter++;
-                Transform instantiatedCard2 = Instantiate(GameManager.instance.prefabCard2, MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
+                Transform instantiatedCard2 = Instantiate(GameManager.instance.prefabCard2, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
                 CardController card2Controller = instantiatedCard2.GetComponent<CardController>();
                 if (card2Controller)
                 {
@@ -119,7 +119,7 @@ public class CardShop : MonoBehaviour
                 break;
             case 3:
                 GameManager.instance.cardSpawnCounter++;
-                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard3, MyData.prefabsPosition + Vector3.one * GameManager.instance.cardSpawnCounter * 2, Quaternion.Euler(Vector3.up * -90));
+                Transform instantiatedCard3 = Instantiate(GameManager.instance.prefabCard3, MyData.prefabsPosition, Quaternion.Euler(Vector3.up * -90));
                 CardController card3Controller = instantiatedCard3.GetComponent<CardController>();
                 if (card3Controller)
                 {

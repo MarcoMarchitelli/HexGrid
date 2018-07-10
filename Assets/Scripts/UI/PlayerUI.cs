@@ -91,7 +91,6 @@ public class PlayerUI : MonoBehaviour {
             {
                 ExpandAnimator.ResetTrigger("Shrink");
                 ExpandAnimator.SetTrigger("Expand");
-                print("MI sto espandendooo");
             }
             else
             {
